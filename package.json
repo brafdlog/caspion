@@ -1,0 +1,35 @@
+{
+  "name": "budget-tracking",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@sendgrid/mail": "^6.3.1",
+    "dotenv": "^6.2.0",
+    "googleapis": "^37.1.0",
+    "israeli-bank-scrapers": "^0.6.7",
+    "moment": "^2.24.0",
+    "ynab": "^1.11.0"
+  },
+  "devDependencies": {
+    "husky": "^2.1.0",
+    "lint-staged": "^8.1.5",
+    "prettier": "1.17.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,json,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  }
+}

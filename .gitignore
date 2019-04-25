@@ -1,0 +1,11 @@
+.idea
+.env
+mockData
+googleApiToken.json
+node_modules
+.DS_Store
+log
+bin
+ynabConfig.json
+budgetApps/ynab/consts.js
+categoryCalculationScript.js
