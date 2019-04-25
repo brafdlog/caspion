@@ -1,10 +1,14 @@
-const moment = require('moment');
-const googleSheets = require('./googleSheetsInternalAPI');
+const moment = require("moment");
+const googleSheets = require("./googleSheetsInternalAPI");
 
-const GOOGLE_SHEETS_DATE_FORMAT = 'DD/MM/YYYY';
+const GOOGLE_SHEETS_DATE_FORMAT = "DD/MM/YYYY";
 
-async function createTransactionsInGoogleSheets(transactions, startDate, { spreadsheetId, sheetName }) {
-  const transactionsInSheetsFormat = transactions.map(transaction => ([
+async function createTransactionsInGoogleSheets(
+  transactions,
+  startDate,
+  { spreadsheetId, sheetName }
+) {
+  const transactionsInSheetsFormat = transactions.map(transaction => [
     moment(transaction.date).format(GOOGLE_SHEETS_DATE_FORMAT),
     transaction.chargedAmount,
     transaction.description,
@@ -12,7 +16,7 @@ async function createTransactionsInGoogleSheets(transactions, startDate, { sprea
     transaction.category,
     transaction.companyId,
     transaction.accountNumber
-  ]));
+  ]);
   const spreadsheetAppendResult = await googleSheets.appendToSpreadsheet({
     spreadsheetId,
     range: `${sheetName}!A:A`,

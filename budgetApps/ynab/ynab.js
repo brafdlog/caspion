@@ -1,37 +1,55 @@
-const ynab = require('ynab');
-const moment = require('moment');
-const ynabConfig = require('./ynabConfig');
+const ynab = require("ynab");
+const moment = require("moment");
+const ynabConfig = require("./ynabConfig");
 
 const accessToken = process.env.YNAB_ACCESS_TOKEN;
-const YNAB_DATE_FORMAT = 'YYYY-MM-DD';
+const YNAB_DATE_FORMAT = "YYYY-MM-DD";
 const DID_NOTHING_RESPONSE = [];
 const NOW = moment();
 
 const BUDGET_ID = process.env.BUDGET_ID;
-const ACCOUNT_NUMBER_TO_YNAB_ACCOUNT_ID = ynabConfig.accountNumbersToYnabAccountIds;
+const ACCOUNT_NUMBER_TO_YNAB_ACCOUNT_ID =
+  ynabConfig.accountNumbersToYnabAccountIds;
 
 const categoriesMap = new Map();
 const transactionsFromYnab = new Map();
 const ynabAPI = new ynab.API(accessToken);
 const importIdMap = new Map();
 
-async function createTransactions(transactionsToCreate, startDate, options = {}) {
+async function createTransactions(
+  transactionsToCreate,
+  startDate,
+  options = {}
+) {
   if (!categoriesMap.size) {
     await initCategoriesMap();
   }
-  const transactionsFromFinancialAccount = transactionsToCreate.map(convertTransactionToYnabFormat);
-  let transactionsThatDontExistInYnab = await filterOnlyTransactionsThatDontExistInYnabAlready(startDate, transactionsFromFinancialAccount);
+  const transactionsFromFinancialAccount = transactionsToCreate.map(
+    convertTransactionToYnabFormat
+  );
+  let transactionsThatDontExistInYnab = await filterOnlyTransactionsThatDontExistInYnabAlready(
+    startDate,
+    transactionsFromFinancialAccount
+  );
   // Filter out transactions that are in the future
-  transactionsThatDontExistInYnab = transactionsThatDontExistInYnab.filter(transaction => moment(transaction.date, YNAB_DATE_FORMAT).isBefore(NOW));
+  transactionsThatDontExistInYnab = transactionsThatDontExistInYnab.filter(
+    transaction => moment(transaction.date, YNAB_DATE_FORMAT).isBefore(NOW)
+  );
   if (!transactionsThatDontExistInYnab.length) {
-    console.log('All transactions already exist in ynab. Doing nothing.');
+    console.log("All transactions already exist in ynab. Doing nothing.");
     return DID_NOTHING_RESPONSE;
   }
-  console.log('Creating the following transactions in ynab: ', transactionsThatDontExistInYnab);
+  console.log(
+    "Creating the following transactions in ynab: ",
+    transactionsThatDontExistInYnab
+  );
   try {
-    const transactionCreationResult = await ynabAPI.transactions.createTransactions(BUDGET_ID, {
-      transactions: transactionsThatDontExistInYnab
-    });
+    const transactionCreationResult = await ynabAPI.transactions.createTransactions(
+      BUDGET_ID,
+      {
+        transactions: transactionsThatDontExistInYnab
+      }
+    );
     return transactionCreationResult;
   } catch (e) {
     console.error(e);
@@ -40,7 +58,10 @@ async function createTransactions(transactionsToCreate, startDate, options = {})
 }
 
 function getTransactions(startDate) {
-  return ynabAPI.transactions.getTransactions(BUDGET_ID, moment(startDate).format(YNAB_DATE_FORMAT));
+  return ynabAPI.transactions.getTransactions(
+    BUDGET_ID,
+    moment(startDate).format(YNAB_DATE_FORMAT)
+  );
 }
 
 function buildImportId(payeeName, amount, date) {
@@ -59,22 +80,29 @@ function convertTransactionToYnabFormat(originalTransaction) {
   const amount = Math.round(originalTransaction.chargedAmount * 1000);
   const date = convertTimestampToYnabDateFormat(originalTransaction);
   return {
-    "account_id": getYnabAccountIdByAccountNumberFromTransaction(originalTransaction.accountNumber),
-    "date": date, //"2019-01-17",
-    "amount": amount ,
+    account_id: getYnabAccountIdByAccountNumberFromTransaction(
+      originalTransaction.accountNumber
+    ),
+    date: date, //"2019-01-17",
+    amount: amount,
     // "payee_id": "string",
-    "payee_name": originalTransaction.description,
-    "category_id": getYnabCategoryIdFromCategoryName(originalTransaction.category),
-    "memo": originalTransaction.memo,
-    "cleared": "cleared",
+    payee_name: originalTransaction.description,
+    category_id: getYnabCategoryIdFromCategoryName(
+      originalTransaction.category
+    ),
+    memo: originalTransaction.memo,
+    cleared: "cleared"
     // "approved": true,
     // "flag_color": "red",
     // "import_id": buildImportId(originalTransaction.description, amount, date) // 'YNAB:[milliunit_amount]:[iso_date]:[occurrence]'
   };
 }
 
-function getYnabAccountIdByAccountNumberFromTransaction(transactionAccountNumber) {
-  const ynabAccountId = ACCOUNT_NUMBER_TO_YNAB_ACCOUNT_ID[transactionAccountNumber];
+function getYnabAccountIdByAccountNumberFromTransaction(
+  transactionAccountNumber
+) {
+  const ynabAccountId =
+    ACCOUNT_NUMBER_TO_YNAB_ACCOUNT_ID[transactionAccountNumber];
   if (!ynabAccountId) {
     throw new Error(`Unhandled account number ${transactionAccountNumber}`);
   }
@@ -90,7 +118,7 @@ function getYnabCategoryIdFromCategoryName(categoryName) {
   if (categoryName && !categoryToReturn) {
     const errorMessage = `No category for name ${categoryName}`;
     console.error(errorMessage);
-    throw new Error(errorMessage)
+    throw new Error(errorMessage);
   }
   return categoryToReturn && categoryToReturn.id;
 }
@@ -98,37 +126,53 @@ function getYnabCategoryIdFromCategoryName(categoryName) {
 async function initCategoriesMap() {
   const categories = await ynabAPI.categories.getCategories(BUDGET_ID);
   categories.data.category_groups.forEach(categoryGroup => {
-    categoryGroup.categories.map(category => ( {
-      id: category.id,
-      name: category.name,
-      category_group_id: category.category_group_id
-    }))
-    .forEach(category => {
-      categoriesMap.set(category.name, category);
-    });
-  })
+    categoryGroup.categories
+      .map(category => ({
+        id: category.id,
+        name: category.name,
+        category_group_id: category.category_group_id
+      }))
+      .forEach(category => {
+        categoriesMap.set(category.name, category);
+      });
+  });
 }
 
-async function filterOnlyTransactionsThatDontExistInYnabAlready(startDate, transactionsFromFinancialAccounts) {
+async function filterOnlyTransactionsThatDontExistInYnabAlready(
+  startDate,
+  transactionsFromFinancialAccounts
+) {
   let transactionsInYnabBeforeCreatingTheseTransactions;
   if (transactionsFromYnab.has(startDate)) {
-    transactionsInYnabBeforeCreatingTheseTransactions = transactionsFromYnab.get(startDate);
+    transactionsInYnabBeforeCreatingTheseTransactions = transactionsFromYnab.get(
+      startDate
+    );
   } else {
     const transactionsFromYnabResponse = await getTransactions(startDate);
-    transactionsInYnabBeforeCreatingTheseTransactions = transactionsFromYnabResponse.data.transactions;
-    transactionsFromYnab.set(startDate, transactionsInYnabBeforeCreatingTheseTransactions);
+    transactionsInYnabBeforeCreatingTheseTransactions =
+      transactionsFromYnabResponse.data.transactions;
+    transactionsFromYnab.set(
+      startDate,
+      transactionsInYnabBeforeCreatingTheseTransactions
+    );
   }
   const transactionsThatDontExistInYnab = transactionsFromFinancialAccounts.filter(
-      transactionToCheck => !transactionsInYnabBeforeCreatingTheseTransactions.find(
-          existingTransaction => isSameTransaction(transactionToCheck, existingTransaction)));
+    transactionToCheck =>
+      !transactionsInYnabBeforeCreatingTheseTransactions.find(
+        existingTransaction =>
+          isSameTransaction(transactionToCheck, existingTransaction)
+      )
+  );
   return transactionsThatDontExistInYnab;
 }
 
 function isSameTransaction(transactionA, transactionB) {
-  return transactionA.account_id === transactionB.account_id &&
-      transactionA.date === transactionB.date &&
-      Math.abs(transactionA.amount - transactionB.amount) < 1000 &&
-      transactionA.payee_name === transactionB.payee_name;
+  return (
+    transactionA.account_id === transactionB.account_id &&
+    transactionA.date === transactionB.date &&
+    Math.abs(transactionA.amount - transactionB.amount) < 1000 &&
+    transactionA.payee_name === transactionB.payee_name
+  );
 }
 
 module.exports = {
