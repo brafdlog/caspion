@@ -1,6 +1,7 @@
 const fs = require("fs");
 const readline = require("readline");
 const { google } = require("googleapis");
+const config = require("../../config");
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
@@ -10,7 +11,7 @@ const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
 const TOKEN_PATH = "googleApiToken.json";
 
 const GOOGLE_API_CREDENTIALS_JSON_FILE_PATH =
-  process.env.GOOGLE_API_CREDENTIALS_JSON_FILE_PATH;
+  config.outputVendors.googleSheets.credentialsJsonFilePath;
 
 async function loadCredentialsAndAuthorize() {
   const credentialsStr = await new Promise((resolve, reject) => {

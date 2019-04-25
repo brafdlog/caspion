@@ -1,19 +1,20 @@
 const ynab = require("ynab");
 const moment = require("moment");
-const ynabConfig = require("./ynabConfig");
+const config = require("../../config");
 
-const accessToken = process.env.YNAB_ACCESS_TOKEN;
 const YNAB_DATE_FORMAT = "YYYY-MM-DD";
 const DID_NOTHING_RESPONSE = [];
 const NOW = moment();
 
-const BUDGET_ID = process.env.BUDGET_ID;
+const ynabConfig = config.outputVendors.ynab;
+
+const BUDGET_ID = ynabConfig.budgetId;
 const ACCOUNT_NUMBER_TO_YNAB_ACCOUNT_ID =
   ynabConfig.accountNumbersToYnabAccountIds;
 
 const categoriesMap = new Map();
 const transactionsFromYnab = new Map();
-const ynabAPI = new ynab.API(accessToken);
+const ynabAPI = new ynab.API(ynabConfig.accessToken);
 const importIdMap = new Map();
 
 async function createTransactions(

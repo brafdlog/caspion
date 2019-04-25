@@ -1,62 +1,33 @@
 require("dotenv").config();
 const moment = require("moment");
+const config = require("./config");
 const bankScraper = require("./bankScraper");
 const ynab = require("./budgetApps/ynab/ynab");
 const googleSheets = require("./budgetApps/googleSheets/googleSheets");
 const categoryCalculation = require("./categoryCalculationScript");
 const emailSender = require("./emailSender");
 
-const NUM_DAYS_BACK = 4;
-const SHOW_BROWSER = process.env.SHOW_BROWSER === "true";
-
-const accountsToScrape = [
-  {
-    companyId: "leumi",
-    credentials: {
-      username: process.env.LEUMI_USERNAME,
-      password: process.env.LEUMI_PASSWORD
-    }
-  },
-  {
-    companyId: "leumiCard",
-    credentials: {
-      username: process.env.LEUMI_CARD_USERNAME,
-      password: process.env.LEUMI_CARD_PASSWORD
-    }
-  },
-  {
-    companyId: "visaCal",
-    credentials: {
-      username: process.env.VISA_CAL_USERNAME,
-      password: process.env.VISA_CAL_PASSWORD
-    }
-  }
-];
-
 const OUTPUT_VENDORS = [
   {
     name: "ynab",
     createTransactionFunction: ynab.createTransactions,
-    options: {}
+    options: config.outputVendors["ynab"].options
   },
   {
     name: "googleSheets",
     createTransactionFunction: googleSheets.createTransactionsInGoogleSheets,
-    options: {
-      spreadsheetId: process.env.FINANCIAL_MANAGEMENT_SPREADSHEET_ID,
-      sheetName: process.env.ALL_TRANSACTIONS_SHEET_NAME
-    }
+    options: config.outputVendors["googleSheets"].options
   }
 ];
 
 const startDate = moment()
-  .subtract(NUM_DAYS_BACK, "days")
+  .subtract(config.scraping.numDaysBack, "days")
   .startOf("day")
   .toDate();
 
 async function run() {
-  console.log(`Is job: ${process.env.IS_JOB}`);
   const executionResult = {};
+  let accountsToScrape = config.scraping.accountsToScrape;
   for (let i = 0; i < accountsToScrape.length; i++) {
     const { companyId, credentials } = accountsToScrape[i];
     executionResult[companyId] = {};
@@ -70,11 +41,13 @@ async function run() {
 
       for (let i = 0; i < OUTPUT_VENDORS.length; i++) {
         const vendor = OUTPUT_VENDORS[i];
-        const vendorResult = await createTransactionsInVedor(
-          vendor,
-          transactions
-        );
-        executionResult[companyId][vendor.name] = vendorResult;
+        if (config.outputVendors[vendor.name].active) {
+          const vendorResult = await createTransactionsInVedor(
+            vendor,
+            transactions
+          );
+          executionResult[companyId][vendor.name] = vendorResult;
+        }
       }
       console.log(
         "=================== Finished for ",
@@ -85,6 +58,7 @@ async function run() {
       executionResult[
         companyId
       ] = `Error running job for company ${companyId}. Error: ${e.message}`;
+      console.error(`Error running job for company ${companyId}. Error: `, e);
     }
   }
 
@@ -94,7 +68,7 @@ async function run() {
   `;
   console.log(resultToLog);
 
-  if (process.env.IS_JOB) {
+  if (config.monitoring.email.sendReport) {
     await emailSender.sendEmail({ text: resultToLog });
   }
 }
@@ -115,7 +89,7 @@ async function fetchTransactions(companyId, credentials) {
     companyId,
     credentials,
     startDate,
-    showBrowser: SHOW_BROWSER
+    showBrowser: config.scraping.showBrowser
   });
   if (!scrapeResult.success) {
     console.error("Failed scraping ", companyId);
