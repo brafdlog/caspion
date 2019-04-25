@@ -1,6 +1,7 @@
 const sgMail = require("@sendgrid/mail");
+const config = require("./config");
 
-const MY_EMAIL_ADDRESS = process.env.MY_EMAIL_ADDRESS;
+const MY_EMAIL_ADDRESS = config.monitoring.email.toEmailAddress;
 
 function sendEmail({
   to = MY_EMAIL_ADDRESS,
@@ -9,7 +10,7 @@ function sendEmail({
   text,
   html
 }) {
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+  sgMail.setApiKey(config.monitoring.email.sendgridApiKey);
   const msg = {
     to,
     from,
