@@ -25,7 +25,7 @@ module.exports = {
     ynab: {
       active: true,
       accessToken: process.env.YNAB_ACCESS_TOKEN,
-      budgetId: process.env.YNAB_BUDGET_ID,
+      budgetId: "########-####-####-####-############",
       accountNumbersToYnabAccountIds: {
         "1234": "########-####-####-####-############",
         "5678": "########-####-####-####-############",
@@ -35,19 +35,18 @@ module.exports = {
     },
     googleSheets: {
       active: false,
-      credentialsJsonFilePath:
-        process.env.GOOGLE_API_CREDENTIALS_JSON_FILE_PATH,
+      credentialsJsonFilePath: "/###########/google_api_credentials.json",
       options: {
-        spreadsheetId: process.env.FINANCIAL_MANAGEMENT_SPREADSHEET_ID,
-        sheetName: process.env.ALL_TRANSACTIONS_SHEET_NAME
+        spreadsheetId: "############################################",
+        sheetName: "###############"
       }
     }
   },
   monitoring: {
     email: {
-      toEmailAddress: process.env.MY_EMAIL_ADDRESS,
+      toEmailAddress: "joe@someemail.com",
       sendgridApiKey: process.env.SENDGRID_API_KEY,
-      sendReport: process.env.IS_JOB
+      sendReport: false
     }
   }
 };
