@@ -16,6 +16,7 @@ TODO:
    - [ ] Screen for defining logic of transaction category calssification
    - [ ] Allow classifying transactions that were not automatically detected and save these so future transactions like those will be automcatically classified
    - [ ] Run periodically
+- [ ] Create a google spreadsheets template which is already set up with financial tracking logic and when a user connects to google sheets automatically clone that spreadsheet as a starting point for the user. See [paamonim's sheet](https://docs.google.com/spreadsheets/d/11yMAvBwtvlPzA855q8BPRMrjrdAUBsd4HKA7km1-LG0/edit?usp=sharing) for reference.
 - [ ] Update README with full instractions on setting up project.
 - [ ] Add tests
 - [ ] Take classification logic from a json instead of code
