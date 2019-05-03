@@ -21,3 +21,8 @@ TODO:
 - [ ] Add tests
 - [ ] Create a google spreadsheets template which is already set up with financial tracking logic and when a user connects to google sheets automatically clone that spreadsheet as a starting point for the user. See [paamonim's sheet](https://docs.google.com/spreadsheets/d/11yMAvBwtvlPzA855q8BPRMrjrdAUBsd4HKA7km1-LG0/edit?usp=sharing) for reference.
 - [ ] Allow passing the user's own encryption key for encryption the financial institution credentials
+
+
+#### disclaimer
+
+Providing your financial account credentials to software is not risk free. We will do our best to protect your credentials but take no responsibility for any possible damages. If you want to use this we suggest you ask your bank for credentials for a user that has only read access to the bank account and use those credentials.
