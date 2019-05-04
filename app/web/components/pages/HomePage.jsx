@@ -5,6 +5,7 @@ import { ipcRenderer } from 'electron';
 import styles from './HomePage.css';
 import { jsonStringifyPretty } from '../../webUtils';
 import events from '../../../constants/events';
+import Config from '../Config';
 
 const SCRAPING_STATUS = {
   initial: 'initial',
@@ -62,6 +63,7 @@ export default class HomePage extends Component {
     return (
       <div className={styles.container} data-tid="container">
         <h2>איפה הכסף?</h2>
+        <Config />
         <Fab
           disabled={isInProgress}
           variant="extended"

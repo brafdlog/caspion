@@ -6,6 +6,7 @@ const ynab = require('./outputVendors/ynab/ynab');
 const googleSheets = require('./outputVendors/googleSheets/googleSheets');
 const categoryCalculation = require('./categoryCalculationScript');
 const emailSender = require('./emailSender');
+const configManager = require('./configManager');
 
 const OUTPUT_VENDORS = [
   {
@@ -25,7 +26,7 @@ const startDate = moment()
   .startOf('day')
   .toDate();
 
-async function run() {
+async function scrapeAndUpdateOutputVendors() {
   const executionResult = {};
   const accountsToScrape = config.scraping.accountsToScrape;
   for (let i = 0; i < accountsToScrape.length; i++) {
@@ -150,4 +151,7 @@ function transactionsDateComperator(t1, t2) {
   return 1;
 }
 
-module.exports = run;
+module.exports = {
+  scrapeAndUpdateOutputVendors,
+  configManager
+};
