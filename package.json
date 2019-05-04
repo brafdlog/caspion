@@ -53,7 +53,7 @@
       "git add"
     ]
   },
-  "main": "./app/main.prod.js",
+  "main": "./app/main.dev.js",
   "build": {
     "productName": "ElectronReact",
     "appId": "org.develar.ElectronReact",
@@ -247,25 +247,26 @@
     "yarn": "^1.12.3"
   },
   "dependencies": {
-    "@sendgrid/mail": "^6.3.1",
-    "dotenv": "^6.2.0",
-    "googleapis": "^37.1.0",
-    "israeli-bank-scrapers": "^0.6.7",
-    "lodash": "^4.17.11",
-    "moment": "^2.24.0",
-    "ynab": "^1.11.0",
     "@fortawesome/fontawesome-free": "^5.5.0",
+    "@material-ui/core": "^3.9.3",
+    "@sendgrid/mail": "^6.3.1",
     "devtron": "^1.4.0",
+    "dotenv": "^6.2.0",
     "electron-debug": "^2.0.0",
     "electron-log": "^2.2.17",
     "electron-updater": "^3.2.3",
+    "googleapis": "^37.1.0",
     "history": "^4.7.2",
+    "israeli-bank-scrapers": "^0.6.7",
+    "lodash": "^4.17.11",
+    "moment": "^2.24.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-hot-loader": "^4.3.12",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
-    "source-map-support": "^0.5.9"
+    "source-map-support": "^0.5.9",
+    "ynab": "^1.11.0"
   },
   "devEngines": {
     "node": ">=7.x",

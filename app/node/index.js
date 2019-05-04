@@ -1,33 +1,33 @@
-require("dotenv").config();
-const moment = require("moment");
-const config = require("./config");
-const bankScraper = require("./bankScraper");
-const ynab = require("./outputVendors/ynab/ynab");
-const googleSheets = require("./outputVendors/googleSheets/googleSheets");
-const categoryCalculation = require("./categoryCalculationScript");
-const emailSender = require("./emailSender");
+require('dotenv').config();
+const moment = require('moment');
+const config = require('./config');
+const bankScraper = require('./bankScraper');
+const ynab = require('./outputVendors/ynab/ynab');
+const googleSheets = require('./outputVendors/googleSheets/googleSheets');
+const categoryCalculation = require('./categoryCalculationScript');
+const emailSender = require('./emailSender');
 
 const OUTPUT_VENDORS = [
   {
-    name: "ynab",
+    name: 'ynab',
     createTransactionFunction: ynab.createTransactions,
-    options: config.outputVendors["ynab"].options
+    options: config.outputVendors.ynab.options
   },
   {
-    name: "googleSheets",
+    name: 'googleSheets',
     createTransactionFunction: googleSheets.createTransactionsInGoogleSheets,
-    options: config.outputVendors["googleSheets"].options
+    options: config.outputVendors.googleSheets.options
   }
 ];
 
 const startDate = moment()
-  .subtract(config.scraping.numDaysBack, "days")
-  .startOf("day")
+  .subtract(config.scraping.numDaysBack, 'days')
+  .startOf('day')
   .toDate();
 
 async function run() {
   const executionResult = {};
-  let accountsToScrape = config.scraping.accountsToScrape;
+  const accountsToScrape = config.scraping.accountsToScrape;
   for (let i = 0; i < accountsToScrape.length; i++) {
     const { companyId, credentials } = accountsToScrape[i];
     executionResult[companyId] = {};
@@ -50,15 +50,16 @@ async function run() {
         }
       }
       console.log(
-        "=================== Finished for ",
+        '=================== Finished for ',
         companyId,
-        " ==================="
+        ' ==================='
       );
     } catch (e) {
       executionResult[
         companyId
       ] = `Error running job for company ${companyId}. Error: ${e.message}`;
       console.error(`Error running job for company ${companyId}. Error: `, e);
+      throw  e;
     }
   }
 
@@ -75,14 +76,14 @@ async function run() {
 
 async function fetchTransactions(companyId, credentials) {
   console.log(
-    "=================== Starting for ",
+    '=================== Starting for ',
     companyId,
-    " ==================="
+    ' ==================='
   );
 
   console.log(
     `Start scraping ${companyId} from date: ${moment(startDate).format(
-      "DD/MM/YYYY"
+      'DD/MM/YYYY'
     )}`
   );
   const scrapeResult = await bankScraper.scrape({
@@ -92,16 +93,16 @@ async function fetchTransactions(companyId, credentials) {
     showBrowser: config.scraping.showBrowser
   });
   if (!scrapeResult.success) {
-    console.error("Failed scraping ", companyId);
+    console.error('Failed scraping ', companyId);
     console.error(scrapeResult.errorMessage);
     throw new Error(scrapeResult.errorMessage);
   }
-  console.log("Finished scraping successfully");
+  console.log('Finished scraping successfully');
   return scrapeResult;
 }
 
 function classifyTransactionCategories(scrapeResult, companyId) {
-  console.log("Start category enrichment");
+  console.log('Start category enrichment');
 
   const transactions = [];
   scrapeResult.accounts.forEach(account => {
@@ -117,7 +118,7 @@ function classifyTransactionCategories(scrapeResult, companyId) {
     });
     transactions.push(...accountTransactions);
   });
-  console.log("Finished category enrichment");
+  console.log('Finished category enrichment');
   return transactions;
 }
 
@@ -145,4 +146,4 @@ function transactionsDateComperator(t1, t2) {
   return 1;
 }
 
-run();
+module.exports = run;

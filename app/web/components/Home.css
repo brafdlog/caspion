@@ -1,8 +1,10 @@
 .container {
-  position: absolute;
-  top: 30%;
-  left: 10px;
-  text-align: center;
+  width: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .container h2 {
