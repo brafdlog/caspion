@@ -6,14 +6,14 @@ module.exports = {
       // Add the accounts you want to scrape here
       // Possible company ids are 'hapoalim', 'leumi', 'discount', 'otsarHahayal', 'visaCal', 'leumiCard', 'isracard', 'amex'
       {
-        companyId: "leumi",
+        companyId: 'leumi',
         credentials: {
           username: process.env.LEUMI_USERNAME,
           password: process.env.LEUMI_PASSWORD
         }
       },
       {
-        companyId: "leumiCard",
+        companyId: 'leumiCard',
         credentials: {
           username: process.env.LEUMI_CARD_USERNAME,
           password: process.env.LEUMI_CARD_PASSWORD
@@ -25,26 +25,26 @@ module.exports = {
     ynab: {
       active: true,
       accessToken: process.env.YNAB_ACCESS_TOKEN,
-      budgetId: "########-####-####-####-############",
+      budgetId: '########-####-####-####-############',
       accountNumbersToYnabAccountIds: {
-        "1234": "########-####-####-####-############",
-        "5678": "########-####-####-####-############",
-        "4837": "########-####-####-####-############"
+        '1234': '########-####-####-####-############',
+        '5678': '########-####-####-####-############',
+        '4837': '########-####-####-####-############'
       },
       options: {}
     },
     googleSheets: {
       active: false,
-      credentialsJsonFilePath: "/###########/google_api_credentials.json",
+      credentialsJsonFilePath: '/###########/google_api_credentials.json',
       options: {
-        spreadsheetId: "############################################",
-        sheetName: "###############"
+        spreadsheetId: '############################################',
+        sheetName: '###############'
       }
     }
   },
   monitoring: {
     email: {
-      toEmailAddress: "joe@someemail.com",
+      toEmailAddress: 'joe@someemail.com',
       sendgridApiKey: process.env.SENDGRID_API_KEY,
       sendReport: false
     }

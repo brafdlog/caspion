@@ -1,4 +1,4 @@
-const { createScraper } = require("israeli-bank-scrapers");
+const { createScraper } = require('israeli-bank-scrapers');
 // const mockTransactions = require('./mockData/mockTransactions');
 
 async function scrape({
@@ -12,8 +12,8 @@ async function scrape({
   //   return mockTransactions[companyId];
   // }
   const options = {
-    companyId: companyId, // mandatory; one of 'hapoalim', 'discount', 'otsarHahayal', 'leumiCard', 'isracard', 'amex'
-    startDate: startDate, // the date to fetch transactions from (can't be before the minimum allowed time difference for the scraper)
+    companyId, // mandatory; one of 'hapoalim', 'discount', 'otsarHahayal', 'leumiCard', 'isracard', 'amex'
+    startDate, // the date to fetch transactions from (can't be before the minimum allowed time difference for the scraper)
     combineInstallments: false, // if set to true, all installment transactions will be combine into the first one
     showBrowser, // shows the browser while scraping, good for debugging (default false)
     verbose: false // include more debug info about in the output

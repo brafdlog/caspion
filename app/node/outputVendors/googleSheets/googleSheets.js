@@ -1,7 +1,7 @@
-const moment = require("moment/moment");
-const googleSheets = require("./googleSheetsInternalAPI");
+const moment = require('moment/moment');
+const googleSheets = require('./googleSheetsInternalAPI');
 
-const GOOGLE_SHEETS_DATE_FORMAT = "DD/MM/YYYY";
+const GOOGLE_SHEETS_DATE_FORMAT = 'DD/MM/YYYY';
 
 async function createTransactionsInGoogleSheets(
   transactions,

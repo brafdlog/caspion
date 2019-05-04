@@ -39,8 +39,8 @@ async function run() {
       );
       transactions.sort(transactionsDateComperator);
 
-      for (let i = 0; i < OUTPUT_VENDORS.length; i++) {
-        const vendor = OUTPUT_VENDORS[i];
+      for (let j = 0; j < OUTPUT_VENDORS.length; j++) {
+        const vendor = OUTPUT_VENDORS[j];
         if (config.outputVendors[vendor.name].active) {
           const vendorResult = await createTransactionsInVedor(
             vendor,
@@ -59,7 +59,7 @@ async function run() {
         companyId
       ] = `Error running job for company ${companyId}. Error: ${e.message}`;
       console.error(`Error running job for company ${companyId}. Error: `, e);
-      throw  e;
+      throw e;
     }
   }
 
@@ -72,6 +72,8 @@ async function run() {
   if (config.monitoring.email.sendReport) {
     await emailSender.sendEmail({ text: resultToLog });
   }
+
+  return executionResult;
 }
 
 async function fetchTransactions(companyId, credentials) {
@@ -129,7 +131,9 @@ async function createTransactionsInVedor(vendor, transactions) {
     startDate,
     vendor.options
   );
-  vendorResult && console.log(`${vendor.name} result: `, vendorResult);
+  if (vendorResult) {
+    console.log(`${vendor.name} result: `, vendorResult);
+  }
   console.log(`Finished creating transactions in ${vendor.name}`);
   return vendorResult;
 }

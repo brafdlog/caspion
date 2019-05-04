@@ -1,8 +1,8 @@
-const ynab = require("ynab/dist/index");
-const moment = require("moment/moment");
-const config = require("../../config");
+const ynab = require('ynab/dist/index');
+const moment = require('moment/moment');
+const config = require('../../config');
 
-const YNAB_DATE_FORMAT = "YYYY-MM-DD";
+const YNAB_DATE_FORMAT = 'YYYY-MM-DD';
 const DID_NOTHING_RESPONSE = [];
 const NOW = moment();
 
@@ -15,13 +15,9 @@ const ACCOUNT_NUMBER_TO_YNAB_ACCOUNT_ID =
 const categoriesMap = new Map();
 const transactionsFromYnab = new Map();
 const ynabAPI = new ynab.API(ynabConfig.accessToken);
-const importIdMap = new Map();
+// const importIdMap = new Map();
 
-async function createTransactions(
-  transactionsToCreate,
-  startDate,
-  options = {}
-) {
+async function createTransactions(transactionsToCreate, startDate) {
   if (!categoriesMap.size) {
     await initCategoriesMap();
   }
@@ -37,11 +33,11 @@ async function createTransactions(
     transaction => moment(transaction.date, YNAB_DATE_FORMAT).isBefore(NOW)
   );
   if (!transactionsThatDontExistInYnab.length) {
-    console.log("All transactions already exist in ynab. Doing nothing.");
+    console.log('All transactions already exist in ynab. Doing nothing.');
     return DID_NOTHING_RESPONSE;
   }
   console.log(
-    "Creating the following transactions in ynab: ",
+    'Creating the following transactions in ynab: ',
     transactionsThatDontExistInYnab
   );
   try {
@@ -65,17 +61,17 @@ function getTransactions(startDate) {
   );
 }
 
-function buildImportId(payeeName, amount, date) {
-  // The import Id length is maximum 36 chars. Limiting the payee name to make sure we don't exceed 36 chars in importId
-  const payeeNameShort = payeeName.substr(0, 14);
-  const importId = `${payeeNameShort}:${amount}:${date}`;
-  if (!importIdMap.has(importId)) {
-    importIdMap.set(importId, 0);
-  }
-  const occurance = importIdMap.get(importId) + 1;
-  importIdMap.set(importId, occurance);
-  return `${importId}:${occurance}`;
-}
+// function buildImportId(payeeName, amount, date) {
+//   // The import Id length is maximum 36 chars. Limiting the payee name to make sure we don't exceed 36 chars in importId
+//   const payeeNameShort = payeeName.substr(0, 14);
+//   const importId = `${payeeNameShort}:${amount}:${date}`;
+//   if (!importIdMap.has(importId)) {
+//     importIdMap.set(importId, 0);
+//   }
+//   const occurance = importIdMap.get(importId) + 1;
+//   importIdMap.set(importId, occurance);
+//   return `${importId}:${occurance}`;
+// }
 
 function convertTransactionToYnabFormat(originalTransaction) {
   const amount = Math.round(originalTransaction.chargedAmount * 1000);
@@ -84,15 +80,15 @@ function convertTransactionToYnabFormat(originalTransaction) {
     account_id: getYnabAccountIdByAccountNumberFromTransaction(
       originalTransaction.accountNumber
     ),
-    date: date, //"2019-01-17",
-    amount: amount,
+    date, // "2019-01-17",
+    amount,
     // "payee_id": "string",
     payee_name: originalTransaction.description,
     category_id: getYnabCategoryIdFromCategoryName(
       originalTransaction.category
     ),
     memo: originalTransaction.memo,
-    cleared: "cleared"
+    cleared: 'cleared'
     // "approved": true,
     // "flag_color": "red",
     // "import_id": buildImportId(originalTransaction.description, amount, date) // 'YNAB:[milliunit_amount]:[iso_date]:[occurrence]'

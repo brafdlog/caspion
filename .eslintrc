@@ -10,6 +10,11 @@
     "node": true
   },
   "rules": {
+    "no-param-reassign": "off",
+    "prefer-destructuring": "off",
+    "no-plusplus": "off",
+    "no-await-in-loop": "off",
+    "jsx-a11y/accessible-emoji": "off",
     "react/prop-types": "off",
     "arrow-parens": ["off"],
     "compat/compat": "error",

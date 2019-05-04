@@ -38,15 +38,25 @@ export default class Home extends Component {
   }
 
   render() {
-    const { status } = this.state;
+    const { status, scraperPayload, error } = this.state;
     const isInProgress = status === STATUSES.inProgress;
     const isDone = status === STATUSES.done;
     const isError = status === STATUSES.error;
-    if(isError){
-      return <div>failed! 😭😭😭😭</div>;
+    if (isError) {
+      return (
+        <>
+          <div>failed! 😭😭😭😭</div>
+          <div>{error}</div>
+        </>
+      );
     }
     if (isDone) {
-      return <div>yay!</div>;
+      return (
+        <>
+          <div>yay!</div>
+          <div>{scraperPayload}</div>
+        </>
+      );
     }
     return (
       <div className={styles.container} data-tid="container">
