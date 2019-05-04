@@ -53,7 +53,7 @@
       "git add"
     ]
   },
-  "main": "./app/main.prod.js",
+  "main": "./app/main.dev.js",
   "build": {
     "productName": "ElectronReact",
     "appId": "org.develar.ElectronReact",

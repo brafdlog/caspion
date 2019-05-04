@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import Fab from '@material-ui/core/Fab';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import Fab from '@material-ui/core/Fab/index';
+import CircularProgress from '@material-ui/core/CircularProgress/index';
 import { ipcRenderer } from 'electron';
-import styles from './Home.css';
-import events from '../../constants/events';
+import styles from './HomePage.css';
+import events from '../../../constants/events';
 
 const STATUSES = {
   idle: 'idle',
@@ -12,7 +12,7 @@ const STATUSES = {
   error: 'error'
 };
 
-export default class Home extends Component {
+export default class HomePage extends Component {
   state = {
     status: STATUSES.idle
   };
