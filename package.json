@@ -2,7 +2,7 @@
   "name": "budget-tracking",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,6 +13,7 @@
     "dotenv": "^6.2.0",
     "googleapis": "^37.1.0",
     "israeli-bank-scrapers": "^0.6.7",
+    "lodash": "^4.17.11",
     "moment": "^2.24.0",
     "ynab": "^1.11.0"
   },

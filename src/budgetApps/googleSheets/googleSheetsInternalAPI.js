@@ -1,6 +1,6 @@
 const fs = require("fs");
 const readline = require("readline");
-const { google } = require("googleapis");
+const { google } = require("googleapis/build/src/index");
 const config = require("../../config");
 
 // If modifying these scopes, delete token.json.

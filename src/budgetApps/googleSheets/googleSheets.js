@@ -1,4 +1,4 @@
-const moment = require("moment");
+const moment = require("moment/moment");
 const googleSheets = require("./googleSheetsInternalAPI");
 
 const GOOGLE_SHEETS_DATE_FORMAT = "DD/MM/YYYY";

@@ -1,5 +1,5 @@
-const ynab = require("ynab");
-const moment = require("moment");
+const ynab = require("ynab/dist/index");
+const moment = require("moment/moment");
 const config = require("../../config");
 
 const YNAB_DATE_FORMAT = "YYYY-MM-DD";
