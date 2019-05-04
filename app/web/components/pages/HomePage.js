@@ -5,8 +5,8 @@ import { ipcRenderer } from 'electron';
 import styles from './HomePage.css';
 import events from '../../../constants/events';
 
-const STATUSES = {
-  idle: 'idle',
+const SCRAPING_STATUS = {
+  initial: 'initial',
   inProgress: 'inProgress',
   done: 'done',
   error: 'error'
@@ -14,34 +14,34 @@ const STATUSES = {
 
 export default class HomePage extends Component {
   state = {
-    status: STATUSES.idle
+    status: SCRAPING_STATUS.initial
   };
 
   componentDidMount() {
     ipcRenderer.on(events.scraping.done, (event, arg) =>
       this.setState({
-        status: STATUSES.done,
+        status: SCRAPING_STATUS.done,
         scraperPayload: arg
       })
     );
     ipcRenderer.on(events.scraping.error, (event, arg) =>
       this.setState({
-        status: STATUSES.error,
+        status: SCRAPING_STATUS.error,
         error: arg
       })
     );
   }
 
   runScraper() {
-    this.setState({ status: STATUSES.inProgress });
+    this.setState({ status: SCRAPING_STATUS.inProgress });
     ipcRenderer.send(events.scraping.start);
   }
 
   render() {
     const { status, scraperPayload, error } = this.state;
-    const isInProgress = status === STATUSES.inProgress;
-    const isDone = status === STATUSES.done;
-    const isError = status === STATUSES.error;
+    const isInProgress = status === SCRAPING_STATUS.inProgress;
+    const isDone = status === SCRAPING_STATUS.done;
+    const isError = status === SCRAPING_STATUS.error;
     if (isError) {
       return (
         <>
