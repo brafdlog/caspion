@@ -2,8 +2,8 @@ require("dotenv").config();
 const moment = require("moment");
 const config = require("./config");
 const bankScraper = require("./bankScraper");
-const ynab = require("./budgetApps/ynab/ynab");
-const googleSheets = require("./budgetApps/googleSheets/googleSheets");
+const ynab = require("./outputVendors/ynab/ynab");
+const googleSheets = require("./outputVendors/googleSheets/googleSheets");
 const categoryCalculation = require("./categoryCalculationScript");
 const emailSender = require("./emailSender");
 
