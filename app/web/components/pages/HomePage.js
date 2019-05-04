@@ -3,6 +3,7 @@ import Fab from '@material-ui/core/Fab/index';
 import CircularProgress from '@material-ui/core/CircularProgress/index';
 import { ipcRenderer } from 'electron';
 import styles from './HomePage.css';
+import { jsonStringifyPretty } from '../../../utils';
 import events from '../../../constants/events';
 
 const SCRAPING_STATUS = {
@@ -46,7 +47,7 @@ export default class HomePage extends Component {
       return (
         <>
           <div>failed! 😭😭😭😭</div>
-          <div>{error}</div>
+          <div>{jsonStringifyPretty(error)}</div>
         </>
       );
     }
@@ -54,7 +55,7 @@ export default class HomePage extends Component {
       return (
         <>
           <div>yay!</div>
-          <div>{scraperPayload}</div>
+          <div>{jsonStringifyPretty(scraperPayload)}</div>
         </>
       );
     }
