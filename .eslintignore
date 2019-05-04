@@ -30,9 +30,6 @@ node_modules
 # OSX
 .DS_Store
 
-# flow-typed
-flow-typed/npm/*
-!flow-typed/npm/module_vx.x.x.js
 
 # App packaged
 release
@@ -49,15 +46,8 @@ main.js.map
 
 .idea
 npm-debug.log.*
-.idea
-.env
-mockData
-googleApiToken.json
-node_modules
-.DS_Store
-log
-bin
-ynabConfig.json
-budgetApps/ynab/consts.js
-categoryCalculationScript.js
-config.js
+__snapshots__
+
+# Package.json
+package.json
+.travis.yml

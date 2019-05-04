@@ -1,0 +1,1 @@
+export $(egrep -v '^#' .env | xargs)

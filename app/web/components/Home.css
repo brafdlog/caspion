@@ -1,0 +1,16 @@
+.container {
+  width: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.container h2 {
+  font-size: 5rem;
+}
+
+.container a {
+  font-size: 1.4rem;
+}
