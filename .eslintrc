@@ -23,6 +23,7 @@
     "generator-star-spacing": "off",
     "import/no-unresolved": "error",
     "import/no-extraneous-dependencies": "off",
+    "import/prefer-default-export": "off",
     "jsx-a11y/anchor-is-valid": "off",
     "no-console": "off",
     "no-use-before-define": "off",
