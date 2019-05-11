@@ -11,6 +11,13 @@ async function scrape({
   //   console.log('USING MOCK DATA');
   //   return mockTransactions[companyId];
   // }
+  if (!credentials || !credentials.username || !credentials.password) {
+    throw new Error(
+      `Missing credentials for scraper. CompanyId: ${companyId}. Credentials: ${credentials &&
+        JSON.stringify(credentials)}`
+    );
+  }
+
   const options = {
     companyId, // mandatory; one of 'hapoalim', 'discount', 'otsarHahayal', 'leumiCard', 'isracard', 'amex'
     startDate, // the date to fetch transactions from (can't be before the minimum allowed time difference for the scraper)
