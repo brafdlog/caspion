@@ -7,7 +7,7 @@
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",
     "build-dll": "cross-env NODE_ENV=development webpack --config ./configs/webpack.config.renderer.dev.dll.babel.js --colors",
     "build-e2e": "cross-env E2E_BUILD=true yarn build",
-    "build-main": "cross-env NODE_ENV=production webpack --config ./configs/webpack.config.main.prod.babel.js --colors",
+    "build-main": "echo \"Skipping webpack on node code\" #cross-env NODE_ENV=production webpack --config ./configs/webpack.config.main.prod.babel.js --colors",
     "build-renderer": "cross-env NODE_ENV=production webpack --config ./configs/webpack.config.renderer.prod.babel.js --colors",
     "dev": "cross-env START_HOT=1 node -r @babel/register ./internals/scripts/CheckPortInUse.js && cross-env START_HOT=1 yarn start-renderer-dev",
     "lint": "cross-env NODE_ENV=development eslint --cache --format=pretty .",
@@ -24,7 +24,7 @@
     "postlint-styles-fix": "prettier --ignore-path .eslintignore --single-quote --write '**/*.{css,scss}'",
     "precommit": "lint-staged",
     "prestart": "yarn build",
-    "start": "cross-env NODE_ENV=production electron ./app/main.prod.js",
+    "start": "cross-env NODE_ENV=production electron ./app/main.dev.js",
     "start-main-dev": "cross-env HOT=1 NODE_ENV=development electron -r @babel/register ./app/main.dev.js",
     "start-renderer-dev": "cross-env NODE_ENV=development webpack-dev-server --config configs/webpack.config.renderer.dev.babel.js",
     "test": "cross-env NODE_ENV=test BABEL_DISABLE_CACHE=1 jest",
@@ -53,15 +53,21 @@
       "git add"
     ]
   },
-  "main": "./app/main.prod.js",
+  "main": "./app/main.dev.js",
   "build": {
     "productName": "where_is_my_money?",
     "appId": "com.brafdlog.wimm",
     "files": [
+      "app/constants/",
       "app/dist/",
+      "app/node/",
+      "app/menu.js",
+      "app/utils.js",
+      "app/eventsBridge.js",
       "app/web/app.html",
       "app/main.prod.js",
       "app/main.prod.js.map",
+      "app/main.dev.js",
       "package.json"
     ],
     "dmg": {
