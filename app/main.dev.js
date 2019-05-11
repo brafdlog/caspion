@@ -11,13 +11,15 @@ const log = require('electron-log');
 const MenuBuilder = require('./menu');
 require('./eventsBridge');
 
-module.exports = class AppUpdater {
+class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
     autoUpdater.logger = log;
     autoUpdater.checkForUpdatesAndNotify();
   }
-};
+}
+
+module.exports = AppUpdater;
 
 let mainWindow = null;
 
