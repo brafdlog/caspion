@@ -55,8 +55,8 @@
   },
   "main": "./app/main.dev.js",
   "build": {
-    "productName": "where_is_my_money?",
-    "appId": "com.develar.ElectronReact",
+    "productName": "ElectronReact",
+    "appId": "org.develar.ElectronReact",
     "asar": false,
     "files": [
       "app/constants/",
