@@ -6,7 +6,7 @@
  * through IPC.
  */
 const { app, BrowserWindow } = require('electron');
-const { autoUpdater } = require('electron-updater');
+// const { autoUpdater } = require('electron-updater');
 const log = require('electron-log');
 const MenuBuilder = require('./menu');
 require('./eventsBridge');
@@ -14,8 +14,8 @@ require('./eventsBridge');
 class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
-    autoUpdater.logger = log;
-    autoUpdater.checkForUpdatesAndNotify();
+    // autoUpdater.logger = log;
+    // autoUpdater.checkForUpdatesAndNotify();
   }
 }
 
@@ -96,5 +96,5 @@ app.on('ready', async () => {
 
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
-  new AppUpdater();
+  // new AppUpdater();
 });
