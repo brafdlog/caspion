@@ -236,7 +236,7 @@
     "@sendgrid/mail": "^6.3.1",
     "devtron": "^1.4.0",
     "dotenv": "^6.2.0",
-    "electron-debug": "^2.0.0",
+    "electron-debug": "^3.0.0",
     "electron-log": "^2.2.17",
     "electron-updater": "^3.2.3",
     "googleapis": "^37.1.0",
