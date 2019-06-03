@@ -239,7 +239,7 @@
     "electron-debug": "^2.0.0",
     "electron-log": "^2.2.17",
     "electron-updater": "^3.2.3",
-    "googleapis": "^37.1.0",
+    "googleapis": "^40.0.0",
     "history": "^4.7.2",
     "israeli-bank-scrapers": "^0.6.7",
     "lodash": "^4.17.11",
