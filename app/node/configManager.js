@@ -14,8 +14,9 @@ const CONFIG_FILE_PATH = path.join(appDataFolderPath, CONFIG_FILE_NAME);
 
 async function getConfig() {
   try {
-
-    const configFromFile = await readFile(CONFIG_FILE_PATH, {encoding: 'utf8'});
+    const configFromFile = await readFile(CONFIG_FILE_PATH, {
+      encoding: 'utf8'
+    });
     if (configFromFile) {
       return JSON.parse(configFromFile);
     }
