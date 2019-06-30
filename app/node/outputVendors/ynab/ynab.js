@@ -164,17 +164,22 @@ async function filterOnlyTransactionsThatDontExistInYnabAlready(
 }
 
 function isSameTransaction(transactionA, transactionB) {
+  const isATransferTransaction =
+    transactionA.transfer_account_id || transactionB.transfer_account_id;
   return (
     transactionA.account_id === transactionB.account_id &&
     transactionA.date === transactionB.date &&
     Math.abs(transactionA.amount - transactionB.amount) < 1000 &&
-    transactionA.payee_name === transactionB.payee_name
+    // In a transfer transaction the payee name changes, but we still consider this the same transaction
+    (transactionA.payee_name === transactionB.payee_name ||
+      isATransferTransaction)
   );
 }
 
 module.exports = {
   createTransactions,
-  initCategories: initCategoriesMap
+  initCategories: initCategoriesMap,
+  isSameTransaction
 };
 
 // (async function() {
