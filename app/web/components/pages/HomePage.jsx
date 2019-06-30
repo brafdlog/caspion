@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import Fab from '@material-ui/core/Fab/index';
 import CircularProgress from '@material-ui/core/CircularProgress/index';
 import { ipcRenderer } from 'electron';
@@ -14,61 +14,56 @@ const SCRAPING_STATUS = {
   error: 'error'
 };
 
-export default class HomePage extends Component {
-  state = {
-    status: SCRAPING_STATUS.initial
-  };
+const HomePage = () => {
+  const [status, setStatus] = useState(SCRAPING_STATUS.initial);
+  const [scraperPayload, setScraperPayload] = useState();
+  const [error, setError] = useState();
 
-  componentDidMount() {
-    ipcRenderer.on(events.scraping.done, (event, arg) =>
-      this.setState({
-        status: SCRAPING_STATUS.done,
-        scraperPayload: arg
-      })
-    );
-    ipcRenderer.on(events.scraping.error, (event, arg) =>
-      this.setState({
-        status: SCRAPING_STATUS.error,
-        error: arg
-      })
-    );
-  }
+  useEffect(() => {
+    ipcRenderer.on(events.scraping.done, (event, arg) => {
+      setStatus(SCRAPING_STATUS.done);
+      setScraperPayload(arg);
+    });
+    ipcRenderer.on(events.scraping.error, (event, arg) => {
+      setStatus(SCRAPING_STATUS.error);
+      setError(arg);
+    });
+  }, []);
 
-  runScraper() {
-    this.setState({ status: SCRAPING_STATUS.inProgress });
+  function runScraper() {
+    setStatus(SCRAPING_STATUS.inProgress);
     ipcRenderer.send(events.scraping.start);
   }
 
-  render() {
-    const { status, scraperPayload, error } = this.state;
-    const isInProgress = status === SCRAPING_STATUS.inProgress;
-    const isDone = status === SCRAPING_STATUS.done;
-    const isError = status === SCRAPING_STATUS.error;
-    if (isError) {
-      return (
-        <>
-          <div>failed! 😭😭😭😭</div>
-          <div>{jsonStringifyPretty(error)}</div>
-        </>
-      );
-    }
-    if (isDone) {
-      return (
-        <>
-          <div>yay!</div>
-          <div>{jsonStringifyPretty(scraperPayload)}</div>
-        </>
-      );
-    }
+  const isInProgress = status === SCRAPING_STATUS.inProgress;
+  const isDone = status === SCRAPING_STATUS.done;
+  const isError = status === SCRAPING_STATUS.error;
+  if (isError) {
     return (
-      <div className={styles.container} data-tid="container">
-        <h2>איפה הכסף?</h2>
-        <Config />
-        <Fab disabled={isInProgress} variant="extended" onClick={() => this.runScraper()} size="large" color="primary">
-          {isInProgress ? <CircularProgress /> : null}
-          תראה לי ת׳כסף <span role="img">💸</span>
-        </Fab>
-      </div>
+      <>
+        <div>failed! 😭😭😭😭</div>
+        <div>{jsonStringifyPretty(error)}</div>
+      </>
     );
   }
-}
+  if (isDone) {
+    return (
+      <>
+        <div>yay!</div>
+        <div>{jsonStringifyPretty(scraperPayload)}</div>
+      </>
+    );
+  }
+  return (
+    <div className={styles.container} data-tid="container">
+      <h2>איפה הכסף?</h2>
+      <Config />
+      <Fab disabled={isInProgress} variant="extended" onClick={runScraper} size="large" color="primary">
+        {isInProgress ? <CircularProgress /> : null}
+        תראה לי ת׳כסף <span role="img">💸</span>
+      </Fab>
+    </div>
+  );
+};
+
+export default HomePage;
