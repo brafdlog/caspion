@@ -121,9 +121,7 @@
     }
   ],
   "license": "MIT",
-  "keywords": [
-
-  ],
+  "keywords": [],
   "homepage": "https://github.com/brafdlog/budget-tracking",
   "jest": {
     "testURL": "http://localhost/",
@@ -206,7 +204,7 @@
     "node-sass": "^4.10.0",
     "opencollective-postinstall": "^2.0.1",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
-    "prettier": "^1.15.2",
+    "prettier": "^1.18.2",
     "react-test-renderer": "^16.6.3",
     "redux-logger": "^3.0.6",
     "rimraf": "^2.6.2",
@@ -241,7 +239,7 @@
     "electron-updater": "^3.2.3",
     "googleapis": "^37.1.0",
     "history": "^4.7.2",
-    "israeli-bank-scrapers": "^0.6.7",
+    "israeli-bank-scrapers": "^0.6.8",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
     "react": "^16.6.3",

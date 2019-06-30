@@ -1,50 +1,58 @@
 require('dotenv').config();
 const moment = require('moment');
-const config = require('./config');
 const bankScraper = require('./bankScraper');
 const ynab = require('./outputVendors/ynab/ynab');
 const googleSheets = require('./outputVendors/googleSheets/googleSheets');
 const categoryCalculation = require('./categoryCalculationScript');
 const emailSender = require('./emailSender');
+const configManager = require('./configManager');
 
-const OUTPUT_VENDORS = [
-  {
-    name: 'ynab',
-    createTransactionFunction: ynab.createTransactions,
-    options: config.outputVendors.ynab.options
-  },
-  {
-    name: 'googleSheets',
-    createTransactionFunction: googleSheets.createTransactionsInGoogleSheets,
-    options: config.outputVendors.googleSheets.options
-  }
-];
+async function scrapeAndUpdateOutputVendors() {
+  const config = await configManager.getConfig();
 
-const startDate = moment()
-  .subtract(config.scraping.numDaysBack, 'days')
-  .startOf('day')
-  .toDate();
+  const startDate = moment()
+    .subtract(config.scraping.numDaysBack, 'days')
+    .startOf('day')
+    .toDate();
 
-async function run() {
+  const outputVendors = [
+    {
+      name: 'ynab',
+      createTransactionFunction: ynab.createTransactions,
+      options: config.outputVendors.ynab.options
+    },
+    {
+      name: 'googleSheets',
+      createTransactionFunction: googleSheets.createTransactionsInGoogleSheets,
+      options: config.outputVendors.googleSheets.options
+    }
+  ];
+
   const executionResult = {};
   const accountsToScrape = config.scraping.accountsToScrape;
   for (let i = 0; i < accountsToScrape.length; i++) {
     const { companyId, credentials } = accountsToScrape[i];
     executionResult[companyId] = {};
     try {
-      const scrapeResult = await fetchTransactions(companyId, credentials);
+      const scrapeResult = await fetchTransactions(
+        companyId,
+        credentials,
+        startDate,
+        config
+      );
       const transactions = classifyTransactionCategories(
         scrapeResult,
         companyId
       );
       transactions.sort(transactionsDateComperator);
 
-      for (let j = 0; j < OUTPUT_VENDORS.length; j++) {
-        const vendor = OUTPUT_VENDORS[j];
+      for (let j = 0; j < outputVendors.length; j++) {
+        const vendor = outputVendors[j];
         if (config.outputVendors[vendor.name].active) {
           const vendorResult = await createTransactionsInVedor(
             vendor,
-            transactions
+            transactions,
+            startDate
           );
           executionResult[companyId][vendor.name] = vendorResult;
         }
@@ -76,7 +84,7 @@ async function run() {
   return executionResult;
 }
 
-async function fetchTransactions(companyId, credentials) {
+async function fetchTransactions(companyId, credentials, startDate, config) {
   console.log(
     '=================== Starting for ',
     companyId,
@@ -124,7 +132,7 @@ function classifyTransactionCategories(scrapeResult, companyId) {
   return transactions;
 }
 
-async function createTransactionsInVedor(vendor, transactions) {
+async function createTransactionsInVedor(vendor, transactions, startDate) {
   console.log(`Start creating transactions in ${vendor.name}`);
   const vendorResult = await vendor.createTransactionFunction(
     transactions,
@@ -150,4 +158,7 @@ function transactionsDateComperator(t1, t2) {
   return 1;
 }
 
-module.exports = run;
+module.exports = {
+  scrapeAndUpdateOutputVendors,
+  configManager
+};
