@@ -34,38 +34,20 @@ async function scrapeAndUpdateOutputVendors() {
     const { companyId, credentials } = accountsToScrape[i];
     executionResult[companyId] = {};
     try {
-      const scrapeResult = await fetchTransactions(
-        companyId,
-        credentials,
-        startDate,
-        config
-      );
-      const transactions = classifyTransactionCategories(
-        scrapeResult,
-        companyId
-      );
+      const scrapeResult = await fetchTransactions(companyId, credentials, startDate, config);
+      const transactions = classifyTransactionCategories(scrapeResult, companyId);
       transactions.sort(transactionsDateComperator);
 
       for (let j = 0; j < outputVendors.length; j++) {
         const vendor = outputVendors[j];
         if (config.outputVendors[vendor.name].active) {
-          const vendorResult = await createTransactionsInVedor(
-            vendor,
-            transactions,
-            startDate
-          );
+          const vendorResult = await createTransactionsInVedor(vendor, transactions, startDate);
           executionResult[companyId][vendor.name] = vendorResult;
         }
       }
-      console.log(
-        '=================== Finished for ',
-        companyId,
-        ' ==================='
-      );
+      console.log('=================== Finished for ', companyId, ' ===================');
     } catch (e) {
-      executionResult[
-        companyId
-      ] = `Error running job for company ${companyId}. Error: ${e.message}`;
+      executionResult[companyId] = `Error running job for company ${companyId}. Error: ${e.message}`;
       console.error(`Error running job for company ${companyId}. Error: `, e);
       throw e;
     }
@@ -85,17 +67,9 @@ async function scrapeAndUpdateOutputVendors() {
 }
 
 async function fetchTransactions(companyId, credentials, startDate, config) {
-  console.log(
-    '=================== Starting for ',
-    companyId,
-    ' ==================='
-  );
+  console.log('=================== Starting for ', companyId, ' ===================');
 
-  console.log(
-    `Start scraping ${companyId} from date: ${moment(startDate).format(
-      'DD/MM/YYYY'
-    )}`
-  );
+  console.log(`Start scraping ${companyId} from date: ${moment(startDate).format('DD/MM/YYYY')}`);
   const scrapeResult = await bankScraper.scrape({
     companyId,
     credentials,
@@ -122,9 +96,7 @@ function classifyTransactionCategories(scrapeResult, companyId) {
       accountNumber: account.accountNumber
     }));
     accountTransactions.forEach(accountTransaction => {
-      accountTransaction.category = categoryCalculation.getCategoryNameByTransactionDescription(
-        accountTransaction.description
-      );
+      accountTransaction.category = categoryCalculation.getCategoryNameByTransactionDescription(accountTransaction.description);
     });
     transactions.push(...accountTransactions);
   });
@@ -134,11 +106,7 @@ function classifyTransactionCategories(scrapeResult, companyId) {
 
 async function createTransactionsInVedor(vendor, transactions, startDate) {
   console.log(`Start creating transactions in ${vendor.name}`);
-  const vendorResult = await vendor.createTransactionFunction(
-    transactions,
-    startDate,
-    vendor.options
-  );
+  const vendorResult = await vendor.createTransactionFunction(transactions, startDate, vendor.options);
   if (vendorResult) {
     console.log(`${vendor.name} result: `, vendorResult);
   }

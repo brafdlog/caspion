@@ -10,8 +10,7 @@ const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 // time.
 const TOKEN_PATH = 'googleApiToken.json';
 
-const GOOGLE_API_CREDENTIALS_JSON_FILE_PATH =
-  config.outputVendors.googleSheets.credentialsJsonFilePath;
+const GOOGLE_API_CREDENTIALS_JSON_FILE_PATH = config.outputVendors.googleSheets.credentialsJsonFilePath;
 
 async function loadCredentialsAndAuthorize() {
   const credentialsStr = await new Promise((resolve, reject) => {
@@ -35,16 +34,11 @@ async function loadCredentialsAndAuthorize() {
  * Create an OAuth2 client with the given credentials, and then execute the
  * given callback function.
  * @param {Object} credentials The authorization client credentials.
- * @param {function} callback The callback to call with the authorized client.
  */
 function authorize(credentials) {
   /* eslint-disable-next-line camelcase */
   const { client_secret, client_id, redirect_uris } = credentials.installed;
-  const oAuth2Client = new google.auth.OAuth2(
-    client_id,
-    client_secret,
-    redirect_uris[0]
-  );
+  const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
 
   return new Promise(resolve => {
     // Check if we have previously stored a token.
@@ -75,11 +69,7 @@ function getNewToken(oAuth2Client, callback) {
   rl.question('Enter the code from that page here: ', code => {
     rl.close();
     oAuth2Client.getToken(code, (err, token) => {
-      if (err)
-        return console.error(
-          'Error while trying to retrieve access token',
-          err
-        );
+      if (err) return console.error('Error while trying to retrieve access token', err);
       oAuth2Client.setCredentials(token);
       // Store the token to disk for later program executions
       fs.writeFile(TOKEN_PATH, JSON.stringify(token), error => {

@@ -33,19 +33,9 @@ describe('ynab', () => {
         cleared: 'cleared'
       };
 
-      expect(
-        ynab.isSameTransaction(
-          transferTransactionFromYnab,
-          transactionFromFinancialAccount
-        )
-      ).toBeTruthy();
+      expect(ynab.isSameTransaction(transferTransactionFromYnab, transactionFromFinancialAccount)).toBeTruthy();
       // Verify order of parameters doesn't matter
-      expect(
-        ynab.isSameTransaction(
-          transactionFromFinancialAccount,
-          transferTransactionFromYnab
-        )
-      ).toBeTruthy();
+      expect(ynab.isSameTransaction(transactionFromFinancialAccount, transferTransactionFromYnab)).toBeTruthy();
     });
   });
 });

@@ -3,11 +3,7 @@ const googleSheets = require('./googleSheetsInternalAPI');
 
 const GOOGLE_SHEETS_DATE_FORMAT = 'DD/MM/YYYY';
 
-async function createTransactionsInGoogleSheets(
-  transactions,
-  startDate,
-  { spreadsheetId, sheetName }
-) {
+async function createTransactionsInGoogleSheets(transactions, startDate, { spreadsheetId, sheetName }) {
   const transactionsInSheetsFormat = transactions.map(transaction => [
     moment(transaction.date).format(GOOGLE_SHEETS_DATE_FORMAT),
     transaction.chargedAmount,

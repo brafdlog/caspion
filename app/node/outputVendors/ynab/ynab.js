@@ -9,8 +9,7 @@ const NOW = moment();
 const ynabConfig = config.outputVendors.ynab;
 
 const BUDGET_ID = ynabConfig.budgetId;
-const ACCOUNT_NUMBER_TO_YNAB_ACCOUNT_ID =
-  ynabConfig.accountNumbersToYnabAccountIds;
+const ACCOUNT_NUMBER_TO_YNAB_ACCOUNT_ID = ynabConfig.accountNumbersToYnabAccountIds;
 
 const categoriesMap = new Map();
 const transactionsFromYnab = new Map();
@@ -21,32 +20,19 @@ async function createTransactions(transactionsToCreate, startDate) {
   if (!categoriesMap.size) {
     await initCategoriesMap();
   }
-  const transactionsFromFinancialAccount = transactionsToCreate.map(
-    convertTransactionToYnabFormat
-  );
-  let transactionsThatDontExistInYnab = await filterOnlyTransactionsThatDontExistInYnabAlready(
-    startDate,
-    transactionsFromFinancialAccount
-  );
+  const transactionsFromFinancialAccount = transactionsToCreate.map(convertTransactionToYnabFormat);
+  let transactionsThatDontExistInYnab = await filterOnlyTransactionsThatDontExistInYnabAlready(startDate, transactionsFromFinancialAccount);
   // Filter out transactions that are in the future
-  transactionsThatDontExistInYnab = transactionsThatDontExistInYnab.filter(
-    transaction => moment(transaction.date, YNAB_DATE_FORMAT).isBefore(NOW)
-  );
+  transactionsThatDontExistInYnab = transactionsThatDontExistInYnab.filter(transaction => moment(transaction.date, YNAB_DATE_FORMAT).isBefore(NOW));
   if (!transactionsThatDontExistInYnab.length) {
     console.log('All transactions already exist in ynab. Doing nothing.');
     return DID_NOTHING_RESPONSE;
   }
-  console.log(
-    'Creating the following transactions in ynab: ',
-    transactionsThatDontExistInYnab
-  );
+  console.log('Creating the following transactions in ynab: ', transactionsThatDontExistInYnab);
   try {
-    const transactionCreationResult = await ynabAPI.transactions.createTransactions(
-      BUDGET_ID,
-      {
-        transactions: transactionsThatDontExistInYnab
-      }
-    );
+    const transactionCreationResult = await ynabAPI.transactions.createTransactions(BUDGET_ID, {
+      transactions: transactionsThatDontExistInYnab
+    });
     return transactionCreationResult;
   } catch (e) {
     console.error(e);
@@ -55,10 +41,7 @@ async function createTransactions(transactionsToCreate, startDate) {
 }
 
 function getTransactions(startDate) {
-  return ynabAPI.transactions.getTransactions(
-    BUDGET_ID,
-    moment(startDate).format(YNAB_DATE_FORMAT)
-  );
+  return ynabAPI.transactions.getTransactions(BUDGET_ID, moment(startDate).format(YNAB_DATE_FORMAT));
 }
 
 // function buildImportId(payeeName, amount, date) {
@@ -77,16 +60,12 @@ function convertTransactionToYnabFormat(originalTransaction) {
   const amount = Math.round(originalTransaction.chargedAmount * 1000);
   const date = convertTimestampToYnabDateFormat(originalTransaction);
   return {
-    account_id: getYnabAccountIdByAccountNumberFromTransaction(
-      originalTransaction.accountNumber
-    ),
+    account_id: getYnabAccountIdByAccountNumberFromTransaction(originalTransaction.accountNumber),
     date, // "2019-01-17",
     amount,
     // "payee_id": "string",
     payee_name: originalTransaction.description,
-    category_id: getYnabCategoryIdFromCategoryName(
-      originalTransaction.category
-    ),
+    category_id: getYnabCategoryIdFromCategoryName(originalTransaction.category),
     memo: originalTransaction.memo,
     cleared: 'cleared'
     // "approved": true,
@@ -95,11 +74,8 @@ function convertTransactionToYnabFormat(originalTransaction) {
   };
 }
 
-function getYnabAccountIdByAccountNumberFromTransaction(
-  transactionAccountNumber
-) {
-  const ynabAccountId =
-    ACCOUNT_NUMBER_TO_YNAB_ACCOUNT_ID[transactionAccountNumber];
+function getYnabAccountIdByAccountNumberFromTransaction(transactionAccountNumber) {
+  const ynabAccountId = ACCOUNT_NUMBER_TO_YNAB_ACCOUNT_ID[transactionAccountNumber];
   if (!ynabAccountId) {
     throw new Error(`Unhandled account number ${transactionAccountNumber}`);
   }
@@ -135,44 +111,30 @@ async function initCategoriesMap() {
   });
 }
 
-async function filterOnlyTransactionsThatDontExistInYnabAlready(
-  startDate,
-  transactionsFromFinancialAccounts
-) {
+async function filterOnlyTransactionsThatDontExistInYnabAlready(startDate, transactionsFromFinancialAccounts) {
   let transactionsInYnabBeforeCreatingTheseTransactions;
   if (transactionsFromYnab.has(startDate)) {
-    transactionsInYnabBeforeCreatingTheseTransactions = transactionsFromYnab.get(
-      startDate
-    );
+    transactionsInYnabBeforeCreatingTheseTransactions = transactionsFromYnab.get(startDate);
   } else {
     const transactionsFromYnabResponse = await getTransactions(startDate);
-    transactionsInYnabBeforeCreatingTheseTransactions =
-      transactionsFromYnabResponse.data.transactions;
-    transactionsFromYnab.set(
-      startDate,
-      transactionsInYnabBeforeCreatingTheseTransactions
-    );
+    transactionsInYnabBeforeCreatingTheseTransactions = transactionsFromYnabResponse.data.transactions;
+    transactionsFromYnab.set(startDate, transactionsInYnabBeforeCreatingTheseTransactions);
   }
   const transactionsThatDontExistInYnab = transactionsFromFinancialAccounts.filter(
     transactionToCheck =>
-      !transactionsInYnabBeforeCreatingTheseTransactions.find(
-        existingTransaction =>
-          isSameTransaction(transactionToCheck, existingTransaction)
-      )
+      !transactionsInYnabBeforeCreatingTheseTransactions.find(existingTransaction => isSameTransaction(transactionToCheck, existingTransaction))
   );
   return transactionsThatDontExistInYnab;
 }
 
 function isSameTransaction(transactionA, transactionB) {
-  const isATransferTransaction =
-    transactionA.transfer_account_id || transactionB.transfer_account_id;
+  const isATransferTransaction = transactionA.transfer_account_id || transactionB.transfer_account_id;
   return (
     transactionA.account_id === transactionB.account_id &&
     transactionA.date === transactionB.date &&
     Math.abs(transactionA.amount - transactionB.amount) < 1000 &&
     // In a transfer transaction the payee name changes, but we still consider this the same transaction
-    (transactionA.payee_name === transactionB.payee_name ||
-      isATransferTransaction)
+    (transactionA.payee_name === transactionB.payee_name || isATransferTransaction)
   );
 }
 

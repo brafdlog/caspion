@@ -3,13 +3,7 @@ const config = require('./config');
 
 const MY_EMAIL_ADDRESS = config.monitoring.email.toEmailAddress;
 
-function sendEmail({
-  to = MY_EMAIL_ADDRESS,
-  from = MY_EMAIL_ADDRESS,
-  subject = 'Fin job status',
-  text,
-  html
-}) {
+function sendEmail({ to = MY_EMAIL_ADDRESS, from = MY_EMAIL_ADDRESS, subject = 'Fin job status', text, html }) {
   sgMail.setApiKey(config.monitoring.email.sendgridApiKey);
   const msg = {
     to,

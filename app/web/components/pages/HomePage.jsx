@@ -64,13 +64,7 @@ export default class HomePage extends Component {
       <div className={styles.container} data-tid="container">
         <h2>איפה הכסף?</h2>
         <Config />
-        <Fab
-          disabled={isInProgress}
-          variant="extended"
-          onClick={() => this.runScraper()}
-          size="large"
-          color="primary"
-        >
+        <Fab disabled={isInProgress} variant="extended" onClick={() => this.runScraper()} size="large" color="primary">
           {isInProgress ? <CircularProgress /> : null}
           תראה לי ת׳כסף <span role="img">💸</span>
         </Fab>

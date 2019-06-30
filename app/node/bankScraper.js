@@ -1,21 +1,13 @@
 const { createScraper } = require('israeli-bank-scrapers');
 // const mockTransactions = require('./mockData/mockTransactions');
 
-async function scrape({
-  companyId,
-  credentials,
-  startDate,
-  showBrowser = false
-}) {
+async function scrape({ companyId, credentials, startDate, showBrowser = false }) {
   // if (process.env.USE_MOCK_DATA === 'true') {
   //   console.log('USING MOCK DATA');
   //   return mockTransactions[companyId];
   // }
   if (!credentials || !credentials.username || !credentials.password) {
-    throw new Error(
-      `Missing credentials for scraper. CompanyId: ${companyId}. Credentials: ${credentials &&
-        JSON.stringify(credentials)}`
-    );
+    throw new Error(`Missing credentials for scraper. CompanyId: ${companyId}. Credentials: ${credentials && JSON.stringify(credentials)}`);
   }
 
   const options = {
@@ -30,9 +22,7 @@ async function scrape({
   const scrapeResult = await scraper.scrape(credentials);
 
   if (!scrapeResult.success) {
-    console.error(
-      `scraping failed for the following reason: ${scrapeResult.errorType}`
-    );
+    console.error(`scraping failed for the following reason: ${scrapeResult.errorType}`);
   }
   return scrapeResult;
 }

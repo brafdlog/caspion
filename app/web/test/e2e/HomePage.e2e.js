@@ -5,8 +5,7 @@ import { getPageUrl } from './helpers';
 const getPageTitle = ClientFunction(() => document.title);
 const counterSelector = Selector('[data-tid="counter"]');
 const buttonsSelector = Selector('[data-tclass="btn"]');
-const clickToCounterLink = t =>
-  t.click(Selector('a').withExactText('to Counter'));
+const clickToCounterLink = t => t.click(Selector('a').withExactText('to Counter'));
 const incrementButton = buttonsSelector.nth(0);
 const decrementButton = buttonsSelector.nth(1);
 const oddButton = buttonsSelector.nth(2);
@@ -27,10 +26,7 @@ test('should open window', async t => {
   await t.expect(getPageTitle()).eql('Hello Electron React!');
 });
 
-test(
-  "should haven't any logs in console of main window",
-  assertNoConsoleErrors
-);
+test("should haven't any logs in console of main window", assertNoConsoleErrors);
 
 test('should to Counter with click "to Counter" link', async t => {
   await t

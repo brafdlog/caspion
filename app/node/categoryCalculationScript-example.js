@@ -17,11 +17,7 @@ function getCategoryNameByTransactionDescription(transactionDescription) {
   }
 
   function containsStr(strToSearchFor) {
-    return (
-      transactionDescription
-        .toLowerCase()
-        .indexOf(strToSearchFor.toLowerCase()) !== -1
-    );
+    return transactionDescription.toLowerCase().indexOf(strToSearchFor.toLowerCase()) !== -1;
   }
 }
 
