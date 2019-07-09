@@ -8,15 +8,13 @@ import styles from './Root.css';
 export default class Root extends Component {
   render() {
     return (
-      <React.StrictMode>
-        <div className={styles.appWrapper}>
-          <HashRouter>
-            <Sidebar />
-            <Route exact path="/" component={HomePage} />
-            <Route exact path="/config" component={Config} />
-          </HashRouter>
-        </div>
-      </React.StrictMode>
+      <div className={styles.appWrapper}>
+        <HashRouter>
+          <Sidebar />
+          <Route exact path="/" component={HomePage} />
+          <Route exact path="/config" component={Config} />
+        </HashRouter>
+      </div>
     );
   }
 }
