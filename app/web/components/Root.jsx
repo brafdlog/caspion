@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { HashRouter, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
-import Config from './pages/Config';
+import Config from './pages/config/Config';
 import Sidebar from './sidebar/Sidebar';
 import styles from './Root.css';
 
