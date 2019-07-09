@@ -232,6 +232,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.5.0",
     "@material-ui/core": "^3.9.3",
+    "@material-ui/icons": "^4.2.1",
     "@sendgrid/mail": "^6.3.1",
     "devtron": "^1.4.0",
     "dotenv": "^6.2.0",
@@ -247,7 +248,7 @@
     "react-dom": "^16.8.6",
     "react-hot-loader": "^4.12.0",
     "react-router": "^4.3.1",
-    "react-router-dom": "^4.3.1",
+    "react-router-dom": "^5.0.1",
     "source-map-support": "^0.5.9",
     "ynab": "^1.11.0"
   },
@@ -256,5 +257,5 @@
     "npm": ">=4.x",
     "yarn": ">=0.21.3"
   },
-  "browserslist": "electron 1.6"
+  "browserslist": ["electron 1.6"]
 }
