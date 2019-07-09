@@ -38,22 +38,6 @@ const HomePage = () => {
   const isInProgress = status === SCRAPING_STATUS.inProgress;
   const isDone = status === SCRAPING_STATUS.done;
   const isError = status === SCRAPING_STATUS.error;
-  if (isError) {
-    return (
-      <>
-        <div>failed! 😭😭😭😭</div>
-        <div>{jsonStringifyPretty(error)}</div>
-      </>
-    );
-  }
-  if (isDone) {
-    return (
-      <>
-        <div>yay!</div>
-        <div>{jsonStringifyPretty(scraperPayload)}</div>
-      </>
-    );
-  }
   return (
     <div className={styles.container} data-tid="container">
       <h2>איפה הכסף?</h2>
@@ -62,6 +46,18 @@ const HomePage = () => {
         {isInProgress ? <CircularProgress /> : null}
         תראה לי ת׳כסף <span role="img">💸</span>
       </Fab>
+      {isError ? (
+        <>
+          <div>failed! 😭😭😭😭</div>
+          <div>{jsonStringifyPretty(error)}</div>
+        </>
+      ) : null}
+      {isDone ? (
+        <>
+          <div>yay!</div>
+          <div>{jsonStringifyPretty(scraperPayload)}</div>
+        </>
+      ) : null}
     </div>
   );
 };
