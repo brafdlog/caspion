@@ -5,4 +5,5 @@
 .configTextField {
   background-color: white;
   width: 100%;
+  direction: ltr;
 }
