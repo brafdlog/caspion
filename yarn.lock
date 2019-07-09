@@ -1653,6 +1653,11 @@ arrify@^1.0.0, arrify@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/arrify/-/arrify-1.0.1.tgz#898508da2226f380df904728456849c1501a4b0d"
 
+arrify@^2.0.0:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/arrify/-/arrify-2.0.1.tgz#c9655e9331e0abcd588d2a7cad7e9956f66701fa"
+  integrity sha512-3duEwti880xqi4eAMN8AyR4a0ByT90zoYdLlevfrvU43vb0YZwZVfxOgxWrLXXXpyugL0hNZc9G6BiB5B3nUug==
+
 asap@~2.0.3:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/asap/-/asap-2.0.6.tgz#e50347611d7e690943208bbdafebcbc2fb866d46"
@@ -5399,10 +5404,10 @@ gauge@~2.7.3:
     strip-ansi "^3.0.1"
     wide-align "^1.1.0"
 
-gaxios@^1.0.2, gaxios@^1.0.4, gaxios@^1.2.1, gaxios@^1.2.2:
-  version "1.8.4"
-  resolved "https://registry.yarnpkg.com/gaxios/-/gaxios-1.8.4.tgz#e08c34fe93c0a9b67a52b7b9e7a64e6435f9a339"
-  integrity sha512-BoENMnu1Gav18HcpV9IleMPZ9exM+AvUjrAOV4Mzs/vfz2Lu/ABv451iEXByKiMPn2M140uul1txXCg83sAENw==
+gaxios@^2.0.0, gaxios@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/gaxios/-/gaxios-2.0.1.tgz#2ca1c9eb64c525d852048721316c138dddf40708"
+  integrity sha512-c1NXovTxkgRJTIgB2FrFmOFg4YIV6N/bAa4f/FZ4jIw13Ql9ya/82x69CswvotJhbV3DiGnlTZwoq2NVXk2Irg==
   dependencies:
     abort-controller "^3.0.0"
     extend "^3.0.2"
@@ -5415,12 +5420,12 @@ gaze@^1.0.0, gaze@~1.1.2:
   dependencies:
     globule "^1.0.0"
 
-gcp-metadata@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/gcp-metadata/-/gcp-metadata-1.0.0.tgz#5212440229fa099fc2f7c2a5cdcb95575e9b2ca6"
-  integrity sha512-Q6HrgfrCQeEircnNP3rCcEgiDv7eF9+1B+1MMgpE190+/+0mjQR8PxeOaRgxZWmdDAF9EIryHB9g1moPiw1SbQ==
+gcp-metadata@^2.0.0:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/gcp-metadata/-/gcp-metadata-2.0.1.tgz#7f4657b0f52af1c9f6f3a1e0f54a24d72bbdf84f"
+  integrity sha512-nrbLj5O1MurvpLC/doFwzdTfKnmYGDYXlY/v7eQ4tJNVIvQXbOK672J9UFbradbtmuTkyHzjpzD8HD0Djz0LWw==
   dependencies:
-    gaxios "^1.0.2"
+    gaxios "^2.0.0"
     json-bigint "^0.3.0"
 
 get-caller-file@^1.0.1:
@@ -5625,48 +5630,46 @@ gonzales-pe@^4.2.3:
   dependencies:
     minimist "1.1.x"
 
-google-auth-library@^3.0.0:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/google-auth-library/-/google-auth-library-3.1.2.tgz#ff2f88cd5cd2118a57bd3d5ad3c093c8837fc350"
-  integrity sha512-cDQMzTotwyWMrg5jRO7q0A4TL/3GWBgO7I7q5xGKNiiFf9SmGY/OJ1YsLMgI2MVHHsEGyrqYnbnmV1AE+Z6DnQ==
+google-auth-library@^4.0.0, google-auth-library@^4.2.5:
+  version "4.2.5"
+  resolved "https://registry.yarnpkg.com/google-auth-library/-/google-auth-library-4.2.5.tgz#79b8ce6843525cb3a6e61cf97abef333d1386bd5"
+  integrity sha512-Vfsr82M1KTdT0H0wjawwp0LHsT6mPKSolRp21ZpJ7Ydq63zRe8DbGKjRCCrhsRZHg+p17DuuSCMEznwk3CJRdw==
   dependencies:
+    arrify "^2.0.0"
     base64-js "^1.3.0"
     fast-text-encoding "^1.0.0"
-    gaxios "^1.2.1"
-    gcp-metadata "^1.0.0"
-    gtoken "^2.3.2"
-    https-proxy-agent "^2.2.1"
+    gaxios "^2.0.0"
+    gcp-metadata "^2.0.0"
+    gtoken "^3.0.0"
     jws "^3.1.5"
     lru-cache "^5.0.0"
-    semver "^5.5.0"
 
-google-p12-pem@^1.0.0:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/google-p12-pem/-/google-p12-pem-1.0.4.tgz#b77fb833a2eb9f7f3c689e2e54f095276f777605"
-  integrity sha512-SwLAUJqUfTB2iS+wFfSS/G9p7bt4eWcc2LyfvmUXe7cWp6p3mpxDo6LLI29MXdU6wvPcQ/up298X7GMC5ylAlA==
+google-p12-pem@^2.0.0:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/google-p12-pem/-/google-p12-pem-2.0.1.tgz#509f9415e50c9bdf76de8150a825f9e97cba2c57"
+  integrity sha512-6h6x+eBX3k+IDSe/c8dVYmn8Mzr1mUcmKC9MdUSwaBkFAXlqBEnwFWmSFgGC+tcqtsLn73BDP/vUNWEehf1Rww==
   dependencies:
     node-forge "^0.8.0"
-    pify "^4.0.0"
 
-googleapis-common@^0.7.0:
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/googleapis-common/-/googleapis-common-0.7.2.tgz#a694f55d979cb7c2eac21a0e0439af12f9b418ba"
-  integrity sha512-9DEJIiO4nS7nw0VE1YVkEfXEj8x8MxsuB+yZIpOBULFSN9OIKcUU8UuKgSZFU4lJmRioMfngktrbkMwWJcUhQg==
+googleapis-common@^2.0.2:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/googleapis-common/-/googleapis-common-2.0.4.tgz#bd28eba24578d632b28dfa140838dee4d37ba2f3"
+  integrity sha512-8RRkxr24v1jIKCC1onFWA8RGnwFV55m3Qpil9DLX1yLc9e5qvOJsRoDOhhD2e7jFRONYEhT/BzT8vJZANqSr9w==
   dependencies:
-    gaxios "^1.2.2"
-    google-auth-library "^3.0.0"
-    pify "^4.0.0"
-    qs "^6.5.2"
+    extend "^3.0.2"
+    gaxios "^2.0.1"
+    google-auth-library "^4.2.5"
+    qs "^6.7.0"
     url-template "^2.0.8"
-    uuid "^3.2.1"
+    uuid "^3.3.2"
 
-googleapis@^37.1.0:
-  version "37.2.0"
-  resolved "https://registry.yarnpkg.com/googleapis/-/googleapis-37.2.0.tgz#63bfcadaccc7cb8c1d8dff90573c48ca18132409"
-  integrity sha512-UenlZ0c4eaVAylIPvvsIlL/q5/3Xg8DuKug5aqdmRMk+tTVfJUmEKgp3s4ZSUOI5oKqO/+arIW5UnY2S62B13w==
+googleapis@^40.0.1:
+  version "40.0.1"
+  resolved "https://registry.yarnpkg.com/googleapis/-/googleapis-40.0.1.tgz#a5cdd2c6257e04fa9d4848526a2799c309b97d56"
+  integrity sha512-B6qZVCautOOspEhru9GZ814I+ztkGWyA4ZEUfaXwXHBruX/HAWqedbsuUEx1w3nCECywK/FLTNUdcbH9zpaMaw==
   dependencies:
-    google-auth-library "^3.0.0"
-    googleapis-common "^0.7.0"
+    google-auth-library "^4.0.0"
+    googleapis-common "^2.0.2"
 
 got@^6.7.1:
   version "6.7.1"
@@ -5702,16 +5705,15 @@ growly@^1.3.0:
   version "1.3.0"
   resolved "https://registry.npmjs.org/growly/-/growly-1.3.0.tgz#f10748cbe76af964b7c96c93c6bcc28af120c081"
 
-gtoken@^2.3.2:
-  version "2.3.3"
-  resolved "https://registry.yarnpkg.com/gtoken/-/gtoken-2.3.3.tgz#8a7fe155c5ce0c4b71c886cfb282a9060d94a641"
-  integrity sha512-EaB49bu/TCoNeQjhCYKI/CurooBKkGxIqFHsWABW0b25fobBYVTMe84A8EBVVZhl8emiUdNypil9huMOTmyAnw==
+gtoken@^3.0.0:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/gtoken/-/gtoken-3.0.2.tgz#09b3c2998a785f81d7d020b9221d65d27e0e8e62"
+  integrity sha512-BOBi6Zz31JfxhSHRZBIDdbwIbOPyux10WxJHdx8wz/FMP1zyN1xFrsAWsgcLe5ww5v/OZu/MePUEZAjgJXSauA==
   dependencies:
-    gaxios "^1.0.4"
-    google-p12-pem "^1.0.0"
+    gaxios "^2.0.0"
+    google-p12-pem "^2.0.0"
     jws "^3.1.5"
     mime "^2.2.0"
-    pify "^4.0.0"
 
 gud@^1.0.0:
   version "1.0.0"
@@ -9528,7 +9530,7 @@ qs@6.5.2, qs@~6.5.2:
   version "6.5.2"
   resolved "https://registry.npmjs.org/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
 
-qs@^6.5.2:
+qs@^6.7.0:
   version "6.7.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.7.0.tgz#41dc1a015e3d581f1621776be31afb2876a9b1bc"
   integrity sha512-VCdBRNFTX1fyE7Nb6FYoURo/SPe62QCaAyzJvUjwRaIsc+NePBEniHlvxFmmX56+HZphIGtV0XeCirBtpDrTyQ==
@@ -11922,7 +11924,7 @@ utils-merge@1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
 
-uuid@^3.0.1, uuid@^3.2.1, uuid@^3.3.2:
+uuid@^3.0.1, uuid@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
   integrity sha512-yXJmeNaw3DnnKAOKJE51sL/ZaYfWJRl1pK9dr19YFCu0ObS231AB1/LbqTKRAQ5kw8A90rA6fr4riOUpTZvQZA==
