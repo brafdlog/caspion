@@ -2,8 +2,8 @@ import React from 'react';
 import { TextField, Button } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
 import styles from './Config.css';
-import events from '../../constants/events';
-import { jsonStringifyPretty } from '../webUtils';
+import events from '../../../constants/events';
+import { jsonStringifyPretty } from '../../webUtils';
 
 export default class App extends React.Component {
   constructor(props) {
