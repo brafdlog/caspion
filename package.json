@@ -242,7 +242,7 @@
     "googleapis": "^37.1.0",
     "history": "^4.7.2",
     "israeli-bank-scrapers": "^0.6.8",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "moment": "^2.24.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
