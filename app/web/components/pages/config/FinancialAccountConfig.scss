@@ -1,0 +1,15 @@
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  .logo {
+    margin-left: 30px;
+  }
+
+  .companyName {
+    margin-left: 30px;
+  }
+}
