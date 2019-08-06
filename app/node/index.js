@@ -7,6 +7,8 @@ const categoryCalculation = require('./categoryCalculationScript');
 const emailSender = require('./emailSender');
 const configManager = require('./configManager');
 
+const TRANSACTION_STATUS_COMPLETED = 'completed';
+
 async function scrapeAndUpdateOutputVendors() {
   const config = await configManager.getConfig();
 
@@ -35,7 +37,9 @@ async function scrapeAndUpdateOutputVendors() {
     executionResult[companyId] = {};
     try {
       const scrapeResult = await fetchTransactions(companyId, credentials, startDate, config);
-      const transactions = classifyTransactionCategories(scrapeResult, companyId);
+      let transactions = classifyTransactionCategories(scrapeResult, companyId);
+      // Filter out pending transactions
+      transactions = transactions.filter(transaction => transaction.status === TRANSACTION_STATUS_COMPLETED);
       transactions.sort(transactionsDateComperator);
 
       for (let j = 0; j < outputVendors.length; j++) {
