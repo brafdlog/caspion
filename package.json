@@ -227,7 +227,7 @@
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10",
     "webpack-merge": "^4.1.4",
-    "yarn": "^1.12.3"
+    "yarn": "^1.17.3"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.5.0",
@@ -242,9 +242,9 @@
     "electron-updater": "^3.2.3",
     "googleapis": "^37.1.0",
     "history": "^4.7.2",
-    "israeli-bank-scrapers": "^0.6.9",
-    "lodash": "^4.17.11",
-    "moment": "^2.24.0",
+    "israeli-bank-scrapers": "~0.6.9",
+    "lodash": "~4.17.15",
+    "moment": "~2.24.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-hot-loader": "^4.12.0",
