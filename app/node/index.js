@@ -31,7 +31,7 @@ async function scrapeAndUpdateOutputVendors() {
   ];
 
   const executionResult = {};
-  const accountsToScrape = config.scraping.accountsToScrape;
+  const accountsToScrape = config.scraping.accountsToScrape.filter(accountToScrape => accountToScrape.active !== false);
   for (let i = 0; i < accountsToScrape.length; i++) {
     const { companyId, credentials } = accountsToScrape[i];
     executionResult[companyId] = {};
