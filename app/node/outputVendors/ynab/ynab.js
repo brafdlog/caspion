@@ -134,14 +134,26 @@ function isSameTransaction(transactionA, transactionB) {
     transactionA.date === transactionB.date &&
     Math.abs(transactionA.amount - transactionB.amount) < 1000 &&
     // In a transfer transaction the payee name changes, but we still consider this the same transaction
-    (transactionA.payee_name === transactionB.payee_name || isATransferTransaction)
+    (areStringsEqualIgnoreCaseAndWhitespace(transactionA.payee_name, transactionB.payee_name) || isATransferTransaction)
   );
+}
+
+function areStringsEqualIgnoreCaseAndWhitespace(str1 = '', str2 = '') {
+  const trimmedAndLowerCaseStr1 = str1 && normalizeWhitespace(str1.toLowerCase());
+  const trimmedAndLowerCaseStr2 = str2 && normalizeWhitespace(str2.toLowerCase());
+
+  return trimmedAndLowerCaseStr1 === trimmedAndLowerCaseStr2;
+}
+
+function normalizeWhitespace(str) {
+  return str && str.trim().replace(/\s+/g, ' ');
 }
 
 module.exports = {
   createTransactions,
   initCategories: initCategoriesMap,
-  isSameTransaction
+  isSameTransaction,
+  areStringsEqualIgnoreCaseAndWhitespace
 };
 
 // (async function() {

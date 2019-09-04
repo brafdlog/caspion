@@ -38,4 +38,21 @@ describe('ynab', () => {
       expect(ynab.isSameTransaction(transactionFromFinancialAccount, transferTransactionFromYnab)).toBeTruthy();
     });
   });
+  describe('areStringsEqualIgnoreCaseAndWhitespace', () => {
+    test('should consider two strings with different casing as equal', async () => {
+      expect(ynab.areStringsEqualIgnoreCaseAndWhitespace('Gett', 'GETT')).toBeTruthy();
+    });
+    test('should consider two strings that are the same except for whitespace as equal', async () => {
+      expect(ynab.areStringsEqualIgnoreCaseAndWhitespace('Gett', 'Gett ')).toBeTruthy();
+      expect(ynab.areStringsEqualIgnoreCaseAndWhitespace('Gett', ' Gett ')).toBeTruthy();
+      expect(ynab.areStringsEqualIgnoreCaseAndWhitespace('PAYPAL *AVIDEUT        4029357733    LU', 'PAYPAL *AVIDEUT 4029357733 LU')).toBeTruthy();
+      expect(ynab.areStringsEqualIgnoreCaseAndWhitespace('ממלכת הצעצועים הרצליה', 'ממלכת הצעצועים  הרצליה')).toBeTruthy();
+      expect(
+        ynab.areStringsEqualIgnoreCaseAndWhitespace('BOOKDEPOSITORY.COM 441452307905 GB', 'BOOKDEPOSITORY.COM     441452307905  GB')
+      ).toBeTruthy();
+    });
+    test('should consider two different strings as not equal', async () => {
+      expect(ynab.areStringsEqualIgnoreCaseAndWhitespace('Gett', ' shmett ')).toBeFalsy();
+    });
+  });
 });
