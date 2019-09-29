@@ -29,11 +29,13 @@ bower_components
 # node-waf configuration
 .lock-wscript
 
-# Compiled binary addons (https://nodejs.org/api/addons.html)
+# Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
+.eslintcache
 
-# Dependency directories
-node_modules/
+# Dependency directory
+# https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
+node_modules
 jspm_packages/
 
 # TypeScript v1 declaration files
@@ -59,3 +61,26 @@ typings/
 
 # next.js build output
 .next
+
+# OSX
+.DS_Store
+
+# flow-typed
+flow-typed/npm/*
+!flow-typed/npm/module_vx.x.x.js
+
+# App packaged
+release
+app/main.prod.js
+app/main.prod.js.map
+app/renderer.prod.js
+app/renderer.prod.js.map
+app/style.css
+app/style.css.map
+dist
+dll
+main.js
+main.js.map
+
+.idea
+npm-debug.log.*
