@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TextField, Button } from '@material-ui/core';
-import { get, set } from 'lodash';
+import { get, set, cloneDeep } from 'lodash';
 import FinancialAccountConfig from './FinancialAccountConfig';
 import styles from './Config.css';
 import { jsonStringifyPretty } from '../../../webUtils';
@@ -14,9 +14,7 @@ const Config = ({ config, saveConfig }) => {
   }, [config]);
 
   function updateFinancialAccount(accountIndex, updatedFinancialAccountData) {
-    const updatedConfig = {
-      ...config
-    };
+    const updatedConfig = cloneDeep(config);
     set(updatedConfig, `scraping.accountsToScrape[${accountIndex}]`, updatedFinancialAccountData);
     saveConfig(updatedConfig);
   }
