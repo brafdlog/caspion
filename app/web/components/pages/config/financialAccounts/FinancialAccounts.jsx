@@ -34,11 +34,12 @@ const FinancialAccounts = ({ financialAccounts, updateFinancialAccountsConfig })
     <div className={styles.wrapper}>
       {financialAccounts.map((financialAccount, accountIndex) => (
         <FinancialAccountConfig
-          key={`${financialAccount.credentials.username || financialAccount.randomId}_${financialAccount.companyId}`}
+          key={`${financialAccount.randomId || financialAccount.credentials.username}_${financialAccount.companyId}`}
           updateFinancialAccount={updateFinancialAccount.bind(this, accountIndex)}
           deleteFinancialAccount={deleteFinancialAccount.bind(this, accountIndex)}
           companyId={financialAccount.companyId}
           credentials={financialAccount.credentials}
+          active={financialAccount.active}
         />
       ))}
       <Fab color="primary">
