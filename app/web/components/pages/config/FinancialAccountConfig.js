@@ -22,7 +22,6 @@ const FinancialAccountConfig = props => {
     props.updateFinancialAccount({ companyId, credentials: { username, password } });
     setEditing(false);
   }
-
   return (
     <div className={styles.wrapper}>
       <Avatar className={styles.logo} src={companyMetadata.logoImageSrc} />
@@ -36,7 +35,7 @@ const FinancialAccountConfig = props => {
       ) : (
         <>
           <span>{username}</span>
-          <span>{'*'.repeat(password.length)}</span>
+          <span>{password && '*'.repeat(password.length)}</span>
           <Edit onClick={() => setEditing(!editing)} />
         </>
       )}
