@@ -18,9 +18,17 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    - name: Install xvfb
+      if: matrix.os == ubuntu-latest
+      run: |
+        apt update
+        apt install -y xvfd graphicsmagick
+        npm install -g xvfb-maybe
     - name: npm install and test
       run: |
+        Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
         npm install
         npm test
       env:
         CI: true
+        DISPLAY: :99.0
