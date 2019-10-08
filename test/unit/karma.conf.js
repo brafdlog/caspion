@@ -9,6 +9,7 @@ const projectRoot = path.resolve(__dirname, '../../src/renderer')
 
 // Set BABEL_ENV to use proper preset config
 process.env.BABEL_ENV = 'test'
+const showBrowser = !process.env.CI
 
 let webpackConfig = merge(baseConfig, {
   devtool: '#inline-source-map',
@@ -44,7 +45,9 @@ module.exports = config => {
     customLaunchers: {
       'visibleElectron': {
         base: 'Electron',
-        flags: ['--show']
+        browserWindowOptions: {
+          show: showBrowser
+        }
       }
     },
     frameworks: ['mocha', 'chai'],
