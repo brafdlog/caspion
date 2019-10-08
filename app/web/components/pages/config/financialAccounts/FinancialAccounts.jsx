@@ -18,6 +18,7 @@ const FinancialAccounts = ({ financialAccounts, updateFinancialAccountsConfig })
     financialAccountConfigToUpdate.push({
       companyId: FINANCIAL_COMPANIES_CONFIG[FINANCIAL_COMPANIES.LEUMI_CARD].id,
       credentials: {},
+      randomId: Math.random(),
       active: true
     });
     updateFinancialAccountsConfig(financialAccountConfigToUpdate);
@@ -27,7 +28,7 @@ const FinancialAccounts = ({ financialAccounts, updateFinancialAccountsConfig })
     <div className={styles.wrapper}>
       {financialAccounts.map((financialAccount, accountIndex) => (
         <FinancialAccountConfig
-          key={`${financialAccount.credentials.username}_${financialAccount.companyId}`}
+          key={`${financialAccount.credentials.username || financialAccount.randomId}_${financialAccount.companyId}`}
           updateFinancialAccount={updateFinancialAccount.bind(this, accountIndex)}
           companyId={financialAccount.companyId}
           credentials={financialAccount.credentials}
