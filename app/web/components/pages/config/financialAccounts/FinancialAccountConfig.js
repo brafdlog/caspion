@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import { Edit, Save } from '@material-ui/icons';
 import styles from './FinancialAccountConfig.scss';
-import { FINANCIAL_COMPANIES_CONFIG } from '../../../constants/financialCompaniesConfig';
+import { FINANCIAL_COMPANIES_CONFIG } from '../../../../constants/financialCompaniesConfig';
 
 const FinancialAccountConfig = props => {
   const [editing, setEditing] = useState(false);
