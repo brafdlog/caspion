@@ -12,7 +12,9 @@ jobs:
         with:
           node-version: 12.x
       - name: lint
-        run: npm run lint
+        run: |
+          npm install
+          npm run lint
         
   build:
 
