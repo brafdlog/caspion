@@ -24,12 +24,19 @@ const FinancialAccounts = ({ financialAccounts, updateFinancialAccountsConfig })
     updateFinancialAccountsConfig(financialAccountConfigToUpdate);
   }
 
+  function deleteFinancialAccount(accountIndex) {
+    const financialAccountConfigToUpdate = cloneDeep(financialAccounts);
+    financialAccountConfigToUpdate.splice(accountIndex, 1);
+    updateFinancialAccountsConfig(financialAccountConfigToUpdate);
+  }
+
   return (
     <div className={styles.wrapper}>
       {financialAccounts.map((financialAccount, accountIndex) => (
         <FinancialAccountConfig
           key={`${financialAccount.credentials.username || financialAccount.randomId}_${financialAccount.companyId}`}
           updateFinancialAccount={updateFinancialAccount.bind(this, accountIndex)}
+          deleteFinancialAccount={deleteFinancialAccount.bind(this, accountIndex)}
           companyId={financialAccount.companyId}
           credentials={financialAccount.credentials}
         />

@@ -1,7 +1,7 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { useState, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
-import { Edit, Save } from '@material-ui/icons';
+import { Edit, Save, Delete } from '@material-ui/icons';
 import styles from './FinancialAccountConfig.scss';
 import { FINANCIAL_COMPANIES_CONFIG } from '../../../../constants/financialCompaniesConfig';
 
@@ -37,6 +37,7 @@ const FinancialAccountConfig = props => {
           <span>{username}</span>
           <span>{password && '*'.repeat(password.length)}</span>
           <Edit onClick={() => setEditing(!editing)} />
+          <Delete onClick={props.deleteFinancialAccount} />
         </>
       )}
     </div>
