@@ -22,7 +22,7 @@ jobs:
       if: matrix.os == 'ubuntu-latest'
       run: |
         sudo apt update
-        sudo apt install -y xvfd graphicsmagick
+        sudo apt install -y xvfb graphicsmagick
         npm install -g xvfb-maybe
     - name: npm install and test
       run: |
