@@ -1,11 +1,17 @@
 <template>
   <div id="wrapper">
+    <span class="title">
+      Israeli Bank Scrapers Desktop
+    </span>
     <main>
       <div class="side">
-        <span class="title">
-          Welcome to your new project!
-        </span>
         <Importers></Importers>
+      </div>
+      <div class="middle">
+        Middle data
+      </div>
+      <div class="side">
+        Another side
       </div>
     </main>
   </div>
@@ -39,17 +45,33 @@
         rgba(229, 229, 229, .9) 100%
       );
     height: 100vh;
-    padding: 60px 80px;
     width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
   }
 
   main {
+    flex-grow: 1;
     display: flex;
+    flex-basis: 25%;
+    align-items: stretch;
   }
 
   .side {
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
+    background:
+      radial-gradient(
+        ellipse at top left,
+        rgba(229, 229, 229, .9) 40%,
+        rgba(255, 255, 255, 1) 100%
+      );
+  }
+
+  .middle {
+    flex-grow: 2
   }
 
   .title {
@@ -57,6 +79,8 @@
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 6px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .title.alt {
