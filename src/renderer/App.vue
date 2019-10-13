@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <landing-page></landing-page>
+    <main-page></main-page>
   </div>
 </template>
 
 <script>
-  import LandingPage from '@/components/LandingPage'
+  import MainPage from '@/components/MainPage'
 
   export default {
     name: 'israeli-bank-scrapers-desktop',
     components: {
-      LandingPage
+      MainPage
     }
   }
 </script>

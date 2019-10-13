@@ -30,11 +30,11 @@
 </template>
 
 <script>
-  import SystemInformation from './LandingPage/SystemInformation'
-  import Importers from './LandingPage/Importers'
+  import SystemInformation from './MainPage/SystemInformation'
+  import Importers from './MainPage/Importers'
 
   export default {
-    name: 'landing-page',
+    name: 'main-page',
     components: { SystemInformation, Importers },
     methods: {
       open (link) {
