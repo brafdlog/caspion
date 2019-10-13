@@ -29,12 +29,11 @@
 </template>
 
 <script>
-  import SystemInformation from './MainPage/SystemInformation'
   import Importers from './MainPage/Importers'
 
   export default {
     name: 'main-page',
-    components: { SystemInformation, Importers },
+    components: { Importers },
     methods: {
       open (link) {
         this.$electron.shell.openExternal(link)
