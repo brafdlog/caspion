@@ -16,12 +16,7 @@
 
   export default {
     name: 'main-page',
-    components: { Importers },
-    methods: {
-      open (link) {
-        this.$electron.shell.openExternal(link)
-      }
-    }
+    components: { Importers }
   }
 </script>
 
