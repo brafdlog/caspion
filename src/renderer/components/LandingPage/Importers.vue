@@ -6,13 +6,10 @@
     </div>
     <div v-show="isShowOptionalImporters">
     Select you importer
-    <ul>
-      <li
-        v-for="scraper in scrapers"
-        :key="scraper.name">
-        {{ scraper.name }}
-      </li>
-    </ul>
+    <add-scraper 
+      v-for="scraper in scrapers" 
+      :key="scraper.name" 
+      :scraper="scraper" />
     </div>
     <div class="items">
       <div class="item">
@@ -37,6 +34,7 @@
 
 <script>
   import { mapState } from 'vuex'
+  import AddScraper from './Importers/AddScraper'
 
   export default {
     data () {
@@ -52,7 +50,8 @@
       ...mapState({
         scrapers: state => state.Scrapers.scrapers
       })
-    }
+    },
+    components: {AddScraper}
   }
 </script>
 

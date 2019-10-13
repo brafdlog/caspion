@@ -70,4 +70,7 @@ typings/
 
 thumbs.db
 !.gitkeep
+
+# IDE
 .idea
+.vscode
