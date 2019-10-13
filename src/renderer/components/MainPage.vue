@@ -1,7 +1,7 @@
 <template>
   <div id="wrapper">
     <main>
-      <div class="left-side">
+      <div class="side">
         <span class="title">
           Welcome to your new project!
         </span>
@@ -48,28 +48,13 @@
     width: 100vw;
   }
 
-  #logo {
-    height: auto;
-    margin-bottom: 20px;
-    width: 420px;
-  }
-
   main {
     display: flex;
-    justify-content: space-between;
   }
 
-  main > div { flex-basis: 50%; }
-
-  .left-side {
+  .side {
     display: flex;
     flex-direction: column;
-  }
-
-  .welcome {
-    color: #555;
-    font-size: 23px;
-    margin-bottom: 10px;
   }
 
   .title {
@@ -82,29 +67,5 @@
   .title.alt {
     font-size: 18px;
     margin-bottom: 10px;
-  }
-
-  .doc p {
-    color: black;
-    margin-bottom: 10px;
-  }
-
-  .doc button {
-    font-size: .8em;
-    cursor: pointer;
-    outline: none;
-    padding: 0.75em 2em;
-    border-radius: 2em;
-    display: inline-block;
-    color: #fff;
-    background-color: #4fc08d;
-    transition: all 0.15s ease;
-    box-sizing: border-box;
-    border: 1px solid #4fc08d;
-  }
-
-  .doc button.alt {
-    color: #42b983;
-    background-color: transparent;
   }
 </style>
