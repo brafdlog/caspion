@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-import { Button, Select } from 'element-ui'
+import { Collapse, CollapseItem } from 'element-ui'
 import lang from 'element-ui/lib/locale/lang/en'
 import locale from 'element-ui/lib/locale'
 
@@ -12,8 +12,8 @@ Vue.config.productionTip = false
 
 // configure language
 locale.use(lang)
-Vue.use(Button)
-Vue.use(Select)
+Vue.use(Collapse)
+Vue.use(CollapseItem)
 
 /* eslint-disable no-new */
 new Vue({

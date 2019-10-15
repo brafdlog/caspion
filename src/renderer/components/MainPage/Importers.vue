@@ -2,15 +2,12 @@
   <div>
     <div class="title">
       <Span>Importers</Span>
-      <button v-on:click='isShowOptionalImporters = !isShowOptionalImporters' >Add</button>
     </div>
-    <div v-show="isShowOptionalImporters">
-    Select you importer
-    <add-scraper 
-      v-for="scraper in scrapers" 
-      :key="scraper.name" 
-      :scraper="scraper" />
-    </div>
+    <el-collapse v-model="activeNames">
+      <el-collapse-item title="Add new Importer" name="1">
+        <add-scraper v-for="scraper in scrapers" :key="scraper.name" :scraper="scraper" />
+      </el-collapse-item>
+    </el-collapse>
   </div>
 </template>
 
@@ -21,7 +18,7 @@
   export default {
     data () {
       return {
-        isShowOptionalImporters: false
+        activeNames: []
       }
     },
     computed: {
