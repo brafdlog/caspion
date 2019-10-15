@@ -1,19 +1,17 @@
 <template>
   <div id="wrapper">
-    <span class="title">
-      Israeli Bank Scrapers Desktop
-    </span>
-    <main>
-      <div class="side">
-        <Importers></Importers>
-      </div>
-      <div class="middle">
-        Middle data
-      </div>
-      <div class="side">
-        Another side
-      </div>
-    </main>
+    <span class="title">Israeli Bank Scrapers Desktop</span>
+    <el-container>
+        <el-aside>
+          <Importers></Importers>
+        </el-aside>
+        <el-main>
+          Middle data
+        </el-main>
+        <el-aside>
+          Another side
+        </el-aside>
+    </el-container>
   </div>
 </template>
 
@@ -51,27 +49,13 @@
     align-items: stretch;
   }
 
-  main {
-    flex-grow: 1;
-    display: flex;
-    flex-basis: 25%;
-    align-items: stretch;
-  }
-
-  .side {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
+  .el-aside {
     background:
       radial-gradient(
         ellipse at top left,
         rgba(229, 229, 229, .9) 40%,
         rgba(255, 255, 255, 1) 100%
       );
-  }
-
-  .middle {
-    flex-grow: 2
   }
 
   .title {
