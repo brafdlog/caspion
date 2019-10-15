@@ -5,11 +5,13 @@
     </div>
     <el-collapse v-model="activeNames">
       <el-collapse-item title="Add new Importer" name="1">
+        <el-collapse v-model="activeName" accordion>
         <add-scraper 
           v-for="scraper in scrapers"
           :key="scraper.name"
           :scraper="scraper"
           class="add-scraper" />
+          </el-collapse>
       </el-collapse-item>
     </el-collapse>
   </div>
@@ -22,7 +24,8 @@
   export default {
     data () {
       return {
-        activeNames: []
+        activeNames: [],
+        activeName: ''
       }
     },
     computed: {

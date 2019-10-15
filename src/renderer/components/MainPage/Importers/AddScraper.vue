@@ -1,14 +1,19 @@
 <template>
-  <el-card shadow="hover">
-    <div slot="header" class="card-header">
-      <div>{{ scraper.name }}</div>
-      <el-button class="add-btn" type="text">Add</el-button>
-    </div>
-    <input v-for="field in scraper.loginFields" :key="field"
-      type="text"
-      :placeholder="field"
-      v-model="values[field]" />
-  </el-card>
+  <el-collapse-item :title="scraper.name" :name="scraper.name">
+    <el-form :model="values" ref="addScraperForm">
+      <el-form-item v-for="field in scraper.loginFields"
+        :key="field"
+        :label="field"
+        :prop="field"
+        :rules="[{required: true, trigger: 'blur'}]">
+        <el-input v-model="values[field]" />
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary"
+          @click="submitForm('addScraperForm')">Add</el-button>
+      </el-form-item>
+    </el-form>
+  </el-collapse-item>
 </template>
 
 <script>
@@ -23,9 +28,17 @@ export default {
     console.log(this.scraper)
   },
   methods: {
-    add: function (event) {
-      console.log(event.target)
+    submitForm (formRef) {
       console.log(this.values)
+
+      this.$refs[formRef].validate((valid) => {
+        if (valid) {
+          alert('submit!')
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
     }
   }
 }
