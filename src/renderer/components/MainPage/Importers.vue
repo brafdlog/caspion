@@ -5,7 +5,11 @@
     </div>
     <el-collapse v-model="activeNames">
       <el-collapse-item title="Add new Importer" name="1">
-        <add-scraper v-for="scraper in scrapers" :key="scraper.name" :scraper="scraper" />
+        <add-scraper 
+          v-for="scraper in scrapers"
+          :key="scraper.name"
+          :scraper="scraper"
+          class="add-scraper" />
       </el-collapse-item>
     </el-collapse>
   </div>
@@ -57,4 +61,8 @@
     color: #35495e;
     font-weight: bold;
   }
+
+.add-scraper {
+  margin: 10px;
+}
 </style>

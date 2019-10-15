@@ -1,12 +1,14 @@
 <template>
-  <div class="add-scraper">
-      <span>{{ scraper.name }}</span>
-      <input v-for="field in scraper.loginFields" :key="field"
-        type="text"
-        :placeholder="field"
-        v-model="values[field]" />
-      <button v-on:click="add">Add</button>
-  </div>
+  <el-card shadow="hover">
+    <div slot="header" class="card-header">
+      <div>{{ scraper.name }}</div>
+      <el-button class="add-btn" type="text">Add</el-button>
+    </div>
+    <input v-for="field in scraper.loginFields" :key="field"
+      type="text"
+      :placeholder="field"
+      v-model="values[field]" />
+  </el-card>
 </template>
 
 <script>
@@ -34,7 +36,10 @@ export default {
     display: flex;
     flex-direction: column
 }
-button {
-    margin-left: auto;
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>
