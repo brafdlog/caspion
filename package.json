@@ -64,6 +64,7 @@
     "vuex-electron": "^1.0.0"
   },
   "devDependencies": {
+    "@vue/test-utils": "^1.0.0-beta.29",
     "ajv": "^6.5.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.3",
