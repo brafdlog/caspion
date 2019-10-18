@@ -1,6 +1,6 @@
 import Datastore from 'nedb'
 
-const db = new Datastore({ filename: './nedb.json', autoload: true })
+const db = new Datastore({ filename: '.persistance/nedb.json', autoload: true })
 
 export function LoadState (dataCallback) {
   db.find({}, (err, doc) => {

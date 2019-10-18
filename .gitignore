@@ -74,3 +74,6 @@ thumbs.db
 # IDE
 .idea
 .vscode
+
+# App cache
+.persistance
