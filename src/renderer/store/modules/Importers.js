@@ -1,4 +1,4 @@
-import { LoadState, SetImporter } from '../../components/jsonFileDB'
+import { LoadState, SetImporter } from '../../modules/jsonFileDB'
 
 const mutations = {
   setImporters (state, data) {
