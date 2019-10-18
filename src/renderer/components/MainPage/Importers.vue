@@ -14,11 +14,14 @@
           </el-collapse>
       </el-collapse-item>
     </el-collapse>
+    <ul>
+      <li v-for="importer in importers" :key="importer._id">{{ importer._id }}</li>
+    </ul>
   </div>
 </template>
 
 <script>
-  import { mapState } from 'vuex'
+  import { mapState, mapActions } from 'vuex'
   import AddScraper from './Importers/AddScraper'
 
   export default {
@@ -28,9 +31,18 @@
         activeName: ''
       }
     },
+    created: function () {
+      this.loadImporters()
+    },
+    methods: {
+      ...mapActions([
+        'loadImporters'
+      ])
+    },
     computed: {
       ...mapState({
-        scrapers: state => state.Scrapers.scrapers
+        scrapers: state => state.Scrapers.scrapers,
+        importers: state => state.Importers.importers
       })
     },
     components: { AddScraper }

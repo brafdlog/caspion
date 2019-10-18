@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   props: ['scraper'],
   data () {
@@ -24,22 +26,20 @@ export default {
       values: {}
     }
   },
-  created () {
-    console.log(this.scraper)
-  },
   methods: {
     submitForm (formRef) {
-      console.log(this.values)
-
       this.$refs[formRef].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          this.addImporterAction(this.values)
         } else {
           console.log('error submit!!')
           return false
         }
       })
-    }
+    },
+    ...mapActions([
+      'addImporterAction'
+    ])
   }
 }
 </script>
