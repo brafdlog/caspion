@@ -15,7 +15,7 @@
       </el-collapse-item>
     </el-collapse>
     <ul>
-      <li v-for="importer in importers" :key="importer._id">{{ importer._id }}</li>
+      <li v-for="importer in importers" :key="importer._id">{{ importer.name }}</li>
     </ul>
   </div>
 </template>
