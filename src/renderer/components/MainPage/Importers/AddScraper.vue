@@ -21,6 +21,7 @@ import { mapActions } from 'vuex'
 function scraperToImporter (scraper) {
   const importer = {
     name: scraper.name,
+    importerId: scraper.scraperId,
     loginFields: {}
   }
   scraper.loginFields.forEach(element => {

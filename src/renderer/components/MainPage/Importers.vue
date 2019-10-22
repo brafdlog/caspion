@@ -14,15 +14,17 @@
           </el-collapse>
       </el-collapse-item>
     </el-collapse>
-    <ul>
-      <li v-for="importer in importers" :key="importer._id">{{ importer.name }}</li>
-    </ul>
+    <el-collapse>
+    <importer v-for="importer in importers" :key="importer._id"
+      :importer="importer" />
+    </el-collapse>
   </div>
 </template>
 
 <script>
   import { mapState, mapActions } from 'vuex'
   import AddScraper from './Importers/AddScraper'
+  import Importer from './Importers/Importer'
 
   export default {
     data () {
@@ -45,7 +47,7 @@
         importers: state => state.Importers.importers
       })
     },
-    components: { AddScraper }
+    components: { AddScraper, Importer }
   }
 </script>
 
