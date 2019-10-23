@@ -1,11 +1,18 @@
 import { SCRAPERS } from 'israeli-bank-scrapers-core'
 
 const state = {
-  scrapers: Object.keys(SCRAPERS).map(key => {
-    return {scraperId: key, ...SCRAPERS[key]}
-  })
+  scrapers: SCRAPERS
+}
+
+const getters = {
+  scrapersWithId: state => {
+    return Object.keys(state.scrapers).map(k => {
+      return {key: k, ...state.scrapers[k]}
+    })
+  }
 }
 
 export default {
-  state
+  state,
+  getters
 }

@@ -1,6 +1,6 @@
 <template>
   <el-card :body-style="{ padding: '0px' }">
-    <el-collapse-item name="1">
+    <el-collapse-item :name="importer._id">
     <div slot="title">
       <span>{{ importer.name }}</span>
     </div>
@@ -20,7 +20,7 @@ export default {
   methods: {
     scrape: async function () {
       console.log(this.importer)
-      const result = await scrape(this.importer.importerId, this.importer.loginFields)
+      const result = await scrape(this.importer.key, this.importer.loginFields)
       console.log(result)
     }
   }

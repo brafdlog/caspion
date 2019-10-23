@@ -1,5 +1,5 @@
 <template>
-  <el-collapse-item :title="scraper.name" :name="scraper.name">
+  <el-collapse-item :title="scraper.name" :name="scraper.key">
     <el-form :model="scraperToAdd" ref="addScraperForm">
       <el-form-item v-for="(value, loginField) in scraperToAdd.loginFields"
         :key="loginField"
@@ -19,11 +19,7 @@
 import { mapActions } from 'vuex'
 
 function scraperToImporter (scraper) {
-  const importer = {
-    name: scraper.name,
-    importerId: scraper.scraperId,
-    loginFields: {}
-  }
+  const importer = Object.assign({}, scraper, {loginFields: {}})
   scraper.loginFields.forEach(element => {
     importer.loginFields[element] = null
   })

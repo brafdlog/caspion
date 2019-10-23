@@ -7,7 +7,7 @@
       <el-collapse-item title="Add new Importer" name="1">
         <el-collapse v-model="activeName" accordion>
         <add-scraper 
-          v-for="scraper in scrapers"
+          v-for="scraper in scrapersWithId"
           :key="scraper.name"
           :scraper="scraper"
           class="add-scraper" />
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import { mapState, mapActions, mapGetters } from 'vuex'
   import AddScraper from './Importers/AddScraper'
   import Importer from './Importers/Importer'
 
@@ -45,7 +45,10 @@
       ...mapState({
         scrapers: state => state.Scrapers.scrapers,
         importers: state => state.Importers.importers
-      })
+      }),
+      ...mapGetters([
+        'scrapersWithId'
+      ])
     },
     components: { AddScraper, Importer }
   }
