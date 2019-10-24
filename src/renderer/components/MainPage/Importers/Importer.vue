@@ -43,14 +43,18 @@ export default {
       try {
         const result = await scrape(this.importer.key, this.importer.loginFields)
         console.log(result)
-        this.success = result.success
-        if (result.success === false) {
-          this.lastMessage = result.errorMessage
-        }
+        this.updateStatus(result.success, result.errorMessage)
       } catch (error) {
         console.log(error)
+        this.updateStatus(false, error.message)
       }
       this.importing = false
+    },
+    updateStatus: function (success, errorMessage) {
+      this.success = success
+      if (success === false) {
+        this.lastMessage = errorMessage
+      }
     }
   }
 }
