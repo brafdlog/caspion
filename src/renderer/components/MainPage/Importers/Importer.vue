@@ -3,6 +3,9 @@
     <el-collapse-item :name="importer._id">
     <div slot="title">
       <span>{{ importer.name }}</span>
+      <el-tooltip effect="dark" :disabled="lastMessage === null" :content="lastMessage" placement="right">
+        <i class="header-icon" :class="iconClass"></i>
+      </el-tooltip>
     </div>
     <div v-for="(value, loginField) in importer.loginFields" :key="loginField">
       {{ loginField }}: {{ value }}
@@ -17,16 +20,48 @@
 import { scrape } from '../../../modules/scrapers'
 export default {
   props: ['importer'],
+  data () {
+    return {
+      importing: false,
+      success: null,
+      lastMessage: null
+    }
+  },
+  computed: {
+    iconClass: function () {
+      return {
+        'el-icon-question': this.success === null,
+        'el-icon-success': this.success,
+        'el-icon-error': this.success === false
+      }
+    }
+  },
   methods: {
     scrape: async function () {
       console.log(this.importer)
-      const result = await scrape(this.importer.key, this.importer.loginFields)
-      console.log(result)
+      this.importing = true
+      try {
+        const result = await scrape(this.importer.key, this.importer.loginFields)
+        console.log(result)
+        this.success = result.success
+        if (result.success === false) {
+          this.lastMessage = result.errorMessage
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      this.importing = false
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
+i.header-icon.el-icon-error {
+  color: red;
+}
 
+i.header-icon.el-icon-success {
+  color: green;
+}
 </style>
