@@ -1,7 +1,7 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
 import Importers from '@/components/MainPage/Importers'
-import Scrapers from '../../../src/renderer/store/modules/Scrapers'
+import baseStore from '../helpers/baseStore'
 
 const localVue = createLocalVue()
 
@@ -11,13 +11,7 @@ describe('Importers.vue', () => {
   let store
 
   beforeEach(() => {
-    store = new Vuex.Store({
-      modules: {
-        Scrapers: {
-          state: Scrapers.state
-        }
-      }
-    })
+    store = new Vuex.Store(baseStore)
   })
 
   it('should render correct contents', () => {
