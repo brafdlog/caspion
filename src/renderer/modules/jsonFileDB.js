@@ -21,3 +21,15 @@ export function SetImporter (importer, callback) {
     }
   })
 }
+
+export function RemoveImporter (_id, callback) {
+  db.remove({_id: _id}, {}, (err, numRemoved) => {
+    if (err) {
+      console.log(err)
+    } else if (callback && numRemoved === 1) {
+      callback()
+    } else {
+      console.log(`numRemoved: ${numRemoved}`)
+    }
+  })
+}

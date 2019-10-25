@@ -1,4 +1,4 @@
-import { LoadState, SetImporter } from '../../modules/jsonFileDB'
+import { LoadState, SetImporter, RemoveImporter } from '../../modules/jsonFileDB'
 
 const mutations = {
   setImporters (state, data) {
@@ -6,6 +6,9 @@ const mutations = {
   },
   addImporter (state, data) {
     state.importers.push(data)
+  },
+  removeImporter (state, data) {
+    state.importers = state.importers.filter(importer => importer._id !== data)
   }
 }
 
@@ -18,6 +21,11 @@ const actions = {
   addImporterAction ({ commit }, importer) {
     SetImporter(importer, importer => {
       commit('addImporter', importer)
+    })
+  },
+  removeImporterAction ({ commit }, importerId) {
+    RemoveImporter(importerId, () => {
+      commit('removeImporter', importerId)
     })
   }
 }

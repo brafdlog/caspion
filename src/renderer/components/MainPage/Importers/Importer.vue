@@ -12,12 +12,16 @@
     </div>
     <el-button type="primary"
           @click="scrape()">Import</el-button>
+    <el-button type="danger" icon="el-icon-delete" @click="promptDelete()">Delete</el-button>
   </el-collapse-item>
   </el-card>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import { scrape } from '../../../modules/scrapers'
+import { MessageBox } from 'element-ui'
+
 export default {
   props: ['importer'],
   data () {
@@ -55,7 +59,18 @@ export default {
       if (success === false) {
         this.lastMessage = errorMessage
       }
-    }
+    },
+    promptDelete: async function () {
+      await MessageBox.confirm('This will permanently delete the importer. Continue?', 'Warning', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      })
+      this.removeImporterAction(this.importer._id)
+    },
+    ...mapActions([
+      'removeImporterAction'
+    ])
   }
 }
 </script>
