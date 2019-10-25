@@ -23,6 +23,7 @@
       </div>
       <el-button
         type="primary"
+        :loading="importing"
         @click="scrape()"
       >
         Import
@@ -30,6 +31,7 @@
       <el-button
         type="danger"
         icon="el-icon-delete"
+        :disabled="importing"
         @click="promptDelete()"
       >
         Delete
