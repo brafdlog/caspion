@@ -1,35 +1,35 @@
-import Datastore from 'nedb'
+import Datastore from 'nedb';
 
-const db = new Datastore({ filename: '.persistance/nedb.json', autoload: true })
+const db = new Datastore({ filename: '.persistance/nedb.json', autoload: true });
 
-export function LoadState (dataCallback) {
+export function LoadState(dataCallback) {
   db.find({}, (err, doc) => {
     if (err) {
-      console.error(err)
+      console.error(err);
     } else {
-      dataCallback(doc)
+      dataCallback(doc);
     }
-  })
+  });
 }
 
-export function SetImporter (importer, callback) {
-  db.insert(importer, function (err, newDocs) {
+export function SetImporter(importer, callback) {
+  db.insert(importer, (err, newDocs) => {
     if (err) {
-      console.error(err)
+      console.error(err);
     } else if (callback) {
-      callback(newDocs)
+      callback(newDocs);
     }
-  })
+  });
 }
 
-export function RemoveImporter (_id, callback) {
-  db.remove({_id: _id}, {}, (err, numRemoved) => {
+export function RemoveImporter(_id, callback) {
+  db.remove({ _id }, {}, (err, numRemoved) => {
     if (err) {
-      console.log(err)
+      console.log(err);
     } else if (callback && numRemoved === 1) {
-      callback()
+      callback();
     } else {
-      console.log(`numRemoved: ${numRemoved}`)
+      console.log(`numRemoved: ${numRemoved}`);
     }
-  })
+  });
 }
