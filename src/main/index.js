@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow } from 'electron';  // eslint-disable-line
 
 import '../renderer/store'
 
@@ -9,7 +9,8 @@ import '../renderer/store'
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
 if (process.env.NODE_ENV !== 'development') {
-  global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
+  /* eslint-disable-next-line no-underscore-dangle */
+  global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\');
 }
 
 let mainWindow
