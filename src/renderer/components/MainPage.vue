@@ -2,26 +2,26 @@
   <div id="wrapper">
     <span class="title">Israeli Bank Scrapers Desktop</span>
     <el-container>
-        <el-aside>
-          <Importers></Importers>
-        </el-aside>
-        <el-main>
-          Middle data
-        </el-main>
-        <el-aside>
-          Another side
-        </el-aside>
+      <el-aside>
+        <Importers />
+      </el-aside>
+      <el-main>
+        Middle data
+      </el-main>
+      <el-aside>
+        Another side
+      </el-aside>
     </el-container>
   </div>
 </template>
 
 <script>
-  import Importers from './MainPage/Importers'
+import Importers from './MainPage/Importers';
 
-  export default {
-    name: 'main-page',
-    components: { Importers }
-  }
+export default {
+  name: 'MainPage',
+  components: { Importers },
+};
 </script>
 
 <style>
