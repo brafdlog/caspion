@@ -41,7 +41,7 @@
 <script>
 import { mapActions } from 'vuex';
 import { MessageBox } from 'element-ui';
-import { scrape } from '../../../modules/scrapers';
+import scrape from '../../../modules/scrapers';
 
 export default {
   props: ['importer'],

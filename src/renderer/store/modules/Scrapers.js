@@ -5,7 +5,8 @@ const state = {
 };
 
 const getters = {
-  scrapersWithId: (state) => Object.keys(state.scrapers).map((k) => ({ key: k, ...state.scrapers[k] })),
+  scrapersWithId: (state) => Object.keys(state.scrapers)
+    .map((k) => ({ key: k, ...state.scrapers[k] })),
 };
 
 export default {

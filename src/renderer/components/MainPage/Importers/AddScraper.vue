@@ -18,7 +18,7 @@
         <el-button
           type="primary"
           :disabled="!isFormValid"
-          @click="submitForm('addScraperForm')"
+          @click="submitForm()"
         >
           Add
         </el-button>
@@ -47,14 +47,13 @@ export default {
     };
   },
   methods: {
-    submitForm(formRef) {
+    submitForm() {
       console.log(this.scraperToAdd);
       if (this.isFormValid) {
         this.addImporterAction(this.scraperToAdd);
         this.resetForm();
       } else {
         console.log('error submit!!');
-        return false;
       }
     },
     resetForm() {

@@ -1,7 +1,8 @@
+/* eslint-disable max-len */
 import { createScraper } from 'israeli-bank-scrapers-core';
 import getChrome from './downloadChromium';
 
-export async function scrape(scraperName, loginFields) {
+export default async function scrape(scraperName, loginFields) {
   const options = {
     companyId: scraperName, // mandatory; one of 'hapoalim', 'leumi', 'discount', 'otsarHahayal', 'visaCal', 'leumiCard', 'isracard', 'amex'
     // startDate: Date, // the date to fetch transactions from (can't be before the minimum allowed time difference for the scraper)

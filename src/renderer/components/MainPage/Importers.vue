@@ -37,19 +37,12 @@ import AddScraper from './Importers/AddScraper';
 import Importer from './Importers/Importer';
 
 export default {
+  components: { AddScraper, Importer },
   data() {
     return {
       activeNames: [],
       activeName: '',
     };
-  },
-  created() {
-    this.loadImporters();
-  },
-  methods: {
-    ...mapActions([
-      'loadImporters',
-    ]),
   },
   computed: {
     ...mapState({
@@ -60,7 +53,14 @@ export default {
       'scrapersWithId',
     ]),
   },
-  components: { AddScraper, Importer },
+  created() {
+    this.loadImporters();
+  },
+  methods: {
+    ...mapActions([
+      'loadImporters',
+    ]),
+  },
 };
 </script>
 
