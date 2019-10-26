@@ -19,7 +19,7 @@ const actions = {
     });
   },
   addImporterAction({ commit }, importer) {
-    SetImporter(importer, (importer) => {
+    const encryptedImporter = SetImporter(importer, (importer) => {
       commit('addImporter', importer);
     });
   },

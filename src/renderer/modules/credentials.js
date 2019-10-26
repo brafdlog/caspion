@@ -4,15 +4,23 @@ Copied from https://github.com/eshaham/israeli-ynab-updater/blob/b207a6b2468fa29
 
 import { encrypt, decrypt } from './crypto';
 
-export function encryptCredentials(credentials) {
+function isObject(obj) {
+  return typeof obj === 'object' && obj !== null;
+}
+
+export function encryptValues(credentials) {
   const encrypted = {};
   Object.keys(credentials).forEach((field) => {
-    encrypted[field] = encrypt(credentials[field]);
+    if (isObject(credentials[field])) {
+      encrypted[field] = encryptValues(credentials[field]);
+    } else {
+      encrypted[field] = encrypt(credentials[field]);
+    }
   });
   return encrypted;
 }
 
-export function decryptCredentials(credentials) {
+export function decryptValues(credentials) {
   const decrypted = {};
   Object.keys(credentials).forEach((field) => {
     decrypted[field] = decrypt(credentials[field]);
