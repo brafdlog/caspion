@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 /*
 Copied from https://github.com/eshaham/israeli-ynab-updater/blob/b207a6b2468fa2904412fe9563b8f65ac1e4cfaa/src/helpers/credentials.js
 */
@@ -5,22 +6,32 @@ Copied from https://github.com/eshaham/israeli-ynab-updater/blob/b207a6b2468fa29
 import { encrypt, decrypt } from './crypto';
 
 function isObject(obj) {
-  return typeof obj === 'object' && obj !== null;
+  return typeof obj === 'object' && !Array.isArray(obj) && obj !== null;
 }
 
-export function encryptValues(credentials) {
+function encryptValue(val) {
+  if (isObject(val)) {
+    return encryptObject(val);
+  }
+  if (Array.isArray(val)) {
+    return encryptArray(val);
+  }
+  return encrypt(val);
+}
+
+function encryptArray(arr) {
+  return arr.map((item) => encryptValue(item));
+}
+
+export function encryptObject(obj) {
   const encrypted = {};
-  Object.keys(credentials).forEach((field) => {
-    if (isObject(credentials[field])) {
-      encrypted[field] = encryptValues(credentials[field]);
-    } else {
-      encrypted[field] = encrypt(credentials[field]);
-    }
+  Object.keys(obj).forEach((field) => {
+    encrypted[field] = encryptValue(obj[field]);
   });
   return encrypted;
 }
 
-export function decryptValues(credentials) {
+export function decryptObject(credentials) {
   const decrypted = {};
   Object.keys(credentials).forEach((field) => {
     decrypted[field] = decrypt(credentials[field]);
