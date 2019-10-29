@@ -19,22 +19,36 @@ function encryptValue(val) {
   return encrypt(val);
 }
 
+function decryptValue(val) {
+  if (isObject(val)) {
+    return decryptObject(val);
+  }
+  if (Array.isArray(val)) {
+    return decryptArray(val);
+  }
+  return decrypt(val);
+}
+
 function encryptArray(arr) {
   return arr.map((item) => encryptValue(item));
 }
 
+function decryptArray(arr) {
+  return arr.map((item) => decryptValue(item));
+}
+
 export function encryptObject(obj) {
   const encrypted = {};
-  Object.keys(obj).forEach((field) => {
-    encrypted[field] = encryptValue(obj[field]);
+  Object.keys(obj).forEach((key) => {
+    encrypted[key] = encryptValue(obj[key]);
   });
   return encrypted;
 }
 
-export function decryptObject(credentials) {
+export function decryptObject(obj) {
   const decrypted = {};
-  Object.keys(credentials).forEach((field) => {
-    decrypted[field] = decrypt(credentials[field]);
+  Object.keys(obj).forEach((key) => {
+    decrypted[key] = decryptValue(obj[key]);
   });
   return decrypted;
 }

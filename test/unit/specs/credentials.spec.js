@@ -1,4 +1,4 @@
-import { encryptObject } from '../../../src/renderer/modules/credentials';
+import { encryptObject, decryptObject } from '../../../src/renderer/modules/credentials';
 
 function isNotNullOrEmptyOrUndefined(value) {
   return value && value !== null && value !== '';
@@ -101,5 +101,24 @@ describe('credentials.js', () => {
     assert.isArray(encrypted.objKey.arrKey);
     assert.lengthOf(encrypted.objKey.arrKey, original.objKey.arrKey.length);
     assert.notDeepEqual(encrypted.objKey.arrKey, original.objKey.arrKey);
+  });
+
+  it('Should encrypt and decrypt and get exactly the same object', () => {
+    const original = {
+      arrKey: ['arr1', 'arr2', 'arr3'],
+      arrComplex: [
+        'arrval1',
+        { objKey: 'objval' },
+        ['arrarrval1', 'arrarrval2'],
+      ],
+      objKey: {
+        strKey: 'strValue',
+        arrKey: ['arrval1', 'arrval2'],
+      },
+      strKey: 'strval',
+    };
+    const actual = decryptObject(encryptObject(original));
+
+    assert.deepEqual(actual, original);
   });
 });
