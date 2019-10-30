@@ -20,7 +20,7 @@ export function SetImporter(importer, callback) {
     if (err) {
       console.error(err);
     } else if (callback) {
-      callback(newDocs);
+      callback(decryptProperty(newDocs, defaultEncryptProperty));
     }
   });
 }
