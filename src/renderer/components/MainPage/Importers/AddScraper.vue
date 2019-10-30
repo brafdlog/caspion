@@ -29,6 +29,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { defaultEncryptProperty } from '../../../modules/credentials';
 
 function scraperToImporter(scraper) {
   const importer = { ...scraper, loginFields: {} };
@@ -48,9 +49,9 @@ export default {
   },
   methods: {
     submitForm() {
-      console.log(this.scraperToAdd);
+      console.log(this.importerToEncrypt);
       if (this.isFormValid) {
-        this.addImporterAction(this.scraperToAdd);
+        this.addImporterAction(this.importerToEncrypt);
         this.resetForm();
       } else {
         console.log('error submit!!');
@@ -67,6 +68,16 @@ export default {
     isFormValid() {
       return Object.values(this.scraperToAdd.loginFields)
         .every((key) => key && key.trim().length > 0);
+    },
+    importerToEncrypt() {
+      const encryptImporter = { ...this.scraperToAdd };
+      encryptImporter[defaultEncryptProperty] = {
+        loginFields: {
+          ...this.scraperToAdd.loginFields,
+        },
+      };
+      delete encryptImporter.loginFields;
+      return encryptImporter;
     },
   },
 };

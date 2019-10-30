@@ -5,6 +5,8 @@ Copied from https://github.com/eshaham/israeli-ynab-updater/blob/b207a6b2468fa29
 
 import { encrypt, decrypt } from './crypto';
 
+export const defaultEncryptProperty = 'encrypted';
+
 function isObject(obj) {
   return typeof obj === 'object' && !Array.isArray(obj) && obj !== null;
 }
@@ -50,5 +52,21 @@ export function decryptObject(obj) {
   Object.keys(obj).forEach((key) => {
     decrypted[key] = decryptValue(obj[key]);
   });
+  return decrypted;
+}
+
+export function encryptProperty(obj, property) {
+  const encrypted = obj;
+  if (encrypted[property]) {
+    encrypted[property] = encryptObject(encrypted[property]);
+  }
+  return encrypted;
+}
+
+export function decryptProperty(obj, property) {
+  const decrypted = obj;
+  if (decrypted[property]) {
+    decrypted[property] = decryptObject(decrypted[property]);
+  }
   return decrypted;
 }

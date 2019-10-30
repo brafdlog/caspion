@@ -1,4 +1,5 @@
 import Datastore from 'nedb';
+import { encryptProperty, decryptProperty, defaultEncryptProperty } from './credentials';
 
 const db = new Datastore({ filename: '.persistance/nedb.json', autoload: true });
 
@@ -7,13 +8,15 @@ export function LoadState(dataCallback) {
     if (err) {
       console.error(err);
     } else {
-      dataCallback(doc);
+      const decrypted = doc.map((d) => decryptProperty(d, defaultEncryptProperty));
+      dataCallback(decrypted);
     }
   });
 }
 
 export function SetImporter(importer, callback) {
-  db.insert(importer, (err, newDocs) => {
+  const encrypted = encryptProperty(importer, defaultEncryptProperty);
+  db.insert(encrypted, (err, newDocs) => {
     if (err) {
       console.error(err);
     } else if (callback) {
