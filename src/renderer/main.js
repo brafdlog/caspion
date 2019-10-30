@@ -16,6 +16,7 @@ import {
   FormItem,
   Input,
   Tooltip,
+  Checkbox,
 } from 'element-ui';
 import lang from 'element-ui/lib/locale/lang/en';
 import locale from 'element-ui/lib/locale';
@@ -43,6 +44,7 @@ Vue.use(Form);
 Vue.use(FormItem);
 Vue.use(Input);
 Vue.use(Tooltip);
+Vue.use(Checkbox);
 
 /* eslint-disable no-new */
 new Vue({
