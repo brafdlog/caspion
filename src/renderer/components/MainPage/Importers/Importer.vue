@@ -1,8 +1,8 @@
 <template>
   <el-card :body-style="{ padding: '0px' }">
-    <el-collapse-item :name="importer._id">
+    <el-collapse-item :name="decryptedImporter._id">
       <div slot="title">
-        <span>{{ importer.name }}</span>
+        <span>{{ decryptedImporter.name }}</span>
         <el-tooltip
           effect="dark"
           :disabled="lastMessage === null"
@@ -16,7 +16,7 @@
         </el-tooltip>
       </div>
       <div
-        v-for="(value, loginField) in importer.loginFields"
+        v-for="(value, loginField) in decryptedImporter.loginFields"
         :key="loginField"
       >
         {{ loginField }}: {{ value }}
@@ -44,6 +44,7 @@
 import { mapActions } from 'vuex';
 import { MessageBox } from 'element-ui';
 import scrape from '../../../modules/scrapers';
+import { defaultEncryptProperty } from '../../../modules/credentials';
 
 export default {
   props: ['importer'],
@@ -55,6 +56,11 @@ export default {
     };
   },
   computed: {
+    decryptedImporter() {
+      const result = { ...this.importer, ...this.importer[defaultEncryptProperty] };
+      delete result[defaultEncryptProperty];
+      return result;
+    },
     iconClass() {
       return {
         'el-icon-question': this.success === null,
@@ -65,10 +71,10 @@ export default {
   },
   methods: {
     async scrape() {
-      console.log(this.importer);
+      console.log(this.decryptedImporter);
       this.importing = true;
       try {
-        const result = await scrape(this.importer.key, this.importer.loginFields);
+        const result = await scrape(this.decryptedImporter.key, this.decryptedImporter.loginFields);
         console.log(result);
         this.updateStatus(result.success, result.errorMessage);
       } catch (error) {
@@ -89,7 +95,7 @@ export default {
         cancelButtonText: 'Cancel',
         type: 'warning',
       });
-      this.removeImporterAction(this.importer._id);
+      this.removeImporterAction(this.decryptedImporter._id);
     },
     ...mapActions([
       'removeImporterAction',
