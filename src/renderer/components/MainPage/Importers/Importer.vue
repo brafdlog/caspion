@@ -16,7 +16,7 @@
         </el-tooltip>
       </div>
       <div>
-        <el-checkbox :checked="verbose">Debug</el-checkbox>
+        <el-checkbox v-model="debug">Debug</el-checkbox>
       </div>
       <div
         v-for="(value, loginField) in decryptedImporter.loginFields"
@@ -56,7 +56,7 @@ export default {
       importing: false,
       success: null,
       lastMessage: null,
-      verbose: false,
+      debug: false,
     };
   },
   computed: {
@@ -79,7 +79,7 @@ export default {
       this.importing = true;
       try {
         const result = await scrape(this.decryptedImporter.key,
-          this.decryptedImporter.loginFields, this.verbose);
+          this.decryptedImporter.loginFields, this.debug);
         console.log(result);
         this.updateStatus(result.success, result.errorMessage);
       } catch (error) {
