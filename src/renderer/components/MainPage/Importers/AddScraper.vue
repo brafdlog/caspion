@@ -40,12 +40,33 @@ function scraperToImporter(scraper) {
 }
 
 export default {
-  props: ['scraper'],
+  props: {
+    scraper: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     console.log(scraperToImporter(this.scraper));
     return {
       scraperToAdd: scraperToImporter(this.scraper),
     };
+  },
+  computed: {
+    isFormValid() {
+      return Object.values(this.scraperToAdd.loginFields)
+        .every((key) => key && key.trim().length > 0);
+    },
+    importerToEncrypt() {
+      const encryptImporter = { ...this.scraperToAdd };
+      encryptImporter[defaultEncryptProperty] = {
+        loginFields: {
+          ...this.scraperToAdd.loginFields,
+        },
+      };
+      delete encryptImporter.loginFields;
+      return encryptImporter;
+    },
   },
   methods: {
     submitForm() {
@@ -63,22 +84,6 @@ export default {
     ...mapActions([
       'addImporterAction',
     ]),
-  },
-  computed: {
-    isFormValid() {
-      return Object.values(this.scraperToAdd.loginFields)
-        .every((key) => key && key.trim().length > 0);
-    },
-    importerToEncrypt() {
-      const encryptImporter = { ...this.scraperToAdd };
-      encryptImporter[defaultEncryptProperty] = {
-        loginFields: {
-          ...this.scraperToAdd.loginFields,
-        },
-      };
-      delete encryptImporter.loginFields;
-      return encryptImporter;
-    },
   },
 };
 </script>
