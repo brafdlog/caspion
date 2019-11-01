@@ -82,37 +82,56 @@ export default {
   },
   methods: {
     async scrape() {
+      let success;
+      let errorMessage;
+
       console.log(this.decryptedImporter);
       this.importing = true;
       try {
-        const result = await scrape(this.decryptedImporter.key,
-          this.decryptedImporter.loginFields, this.debug);
+        const result = await scrape(
+          this.decryptedImporter.key,
+          this.decryptedImporter.loginFields,
+          this.debug,
+        );
         console.log(result);
-        this.updateStatus(result.success, result.errorMessage);
+        success = result.success;
+        errorMessage = result.errorMessage || result.errorType;
+        if (result.success) {
+          result.accounts.forEach(account => {
+            console.log('importer.vue send account');
+            console.log(account);
+            this.addTransactions(account);
+          });
+        }
       } catch (error) {
         console.log(error);
-        this.updateStatus(false, error.message);
+        success = false;
+        errorMessage = error.message;
+      } finally {
+        this.updateStatus(success, errorMessage);
       }
-      this.importing = false;
     },
     updateStatus(success, errorMessage) {
+      this.importing = false;
       this.success = success;
       if (success === false) {
         this.lastMessage = errorMessage || 'UNKNOWN_ERROR';
       }
     },
     async promptDelete() {
-      await MessageBox.confirm('This will permanently delete the importer. Continue?', 'Warning', {
-        confirmButtonText: 'OK',
-        cancelButtonText: 'Cancel',
-        type: 'warning',
-      });
+      await MessageBox.confirm(
+        'This will permanently delete the importer. Continue?',
+        'Warning',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning',
+        }
+      );
       this.removeImporterAction(this.decryptedImporter._id);
     },
-    ...mapActions([
-      'removeImporterAction',
-    ]),
-  },
+    ...mapActions(['removeImporterAction', 'addTransactionsAction'])
+  }
 };
 </script>
 
