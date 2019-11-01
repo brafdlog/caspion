@@ -121,6 +121,7 @@
     "prettier": "^1.18.2",
     "require-dir": "^1.0.0",
     "sass-loader": "^7.0.3",
+    "sinon": "^7.5.0",
     "spectron": "^3.8.0",
     "style-loader": "^0.21.0",
     "url-loader": "^1.0.1",

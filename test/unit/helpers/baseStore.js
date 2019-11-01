@@ -1,3 +1,5 @@
+import sinon from 'sinon';
+
 export default {
   modules: {
     Scrapers: {
@@ -24,5 +26,11 @@ export default {
     Importers: {
       importers: [],
     },
+  },
+  actions: {
+    loadImporters: sinon.spy(),
+  },
+  getters: {
+    scrapersWithId: sinon.spy(),
   },
 };
