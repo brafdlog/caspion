@@ -100,7 +100,7 @@ export default {
           result.accounts.forEach((account) => {
             console.log('importer.vue send account');
             console.log(account);
-            this.addTransactions(account);
+            this.addTransactionsAction(account);
           });
         }
       } catch (error) {
