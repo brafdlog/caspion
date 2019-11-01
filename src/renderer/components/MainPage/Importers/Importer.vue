@@ -16,7 +16,9 @@
         </el-tooltip>
       </div>
       <div>
-        <el-checkbox v-model="debug">Debug</el-checkbox>
+        <el-checkbox v-model="debug">
+          Debug
+        </el-checkbox>
       </div>
       <div
         v-for="(value, loginField) in decryptedImporter.loginFields"
@@ -50,7 +52,12 @@ import scrape from '../../../modules/scrapers';
 import { defaultEncryptProperty } from '../../../modules/credentials';
 
 export default {
-  props: ['importer'],
+  props: {
+    importer: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
       importing: false,
