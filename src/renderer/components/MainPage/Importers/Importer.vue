@@ -97,7 +97,7 @@ export default {
         success = result.success;
         errorMessage = result.errorMessage || result.errorType;
         if (result.success) {
-          result.accounts.forEach(account => {
+          result.accounts.forEach((account) => {
             console.log('importer.vue send account');
             console.log(account);
             this.addTransactions(account);
@@ -126,12 +126,12 @@ export default {
           confirmButtonText: 'OK',
           cancelButtonText: 'Cancel',
           type: 'warning',
-        }
+        },
       );
       this.removeImporterAction(this.decryptedImporter._id);
     },
-    ...mapActions(['removeImporterAction', 'addTransactionsAction'])
-  }
+    ...mapActions(['removeImporterAction', 'addTransactionsAction']),
+  },
 };
 </script>
 
