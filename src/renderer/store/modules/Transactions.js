@@ -1,5 +1,3 @@
-import { AddTransactions } from '../../modules/jsonFileDB';
-
 const state = {
   transactions: [],
 };
@@ -14,11 +12,7 @@ const actions = {
   addTransactionsAction({ commit }, account) {
     console.log('addTransaction action');
     console.log(account);
-    AddTransactions(account.txns, (txns) => {
-      console.log('action callback');
-      console.log(txns);
-      commit('addTransactions', txns);
-    });
+    commit('addTransactions', account.txns);
   },
 };
 

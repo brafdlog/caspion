@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import AddScraper from './Importers/AddScraper';
 import Importer from './Importers/Importer';
 
@@ -51,14 +51,6 @@ export default {
     }),
     ...mapGetters([
       'scrapersWithId',
-    ]),
-  },
-  created() {
-    this.loadImporters();
-  },
-  methods: {
-    ...mapActions([
-      'loadImporters',
     ]),
   },
 };

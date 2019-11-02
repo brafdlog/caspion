@@ -27,9 +27,6 @@ export default {
       importers: [],
     },
   },
-  actions: {
-    loadImporters: sinon.spy(),
-  },
   getters: {
     scrapersWithId: sinon.spy(),
   },
