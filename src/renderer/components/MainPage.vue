@@ -6,21 +6,22 @@
         <Importers />
       </el-aside>
       <el-main>
-        Middle data
+        <DataTable />
       </el-main>
-      <el-aside>
+      <!-- <el-aside>
         Another side
-      </el-aside>
+      </el-aside> -->
     </el-container>
   </div>
 </template>
 
 <script>
 import Importers from './MainPage/Importers';
+import DataTable from './MainPage/DataTable';
 
 export default {
   name: 'MainPage',
-  components: { Importers },
+  components: { Importers, DataTable },
 };
 </script>
 

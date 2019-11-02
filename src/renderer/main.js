@@ -17,6 +17,8 @@ import {
   Input,
   Tooltip,
   Checkbox,
+  Table,
+  TableColumn,
 } from 'element-ui';
 import lang from 'element-ui/lib/locale/lang/en';
 import locale from 'element-ui/lib/locale';
@@ -45,6 +47,8 @@ Vue.use(FormItem);
 Vue.use(Input);
 Vue.use(Tooltip);
 Vue.use(Checkbox);
+Vue.use(Table);
+Vue.use(TableColumn);
 
 /* eslint-disable no-new */
 new Vue({
