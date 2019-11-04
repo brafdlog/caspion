@@ -1,36 +1,71 @@
 const state = {
   transactions: [],
-  allColumns: {
-    type: 'Type', // can be either 'normal' or 'installments'
-    identifier: 'Identifier', // only if exists
-    date: 'Date', // ISO date string
-    processedDate: 'Processed Date', // ISO date string
-    originalAmount: 'Original Amount',
-    originalCurrency: 'Original Currency',
-    chargedAmount: 'Charged Amount',
-    description: 'Description',
-    memo: 'Memo', // can be null or empty
-    number: 'Installments Number', // the current installment number
-    total: 'Installments Total', // the total number of installments
-    status: 'Status', // can either be 'completed' or 'pending'
-  },
+  properties: [
+    {
+      // can be either 'normal' or 'installments'
+      name: 'type',
+      title: 'Type',
+    },
+    {
+      // only if exists
+      name: 'identifier',
+      title: 'Identifier',
+    },
+    {
+      // ISO date string
+      name: 'date',
+      title: 'Date',
+      column: true,
+    },
+    {
+      // ISO date string
+      name: 'processedDate',
+      title: 'Processed Date',
+    },
+    {
+      name: 'originalAmount',
+      title: 'Original Amount',
+    },
+    {
+      name: 'originalCurrency',
+      title: 'Original Currency',
+    },
+    {
+      name: 'chargedAmount',
+      title: 'Charged Amount',
+      column: true,
+    },
+    {
+      name: 'description',
+      title: 'Description',
+      column: true,
+    },
+    {
+      // can be null or empty
+      name: 'memo',
+      title: 'Memo',
+    },
+    {
+      // the current installment number
+      name: 'number',
+      title: 'Installments Number',
+    },
+    {
+      // the total number of installments
+      name: 'total',
+      title: 'Installments Total',
+    },
+    {
+      // can either be 'completed' or 'pending'
+      name: 'status',
+      title: 'Status',
+    },
+  ],
 };
 
-const unwrapTableColumns = ({ date, chargedAmount, description }) => (
-  { date, chargedAmount, description }
-);
-
-const unwrapPropertiesColumns = ({
-  type, identifier, processedDate, originalAmount, originalCurrency, memo, status,
-}) => (
-  {
-    type, identifier, processedDate, originalAmount, originalCurrency, memo, status,
-  }
-);
-
 const getters = {
-  tableColumns: (state) => unwrapTableColumns(state.allColumns),
-  propertiesColumns: (state) => unwrapPropertiesColumns(state.allColumns),
+  tableColumns: (state) => state.properties.filter((prop) => prop.column),
+  propertiesColumns: (state) => state.properties.filter((prop) => !prop.column),
 };
 
 const mutations = {

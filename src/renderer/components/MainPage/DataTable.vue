@@ -8,18 +8,18 @@
     <el-table-column type="expand">
       <template slot-scope="props">
         <p
-          v-for="(value, prop) in propertiesColumns"
-          :key="prop"
+          v-for="column in propertiesColumns"
+          :key="column.name"
         >
-          {{ value }}: {{ props.row[prop] }}
+          {{ column.title }}: {{ props.row[column.name] }}
         </p>
       </template>
     </el-table-column>
     <el-table-column
-      v-for="(value, prop) in tableColumns"
-      :key="prop"
-      :prop="prop"
-      :label="value"
+      v-for="column in tableColumns"
+      :key="column.name"
+      :prop="column.name"
+      :label="column.title"
       sortable
     />
   </el-table>
