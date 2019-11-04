@@ -1,6 +1,6 @@
 const state = {
   transactions: [],
-  defaultColumns: {
+  allColumns: {
     type: 'Type', // can be either 'normal' or 'installments'
     identifier: 'Identifier', // only if exists
     date: 'Date', // ISO date string
@@ -14,6 +14,23 @@ const state = {
     total: 'Installments Total', // the total number of installments
     status: 'Status', // can either be 'completed' or 'pending'
   },
+};
+
+const unwrapTableColumns = ({ date, chargedAmount, description }) => (
+  { date, chargedAmount, description }
+);
+
+const unwrapPropertiesColumns = ({
+  type, identifier, processedDate, originalAmount, originalCurrency, memo, status,
+}) => (
+  {
+    type, identifier, processedDate, originalAmount, originalCurrency, memo, status,
+  }
+);
+
+const getters = {
+  tableColumns: (state) => unwrapTableColumns(state.allColumns),
+  propertiesColumns: (state) => unwrapPropertiesColumns(state.allColumns),
 };
 
 const mutations = {
@@ -36,6 +53,7 @@ const actions = {
 
 export default {
   state,
+  getters,
   mutations,
   actions,
 };
