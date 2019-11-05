@@ -11,7 +11,8 @@
           v-for="column in filterEmptyColumn(props)"
           :key="column.name"
         >
-          <span class="bold">{{ column.title }}:</span> {{ props.row[column.name] }}
+          <span class="bold">{{ column.title }}: </span>
+          {{ format(column.name, props.row[column.name]) }}
         </p>
       </template>
     </el-table-column>
@@ -28,7 +29,7 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
-import { formatters } from '../../modules/transactions';
+import { format } from '../../modules/transactions';
 
 export default {
   name: 'DataTable',
@@ -42,8 +43,9 @@ export default {
     ]),
   },
   methods: {
+    format: (property, value) => format(property, value),
     formatterWrapper(row, { property }, cellValue) {
-      return formatters[property] ? formatters[property](cellValue) : cellValue;
+      return format(property, cellValue);
     },
     filterEmptyColumn(props) {
       return this.propertiesColumns.filter((col) => props.row[col.name]);

@@ -85,3 +85,7 @@ export const formatters = {
   date: (value) => formatDate(value),
   processedDate: (value) => formatDate(value),
 };
+
+export function format(property, value) {
+  return formatters[property] ? formatters[property](value) : value;
+}
