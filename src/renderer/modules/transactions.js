@@ -1,4 +1,5 @@
 import formatDate from './dates';
+import hash from './hash';
 
 /*
 {
@@ -88,4 +89,10 @@ export const formatters = {
 
 export function format(property, value) {
   return formatters[property] ? formatters[property](value) : value;
+}
+
+export function getHash(transaction) {
+  const hashProps = properties.filter((p) => p.hash);
+  const key = hashProps.reduce((prev, prop) => prev + transaction[prop.name], '');
+  return hash(key);
 }
