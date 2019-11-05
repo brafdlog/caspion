@@ -20,6 +20,7 @@
       :key="column.name"
       :prop="column.name"
       :label="column.title"
+      :formatter="formatterWrapper"
       sortable
     />
   </el-table>
@@ -27,6 +28,7 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
+import { formatters } from '../../modules/transactions';
 
 export default {
   name: 'DataTable',
@@ -38,6 +40,11 @@ export default {
       'tableColumns',
       'propertiesColumns',
     ]),
+  },
+  methods: {
+    formatterWrapper(row, { property }, cellValue) {
+      return formatters[property] ? formatters[property](cellValue) : cellValue;
+    },
   },
 };
 </script>
