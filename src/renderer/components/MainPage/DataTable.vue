@@ -8,10 +8,10 @@
     <el-table-column type="expand">
       <template slot-scope="props">
         <p
-          v-for="column in propertiesColumns"
+          v-for="column in filterEmptyColumn(props)"
           :key="column.name"
         >
-          {{ column.title }}: {{ props.row[column.name] }}
+          <span class="bold">{{ column.title }}:</span> {{ props.row[column.name] }}
         </p>
       </template>
     </el-table-column>
@@ -45,10 +45,15 @@ export default {
     formatterWrapper(row, { property }, cellValue) {
       return formatters[property] ? formatters[property](cellValue) : cellValue;
     },
+    filterEmptyColumn(props) {
+      return this.propertiesColumns.filter((col) => props.row[col.name]);
+    },
   },
 };
 </script>
 
-<style>
-
+<style scoped>
+.bold {
+  font-weight: bold;
+}
 </style>
