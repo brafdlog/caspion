@@ -1,11 +1,12 @@
 import { properties } from '../../modules/transactions';
 
 const state = {
-  transactions: [],
+  transactions: {},
   properties,
 };
 
 const getters = {
+  transactionsArray: (state) => Object.values(state.transactions),
   tableColumns: (state) => state.properties.filter((prop) => prop.column),
   propertiesColumns: (state) => state.properties.filter((prop) => !prop.column),
 };
