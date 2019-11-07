@@ -17,10 +17,8 @@ const mutations = {
       state.transactions = {};
     }
   },
-  addTransaction(state, key, txn) {
-    if (!state.transactions[key]) {
-      state.transactions[key] = txn;
-    }
+  addTransactions(state, transactions) {
+    state.transactions = { ...state.transactions, ...transactions };
   },
 };
 
@@ -28,10 +26,11 @@ const actions = {
   addTransactionsAction({ commit }, account) {
     commit('initTransactionIfNot');
 
-    account.txns.forEach((txn) => {
-      const key = getHash(txn);
-      commit('addTransaction', key, txn);
-    });
+    const transactionsObject = account.txns.reduce((prev, current) => {
+      prev[getHash(current)] = current;
+      return prev;
+    }, {});
+    commit('addTransactions', transactionsObject);
   },
 };
 

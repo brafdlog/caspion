@@ -19,7 +19,7 @@ describe('transaction.js (The transactions helper)', () => {
   it('Should be the expected hash', () => {
     const firstTransactionHash = Object.keys(Transactions)[0];
     const firstTransaction = Object.values(Transactions)[0];
-    
+
     const hashKey = getHash(firstTransaction);
 
     expect(hashKey).to.eq(firstTransactionHash);
@@ -29,7 +29,7 @@ describe('transaction.js (The transactions helper)', () => {
     const transactionObjects = Object.values(Transactions);
     transactionObjects[0].chargedAmount = transactionObjects[1].chargedAmount = 0;
     transactionObjects[0].date = transactionObjects[1].date;
-    
+
     const firstHashKey = getHash(transactionObjects[0]);
     const secondHashKey = getHash(transactionObjects[1]);
 
