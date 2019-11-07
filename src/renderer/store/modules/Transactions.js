@@ -1,4 +1,4 @@
-import { properties } from '../../modules/transactions';
+import { properties, getHash } from '../../modules/transactions';
 
 const state = {
   transactions: {},
@@ -12,19 +12,26 @@ const getters = {
 };
 
 const mutations = {
-  addTransactions(state, data) {
+  initTransactionIfNot(state) {
     if (!state.transactions) {
-      state.transactions = [];
+      state.transactions = {};
     }
-    state.transactions.push(...data);
+  },
+  addTransaction(state, key, txn) {
+    if (!state.transactions[key]) {
+      state.transactions[key] = txn;
+    }
   },
 };
 
 const actions = {
   addTransactionsAction({ commit }, account) {
-    console.log('addTransaction action');
-    console.log(account);
-    commit('addTransactions', account.txns);
+    commit('initTransactionIfNot');
+
+    account.txns.forEach((txn) => {
+      const key = getHash(txn);
+      commit('addTransaction', key, txn);
+    });
   },
 };
 

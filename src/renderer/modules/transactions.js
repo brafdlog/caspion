@@ -1,4 +1,4 @@
-import formatDate from './dates';
+import { formatDate, unixMilli } from './dates';
 import hash from './hash';
 
 /*
@@ -41,6 +41,7 @@ export const properties = [
     name: 'date',
     title: 'Date',
     column: true,
+    hash: (value) => unixMilli(value),
   },
   {
     name: 'processedDate',
@@ -58,11 +59,13 @@ export const properties = [
     name: 'chargedAmount',
     title: 'Charged Amount',
     column: true,
+    hash: true,
   },
   {
     name: 'description',
     title: 'Description',
     column: true,
+    hash: (value) => hash(value),
   },
   {
     name: 'memo',
@@ -82,7 +85,7 @@ export const properties = [
   },
 ];
 
-export const formatters = {
+const formatters = {
   date: (value) => formatDate(value),
   processedDate: (value) => formatDate(value),
 };
@@ -93,6 +96,12 @@ export function format(property, value) {
 
 export function getHash(transaction) {
   const hashProps = properties.filter((p) => p.hash);
-  const key = hashProps.reduce((prev, prop) => prev + transaction[prop.name], '');
-  return hash(key);
+  const key = hashProps.reduce((prev, prop) => {
+    const value = transaction[prop.name];
+    if (typeof prop.hash === 'function') {
+      return prev + prop.hash(value).toString();
+    }
+    return prev + value.toString();
+  }, '');
+  return key;
 }
