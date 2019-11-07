@@ -28,19 +28,17 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 import { format } from '../../modules/transactions';
 
 export default {
   name: 'DataTable',
   computed: {
-    ...mapState({
-      transactions: (state) => state.Transactions.transactions,
+    ...mapGetters({
+      tableColumns: 'tableColumns',
+      propertiesColumns: 'propertiesColumns',
+      transactions: 'transactionsArray',
     }),
-    ...mapGetters([
-      'tableColumns',
-      'propertiesColumns',
-    ]),
   },
   methods: {
     format: (property, value) => format(property, value),

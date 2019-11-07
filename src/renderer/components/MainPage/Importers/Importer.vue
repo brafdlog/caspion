@@ -98,8 +98,6 @@ export default {
         errorMessage = result.errorMessage || result.errorType;
         if (result.success) {
           result.accounts.forEach((account) => {
-            console.log('importer.vue send account');
-            console.log(account);
             this.addTransactionsAction(account);
           });
         }

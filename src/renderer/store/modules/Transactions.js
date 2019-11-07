@@ -1,29 +1,36 @@
-import { properties } from '../../modules/transactions';
+import { properties, getHash } from '../../modules/transactions';
 
 const state = {
-  transactions: [],
+  transactions: {},
   properties,
 };
 
 const getters = {
+  transactionsArray: (state) => Object.values(state.transactions),
   tableColumns: (state) => state.properties.filter((prop) => prop.column),
   propertiesColumns: (state) => state.properties.filter((prop) => !prop.column),
 };
 
 const mutations = {
-  addTransactions(state, data) {
+  initTransactionIfNot(state) {
     if (!state.transactions) {
-      state.transactions = [];
+      state.transactions = {};
     }
-    state.transactions.push(...data);
+  },
+  addTransactions(state, transactions) {
+    state.transactions = { ...state.transactions, ...transactions };
   },
 };
 
 const actions = {
   addTransactionsAction({ commit }, account) {
-    console.log('addTransaction action');
-    console.log(account);
-    commit('addTransactions', account.txns);
+    commit('initTransactionIfNot');
+
+    const transactionsObject = account.txns.reduce((prev, current) => {
+      prev[getHash(current)] = current;
+      return prev;
+    }, {});
+    commit('addTransactions', transactionsObject);
   },
 };
 

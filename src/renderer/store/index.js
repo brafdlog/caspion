@@ -10,6 +10,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   modules,
   plugins: [
+    // location: AppData\Roaming\Electron\vuex.json
     createPersistedState(),
     createSharedMutations(),
   ],
