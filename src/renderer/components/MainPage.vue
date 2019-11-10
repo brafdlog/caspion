@@ -8,9 +8,9 @@
       <el-main>
         <DataTable />
       </el-main>
-      <!-- <el-aside>
-        Another side
-      </el-aside> -->
+      <el-aside border="solid">
+        <Exporters />
+      </el-aside>
     </el-container>
   </div>
 </template>
@@ -18,10 +18,11 @@
 <script>
 import Importers from './MainPage/Importers';
 import DataTable from './MainPage/DataTable';
+import Exporters from './MainPage/Exporters';
 
 export default {
   name: 'MainPage',
-  components: { Importers, DataTable },
+  components: { Importers, DataTable, Exporters },
 };
 </script>
 
@@ -48,15 +49,6 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-  }
-
-  .el-aside {
-    background:
-      radial-gradient(
-        ellipse at top left,
-        rgba(229, 229, 229, .9) 40%,
-        rgba(255, 255, 255, 1) 100%
-      );
   }
 
   .title {
