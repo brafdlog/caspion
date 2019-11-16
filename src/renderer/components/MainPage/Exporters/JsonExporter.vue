@@ -1,27 +1,30 @@
 <template>
   <el-form>
     <el-form-item label="Folder to save">
-      <el-input v-model="folder"/>
+      <el-input v-model="properties.folder" />
     </el-form-item>
   </el-form>
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex';
-
+import { mapState } from 'vuex';
 const name = 'JsonExporter';
 
 export default {
   name,
+  data() {
+    return {
+      defaultProperties: {
+        folder: this.$electron.remote.app.getName(),
+      },
+    };
+  },
   computed: {
     ...mapState({
-      properties: state => state.Exporters[name]
-    }),
-    folder: {
-      get() {
-        return this.$store
+      properties(state) {
+        return Object.assign(this.defaultProperties, state.Exporters[name]);
       },
-    },
+    }),
   },
 };
 </script>
