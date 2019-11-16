@@ -7,12 +7,21 @@
 </template>
 
 <script>
+import { mapMutations, mapState } from 'vuex';
+
+const name = 'JsonExporter';
+
 export default {
-  name: 'JsonExporter',
-  data() {
-    return {
-      folder: '',
-    };
+  name,
+  computed: {
+    ...mapState({
+      properties: state => state.Exporters[name]
+    }),
+    folder: {
+      get() {
+        return this.$store
+      },
+    },
   },
 };
 </script>
