@@ -3,28 +3,45 @@
     <el-form-item label="Folder to save">
       <el-input v-model="properties.folder" />
     </el-form-item>
+    <el-form-item>
+      <el-button
+        type="primary"
+        @click="submitForm()">
+        Export
+      </el-button>
+    </el-form-item>
   </el-form>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import path from 'path';
+import { mapState, mapActions } from 'vuex';
 const name = 'JsonExporter';
 
 export default {
   name,
   data() {
     return {
-      defaultProperties: {
-        folder: this.$electron.remote.app.getName(),
+      properties: {
+        folder: path.join(this.$electron.remote.app.getPath('cache'), this.$electron.remote.app.getName()),
       },
     };
   },
   computed: {
     ...mapState({
-      properties(state) {
-        return Object.assign(this.defaultProperties, state.Exporters[name]);
-      },
+      storeProperties: (state) => state.Exporters[name],
     }),
+  },
+  created() {
+    this.properties = { ...this.properties, ...this.storeProperties };
+  },
+  methods: {
+    ...mapActions([
+      'saveExporterProperties',
+    ]),
+    submitForm() {
+      this.saveExporterProperties({ name, properties: this.properties });
+    },
   },
 };
 </script>
