@@ -55,7 +55,7 @@ export default {
       this.loading = true;
       this.saveExporterProperties({ name, properties: this.properties });
       const filePath = path.join(this.properties.folder, this.properties.file);
-      saveToFile(this.transactionsArray, filePath, (err, newDoc) => {
+      saveToFile(this.transactionsArray, filePath, (err) => {
         this.loading = false;
         if (err) {
           console.error(err);
