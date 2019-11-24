@@ -27,7 +27,8 @@ const actions = {
     commit('initTransactionIfNot');
 
     const transactionsObject = account.txns.reduce((prev, current) => {
-      prev[getHash(current)] = current;
+      const hash = getHash(current);
+      prev[getHash(current)] = { ...current, hash };
       return prev;
     }, {});
     commit('addTransactions', transactionsObject);
