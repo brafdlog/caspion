@@ -1,9 +1,5 @@
 import fs from 'fs';
 
-export function f() {
-  return 'f';
-}
-
 export function readFileIfExist(filename) {
   try {
     return fs.readFileSync(filename).toString();
@@ -13,4 +9,8 @@ export function readFileIfExist(filename) {
     }
     throw err;
   }
+}
+
+export function writeFile(filename, content) {
+  fs.writeFileSync(filename, content);
 }

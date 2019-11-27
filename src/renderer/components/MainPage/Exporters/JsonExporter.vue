@@ -20,10 +20,9 @@
 
 <script>
 import path from 'path';
-import fs from 'fs';
 import { mapState, mapActions } from 'vuex';
 import { transactionArrayToObject } from '../../../modules/transactions';
-import { readFileIfExist } from '../../../modules/filesystem';
+import { readFileIfExist, writeFile } from '../../../modules/filesystem';
 
 const name = 'JsonExporter';
 
@@ -63,7 +62,7 @@ export default {
           savedObject = transactionArrayToObject(JSON.parse(savedJson));
         }
         const combineObject = { ...savedObject, ...this.transactions };
-        fs.writeFileSync(filePath, JSON.stringify(Object.values(combineObject), null, 4));
+        writeFile(filePath, JSON.stringify(Object.values(combineObject), null, 4));
       } catch (error) {
         console.error(error);
       }
