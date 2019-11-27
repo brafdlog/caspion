@@ -11,6 +11,14 @@ export function readFileIfExist(filename) {
   }
 }
 
+export function readFileToObject(filename, defaultObject) {
+  const content = readFileIfExist(filename);
+  if (content && content.trim()) {
+    return JSON.parse(content);
+  }
+  return defaultObject;
+}
+
 export function writeFile(filename, content) {
   fs.writeFileSync(filename, content);
 }

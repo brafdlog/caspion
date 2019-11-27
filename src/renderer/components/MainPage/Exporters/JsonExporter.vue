@@ -22,7 +22,7 @@
 import path from 'path';
 import { mapState, mapActions } from 'vuex';
 import { transactionArrayToObject } from '../../../modules/transactions';
-import { readFileIfExist, writeFile } from '../../../modules/filesystem';
+import { readFileToObject, writeFile } from '../../../modules/filesystem';
 
 const name = 'JsonExporter';
 
@@ -56,11 +56,7 @@ export default {
         this.saveExporterProperties({ name, properties: this.properties });
 
         const filePath = path.join(this.properties.folder, this.properties.file);
-        let savedObject = {};
-        const savedJson = readFileIfExist(filePath);
-        if (savedJson && savedJson.trim()) {
-          savedObject = transactionArrayToObject(JSON.parse(savedJson));
-        }
+        const savedObject = transactionArrayToObject(readFileToObject(filePath, []));
         const combineObject = { ...savedObject, ...this.transactions };
         writeFile(filePath, JSON.stringify(Object.values(combineObject), null, 4));
       } catch (error) {
