@@ -106,6 +106,14 @@ export function getHash(transaction) {
   return key;
 }
 
+export function transactionArrayToObject(transactions) {
+  return transactions.reduce((prev, current) => {
+    const hash = current.hash || getHash(current);
+    prev[getHash(current)] = { ...current, hash };
+    return prev;
+  }, {});
+}
+
 export function saveToFile(transactions, filename, callback) {
   const Datastore = require('nedb');
   const db = new Datastore({ filename, autoload: true });

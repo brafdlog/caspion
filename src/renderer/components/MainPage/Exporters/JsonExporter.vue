@@ -20,8 +20,10 @@
 
 <script>
 import path from 'path';
-import { mapState, mapActions, mapGetters } from 'vuex';
-import { saveToFile } from '../../../modules/transactions';
+import fs from 'fs';
+import { mapState, mapActions } from 'vuex';
+import { transactionArrayToObject } from '../../../modules/transactions';
+import { readFileIfExist } from '../../../modules/filesystem';
 
 const name = 'JsonExporter';
 
@@ -39,10 +41,8 @@ export default {
   computed: {
     ...mapState({
       storeProperties: (state) => state.Exporters[name],
+      transactions: (state) => state.Transactions.transactions,
     }),
-    ...mapGetters([
-      'transactionsArray',
-    ]),
   },
   created() {
     this.properties = { ...this.properties, ...this.storeProperties };
@@ -51,16 +51,23 @@ export default {
     ...mapActions([
       'saveExporterProperties',
     ]),
-    submitForm() {
+    async submitForm() {
       this.loading = true;
-      this.saveExporterProperties({ name, properties: this.properties });
-      const filePath = path.join(this.properties.folder, this.properties.file);
-      saveToFile(this.transactionsArray, filePath, (err) => {
-        this.loading = false;
-        if (err) {
-          console.error(err);
+      try {
+        this.saveExporterProperties({ name, properties: this.properties });
+
+        const filePath = path.join(this.properties.folder, this.properties.file);
+        let savedObject = {};
+        const savedJson = readFileIfExist(filePath);
+        if (savedJson && savedJson.trim()) {
+          savedObject = transactionArrayToObject(JSON.parse(savedJson));
         }
-      });
+        const combineObject = { ...savedObject, ...this.transactions };
+        fs.writeFileSync(filePath, JSON.stringify(Object.values(combineObject), null, 4));
+      } catch (error) {
+        console.error(error);
+      }
+      this.loading = false;
     },
   },
 };

@@ -1,4 +1,4 @@
-import { properties, getHash } from '../../modules/transactions';
+import { properties, transactionArrayToObject } from '../../modules/transactions';
 
 const state = {
   transactions: {},
@@ -26,11 +26,7 @@ const actions = {
   addTransactionsAction({ commit }, account) {
     commit('initTransactionIfNot');
 
-    const transactionsObject = account.txns.reduce((prev, current) => {
-      const hash = getHash(current);
-      prev[getHash(current)] = { ...current, hash };
-      return prev;
-    }, {});
+    const transactionsObject = transactionArrayToObject(account.txns);
     commit('addTransactions', transactionsObject);
   },
 };
