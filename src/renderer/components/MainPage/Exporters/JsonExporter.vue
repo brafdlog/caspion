@@ -50,7 +50,11 @@ export default {
     ...mapActions([
       'saveExporterProperties',
     ]),
-    async submitForm() {
+    emitStatus(success, message) {
+      this.$emit('update:success', success);
+      this.$emit('update:message', message);
+    },
+    submitForm() {
       this.loading = true;
       try {
         this.saveExporterProperties({ name, properties: this.properties });
@@ -59,8 +63,10 @@ export default {
         const savedObject = transactionArrayToObject(readFileToObject(filePath, []));
         const combineObject = { ...savedObject, ...this.transactions };
         writeFile(filePath, JSON.stringify(Object.values(combineObject), null, 4));
+        this.emitStatus(true, `Your data saved in ${filePath}`);
       } catch (error) {
         console.error(error);
+        this.emitStatus(false, error.message);
       }
       this.loading = false;
     },
@@ -69,5 +75,4 @@ export default {
 </script>
 
 <style>
-
 </style>
