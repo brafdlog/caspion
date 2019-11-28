@@ -1,41 +1,53 @@
 <template>
   <el-collapse v-model="accordionActiveItem" accordion>
-  <el-collapse-item name="jsonExporter">
-    <div slot="title">
-      <span>Export to Json</span>
-      <el-tooltip
-        effect="dark"
-        :disabled="statuses.jsonExporter.lastMessage === null"
-        :content="statuses.jsonExporter.lastMessage"
-        placement="left"
-      >
-        <i
-          class="header-icon"
-          :class="iconClass(statuses.jsonExporter.success)"
-        />
-      </el-tooltip>
-    </div>
-    <json-exporter
-      :message.sync="statuses.jsonExporter.lastMessage"
-      :success.sync="statuses.jsonExporter.success" />
-  </el-collapse-item>
-</el-collapse>
+    <el-collapse-item
+      v-for="comp in exportersComponents"
+      :key="comp.name"
+      :name="comp.name">
+
+      <div slot="title">
+        <span>{{ comp.title }}</span>
+        <el-tooltip
+          effect="dark"
+          :disabled="statuses[comp.name].lastMessage === null"
+          :content="statuses[comp.name].lastMessage"
+          placement="left"
+        >
+          <i
+            class="header-icon"
+            :class="iconClass(statuses[comp.name].success)"
+          />
+        </el-tooltip>
+      </div>
+      <json-exporter
+        :message.sync="statuses[comp.name].lastMessage"
+        :success.sync="statuses[comp.name].success" />
+    </el-collapse-item>
+  </el-collapse>
 </template>
 
 <script>
 import JsonExporter from './Exporters/JsonExporter';
 
+const exportersComponents = {
+  JsonExporter,
+};
+
+const statuses = {};
+Object.keys(exportersComponents).forEach((key) => {
+  statuses[key] = {
+    lastMessage: null,
+    success: null,
+  };
+});
+
 export default {
-  components: { JsonExporter },
+  components: { ...exportersComponents },
   data() {
     return {
       accordionActiveItem: '',
-      statuses: {
-        jsonExporter: {
-          lastMessage: null,
-          success: null,
-        },
-      },
+      exportersComponents,
+      statuses,
     };
   },
   methods: {

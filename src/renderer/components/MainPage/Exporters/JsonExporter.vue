@@ -25,9 +25,11 @@ import { transactionArrayToObject } from '../../../modules/transactions';
 import { readFileToObject, writeFile } from '../../../modules/filesystem';
 
 const name = 'JsonExporter';
+const title = 'Export to Json file';
 
 export default {
   name,
+  title,
   data() {
     return {
       properties: {
