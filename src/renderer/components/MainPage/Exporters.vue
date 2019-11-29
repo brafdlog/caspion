@@ -1,10 +1,13 @@
 <template>
-  <el-collapse v-model="accordionActiveItem" accordion>
+  <el-collapse
+    v-model="accordionActiveItem"
+    accordion
+  >
     <el-collapse-item
       v-for="comp in exportersComponents"
       :key="comp.name"
-      :name="comp.name">
-
+      :name="comp.name"
+    >
       <div slot="title">
         <span>{{ comp.title }}</span>
         <el-tooltip
@@ -19,18 +22,22 @@
           />
         </el-tooltip>
       </div>
-      <json-exporter
+      <component
+        :is="comp.name"
         :message.sync="statuses[comp.name].lastMessage"
-        :success.sync="statuses[comp.name].success" />
+        :success.sync="statuses[comp.name].success"
+      />
     </el-collapse-item>
   </el-collapse>
 </template>
 
 <script>
 import JsonExporter from './Exporters/JsonExporter';
+import SpreadsheetExporter from './Exporters/SpreadsheetExporter';
 
 const exportersComponents = {
   JsonExporter,
+  SpreadsheetExporter,
 };
 
 const statuses = {};
