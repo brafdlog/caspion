@@ -77,3 +77,6 @@ thumbs.db
 
 # App cache
 .persistance
+
+# Google API
+client_secret.json
