@@ -60,6 +60,7 @@
     "element-ui": "^2.12.0",
     "google-spreadsheet": "^2.0.8",
     "israeli-bank-scrapers-core": "^0.7.0",
+    "lodash.mapkeys": "^4.6.0",
     "lodash.pick": "^4.4.0",
     "moment": "^2.24.0",
     "nedb": "^1.8.0",

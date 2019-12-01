@@ -1,12 +1,17 @@
 import { promisify } from 'util';
 import pick from 'lodash.pick';
+import mapKeys from 'lodash.mapkeys';
 import GoogleSpreadsheet from 'google-spreadsheet';
-import { properties } from './transactions';
+import { properties, transactionArrayToObject } from './transactions';
 import creds from '../../../client_secret.json';
 
 const spreadsheetConstName = '_ibsd';
 
 const headers = properties.map((prop) => prop.name.toLowerCase());
+const lowerHeaderToUpper = properties.reduce((prev, current) => {
+  prev[current.name.toLowerCase()] = current.name;
+  return prev;
+}, {});
 
 // Promisify
 async function useServiceAccountAuth(doc, creds) {
@@ -25,10 +30,18 @@ async function getRows(worksheet, options) {
   return promisify(worksheet.getRows)(options);
 }
 
+async function clear(worksheet) {
+  return promisify(worksheet.clear)();
+}
 
-// Create a document object using the ID of the spreadsheet - obtained from its URL.
+async function setHeaderRow(worksheet, values) {
+  return promisify(worksheet.setHeaderRow)(values);
+}
 
-const SPREADSHEET_ID = '1TTOdzpkbYTWJMHVjDh7wb6ith27Hc-Wyc0pqMoV7K5A';
+async function addRow(worksheet, newRow) {
+  return promisify(worksheet.addRow)(newRow);
+}
+
 
 async function getGoogleSpreadsheetDoc(spreadsheetID) {
   const doc = new GoogleSpreadsheet(spreadsheetID);
@@ -43,9 +56,38 @@ async function getWorksheet(doc, title) {
   return addWorksheet(doc, { title, headers });
 }
 
-export default async function foo() {
-  const doc = await getGoogleSpreadsheetDoc(SPREADSHEET_ID);
-  const worksheet = await getWorksheet(doc, spreadsheetConstName);
+async function readTransactionsFromWorksheet(worksheet) {
   const transactions = (await getRows(worksheet, {})).map((row) => pick(row, headers));
-  console.log(transactions);
+  const transactionsRealProperties = transactions.map(
+    (transaction) => mapKeys(transaction, (_value, key) => lowerHeaderToUpper[key]),
+  );
+  return transactionArrayToObject(transactionsRealProperties);
+}
+
+async function SaveTransactionsToWorksheet(worksheet, transactionsArray) {
+  await clear(worksheet);
+  await setHeaderRow(worksheet, headers);
+
+  transactionsArray.map((transaction) => mapKeys(transaction, (_value, key) => key.toLowerCase()))
+    .forEach(async (transaction) => {
+      await addRow(worksheet, transaction);
+    });
+}
+
+export default async function saveTransactionsToGoogleSheets(
+  sheetSharingLink, transactionsObjectToSave,
+) {
+  const spreadsheetID = sheetSharingLink.match(/\w{30}-\w{13}/)[0];
+  const doc = await getGoogleSpreadsheetDoc(spreadsheetID);
+  const worksheet = await getWorksheet(doc, spreadsheetConstName);
+  const transactionsFromWs = await readTransactionsFromWorksheet(worksheet);
+
+  const transactionsCombine = { ...transactionsFromWs, ...transactionsObjectToSave };
+  await SaveTransactionsToWorksheet(worksheet, Object.values(transactionsCombine));
+
+  return {
+    before: Object.keys(transactionsFromWs).length,
+    new: Object.keys(transactionsObjectToSave).length,
+    combine: Object.keys(transactionsCombine).length,
+  };
 }
