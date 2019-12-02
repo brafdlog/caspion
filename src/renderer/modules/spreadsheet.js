@@ -3,7 +3,7 @@ import pick from 'lodash.pick';
 import mapKeys from 'lodash.mapkeys';
 import GoogleSpreadsheet from 'google-spreadsheet';
 import { properties, transactionArrayToObject } from './transactions';
-import creds from '../../../client_secret.json';
+import creds from './googleServiceAccount';
 
 const spreadsheetConstName = '_ibsd';
 
