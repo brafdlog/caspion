@@ -67,7 +67,7 @@ export default {
         writeFile(filePath, JSON.stringify(Object.values(combineObject), null, 4));
         this.emitStatus(true, `Your data saved in ${filePath}`);
       } catch (error) {
-        console.error(error);
+        this.$logger.error(error);
         this.emitStatus(false, error.message);
       }
       this.loading = false;

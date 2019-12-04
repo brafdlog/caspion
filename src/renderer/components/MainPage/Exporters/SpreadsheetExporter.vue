@@ -60,7 +60,7 @@ export default {
         this.emitStatus(true, `There were ${result.before} transactions, 
         we uploaded ${result.new} transactions and now there are ${result.combine} transactions.`);
       } catch (error) {
-        console.error(error);
+        this.$logger.error(error);
         this.emitStatus(false, error.message);
       }
       this.loading = false;

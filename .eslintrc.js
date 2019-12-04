@@ -29,7 +29,7 @@ module.exports = {
     'no-plusplus': ["error", { "allowForLoopAfterthoughts": true }],
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
-    'no-console': [1, {'allow': ['error', 'warn', process.env.NODE_ENV === 'production' ? '' : 'log']}],
+    'no-console': process.env.NODE_ENV === 'production' ? 2 : 1,
     'linebreak-style': process.platform === "win32"? 0: 2
   }
 }

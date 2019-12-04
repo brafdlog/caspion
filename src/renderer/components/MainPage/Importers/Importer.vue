@@ -85,7 +85,6 @@ export default {
       let success;
       let errorMessage;
 
-      console.log(this.decryptedImporter);
       this.importing = true;
       try {
         const result = await scrape(
@@ -93,7 +92,6 @@ export default {
           this.decryptedImporter.loginFields,
           this.debug,
         );
-        console.log(result);
         success = result.success;
         errorMessage = result.errorMessage || result.errorType;
         if (result.success) {
@@ -102,7 +100,7 @@ export default {
           });
         }
       } catch (error) {
-        console.log(error);
+        this.$logger.error(error);
         success = false;
         errorMessage = error.message;
       } finally {

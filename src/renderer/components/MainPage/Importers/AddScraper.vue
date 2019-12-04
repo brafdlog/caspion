@@ -47,7 +47,6 @@ export default {
     },
   },
   data() {
-    console.log(scraperToImporter(this.scraper));
     return {
       scraperToAdd: scraperToImporter(this.scraper),
     };
@@ -70,12 +69,9 @@ export default {
   },
   methods: {
     submitForm() {
-      console.log(this.importerToEncrypt);
       if (this.isFormValid) {
         this.addImporterAction(this.importerToEncrypt);
         this.resetForm();
-      } else {
-        console.log('error submit!!');
       }
     },
     resetForm() {
