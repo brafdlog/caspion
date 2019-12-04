@@ -23,14 +23,21 @@ import {
 import lang from 'element-ui/lib/locale/lang/en';
 import locale from 'element-ui/lib/locale';
 
+// eslint-disable-next-line import/no-extraneous-dependencies
+import electron from 'electron';
 import App from './App';
 import store from './store';
+import LoggerPlugin from './vue-plugins/logger';
+
+const logger = electron.remote.getGlobal('logger');
+Vue.use(LoggerPlugin, { logger });
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'));
 Vue.config.productionTip = false;
 
 // configure language
 locale.use(lang);
+
 Vue.use(Collapse);
 Vue.use(CollapseItem);
 Vue.use(Container);

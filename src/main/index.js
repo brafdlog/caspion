@@ -3,6 +3,9 @@ import { app, BrowserWindow } from 'electron';  // eslint-disable-line
 
 import '../renderer/store';
 
+import logger from 'electron-log';
+global.logger = logger;
+
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
