@@ -30,6 +30,7 @@ import store from './store';
 import LoggerPlugin from './vue-plugins/logger';
 
 const logger = electron.remote.getGlobal('logger');
+logger.info('The renderer process got the logger');
 Vue.use(LoggerPlugin, { logger });
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'));
@@ -61,5 +62,8 @@ Vue.use(TableColumn);
 new Vue({
   components: { App },
   store,
+  created() {
+    logger.info('Main Vue component registered');
+  },
   template: '<App/>',
 }).$mount('#app');

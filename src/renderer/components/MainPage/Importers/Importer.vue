@@ -88,9 +88,11 @@ export default {
       this.importing = true;
       try {
         const result = await scrape(
+          this.$electron.remote.app.getPath('cache'),
           this.decryptedImporter.key,
           this.decryptedImporter.loginFields,
           this.debug,
+          this.$logger,
         );
         success = result.success;
         errorMessage = result.errorMessage || result.errorType;
@@ -100,7 +102,8 @@ export default {
           });
         }
       } catch (error) {
-        this.$logger.error(error);
+        this.$logger.error(`message: ${error.message}. Error Code:${error.code});
+        this.$logger.verbose(error.stack);
         success = false;
         errorMessage = error.message;
       } finally {

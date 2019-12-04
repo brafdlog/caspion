@@ -1,9 +1,15 @@
 
 import { app, BrowserWindow } from 'electron';  // eslint-disable-line
+import logger from 'electron-log';
 
 import '../renderer/store';
 
-import logger from 'electron-log';
+logger.info(`Welcome to ${app.getName()} log`);
+logger.info(`Version: ${app.getVersion()}`);
+
+
+const onError = (error) => logger.error(error);
+logger.catchErrors({ onError });
 global.logger = logger;
 
 /**
@@ -35,6 +41,8 @@ function createWindow() {
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
+
+  logger.info(`Windows loaded in ${winURL}`);
 }
 
 app.on('ready', createWindow);

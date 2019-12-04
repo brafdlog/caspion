@@ -1,8 +1,10 @@
 import download from 'download-chromium';
 import { getPuppeteerConfig } from 'israeli-bank-scrapers-core';
 
-const chromiumVersion = getPuppeteerConfig().chromiumRevision;
+const revision = getPuppeteerConfig().chromiumRevision;
 
-export default async function () {
-  return download({ revision: chromiumVersion });
+export default async function (installPath) {
+  return download({
+    revision, installPath,
+  });
 }
