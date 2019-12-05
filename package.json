@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "author": "Baruch Rothkoff <baruchiro@gmail.com>",
   "description": "An Electron-vue project for israeli-bank-scrapers",
-  "license": null,
+  "license": "MIT",
   "main": "./dist/electron/main.js",
   "scripts": {
     "build": "node .electron-vue/build.js && electron-builder",
@@ -21,6 +21,9 @@
     "unit": "karma start test/unit/karma.conf.js",
     "postinstall": "npm run lint:fix"
   },
+  "pre-commit": [
+    "lint"
+  ],
   "build": {
     "productName": "israeli-bank-scrapers-desktop",
     "appId": "com.israeli-bank-scrapers.desktop",

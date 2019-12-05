@@ -102,7 +102,7 @@ export default {
           });
         }
       } catch (error) {
-        this.$logger.error(`message: ${error.message}. Error Code:${error.code});
+        this.$logger.error(`message: ${error.message}. Error Code:${error.code}`);
         this.$logger.verbose(error.stack);
         success = false;
         errorMessage = error.message;
