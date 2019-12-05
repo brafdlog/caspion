@@ -3082,9 +3082,9 @@ core-js@^2.2.0, core-js@^2.4.0, core-js@^2.5.0:
   integrity sha512-HOpZf6eXmnl7la+cUdMnLvUxKNqLUzJvgIziQ0DiF3JwSImNphIqdGqzj6hIKyX04MmV0poclQ7+wjWvxQyR2A==
 
 core-js@^3.1.4:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.2.1.tgz#cd41f38534da6cc59f7db050fe67307de9868b09"
-  integrity sha512-Qa5XSVefSVPRxy2XfUC13WbvqkxhkwB3ve+pgCQveNgYzbM/UxZeu1dcOX/xr4UmfUd+muuvsaxilQzCyUurMw==
+  version "3.4.7"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.4.7.tgz#57c35937da80fe494fbc3adcf9cf3dc00eb86b34"
+  integrity sha512-qaPVGw30J1wQ0GR3GvoPqlGf9GZfKKF4kFC7kiHlcsPTqH3txrs9crCp3ZiMAXuSenhz89Jnl4GZs/67S5VOSg==
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
@@ -5308,10 +5308,22 @@ glob@^5.0.15:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
-glob@^7.0.0, glob@^7.0.3, glob@^7.1.1, glob@^7.1.2, glob@^7.1.3, glob@^7.1.4, glob@~7.1.1:
+glob@^7.0.0, glob@^7.0.3, glob@^7.1.1, glob@^7.1.2, glob@^7.1.4, glob@~7.1.1:
   version "7.1.4"
   resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.4.tgz#aa608a2f6c577ad357e1ae5a5c26d9a8d1969255"
   integrity sha512-hkLPepehmnKk41pUGm3sYxoFs/umurYfYJCerbXEyFIWcAzvpipAgVkBqqT9RBKMGjnq6kMuyYwha6csxbiM1A==
+  dependencies:
+    fs.realpath "^1.0.0"
+    inflight "^1.0.4"
+    inherits "2"
+    minimatch "^3.0.4"
+    once "^1.3.0"
+    path-is-absolute "^1.0.0"
+
+glob@^7.1.3:
+  version "7.1.6"
+  resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.6.tgz#141f33b81a7c2492e125594307480c46679278a6"
+  integrity sha512-LwaxwyZ72Lk7vZINtNNrywX0ZuLyStrdDtabefZKAY5ZGJhVtgdznluResxNmPitE0SAO+O26sWTHeKSI2wMBA==
   dependencies:
     fs.realpath "^1.0.0"
     inflight "^1.0.4"
@@ -5889,9 +5901,9 @@ https-browserify@^1.0.0:
   integrity sha1-7AbBDgo0wPL68Zn3/X/Hj//QPHM=
 
 https-proxy-agent@^2.2.1:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/https-proxy-agent/-/https-proxy-agent-2.2.2.tgz#271ea8e90f836ac9f119daccd39c19ff7dfb0793"
-  integrity sha512-c8Ndjc9Bkpfx/vCJueCPy0jlP4ccCCSNDp8xwCZzPjKJUm+B+u9WX2x98Qx4n1PiMNTWo3D7KK5ifNV/yJyRzg==
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/https-proxy-agent/-/https-proxy-agent-2.2.4.tgz#4ee7a737abd92678a293d9b34a1af4d0d08c787b"
+  integrity sha512-OmvfoQ53WLjtA9HeYP9RNrWMJzzAz1JGaSFr1nijg0PVR1JaD/xbJq1mdEIIlxGpXp9eSe/O2LgU9DJmTPd0Eg==
   dependencies:
     agent-base "^4.3.0"
     debug "^3.1.0"
@@ -6570,17 +6582,17 @@ isobject@^3.0.0, isobject@^3.0.1:
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
   integrity sha1-TkMekrEalzFjaqH5yNHMvP2reN8=
 
-israeli-bank-scrapers-core@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/israeli-bank-scrapers-core/-/israeli-bank-scrapers-core-0.7.0.tgz#78957fae2acdd9856c1ddd2d9cd50dc20d29c87e"
-  integrity sha512-Bb8RDZNPYrgpWUferqml1bQZ/Xf6N112FwaRtci/XkEjWqrW0hNl4E82362zD49KXIsfcsZMzrIBwkAxovJZXw==
+israeli-bank-scrapers-core@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/israeli-bank-scrapers-core/-/israeli-bank-scrapers-core-0.8.0.tgz#c6dfc5ebdc073a38392d500cce0a895baf330668"
+  integrity sha512-3eqS2MeUu0szFxTjHYoKl9frimNt/Xz49/wDRQuboKFW+MoHbDfnM1TA+ptSMV9wU2ssc+S40y3X3YWlMVR5oQ==
   dependencies:
     build-url "^1.1.2"
     core-js "^3.1.4"
     lodash "^4.17.10"
     moment "^2.22.2"
     node-fetch "^2.2.0"
-    puppeteer-core "^1.7.0"
+    puppeteer-core "^2.0.0"
     uuid "^3.3.2"
 
 isstream@~0.1.2:
@@ -9385,14 +9397,14 @@ punycode@^2.1.0:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
-puppeteer-core@^1.7.0:
-  version "1.20.0"
-  resolved "https://registry.yarnpkg.com/puppeteer-core/-/puppeteer-core-1.20.0.tgz#cfad0c7cbb6e9bb0d307c6e955e5c924134bbeb5"
-  integrity sha512-akoSCMDVv6BFd/4+dtW6mVgdaRQhy/cmkGzXcx9HAXZqnY9zXYbsfoXMiMpwt3+53U9zFGSjgvsi0mDKNJLfqg==
+puppeteer-core@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/puppeteer-core/-/puppeteer-core-2.0.0.tgz#2c3b122dec539ff01e6dfc29ee3e6f3a6280330d"
+  integrity sha512-xgg8hLm7VIiwoYRZtgXNy0gf9IKCA/WyT5Rm5RqkDc7mm4bJMeESmzP+YWyl+X/c1CSOuCy4WWnnC+9T+DKgCQ==
   dependencies:
     debug "^4.1.0"
     extract-zip "^1.6.6"
-    https-proxy-agent "^2.2.1"
+    https-proxy-agent "^3.0.0"
     mime "^2.0.3"
     progress "^2.0.1"
     proxy-from-env "^1.0.0"

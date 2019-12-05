@@ -87,6 +87,7 @@ export default {
 
       this.importing = true;
       try {
+        this.$logger.info('Request to import');
         const result = await scrape(
           this.$electron.remote.app.getPath('cache'),
           this.decryptedImporter.key,
@@ -101,6 +102,7 @@ export default {
             this.addTransactionsAction(account);
           });
         }
+        this.$logger.info(`Success: ${success}. Error Message: ${errorMessage}`);
       } catch (error) {
         this.$logger.error(`message: ${error.message}. Error Code:${error.code}`);
         this.$logger.verbose(error.stack);
