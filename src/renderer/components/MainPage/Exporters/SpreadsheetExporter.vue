@@ -1,5 +1,10 @@
 <template>
   <el-form>
+    <el-link
+      type="primary"
+      href="https://github.com/baruchiro/israeli-bank-scrapers-desktop/blob/master/docs/share-spreadsheet.md"
+      target="_blank"
+      @click.prevent="openExternalBrowser">Creating Sharing Link</el-link>
     <el-form-item label="Spreadsheet Sharing Link">
       <el-input v-model="properties.fileUrl" />
     </el-form-item>
@@ -64,6 +69,9 @@ export default {
         this.emitStatus(false, error.message);
       }
       this.loading = false;
+    },
+    openExternalBrowser(e) {
+      this.$electron.remote.shell.openExternal(e.target.href);
     },
   },
 };

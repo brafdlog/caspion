@@ -19,6 +19,7 @@ import {
   Checkbox,
   Table,
   TableColumn,
+  Link,
 } from 'element-ui';
 import lang from 'element-ui/lib/locale/lang/en';
 import locale from 'element-ui/lib/locale';
@@ -57,6 +58,7 @@ Vue.use(Tooltip);
 Vue.use(Checkbox);
 Vue.use(Table);
 Vue.use(TableColumn);
+Vue.use(Link);
 
 /* eslint-disable no-new */
 new Vue({
