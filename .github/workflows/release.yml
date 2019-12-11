@@ -21,7 +21,7 @@ jobs:
       with:
         node-version: 10
     - name: Install Snapcraft
-      uses: samuelmeuli/action-snapcraft@v1
+      uses: samuelmeuli/action-snapcraft@2a2b003682661733922241b9af1c4c1c789f30f1
       # Only install Snapcraft on Ubuntu
       if: startsWith(matrix.os, 'ubuntu')
       with:
