@@ -20,6 +20,13 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 10
+    - name: Install Snapcraft
+      uses: samuelmeuli/action-snapcraft@v1
+      # Only install Snapcraft on Ubuntu
+      if: startsWith(matrix.os, 'ubuntu')
+      with:
+        # Log in to Snap Store
+        snapcraft_token: ${{ secrets.snapcraft_token }}
     - name: Build/release Electron app
       uses: samuelmeuli/action-electron-builder@aab12df5d99568b8426a07695135a977d30c9a95
       with:
