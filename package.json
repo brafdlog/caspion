@@ -56,7 +56,6 @@
       "icon": "build/icons/icon.ico"
     },
     "linux": {
-      "target": ["deb"],
       "icon": "build/icons"
     }
   },
