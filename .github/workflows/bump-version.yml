@@ -18,4 +18,4 @@ jobs:
           yarn version --patch --no-git-tag-version
           git add package.json
           git commit -m "Bump version"
-          git push origin master
+          git push origin cd
