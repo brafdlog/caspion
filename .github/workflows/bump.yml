@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - run: |
-          git config user.email "bot@israeli-bank-scrapers-desktop.com
+          git config user.email "bot@israeli-bank-scrapers-desktop.com"
           git config user.name "Bot"
           git remote set-url origin https://x-access-token:${{ secrets.github_token }}@github.com/${GITHUB_REPOSITORY}.git
           git checkout master
