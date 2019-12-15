@@ -28,7 +28,6 @@
   "build": {
     "productName": "israeli-bank-scrapers-desktop",
     "appId": "com.israeli-bank-scrapers.desktop",
-    "detectUpdateChannel": false,
     "directories": {
       "output": "build"
     },
