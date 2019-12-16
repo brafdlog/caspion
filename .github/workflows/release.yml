@@ -15,10 +15,11 @@ jobs:
         os: [windows-2019, ubuntu-18.04]
 
     steps:
+    - uses: actions/checkout@v1
     - name: Set version in Env
       run: echo ::set-env name=package_version::v`awk -F ':' '/version/ {print $2}' package.json | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g'`
     - name: print
-      run: echo {{ env.package_version }}
+      run: echo ${{ env.package_version }}
     - uses: actions/github-script@0.3.0
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
@@ -28,7 +29,6 @@ jobs:
             repo: 'israeli-bank-scrapers-desktop'
           })
           console.log(result)
-    - uses: actions/checkout@v1
     - name: Install Node.js, NPM and Yarn
       uses: actions/setup-node@v1
       with:
