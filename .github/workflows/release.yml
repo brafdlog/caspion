@@ -29,7 +29,7 @@ jobs:
             repo: 'israeli-bank-scrapers-desktop'
           })
           console.log(result.data.map(release => release.tag_name))
-          console.log(result.data.filter(release => relese.tag_name === ${{ env.package_version }}).length)
+          console.log(result.data.filter(release => relese.tag_name === ${{ env.package_version }}).length))
     - name: Install Node.js, NPM and Yarn
       uses: actions/setup-node@v1
       with:
