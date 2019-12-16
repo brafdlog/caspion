@@ -15,6 +15,15 @@ jobs:
         os: [windows-2019, ubuntu-18.04]
 
     steps:
+    - uses: actions/github-script@0.3.0
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          const result = await github.repos.listReleases({
+            'baruchiro',
+            'israeli-bank-scrapers-desktop'
+          })
+          console.log(result)
     - uses: actions/checkout@v1
     - name: Install Node.js, NPM and Yarn
       uses: actions/setup-node@v1
@@ -40,4 +49,4 @@ jobs:
 
         # If the commit is tagged with a version (e.g. "v1.0.0"),
         # release the app after building
-        release: ${{ `git tag | grep ^v`awk -F ':' '/version/ {print $2}' package.json | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g'`$ | wc -l`==0 }}
+        # release: ${{ `git tag | grep ^v`awk -F ':' '/version/ {print $2}' package.json | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g'`$ | wc -l`==0 }}
