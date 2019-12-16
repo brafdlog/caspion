@@ -2,7 +2,7 @@ name: Build/Release
 
 on:
   push:
-    branches: cd
+    branches: baruchiro-patch-1
 
 jobs:
   release:
@@ -40,4 +40,4 @@ jobs:
 
         # If the commit is tagged with a version (e.g. "v1.0.0"),
         # release the app after building
-        release: true
+        release: ${{ `git tag | grep ^v`awk -F ':' '/version/ {print $2}' package.json | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g'`$ | wc -l`==0 }}
