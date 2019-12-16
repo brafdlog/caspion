@@ -21,8 +21,10 @@ jobs:
     - name: print
       run: echo ${{ env.package_version }}
     - uses: actions/github-script@0.3.0
+      id: check_release
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
+        debug: true
         script: |
           const result = await github.repos.listReleases({
             owner: 'baruchiro',
@@ -30,6 +32,10 @@ jobs:
           })
           console.log(result.data.map(release => release.tag_name))
           console.log(result.data.filter(release => release.tag_name === 'v${{ env.package_version }}').length)
+          const isReleaseExist = result.data.filter(release => release.tag_name === 'v${{ env.package_version }}').length > 0
+          return isReleaseExist
+    - name: isReleaseExist
+      run: echo ${{steps.check_release.outputs.result}}
     - name: Install Node.js, NPM and Yarn
       uses: actions/setup-node@v1
       with:
