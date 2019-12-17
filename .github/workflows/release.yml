@@ -2,7 +2,7 @@ name: Build/Release
 
 on:
   push:
-    branches: baruchiro-patch-1
+    branches: master
 
 jobs:
   release:
@@ -18,26 +18,26 @@ jobs:
     - uses: actions/checkout@v1
     - name: Set version in Env
       shell: bash
-      run: echo ::set-env name=package_version::`awk -F ':' '/version/ {print $2}' package.json | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g'`
-    - name: print
-      run: echo ${{ env.package_version }}
+      run: |
+        echo ::set-env name=package_version::`awk -F ':' '/version/ {print $2}' package.json | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g'`
+        echo "Version is `awk -F ':' '/version/ {print $2}' package.json | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g'`"
     - uses: actions/github-script@0.3.0
+      name: Check if current version is a published release (by release tag)
       id: check_release
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
-        debug: true
+        # debug: true
         script: |
           const result = await github.repos.listReleases({
             owner: 'baruchiro',
             repo: 'israeli-bank-scrapers-desktop'
           })
-          console.log(result)
+          # console.log(result)
           const release_tags = result.data.filter(release => !release.draft).map(release => release.tag_name)
-          console.log(release_tags)
+          # console.log(release_tags)
           const publishToRelease = !release_tags.includes('v${{ env.package_version }}')
+          console.log('publishToRelease: ' + publishToRelease)
           return publishToRelease
-    - name: isReleaseExist
-      run: echo ${{steps.check_release.outputs.result}}
     - name: Install Node.js, NPM and Yarn
       uses: actions/setup-node@v1
       with:

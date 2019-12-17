@@ -1,6 +1,6 @@
 {
   "name": "israeli-bank-scrapers-desktop",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "author": "Baruch Rothkoff <baruchiro@gmail.com>",
   "description": "An Electron-vue project for israeli-bank-scrapers",
   "license": "MIT",
