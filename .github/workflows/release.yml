@@ -2,7 +2,7 @@ name: Build/Release
 
 on:
   push:
-    branches: cd
+    branches: baruchiro-patch-1
 
 jobs:
   release:
@@ -16,13 +16,35 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+    - name: Set version in Env
+      shell: bash
+      run: echo ::set-env name=package_version::`awk -F ':' '/version/ {print $2}' package.json | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g'`
+    - name: print
+      run: echo ${{ env.package_version }}
+    - uses: actions/github-script@0.3.0
+      id: check_release
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        debug: true
+        script: |
+          const result = await github.repos.listReleases({
+            owner: 'baruchiro',
+            repo: 'israeli-bank-scrapers-desktop'
+          })
+          console.log(result)
+          const release_tags = result.data.filter(release => !release.draft).map(release => release.tag_name)
+          console.log(release_tags)
+          const publishToRelease = !release_tags.includes('v${{ env.package_version }}')
+          return publishToRelease
+    - name: isReleaseExist
+      run: echo ${{steps.check_release.outputs.result}}
     - name: Install Node.js, NPM and Yarn
       uses: actions/setup-node@v1
       with:
         node-version: 10
     - name: Install Snapcraft
       uses: samuelmeuli/action-snapcraft@2a2b003682661733922241b9af1c4c1c789f30f1
-      # Only install Snapcraft on Ubuntu
+      # Only install Snapcraft  on Ubuntu
       if: startsWith(matrix.os, 'ubuntu')
       with:
         # Log in to  Snap Store
@@ -40,4 +62,4 @@ jobs:
 
         # If the commit is tagged with a version (e.g. "v1.0.0"),
         # release the app after building
-        release: true
+        release: ${{steps.check_release.outputs.result}}
