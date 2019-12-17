@@ -32,8 +32,8 @@ jobs:
           })
           console.log(result.data.map(release => release.tag_name))
           console.log(result.data.filter(release => release.tag_name === 'v${{ env.package_version }}').length)
-          const isReleaseExist = result.data.filter(release => release.tag_name === 'v${{ env.package_version }}').length > 0
-          return isReleaseExist
+          const publishToRelease = result.data.filter(release => release.tag_name === 'v${{ env.package_version }}').length === 0
+          return publishToRelease
     - name: isReleaseExist
       run: echo ${{steps.check_release.outputs.result}}
     - name: Install Node.js, NPM and Yarn
@@ -60,4 +60,4 @@ jobs:
 
         # If the commit is tagged with a version (e.g. "v1.0.0"),
         # release the app after building
-        # release: ${{ `git tag | grep ^v`awk -F ':' '/version/ {print $2}' package.json | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g'`$ | wc -l`==0 }}
+        release: ${{steps.check_release.outputs.result}}
