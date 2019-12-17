@@ -16,6 +16,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+    - name: Set GoogleService private key
+      shell: bash
+      run: sed -i 's/$$private_key$$/${{ secrets.google_service_account_pk }}/g' src/renderer/modules/googleServiceAccount.js
     - name: Set version in Env
       shell: bash
       run: |
