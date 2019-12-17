@@ -31,9 +31,10 @@ jobs:
             owner: 'baruchiro',
             repo: 'israeli-bank-scrapers-desktop'
           })
-          console.log(result.data.map(release => release.tag_name))
-          console.log(result.data.filter(release => release.tag_name === 'v${{ env.package_version }}').length)
-          const publishToRelease = result.data.filter(release => release.tag_name === 'v${{ env.package_version }}').length === 0
+          console.log(result)
+          const release_tags = result.data.map(release => release.tag_name)
+          console.log(release_tags)
+          const publishToRelease = !release_tags.includes('v${{ env.package_version }}')
           return publishToRelease
     - name: isReleaseExist
       run: echo ${{steps.check_release.outputs.result}}
