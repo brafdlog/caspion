@@ -17,6 +17,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Set version in Env
+      shell: bash
       run: echo ::set-env name=package_version::`awk -F ':' '/version/ {print $2}' package.json | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g'`
     - name: print
       run: echo ${{ env.package_version }}
