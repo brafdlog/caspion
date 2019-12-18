@@ -19,7 +19,7 @@ jobs:
     - name: Set GoogleService private key
       shell: bash
       run: |
-        sed -i 's/$$private_key$$/${{temp}}/g' src/renderer/modules/googleServiceAccount.js
+        sed -i 's/$$private_key$$/${{secrets.temp}}/g' src/renderer/modules/googleServiceAccount.js
     - name: Set version in Env
       shell: bash
       run: |
