@@ -2,7 +2,7 @@ name: Build/Release
 
 on:
   push:
-    branches: master
+    branches: token
 
 jobs:
   release:
@@ -18,7 +18,8 @@ jobs:
     - uses: actions/checkout@v1
     - name: Set GoogleService private key
       shell: bash
-      run: sed -i 's/$$private_key$$/${{ secrets.google_service_account_pk }}/g' src/renderer/modules/googleServiceAccount.js
+      run: |
+        sed -i 's/$$private_key$$/`echo ${{ secrets.google_service_account_pk }} | tr '\n' "\\n"`/g' src/renderer/modules/googleServiceAccount.js
     - name: Set version in Env
       shell: bash
       run: |
