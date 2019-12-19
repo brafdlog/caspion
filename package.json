@@ -56,7 +56,11 @@
       "icon": "build/icons/icon.ico"
     },
     "linux": {
-      "target": ["AppImage", "snap", "deb"],
+      "target": [
+        "AppImage",
+        "snap",
+        "deb"
+      ],
       "icon": "build/icons"
     }
   },
@@ -130,6 +134,7 @@
     "node-sass": "^4.9.2",
     "pre-commit": "^1.2.2",
     "prettier": "^1.18.2",
+    "replace-in-file": "^5.0.2",
     "require-dir": "^1.0.0",
     "sass-loader": "^7.0.3",
     "sinon": "^7.5.0",
