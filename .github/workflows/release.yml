@@ -16,10 +16,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Set GoogleService private key
-      shell: bash
-      run: |
-        sed -i 's/$$private_key$$/${{secrets.temp2}}/g' src/renderer/modules/googleServiceAccount.js
     - name: Set version in Env
       shell: bash
       run: |
@@ -54,6 +50,8 @@ jobs:
         # Log in to  Snap Store
         snapcraft_token: ${{ secrets.snapcraft_token }}
     - name: Build/release Electron app
+      env:
+        GOOGLE_SERVICE_PRIVATE_KEY: ${{secrets.temp2}}
       uses: samuelmeuli/action-electron-builder@aab12df5d99568b8426a07695135a977d30c9a95
       with:
         # GitHub token, automatically provided to the action
