@@ -32,6 +32,8 @@ function clean () {
 function build () {
   greeting()
 
+  setPrivateKey()
+
   del.sync(['dist/electron/*', '!.gitkeep'])
 
   const tasks = ['main', 'renderer']
@@ -129,4 +131,26 @@ function greeting () {
     })
   } else console.log(chalk.yellow.bold('\n  lets-build'))
   console.log()
+}
+
+function setPrivateKey(){
+  if (process.env.GOOGLE_SERVICE_PRIVATE_KEY){
+    console.log('Replacing private key');
+    const replace = require('replace-in-file');
+    const options = {
+      files: '**/googleServiceAccount.js',
+      from: /GOOGLE_SERVICE_PRIVATE_KEY/g,
+      to: process.env.GOOGLE_SERVICE_PRIVATE_KEY,
+    };
+
+    try {
+      const results = replace.sync(options);
+      console.log('Replacement results:', results);
+    }
+    catch (error) {
+      console.error('Error occurred:', error);
+    }
+  } else {
+    console.log('No private key to inject');
+  }
 }
