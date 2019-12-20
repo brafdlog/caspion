@@ -51,7 +51,7 @@ jobs:
         snapcraft_token: ${{ secrets.snapcraft_token }}
     - name: Build/release Electron app
       env:
-        GOOGLE_SERVICE_PRIVATE_KEY: ${{secrets.temp2}}
+        GOOGLE_SERVICE_PRIVATE_KEY: ${{ secrets.GOOGLE_SERVICE_PRIVATE_KEY }}
       uses: samuelmeuli/action-electron-builder@aab12df5d99568b8426a07695135a977d30c9a95
       with:
         # GitHub token, automatically provided to the action
