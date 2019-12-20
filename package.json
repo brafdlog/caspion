@@ -119,7 +119,7 @@
     "file-loader": "^1.1.11",
     "html-webpack-plugin": "^3.2.0",
     "inject-loader": "^4.0.1",
-    "karma": "^2.0.2",
+    "karma": "4.4.1",
     "karma-chai": "^0.1.0",
     "karma-coverage": "^1.1.2",
     "karma-electron": "^6.0.0",
@@ -150,5 +150,8 @@
     "webpack-dev-server": "^3.1.4",
     "webpack-hot-middleware": "^2.22.2",
     "webpack-merge": "^4.1.3"
+  },
+  "resolutions": {
+    "multispinner/lodash.merge": "^4.6.2"
   }
 }
