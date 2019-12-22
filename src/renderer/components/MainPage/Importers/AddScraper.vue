@@ -12,7 +12,10 @@
         :key="loginField"
         :label="loginField"
       >
-        <el-input v-model="scraperToAdd.loginFields[loginField]" />
+        <el-input
+          v-model="scraperToAdd.loginFields[loginField]"
+          :show-password="loginField == 'password'"
+        />
       </el-form-item>
       <el-form-item>
         <el-button
