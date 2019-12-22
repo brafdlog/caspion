@@ -24,7 +24,7 @@
         v-for="(value, loginField) in decryptedImporter.loginFields"
         :key="loginField"
       >
-        {{ loginField }}: {{ value }}
+        {{ loginField }}: {{ loginField != 'password' ? value: "********" }}
       </div>
       <el-button
         type="primary"
