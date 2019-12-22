@@ -13,8 +13,8 @@ jobs:
           node-version: 12.x
       - name: lint
         run: |
-          npm install
-          npm run lint
+          yarn
+          yarn lint
         
   build:
 
@@ -40,8 +40,8 @@ jobs:
     - name: npm install and test
       run: |
         Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-        npm install
-        npm test
+        yarn
+        yarn test
       env:
         CI: true
         DISPLAY: :99.0
