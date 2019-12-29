@@ -11,7 +11,7 @@ function isObject(obj) {
   return typeof obj === 'object' && !Array.isArray(obj) && obj !== null;
 }
 
-function encryptValue(val) {
+async function encryptValue(val) {
   if (isObject(val)) {
     return encryptObject(val);
   }
@@ -21,7 +21,7 @@ function encryptValue(val) {
   return encrypt(val);
 }
 
-function decryptValue(val) {
+async function decryptValue(val) {
   if (isObject(val)) {
     return decryptObject(val);
   }
@@ -35,8 +35,8 @@ function encryptArray(arr) {
   return arr.map((item) => encryptValue(item));
 }
 
-function decryptArray(arr) {
-  return arr.map((item) => decryptValue(item));
+async function decryptArray(arr) {
+  return Promise.all(arr.map((item) => decryptValue(item)));
 }
 
 export function encryptObject(obj) {
