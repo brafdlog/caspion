@@ -20,7 +20,7 @@
     "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
     "test": "npm run unit && npm run e2e",
     "unit": "karma start test/unit/karma.conf.js",
-    "postinstall": "npm run lint:fix"
+    "postinstall": "electron-rebuild && npm run lint:fix"
   },
   "pre-commit": [
     "lint"
@@ -139,7 +139,7 @@
     "replace-in-file": "^5.0.2",
     "require-dir": "^1.0.0",
     "sass-loader": "^7.0.3",
-    "sinon": "^7.5.0",
+    "sinon": "^8.0.1",
     "spectron": "^3.8.0",
     "style-loader": "^0.21.0",
     "url-loader": "^1.0.1",
