@@ -1,11 +1,11 @@
 import { loadSALT, saveSALT } from './keyar';
 
-export default async function SALT(newIfNotExist) {
+export default async function SALT(defaultValue) {
   const SALT = await loadSALT();
   if (SALT) return SALT;
 
-  if (!newIfNotExist) throw Error('SALT not exist');
+  if (!defaultValue) throw Error('SALT not exist');
 
-  await saveSALT(newIfNotExist);
+  await saveSALT(defaultValue);
   return loadSALT();
 }

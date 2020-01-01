@@ -31,42 +31,44 @@ async function decryptValue(val) {
   return decrypt(val);
 }
 
-function encryptArray(arr) {
-  return arr.map((item) => encryptValue(item));
+async function encryptArray(arr) {
+  return Promise.all(arr.map((item) => encryptValue(item)));
 }
 
 async function decryptArray(arr) {
   return Promise.all(arr.map((item) => decryptValue(item)));
 }
 
-export function encryptObject(obj) {
-  const encrypted = {};
-  Object.keys(obj).forEach((key) => {
-    encrypted[key] = encryptValue(obj[key]);
-  });
+export async function encryptObject(obj) {
+  const encrypted = await Object.keys(obj).reduce(async (accPromise, key) => {
+    const acc = await accPromise;
+    acc[key] = await encryptValue(obj[key]);
+    return acc;
+  }, Promise.resolve({}));
   return encrypted;
 }
 
-export function decryptObject(obj) {
-  const decrypted = {};
-  Object.keys(obj).forEach((key) => {
-    decrypted[key] = decryptValue(obj[key]);
-  });
+export async function decryptObject(obj) {
+  const decrypted = await Object.keys(obj).reduce(async (accPromise, key) => {
+    const acc = await accPromise;
+    acc[key] = await decryptValue(obj[key]);
+    return acc;
+  }, Promise.resolve({}));
   return decrypted;
 }
 
-export function encryptProperty(obj, property) {
-  const encrypted = obj;
+export async function encryptProperty(obj, property) {
+  const encrypted = { ...obj };
   if (encrypted[property]) {
-    encrypted[property] = encryptObject(encrypted[property]);
+    encrypted[property] = await encryptObject(encrypted[property]);
   }
   return encrypted;
 }
 
-export function decryptProperty(obj, property) {
-  const decrypted = obj;
+export async function decryptProperty(obj, property) {
+  const decrypted = { ...obj };
   if (decrypted[property]) {
-    decrypted[property] = decryptObject(decrypted[property]);
+    decrypted[property] = await decryptObject(decrypted[property]);
   }
   return decrypted;
 }

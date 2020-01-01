@@ -1,13 +1,17 @@
+import sinon from 'sinon';
+import * as saltModule from '../../../src/renderer/modules/salt';
 import { encryptObject, decryptObject } from '../../../src/renderer/modules/credentials';
 
 function isNotNullOrEmptyOrUndefined(value) {
   return value && value !== null && value !== '';
 }
 
+sinon.stub(saltModule, 'default').returns(Promise.resolve('AAAAAAA'));
+
 describe('credentials.js', () => {
-  it('Should encrypt value of simple object', () => {
+  it('Should encrypt value of simple object', async () => {
     const original = { key: 'value' };
-    const encrypted = encryptObject(original);
+    const encrypted = await encryptObject(original);
 
     const originalKeys = Object.keys(original);
     const encryptedKeys = Object.keys(encrypted);
@@ -21,15 +25,20 @@ describe('credentials.js', () => {
     assert.notEqual(encrypted[encryptedKeys[0]], original[originalKeys[0]]);
   });
 
-  it('Should throw when encrypt a number value', () => {
+  it('Should throw when encrypt a number value', async () => {
     const original = { key: 1234 };
 
-    assert.throws(() => encryptObject(original), TypeError);
+    try {
+      const encrypted = await encryptObject(original);
+      assert.isUndefined(encrypted);
+    } catch (error) {
+      assert.instanceOf(error, Error);
+    }
   });
 
-  it('Should encrypt an array values', () => {
+  it('Should encrypt an array values', async () => {
     const original = { key: ['arr1', 'arr2', 'arr3'] };
-    const encrypted = encryptObject(original);
+    const encrypted = await encryptObject(original);
 
     const originalKeys = Object.keys(original);
     const encryptedKeys = Object.keys(encrypted);
@@ -47,7 +56,7 @@ describe('credentials.js', () => {
     assert.notEqual(encryptedValue, originalValue);
   });
 
-  it('Should encrypt a complex object values', () => {
+  it('Should encrypt a complex object values', async () => {
     const original = {
       arrKey: ['arr1', 'arr2', 'arr3'],
       arrComplex: [
@@ -61,7 +70,7 @@ describe('credentials.js', () => {
       },
       strKey: 'strval',
     };
-    const encrypted = encryptObject(original);
+    const encrypted = await encryptObject(original);
 
     // keys
     assert.hasAllKeys(encrypted, original);
@@ -103,7 +112,7 @@ describe('credentials.js', () => {
     assert.notDeepEqual(encrypted.objKey.arrKey, original.objKey.arrKey);
   });
 
-  it('Should encrypt and decrypt and get exactly the same object', () => {
+  it('Should encrypt and decrypt and get exactly the same object', async () => {
     const original = {
       arrKey: ['arr1', 'arr2', 'arr3'],
       arrComplex: [
@@ -117,7 +126,7 @@ describe('credentials.js', () => {
       },
       strKey: 'strval',
     };
-    const actual = decryptObject(encryptObject(original));
+    const actual = await decryptObject(await encryptObject(original));
 
     assert.deepEqual(actual, original);
   });
