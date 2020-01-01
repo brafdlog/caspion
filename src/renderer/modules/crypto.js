@@ -3,18 +3,24 @@ Copied from https://github.com/eshaham/israeli-ynab-updater/blob/b207a6b2468fa29
 */
 
 import crypto from 'crypto';
+import SALT from './salt';
 
 const ALGORITHM = 'aes-256-ctr';
-const SALT = '7cs+7Y(nxMFK';
 
-export function encrypt(text) {
-  const cipher = crypto.createCipher(ALGORITHM, SALT);
+function RandomDefaultSALT() {
+  return crypto.randomBytes(16).toString('hex');
+}
+
+export async function encrypt(text) {
+  const salt = await SALT(RandomDefaultSALT());
+  const cipher = crypto.createCipher(ALGORITHM, salt);
   const crypted = cipher.update(text, 'utf8', 'hex');
   return crypted + cipher.final('hex');
 }
 
-export function decrypt(text) {
-  const decipher = crypto.createDecipher(ALGORITHM, SALT);
+export async function decrypt(text) {
+  const salt = await SALT();
+  const decipher = crypto.createDecipher(ALGORITHM, salt);
   const decrypted = decipher.update(text, 'hex', 'utf8');
   return decrypted + decipher.final('utf8');
 }
