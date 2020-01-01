@@ -49,7 +49,7 @@
 import { mapActions } from 'vuex';
 import { MessageBox } from 'element-ui';
 import scrape from '../../../modules/scrapers';
-import { defaultEncryptProperty } from '../../../modules/credentials';
+import { defaultEncryptProperty } from '../../../modules/encryption/credentials';
 
 export default {
   props: {

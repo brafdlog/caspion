@@ -1,6 +1,6 @@
 import sinon from 'sinon';
-import * as saltModule from '../../../src/renderer/modules/salt';
-import { encryptObject, decryptObject } from '../../../src/renderer/modules/credentials';
+import * as saltModule from '../../../src/renderer/modules/encryption/salt';
+import { encryptObject, decryptObject } from '../../../src/renderer/modules/encryption/credentials';
 
 function isNotNullOrEmptyOrUndefined(value) {
   return value && value !== null && value !== '';
