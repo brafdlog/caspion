@@ -1,6 +1,6 @@
 # budget-tracking
 
-This project automatically fetches financial transactions from Israeli banks and credit cards, classifies them according to a function you define and sends the results to YNAB or to a google spreadsheet of your choice.
+This project automatically fetches financial transactions from Israeli banks and credit cards, classifies them according to a function you define and sends the results to [YNAB](https://ynab.com/referral/?ref=Z5wPbP0cYTWjdTQj&utm_source=customer_referral) or to a google spreadsheet of your choice.
 
 Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israeli-bank-scrapers) npm package.
 
