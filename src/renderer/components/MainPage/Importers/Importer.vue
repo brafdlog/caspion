@@ -16,8 +16,8 @@
         </el-tooltip>
       </div>
       <div>
-        <el-checkbox v-model="debug">
-          Debug
+        <el-checkbox v-model="showBrowser">
+          Show browser
         </el-checkbox>
       </div>
       <div
@@ -63,7 +63,7 @@ export default {
       importing: false,
       success: null,
       lastMessage: null,
-      debug: false,
+      showBrowser: false,
     };
   },
   computed: {
@@ -92,7 +92,7 @@ export default {
           this.$electron.remote.app.getPath('cache'),
           this.decryptedImporter.key,
           this.decryptedImporter.loginFields,
-          this.debug,
+          this.showBrowser,
           this.$logger,
         );
         success = result.success;
