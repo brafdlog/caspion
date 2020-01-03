@@ -4,6 +4,8 @@
 
 Based on [israeli-bank-scrapers](https://github.com/eshaham/israeli-bank-scrapers) project.
 
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/baruchiro/israeli-bank-scrapers-desktop.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/baruchiro/israeli-bank-scrapers-desktop/context:javascript)
+
 ## Security Principles
 
 This app has two main principles:
