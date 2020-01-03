@@ -4,7 +4,10 @@
       type="primary"
       href="https://github.com/baruchiro/israeli-bank-scrapers-desktop/blob/master/docs/share-spreadsheet.md"
       target="_blank"
-      @click.prevent="openExternalBrowser">Creating Sharing Link</el-link>
+      @click.prevent="openExternalBrowser"
+    >
+      Creating Sharing Link
+    </el-link>
     <el-form-item label="Spreadsheet Sharing Link">
       <el-input v-model="properties.fileUrl" />
     </el-form-item>
