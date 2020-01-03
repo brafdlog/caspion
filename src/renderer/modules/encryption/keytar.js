@@ -10,3 +10,11 @@ export async function loadSALT() {
 export async function saveSALT(newSALT) {
   return keytar.setPassword(serviceName, accountName, newSALT);
 }
+
+export async function saveIntoAccount(account, password) {
+  return keytar.setPassword(serviceName, account, password);
+}
+
+export async function getFromAccount(account) {
+  return keytar.getPassword(serviceName, account);
+}

@@ -1,6 +1,9 @@
 <template>
-  <el-card :body-style="{ padding: '0px' }">
-    <el-collapse-item :name="decryptedImporter._id">
+  <el-card
+    v-if="decryptedImporter"
+    :body-style="{ padding: '0px' }"
+  >
+    <el-collapse-item :name="decryptedImporter.key">
       <div slot="title">
         <span>{{ decryptedImporter.name }}</span>
         <el-tooltip
@@ -49,7 +52,7 @@
 import { mapActions } from 'vuex';
 import { MessageBox } from 'element-ui';
 import scrape from '../../../modules/scrapers';
-import { defaultEncryptProperty } from '../../../modules/encryption/credentials';
+import { decryptProperty } from '../../../modules/encryption/credentials';
 
 export default {
   props: {
@@ -64,14 +67,10 @@ export default {
       success: null,
       lastMessage: null,
       debug: false,
+      decryptedImporter: null,
     };
   },
   computed: {
-    decryptedImporter() {
-      const result = { ...this.importer, ...this.importer[defaultEncryptProperty] };
-      delete result[defaultEncryptProperty];
-      return result;
-    },
     iconClass() {
       return {
         'el-icon-question': this.success === null,
@@ -79,6 +78,12 @@ export default {
         'el-icon-error': this.success === false,
       };
     },
+  },
+  created() {
+    decryptProperty(this.importer, 'loginFields')
+      .then((decrypted) => {
+        this.decryptedImporter = decrypted;
+      });
   },
   methods: {
     async scrape() {
@@ -129,7 +134,7 @@ export default {
           type: 'warning',
         },
       );
-      this.removeImporterAction(this.decryptedImporter._id);
+      this.removeImporterAction(this.decryptedImporter.key);
     },
     ...mapActions(['removeImporterAction', 'addTransactionsAction']),
   },

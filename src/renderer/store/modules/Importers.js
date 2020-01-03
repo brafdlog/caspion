@@ -1,12 +1,9 @@
 const mutations = {
-  setImporters(state, data) {
-    state.importers = data;
-  },
   addImporter(state, data) {
     state.importers.push(data);
   },
   removeImporter(state, data) {
-    state.importers = state.importers.filter((importer) => importer._id !== data);
+    state.importers = state.importers.filter((importer) => importer.key !== data);
   },
 };
 

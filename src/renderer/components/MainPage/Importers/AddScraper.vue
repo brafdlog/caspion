@@ -5,15 +5,15 @@
   >
     <el-form
       ref="addScraperForm"
-      :model="scraperToAdd"
+      :model="importerToAdd"
     >
       <el-form-item
-        v-for="(value, loginField) in scraperToAdd.loginFields"
+        v-for="(value, loginField) in importerToAdd.loginFields"
         :key="loginField"
         :label="loginField"
       >
         <el-input
-          v-model="scraperToAdd.loginFields[loginField]"
+          v-model="importerToAdd.loginFields[loginField]"
           :show-password="loginField == 'password'"
         />
       </el-form-item>
@@ -32,7 +32,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { defaultEncryptProperty } from '../../../modules/encryption/credentials';
+import { encryptProperty } from '../../../modules/encryption/credentials';
 
 function scraperToImporter(scraper) {
   const importer = { ...scraper, loginFields: {} };
@@ -51,34 +51,25 @@ export default {
   },
   data() {
     return {
-      scraperToAdd: scraperToImporter(this.scraper),
+      importerToAdd: scraperToImporter(this.scraper),
     };
   },
   computed: {
     isFormValid() {
-      return Object.values(this.scraperToAdd.loginFields)
+      return Object.values(this.importerToAdd.loginFields)
         .every((key) => key && key.trim().length > 0);
-    },
-    importerToEncrypt() {
-      const encryptImporter = { ...this.scraperToAdd };
-      encryptImporter[defaultEncryptProperty] = {
-        loginFields: {
-          ...this.scraperToAdd.loginFields,
-        },
-      };
-      delete encryptImporter.loginFields;
-      return encryptImporter;
     },
   },
   methods: {
-    submitForm() {
+    async submitForm() {
       if (this.isFormValid) {
-        this.addImporterAction(this.importerToEncrypt);
+        const encrypted = await encryptProperty(this.importerToAdd, 'loginFields');
+        this.addImporterAction(encrypted);
         this.resetForm();
       }
     },
     resetForm() {
-      Object.assign(this.$data.scraperToAdd, scraperToImporter(this.scraper));
+      Object.assign(this.$data.importerToAdd, scraperToImporter(this.scraper));
     },
     ...mapActions([
       'addImporterAction',

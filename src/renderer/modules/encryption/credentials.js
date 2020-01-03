@@ -3,7 +3,8 @@
 Copied from https://github.com/eshaham/israeli-ynab-updater/blob/b207a6b2468fa2904412fe9563b8f65ac1e4cfaa/src/helpers/credentials.js
 */
 
-import { encrypt, decrypt } from './crypto';
+import { randomHex, encrypt, decrypt } from './crypto';
+import { saveIntoAccount, getFromAccount } from './keytar';
 
 export const defaultEncryptProperty = 'encrypted';
 
@@ -58,17 +59,20 @@ export async function decryptObject(obj) {
 }
 
 export async function encryptProperty(obj, property) {
-  const encrypted = { ...obj };
-  if (encrypted[property]) {
-    encrypted[property] = await encryptObject(encrypted[property]);
-  }
-  return encrypted;
+  const resultObj = { ...obj };
+  const propertyJSON = JSON.stringify(resultObj[property]);
+  const encryptedJSON = await encrypt(propertyJSON);
+  const account = randomHex();
+  await saveIntoAccount(account, encryptedJSON);
+  resultObj[property] = account;
+  return resultObj;
 }
 
 export async function decryptProperty(obj, property) {
-  const decrypted = { ...obj };
-  if (decrypted[property]) {
-    decrypted[property] = await decryptObject(decrypted[property]);
-  }
-  return decrypted;
+  const resultObj = { ...obj };
+  const account = resultObj[property];
+  const encryptedJSON = await getFromAccount(account);
+  const propertyJSON = await decrypt(encryptedJSON);
+  resultObj[property] = JSON.parse(propertyJSON);
+  return resultObj;
 }
