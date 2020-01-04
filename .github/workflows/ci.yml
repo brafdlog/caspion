@@ -16,7 +16,7 @@ jobs:
           yarn
           yarn lint
         
-  build:
+  test:
 
     runs-on: ${{ matrix.os }}
 
