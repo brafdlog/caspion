@@ -45,7 +45,7 @@ I wrote this version "quick and dirty", because the goal was to get to the solut
 Please note that we are currently in **beta**, and issues under [Beta Milestone](https://github.com/baruchiro/israeli-bank-scrapers-desktop/issues?q=is%3Aopen+is%3Aissue+milestone%3ABeta) are prioritized.
 
 - [Opening new issues](https://github.com/baruchiro/israeli-bank-scrapers-desktop/issues/new)
-- [Good first issues](https://github.com/baruchiro/israeli-bank-scrapers-desktop/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
+- [Good first issues](https://github.com/baruchiro/israeli-bank-scrapers-desktop/contribute)
 - English Corrections- I know I need help with English. Please report me language errors.
 - [Brainstorming](https://github.com/baruchiro/israeli-bank-scrapers-desktop/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+label%3Abrainstorming+)- Design issues that I need help and consultation from experienced people.
 - [Help wanted](https://github.com/baruchiro/israeli-bank-scrapers-desktop/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22)- Issues I don't think I can do at this time.
