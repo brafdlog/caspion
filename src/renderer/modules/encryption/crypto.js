@@ -7,12 +7,12 @@ import SALT from './salt';
 
 const ALGORITHM = 'aes-256-ctr';
 
-function RandomDefaultSALT() {
-  return crypto.randomBytes(16).toString('hex');
+export function randomHex(characters = 16) {
+  return crypto.randomBytes(characters).toString('hex');
 }
 
 export async function encrypt(text) {
-  const salt = await SALT(RandomDefaultSALT());
+  const salt = await SALT(randomHex());
   const cipher = crypto.createCipher(ALGORITHM, salt);
   const crypted = cipher.update(text, 'utf8', 'hex');
   return crypted + cipher.final('hex');

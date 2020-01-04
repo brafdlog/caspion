@@ -25,7 +25,6 @@ module.exports = {
     'import/extensions': 0,
     'import/newline-after-import': 0,
     'no-multi-assign': 0,
-    'no-underscore-dangle': ["error", { "allow": ["_id"] }],
     'no-plusplus': ["error", { "allowForLoopAfterthoughts": true }],
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
