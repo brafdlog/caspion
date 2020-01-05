@@ -67,6 +67,7 @@ export default {
       success: null,
       lastMessage: null,
       showBrowser: false,
+      decryptedImporter: null,
     };
   },
   computed: {
