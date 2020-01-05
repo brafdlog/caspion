@@ -52,6 +52,16 @@ Please note that we are currently in **beta**, and issues under [Beta Milestone]
 
 #### Build Setup
 
+### On Linux
+
+Currently this library uses `libsecret` so you may need to install it before running `npm install`.
+
+Depending on your distribution, you will need to run the following command:
+
+* Debian/Ubuntu: `sudo apt-get install libsecret-1-dev`
+* Red Hat-based: `sudo yum install libsecret-devel`
+* Arch Linux: `sudo pacman -S libsecret`
+
 ``` bash
 # install dependencies
 yarn
