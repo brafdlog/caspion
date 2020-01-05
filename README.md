@@ -50,9 +50,9 @@ Please note that we are currently in **beta**, and issues under [Beta Milestone]
 - [Brainstorming](https://github.com/baruchiro/israeli-bank-scrapers-desktop/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+label%3Abrainstorming+)- Design issues that I need help and consultation from experienced people.
 - [Help wanted](https://github.com/baruchiro/israeli-bank-scrapers-desktop/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22)- Issues I don't think I can do at this time.
 
-#### Build Setup
+### Build Setup
 
-##### On Linux
+#### Linux
 
 Currently this library uses `libsecret` so you may need to install it before running `yarn`.
 
@@ -62,6 +62,9 @@ Depending on your distribution, you will need to run the following command:
 * Red Hat-based: `sudo yum install libsecret-devel`
 * Arch Linux: `sudo pacman -S libsecret`
 
+then you can run the below commands
+
+#### Windows / Linux
 ``` bash
 # install dependencies
 yarn
