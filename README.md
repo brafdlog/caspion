@@ -54,7 +54,7 @@ Please note that we are currently in **beta**, and issues under [Beta Milestone]
 
 #### Linux
 
-Currently this library uses `libsecret` so you may need to install it before running `yarn`.
+Currently, this project depends on `libsecret`, so you may need to install it before running `yarn`.
 
 Depending on your distribution, you will need to run the following command:
 
@@ -62,7 +62,7 @@ Depending on your distribution, you will need to run the following command:
 * Red Hat-based: `sudo yum install libsecret-devel`
 * Arch Linux: `sudo pacman -S libsecret`
 
-then you can run the below commands
+Then you can run the commands below:
 
 #### Windows / Linux
 ``` bash
