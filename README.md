@@ -54,7 +54,7 @@ Please note that we are currently in **beta**, and issues under [Beta Milestone]
 
 ### On Linux
 
-Currently this library uses `libsecret` so you may need to install it before running `npm install`.
+Currently this library uses `libsecret` so you may need to install it before running `yarn`.
 
 Depending on your distribution, you will need to run the following command:
 
