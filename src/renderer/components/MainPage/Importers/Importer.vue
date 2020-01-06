@@ -44,6 +44,10 @@
       >
         Delete
       </el-button>
+      <el-progress
+        v-if="importing"
+        :percentage="percentage"
+      />
     </el-collapse-item>
   </el-card>
 </template>
@@ -68,6 +72,7 @@ export default {
       lastMessage: null,
       showBrowser: false,
       decryptedImporter: null,
+      percentage: 0,
     };
   },
   computed: {
@@ -99,6 +104,7 @@ export default {
           this.decryptedImporter.loginFields,
           this.showBrowser,
           this.$logger,
+          this.onProgress,
         );
         success = result.success;
         errorMessage = result.errorMessage || result.errorType;
@@ -106,6 +112,7 @@ export default {
           result.accounts.forEach((account) => {
             this.addTransactionsAction(account);
           });
+          this.onProgress({ percent: 0.9 });
         }
         this.$logger.info(`Success: ${success}. Error Message: ${errorMessage}`);
       } catch (error) {
@@ -114,8 +121,12 @@ export default {
         success = false;
         errorMessage = error.message;
       } finally {
+        this.onProgress({ percent: 1 });
         this.updateStatus(success, errorMessage);
       }
+    },
+    onProgress({ percent }) {
+      this.percentage = Math.floor(percent * 100);
     },
     updateStatus(success, errorMessage) {
       this.importing = false;
