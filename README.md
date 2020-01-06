@@ -36,7 +36,7 @@ The project is an *Electron* app, with *Vue* in the front-end, and mainly uses [
 
 ### I need your help
 
-This is the first time I'm writing code in *NodeJS*, and of course it's the first time I'm useing *Electron* and *Vue*.
+This is the first time I'm writing code in *NodeJS*, and of course it's the first time I'm using *Electron* and *Vue*.
 
 I wrote this version "quick and dirty", because the goal was to get to the solution up and running as quickly as possible. If there is interest, I can continue to develop the app as I work on other projects as well, and of course I would love to get help.
 
