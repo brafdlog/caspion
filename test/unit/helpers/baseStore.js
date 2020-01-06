@@ -1,10 +1,10 @@
-import sinon from 'sinon';
+import { getters as scrapersGetters } from '../../../src/renderer/store/modules/Scrapers';
 
 export const Transactions = {
-  '1541628000000-50-1619445266': {
+  '1541628000000-501420296066': {
     chargedAmount: -50,
     date: '2018-11-07T22:00:00.000Z',
-    description: 'כולל מדבר שור',
+    description: 'איקאה',
     installments: null,
     memo: '',
     originalAmount: -50,
@@ -13,10 +13,10 @@ export const Transactions = {
     status: 'completed',
     type: 'normal',
   },
-  efgh: {
+  '1541887200000-0.94-1236173698': {
     chargedAmount: -0.94,
     date: '2018-11-10T22:00:00.000Z',
-    description: 'עיגול לארגון פעמונים',
+    description: 'עיגול לטובה',
     installments: null,
     memo: '',
     originalAmount: 0,
@@ -27,35 +27,37 @@ export const Transactions = {
   },
 };
 
+const scrapers = {
+  scrapername1: {
+    name: 'Scraper Name 1',
+    loginFields: [
+      'field1',
+      'field2',
+    ],
+  },
+  scrapername2: {
+    name: 'Scraper Name 2',
+    loginFields: [
+      'field1',
+      'field2',
+      'field3',
+    ],
+  },
+};
+
 export default {
   modules: {
     Scrapers: {
       state: {
-        scrapers: {
-          scrapername1: {
-            name: 'Scraper Name 1',
-            loginFields: [
-              'field1',
-              'field2',
-            ],
-          },
-          scrapername2: {
-            name: 'Scraper Name 2',
-            loginFields: [
-              'field1',
-              'field2',
-              'field3',
-            ],
-          },
-        },
+        scrapers,
+      },
+      getters: {
+        ...scrapersGetters,
       },
     },
     Importers: {
       importers: [],
     },
     Transactions,
-  },
-  getters: {
-    scrapersWithId: sinon.spy(),
   },
 };
