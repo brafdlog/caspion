@@ -45,7 +45,7 @@
         Delete
       </el-button>
       <el-progress
-        v-if="importing"
+        v-show="importing"
         :percentage="percentage"
       />
     </el-collapse-item>
