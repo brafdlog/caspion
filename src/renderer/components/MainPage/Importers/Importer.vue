@@ -96,6 +96,7 @@ export default {
       let errorMessage;
 
       this.importing = true;
+      this.onProgress({ percent: 0 });
       try {
         this.$logger.info('Request to import');
         const result = await scrape(
