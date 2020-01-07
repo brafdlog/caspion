@@ -3,6 +3,7 @@ import { createScraper } from 'israeli-bank-scrapers-core';
 import getChrome from './downloadChromium';
 
 export default async function scrape(installPath, scraperName, loginFields, showBrowser, logger, onProgress) {
+  onProgress({ percent: 0.1 }, 'Step 1: check if Chrome exists');
   const chromePath = await getChrome(installPath, onProgress);
   const options = {
     companyId: scraperName, // mandatory; one of 'hapoalim', 'leumi', 'discount', 'otsarHahayal', 'visaCal', 'leumiCard', 'isracard', 'amex'
@@ -14,7 +15,7 @@ export default async function scrape(installPath, scraperName, loginFields, show
     executablePath: chromePath, // string // optional. provide a patch to local chromium to be used by puppeteer. Relevant when using `israeli-bank-scrapers-core` library
   };
   if (logger) logger.info(JSON.stringify(options));
-  onProgress({ percent: 0.75 });
+  onProgress({ percent: 0.5 }, `Step 2: Starting to scrape ${scraperName}`);
   const scraper = createScraper(options);
   return scraper.scrape(loginFields);
 }

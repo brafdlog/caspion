@@ -47,7 +47,12 @@
       <el-progress
         v-show="importing"
         :percentage="percentage"
+        :show-text="step.startsWith('Step 1')"
+        class="progress-bar"
       />
+      <div v-show="importing">
+        {{ step }}
+      </div>
     </el-collapse-item>
   </el-card>
 </template>
@@ -73,6 +78,7 @@ export default {
       showBrowser: false,
       decryptedImporter: null,
       percentage: 0,
+      step: '',
     };
   },
   computed: {
@@ -96,7 +102,7 @@ export default {
       let errorMessage;
 
       this.importing = true;
-      this.onProgress({ percent: 0 });
+      this.onProgress({ percent: 0 }, '');
       try {
         this.$logger.info('Request to import');
         const result = await scrape(
@@ -113,7 +119,6 @@ export default {
           result.accounts.forEach((account) => {
             this.addTransactionsAction(account);
           });
-          this.onProgress({ percent: 0.9 });
         }
         this.$logger.info(`Success: ${success}. Error Message: ${errorMessage}`);
       } catch (error) {
@@ -122,12 +127,15 @@ export default {
         success = false;
         errorMessage = error.message;
       } finally {
-        this.onProgress({ percent: 1 });
+        this.onProgress({ percent: 1 }, 'Done!');
         this.updateStatus(success, errorMessage);
       }
     },
-    onProgress({ percent }) {
+    onProgress({ percent }, step) {
       this.percentage = Math.floor(percent * 100);
+      if (step) {
+        this.step = step;
+      }
     },
     updateStatus(success, errorMessage) {
       this.importing = false;
@@ -161,5 +169,8 @@ i.header-icon.el-icon-error {
 
 i.header-icon.el-icon-success {
   color: green;
+}
+.progress-bar {
+  padding-top: 10px;
 }
 </style>
