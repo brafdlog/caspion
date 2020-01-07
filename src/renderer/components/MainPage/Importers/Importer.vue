@@ -44,6 +44,15 @@
       >
         Delete
       </el-button>
+      <el-progress
+        v-show="importing"
+        :percentage="percentage"
+        :show-text="step.startsWith('Step 1')"
+        class="progress-bar"
+      />
+      <div v-show="importing">
+        {{ step }}
+      </div>
     </el-collapse-item>
   </el-card>
 </template>
@@ -68,6 +77,8 @@ export default {
       lastMessage: null,
       showBrowser: false,
       decryptedImporter: null,
+      percentage: 0,
+      step: '',
     };
   },
   computed: {
@@ -91,6 +102,7 @@ export default {
       let errorMessage;
 
       this.importing = true;
+      this.onProgress({ percent: 0 }, '');
       try {
         this.$logger.info('Request to import');
         const result = await scrape(
@@ -99,6 +111,7 @@ export default {
           this.decryptedImporter.loginFields,
           this.showBrowser,
           this.$logger,
+          this.onProgress,
         );
         success = result.success;
         errorMessage = result.errorMessage || result.errorType;
@@ -114,7 +127,14 @@ export default {
         success = false;
         errorMessage = error.message;
       } finally {
+        this.onProgress({ percent: 1 }, 'Done!');
         this.updateStatus(success, errorMessage);
+      }
+    },
+    onProgress({ percent }, step) {
+      this.percentage = Math.floor(percent * 100);
+      if (step) {
+        this.step = step;
       }
     },
     updateStatus(success, errorMessage) {
@@ -149,5 +169,8 @@ i.header-icon.el-icon-error {
 
 i.header-icon.el-icon-success {
   color: green;
+}
+.progress-bar {
+  padding-top: 10px;
 }
 </style>
