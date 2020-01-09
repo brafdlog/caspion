@@ -5,7 +5,15 @@ const mutations = {
     state.importers.push(data);
   },
   removeImporter(state, data) {
-    state.importers = state.importers.filter((importer) => importer.key !== data);
+    state.importers = state.importers.filter((importer) => importer.id !== data);
+  },
+  updateStatus(state, { id, status }) {
+    state.importers = state.importers.map((importer) => {
+      if (importer.id === id) {
+        importer.status = status;
+      }
+      return importer;
+    });
   },
 };
 
@@ -17,6 +25,21 @@ const actions = {
   removeImporterAction({ commit }, importerId) {
     commit('removeImporter', importerId);
   },
+  updateImporterStatus({ commit }, { id, status }) {
+    commit('updateStatus', { id, status });
+  },
+};
+
+const emptyStatusObj = {
+  success: null,
+  lastMessage: null,
+};
+
+const getters = {
+  importers: (state) => state.importers.map((importer) => {
+    importer.status = importer.status || { ...emptyStatusObj };
+    return importer;
+  }),
 };
 
 export default {
@@ -25,4 +48,5 @@ export default {
   },
   mutations,
   actions,
+  getters,
 };
