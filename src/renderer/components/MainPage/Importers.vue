@@ -24,7 +24,7 @@
     <el-collapse>
       <importer
         v-for="importer in importers"
-        :key="importer.key"
+        :key="importer.id"
         :importer="importer"
       />
     </el-collapse>

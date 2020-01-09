@@ -1,3 +1,5 @@
+import { randomHex } from '../../modules/encryption/crypto';
+
 const mutations = {
   addImporter(state, data) {
     state.importers.push(data);
@@ -9,6 +11,7 @@ const mutations = {
 
 const actions = {
   addImporterAction({ commit }, importer) {
+    importer.id = randomHex();
     commit('addImporter', importer);
   },
   removeImporterAction({ commit }, importerId) {
