@@ -22,11 +22,32 @@
       </el-collapse-item>
     </el-collapse>
     <el-collapse>
-      <importer
+      <el-card
         v-for="importer in importers"
-        :key="importer.key"
-        :importer="importer"
-      />
+        :key="importer.id"
+        :body-style="{ padding: '0px' }"
+      >
+        <el-collapse-item :name="importer.id">
+          <div slot="title">
+            <span>{{ importer.name }}</span>
+            <el-tooltip
+              effect="dark"
+              :disabled="importer.status.lastMessage === null"
+              :content="importer.status.lastMessage"
+              placement="right"
+            >
+              <i
+                class="header-icon"
+                :class="iconClass(importer.status.success)"
+              />
+            </el-tooltip>
+          </div>
+          <importer
+            :key="importer.id"
+            :importer="importer"
+          />
+        </el-collapse-item>
+      </el-card>
     </el-collapse>
   </div>
 </template>
@@ -47,11 +68,20 @@ export default {
   computed: {
     ...mapState({
       scrapers: (state) => state.Scrapers.scrapers,
-      importers: (state) => state.Importers.importers,
     }),
     ...mapGetters([
       'scrapersWithId',
+      'importers',
     ]),
+  },
+  methods: {
+    iconClass(success) {
+      return {
+        'el-icon-question': success === null,
+        'el-icon-success': success,
+        'el-icon-error': success === false,
+      };
+    },
   },
 };
 </script>
@@ -86,5 +116,13 @@ export default {
 
 .add-scraper {
   margin: 10px;
+}
+
+i.header-icon.el-icon-error {
+  color: red;
+}
+
+i.header-icon.el-icon-success {
+  color: green;
 }
 </style>

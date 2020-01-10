@@ -1,60 +1,41 @@
 <template>
-  <el-card
-    v-if="decryptedImporter"
-    :body-style="{ padding: '0px' }"
-  >
-    <el-collapse-item :name="decryptedImporter.key">
-      <div slot="title">
-        <span>{{ decryptedImporter.name }}</span>
-        <el-tooltip
-          effect="dark"
-          :disabled="lastMessage === null"
-          :content="lastMessage"
-          placement="right"
-        >
-          <i
-            class="header-icon"
-            :class="iconClass"
-          />
-        </el-tooltip>
-      </div>
-      <div>
-        <el-checkbox v-model="showBrowser">
-          Show browser
-        </el-checkbox>
-      </div>
-      <div
-        v-for="(value, loginField) in decryptedImporter.loginFields"
-        :key="loginField"
-      >
-        {{ loginField }}: {{ loginField != 'password' ? value : '*'.repeat(value.length) }}
-      </div>
-      <el-button
-        type="primary"
-        :loading="importing"
-        @click="scrape()"
-      >
-        Import
-      </el-button>
-      <el-button
-        type="danger"
-        icon="el-icon-delete"
-        :disabled="importing"
-        @click="promptDelete()"
-      >
-        Delete
-      </el-button>
-      <el-progress
-        v-show="importing"
-        :percentage="percentage"
-        :show-text="step.startsWith('Step 1')"
-        class="progress-bar"
-      />
-      <div v-show="importing">
-        {{ step }}
-      </div>
-    </el-collapse-item>
-  </el-card>
+  <div v-if="decryptedImporter">
+    <div>
+      <el-checkbox v-model="showBrowser">
+        Show browser
+      </el-checkbox>
+    </div>
+    <div
+      v-for="(value, loginField) in decryptedImporter.loginFields"
+      :key="loginField"
+    >
+      {{ loginField }}: {{ loginField != 'password' ? value : '*'.repeat(value.length) }}
+    </div>
+    <el-button
+      type="primary"
+      :loading="importing"
+      @click="scrape()"
+    >
+      Import
+    </el-button>
+    <el-button
+      type="danger"
+      icon="el-icon-delete"
+      :disabled="importing"
+      @click="promptDelete()"
+    >
+      Delete
+    </el-button>
+    <el-progress
+      v-show="importing"
+      :percentage="percentage"
+      :show-text="step.startsWith('Step 1')"
+      class="progress-bar"
+    />
+    <div v-show="importing">
+      {{ step }}
+    </div>
+  </div>
 </template>
 
 <script>
@@ -73,22 +54,11 @@ export default {
   data() {
     return {
       importing: false,
-      success: null,
-      lastMessage: null,
       showBrowser: false,
       decryptedImporter: null,
       percentage: 0,
       step: '',
     };
-  },
-  computed: {
-    iconClass() {
-      return {
-        'el-icon-question': this.success === null,
-        'el-icon-success': this.success,
-        'el-icon-error': this.success === false,
-      };
-    },
   },
   created() {
     decryptProperty(this.importer, 'loginFields')
@@ -139,10 +109,14 @@ export default {
     },
     updateStatus(success, errorMessage) {
       this.importing = false;
-      this.success = success;
+      const status = {
+        success,
+        lastMessage: null,
+      };
       if (success === false) {
-        this.lastMessage = errorMessage || 'UNKNOWN_ERROR';
+        status.lastMessage = errorMessage || 'UNKNOWN_ERROR';
       }
+      this.updateImporterStatus({ id: this.importer.id, status });
     },
     async promptDelete() {
       await MessageBox.confirm(
@@ -154,22 +128,14 @@ export default {
           type: 'warning',
         },
       );
-      this.removeImporterAction(this.decryptedImporter.key);
+      this.removeImporterAction(this.decryptedImporter.id);
     },
-    ...mapActions(['removeImporterAction', 'addTransactionsAction']),
+    ...mapActions(['removeImporterAction', 'addTransactionsAction', 'updateImporterStatus']),
   },
 };
 </script>
 
 <style scoped>
-
-i.header-icon.el-icon-error {
-  color: red;
-}
-
-i.header-icon.el-icon-success {
-  color: green;
-}
 .progress-bar {
   padding-top: 10px;
 }

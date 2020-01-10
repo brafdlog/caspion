@@ -5,9 +5,11 @@ import { createPersistedState, createSharedMutations } from 'vuex-electron';
 
 import modules from './modules';
 
+import migrations from './migrations';
+
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   modules,
   plugins: [
     // location: AppData\Roaming\Electron\vuex.json
@@ -16,3 +18,13 @@ export default new Vuex.Store({
   ],
   strict: process.env.NODE_ENV !== 'production',
 });
+
+const previousMigration = store.state.Migrations.last;
+migrations.filter((migration) => migration.number > previousMigration).forEach((migration) => {
+  const stateCopy = JSON.parse(JSON.stringify(store.state));
+  store.replaceState(migration.migration(stateCopy));
+});
+
+store.dispatch('updateLast', migrations.slice(-1)[0].number);
+
+export default store;
