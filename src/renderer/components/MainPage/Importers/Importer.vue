@@ -136,4 +136,7 @@ export default {
 </script>
 
 <style scoped>
+.progress-bar {
+  padding-top: 10px;
+}
 </style>
