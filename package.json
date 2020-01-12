@@ -1,6 +1,8 @@
 {
   "name": "electron-israeli-bank",
-  "version": "0.1.0",
+  "version": "0.0.5",
+  "author": "Baruch Rothkoff <baruchiro@gmail.com>",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -10,7 +12,9 @@
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
     "lint": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter src",
-    "lint:fix": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter --fix src"
+    "lint:fix": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter --fix src",
+    "test": "npm run unit && npm run e2e",
+    "unit": "karma start test/unit/karma.conf.js"
   },
   "main": "background.js",
   "dependencies": {
@@ -20,6 +24,7 @@
     "element-ui": "^2.4.5",
     "google-spreadsheet": "^2.0.8",
     "israeli-bank-scrapers-core": "^0.8.0",
+    "karma": "^4.4.1",
     "keytar": "^5.0.0",
     "lodash.mapkeys": "^4.6.0",
     "lodash.pick": "^4.4.0",
