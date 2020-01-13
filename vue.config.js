@@ -2,8 +2,8 @@ module.exports = {
   pluginOptions: {
     electronBuilder: {
       // List native deps here if they don't work
-      externals: ['keytar']
+      externals: ["keytar"]
     },
-    mainProcessWatch: ['src/service/encryption/crypto.js'],
+    mainProcessWatch: ["src/service"]
   }
-}
+};
