@@ -22,6 +22,9 @@ protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } },
 ]);
 
+function onProgress({ percent }, step) {
+  mainWindow.webContents.send('onProgress-message', percent, step)
+}
 
 ipcMain.on('getScrapers', (event) => {
   event.reply('getScrapers-reply', SCRAPERS);
@@ -35,8 +38,8 @@ ipcMain.on('decryptProperty', (event, importer, fields) => {
   })
 });
 
-ipcMain.on('scrape', (event, installPath, scraperName, loginFields, showBrowser, logger, onProgress) => {
-  scrape(installPath, scraperName, loginFields, showBrowser, logger, onProgress).then((result) => {
+ipcMain.on('scrape', (event, installPath, scraperName, loginFields, showBrowser, logger) => {
+  scrape(installPath, scraperName, loginFields, showBrowser, onProgress).then((result) => {
     event.reply('scrape-reply', result)
   })
 });

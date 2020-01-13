@@ -68,6 +68,10 @@ export default {
     ipcRenderer.on('decryptProperty-reply', (event, decrypted) => {
       this.decryptedImporter = decrypted;
     });
+
+    ipcRenderer.on('onProgress-message', (event, percent, step) => {
+      this.onProgress(percent, step);
+    });
     // decryptProperty(this.importer, "loginFields").then(decrypted => {
     //   this.decryptedImporter = decrypted;
     // });
@@ -112,7 +116,7 @@ export default {
 
       }
     },
-    onProgress({ percent }, step) {
+    onProgress(percent, step) {
       this.percentage = Math.floor(percent * 100);
       if (step) {
         this.step = step;
