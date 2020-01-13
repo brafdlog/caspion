@@ -32,7 +32,9 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { encryptProperty } from '../../../modules/encryption/credentials';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { ipcRenderer } from 'electron';
+// import { encryptProperty } from "@/modules/encryption/credentials";
 
 function scraperToImporter(scraper) {
   const importer = { ...scraper, loginFields: {} };
@@ -56,14 +58,15 @@ export default {
   },
   computed: {
     isFormValid() {
-      return Object.values(this.importerToAdd.loginFields)
-        .every((key) => key && key.trim().length > 0);
+      return Object.values(this.importerToAdd.loginFields).every(
+        (key) => key && key.trim().length > 0,
+      );
     },
   },
   methods: {
     async submitForm() {
       if (this.isFormValid) {
-        const encrypted = await encryptProperty(this.importerToAdd, 'loginFields');
+        const encrypted = ipcRenderer.sendSync('encryptProperty', this.importerToAdd, 'loginFields');
         this.addImporterAction(encrypted);
         this.resetForm();
       }
@@ -71,17 +74,15 @@ export default {
     resetForm() {
       Object.assign(this.$data.importerToAdd, scraperToImporter(this.scraper));
     },
-    ...mapActions([
-      'addImporterAction',
-    ]),
+    ...mapActions(['addImporterAction']),
   },
 };
 </script>
 
 <style scoped>
 .add-scraper {
-    display: flex;
-    flex-direction: column
+  display: flex;
+  flex-direction: column;
 }
 
 .card-header {

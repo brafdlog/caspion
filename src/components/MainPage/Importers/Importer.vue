@@ -9,7 +9,8 @@
       v-for="(value, loginField) in decryptedImporter.loginFields"
       :key="loginField"
     >
-      {{ loginField }}: {{ loginField != 'password' ? value : '*'.repeat(value.length) }}
+      {{ loginField }}:
+      {{ loginField != "password" ? value : "*".repeat(value.length) }}
     </div>
     <el-button
       type="primary"
@@ -41,8 +42,10 @@
 <script>
 import { mapActions } from 'vuex';
 import { MessageBox } from 'element-ui';
-import scrape from '../../../modules/scrapers';
-import { decryptProperty } from '../../../modules/encryption/credentials';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { ipcRenderer, remote } from 'electron';
+// import scrape from "../../../modules/scrapers";
+
 
 export default {
   props: {
@@ -61,10 +64,13 @@ export default {
     };
   },
   created() {
-    decryptProperty(this.importer, 'loginFields')
-      .then((decrypted) => {
-        this.decryptedImporter = decrypted;
-      });
+    ipcRenderer.send('decryptProperty', this.importer, 'loginFields');
+    ipcRenderer.on('decryptProperty-reply', (event, decrypted) => {
+      this.decryptedImporter = decrypted;
+    });
+    // decryptProperty(this.importer, "loginFields").then(decrypted => {
+    //   this.decryptedImporter = decrypted;
+    // });
   },
   methods: {
     async scrape() {
@@ -75,30 +81,35 @@ export default {
       this.onProgress({ percent: 0 }, '');
       try {
         this.$logger.info('Request to import');
-        const result = await scrape(
-          this.$electron.remote.app.getPath('cache'),
+        ipcRenderer.send('scrape',
+          remote.app.getPath('cache'),
           this.decryptedImporter.key,
           this.decryptedImporter.loginFields,
-          this.showBrowser,
-          this.$logger,
-          this.onProgress,
-        );
-        success = result.success;
-        errorMessage = result.errorMessage || result.errorType;
-        if (result.success) {
-          result.accounts.forEach((account) => {
-            this.addTransactionsAction(account);
-          });
-        }
-        this.$logger.info(`Success: ${success}. Error Message: ${errorMessage}`);
+          this.showBrowser);
+        ipcRenderer.on('scrape-reply', (event, result) => {
+          this.$logger.info(result);
+          success = result.success;
+          errorMessage = result.errorMessage || result.errorType;
+          if (result.success) {
+            result.accounts.forEach((account) => {
+              this.addTransactionsAction(account);
+            });
+          }
+          this.updateStatus(success, errorMessage);
+          this.$logger.info(
+            `Success: ${success}. Error Message: ${errorMessage}`,
+          );
+        });
       } catch (error) {
-        this.$logger.error(`message: ${error.message}. Error Code:${error.code}`);
+        this.$logger.error(
+          `message: ${error.message}. Error Code:${error.code}`,
+        );
         this.$logger.verbose(error.stack);
         success = false;
         errorMessage = error.message;
       } finally {
-        this.onProgress({ percent: 1 }, 'Done!');
-        this.updateStatus(success, errorMessage);
+        // this.onProgress({ percent: 1 }, 'Done!');
+
       }
     },
     onProgress({ percent }, step) {
@@ -130,13 +141,13 @@ export default {
       );
       this.removeImporterAction(this.decryptedImporter.id);
     },
-    ...mapActions(['removeImporterAction', 'addTransactionsAction', 'updateImporterStatus']),
+    ...mapActions([
+      'removeImporterAction',
+      'addTransactionsAction',
+      'updateImporterStatus',
+    ]),
   },
 };
 </script>
 
-<style scoped>
-.progress-bar {
-  padding-top: 10px;
-}
-</style>
+<style scoped></style>

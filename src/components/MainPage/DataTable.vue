@@ -1,7 +1,7 @@
 <template>
   <el-table
     :data="transactions"
-    :default-sort="{prop: 'date', order: 'descending'}"
+    :default-sort="{ prop: 'date', order: 'descending' }"
     border
     stripe
   >

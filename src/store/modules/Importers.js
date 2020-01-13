@@ -1,4 +1,4 @@
-import { randomHex } from '../../modules/encryption/crypto';
+import randomHex from '@/modules/encryption/crypto';
 
 const mutations = {
   addImporter(state, data) {

@@ -20,9 +20,11 @@
 
 <script>
 import path from 'path';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { remote } from 'electron';
 import { mapState, mapActions } from 'vuex';
-import { transactionArrayToObject } from '../../../modules/transactions';
-import { readFileToObject, writeFile } from '../../../modules/filesystem';
+import { transactionArrayToObject } from '@/modules/transactions';
+import { readFileToObject, writeFile } from '@/modules/filesystem';
 
 const name = 'JsonExporter';
 const title = 'Export to Json file';
@@ -33,7 +35,10 @@ export default {
   data() {
     return {
       properties: {
-        folder: path.join(this.$electron.remote.app.getPath('cache'), this.$electron.remote.app.getName()),
+        folder: path.join(
+          remote.app.getPath('cache'),
+          remote.app.name,
+        ),
         file: 'transactions.json',
       },
       loading: false,
@@ -49,9 +54,7 @@ export default {
     this.properties = { ...this.properties, ...this.storeProperties };
   },
   methods: {
-    ...mapActions([
-      'saveExporterProperties',
-    ]),
+    ...mapActions(['saveExporterProperties']),
     emitStatus(success, message) {
       this.$emit('update:success', success);
       this.$emit('update:message', message);
@@ -61,10 +64,18 @@ export default {
       try {
         this.saveExporterProperties({ name, properties: this.properties });
 
-        const filePath = path.join(this.properties.folder, this.properties.file);
-        const savedObject = transactionArrayToObject(readFileToObject(filePath, []));
+        const filePath = path.join(
+          this.properties.folder,
+          this.properties.file,
+        );
+        const savedObject = transactionArrayToObject(
+          readFileToObject(filePath, []),
+        );
         const combineObject = { ...savedObject, ...this.transactions };
-        writeFile(filePath, JSON.stringify(Object.values(combineObject), null, 4));
+        writeFile(
+          filePath,
+          JSON.stringify(Object.values(combineObject), null, 4),
+        );
         this.emitStatus(true, `Your data saved in ${filePath}`);
       } catch (error) {
         this.$logger.error(error);
@@ -76,5 +87,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

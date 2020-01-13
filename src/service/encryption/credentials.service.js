@@ -4,7 +4,7 @@ Copied from https://github.com/eshaham/israeli-ynab-updater/blob/b207a6b2468fa29
 */
 
 import { randomHex, encrypt, decrypt } from './crypto';
-import { saveIntoAccount, getFromAccount } from './keytar';
+import { saveIntoAccount, getFromAccount } from './keytar.service';
 
 export const defaultEncryptProperty = 'encrypted';
 

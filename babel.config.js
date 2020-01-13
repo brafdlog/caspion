@@ -1,46 +1,12 @@
-{
-  "comments": false,
-  "env": {
-    "test": {
-      "presets": [
-        ["env", {
-          "targets": { "node": 7 }
-        }],
-        "stage-0"
-      ],
-      "plugins": ["istanbul"]
-    },
-    "main": {
-      "presets": [
-        ["env", {
-          "targets": { "node": 7 }
-        }],
-        "stage-0"
-      ]
-    },
-    "renderer": {
-      "presets": [
-        ["env", {
-          "modules": false
-        }],
-        "stage-0"
-      ]
-    },
-    "web": {
-      "presets": [
-        ["env", {
-          "modules": false
-        }],
-        "stage-0"
-      ]
-    }
-  },
-  "plugins": [
-    "transform-runtime",
-    ["component",
-    {
-      "libraryName": "element-ui",
-      "styleLibraryName": "theme-chalk"
-    }]
+module.exports = {
+  presets: ["@vue/cli-plugin-babel/preset"],
+  plugins: [
+    [
+      "component",
+      {
+        libraryName: "element-ui",
+        styleLibraryName: "theme-chalk"
+      }
+    ]
   ]
-}
+};

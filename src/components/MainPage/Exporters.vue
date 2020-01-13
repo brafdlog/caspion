@@ -70,7 +70,6 @@ export default {
 </script>
 
 <style scoped>
-
 i.header-icon.el-icon-error {
   color: red;
 }

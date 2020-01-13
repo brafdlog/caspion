@@ -25,7 +25,9 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import saveTransactionsToGoogleSheets from '../../../modules/spreadsheet';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { remote } from 'electron';
+import saveTransactionsToGoogleSheets from '@/modules/spreadsheet';
 
 const name = 'SpreadsheetExporter';
 const title = 'Export to Google Spreadsheet';
@@ -51,9 +53,7 @@ export default {
     this.properties = { ...this.properties, ...this.storeProperties };
   },
   methods: {
-    ...mapActions([
-      'saveExporterProperties',
-    ]),
+    ...mapActions(['saveExporterProperties']),
     emitStatus(success, message) {
       this.$emit('update:success', success);
       this.$emit('update:message', message);
@@ -63,10 +63,14 @@ export default {
       try {
         this.saveExporterProperties({ name, properties: this.properties });
         const result = await saveTransactionsToGoogleSheets(
-          this.properties.fileUrl, this.transactions,
+          this.properties.fileUrl,
+          this.transactions,
         );
-        this.emitStatus(true, `There were ${result.before} transactions, 
-        we uploaded ${result.new} transactions and now there are ${result.combine} transactions.`);
+        this.emitStatus(
+          true,
+          `There were ${result.before} transactions, 
+        we uploaded ${result.new} transactions and now there are ${result.combine} transactions.`,
+        );
       } catch (error) {
         this.$logger.error(error);
         this.emitStatus(false, error.message);
@@ -74,12 +78,10 @@ export default {
       this.loading = false;
     },
     openExternalBrowser(e) {
-      this.$electron.remote.shell.openExternal(e.target.href);
+      remote.shell.openExternal(e.target.href);
     },
   },
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

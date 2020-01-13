@@ -53,7 +53,9 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { ipcRenderer } from 'electron';
+import { mapState, mapGetters, mapActions } from 'vuex';
 import AddScraper from './Importers/AddScraper';
 import Importer from './Importers/Importer';
 
@@ -69,12 +71,16 @@ export default {
     ...mapState({
       scrapers: (state) => state.Scrapers.scrapers,
     }),
-    ...mapGetters([
-      'scrapersWithId',
-      'importers',
-    ]),
+    ...mapGetters(['scrapersWithId', 'importers']),
+  },
+  created() {
+    ipcRenderer.send('getScrapers');
+    ipcRenderer.on('getScrapers-reply', (event, scrapers) => {
+      this.set_scraper(scrapers);
+    });
   },
   methods: {
+    ...mapActions(['set_scraper']),
     iconClass(success) {
       return {
         'el-icon-question': success === null,
@@ -87,32 +93,34 @@ export default {
 </script>
 
 <style scoped>
-  .title {
-    color: #888;
-    font-size: 18px;
-    font-weight: initial;
-    letter-spacing: .25px;
-    margin-top: 10px;
-    display: flex;
-    justify-content: space-between;
-  }
+.title {
+  color: #888;
+  font-size: 18px;
+  font-weight: initial;
+  letter-spacing: 0.25px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
 
-  .items { margin-top: 8px; }
+.items {
+  margin-top: 8px;
+}
 
-  .item {
-    display: flex;
-    margin-bottom: 6px;
-  }
+.item {
+  display: flex;
+  margin-bottom: 6px;
+}
 
-  .item .name {
-    color: #6a6a6a;
-    margin-right: 6px;
-  }
+.item .name {
+  color: #6a6a6a;
+  margin-right: 6px;
+}
 
-  .item .value {
-    color: #35495e;
-    font-weight: bold;
-  }
+.item .value {
+  color: #35495e;
+  font-weight: bold;
+}
 
 .add-scraper {
   margin: 10px;
@@ -124,5 +132,8 @@ i.header-icon.el-icon-error {
 
 i.header-icon.el-icon-success {
   color: green;
+}
+.progress-bar {
+  padding-top: 10px;
 }
 </style>
