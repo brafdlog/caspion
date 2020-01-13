@@ -12,7 +12,8 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   modules,
   plugins: [
-    // location: AppData\Roaming\Electron\vuex.json
+    // Win location: AppData\Roaming\Electron\vuex.json
+    // linux location: ~/.config/israeli-bank-scrapers-desktop/vuex.json
     createPersistedState(),
     createSharedMutations(),
   ],
