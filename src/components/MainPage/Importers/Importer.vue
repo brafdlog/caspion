@@ -44,7 +44,6 @@ import { mapActions } from 'vuex';
 import { MessageBox } from 'element-ui';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ipcRenderer, remote } from 'electron';
-// import scrape from "../../../modules/scrapers";
 
 
 export default {
@@ -72,9 +71,6 @@ export default {
     ipcRenderer.on('onProgress-message', (event, percent, step) => {
       this.onProgress(percent, step);
     });
-    // decryptProperty(this.importer, "loginFields").then(decrypted => {
-    //   this.decryptedImporter = decrypted;
-    // });
   },
   methods: {
     async scrape() {
@@ -112,9 +108,6 @@ export default {
         this.$logger.verbose(error.stack);
         success = false;
         errorMessage = error.message;
-      } finally {
-        // this.onProgress({ percent: 1 }, 'Done!');
-
       }
     },
     onProgress(percent, step) {

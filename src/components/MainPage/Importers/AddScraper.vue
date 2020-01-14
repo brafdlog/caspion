@@ -34,7 +34,6 @@
 import { mapActions } from 'vuex';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ipcRenderer } from 'electron';
-// import { encryptProperty } from "@/modules/encryption/credentials";
 
 function scraperToImporter(scraper) {
   const importer = { ...scraper, loginFields: {} };
