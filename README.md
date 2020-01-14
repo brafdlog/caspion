@@ -70,10 +70,10 @@ Then you can run the commands below:
 yarn
 
 # serve with hot reload at localhost:9080
-yarn electron:serve
+yarn serve
 
 # build electron application for production
-yarn electron:build
+yarn build
 
 # run unit & end-to-end tests
 yarn test
