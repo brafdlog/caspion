@@ -42,7 +42,7 @@ ipcMain.on('decryptProperty', (event, importer, fields) => {
   });
 });
 
-ipcMain.on('scrape', (event, installPath, scraperName, loginFields, showBrowser, logger) => {
+ipcMain.on('scrape', (event, installPath, scraperName, loginFields, showBrowser) => {
   scrape(installPath, scraperName, loginFields, showBrowser, onProgress, logger).then((result) => {
     event.reply('scrape-reply', result);
   });
