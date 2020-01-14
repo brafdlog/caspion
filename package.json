@@ -15,7 +15,8 @@
     "lint": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter src",
     "lint:fix": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter --fix src",
     "test": "npm run unit && npm run e2e",
-    "unit": "karma start test/unit/karma.conf.js"
+    "unit": "karma start test/unit/karma.conf.js",
+    "e2e": "npm run pack && mocha test/e2e"
   },
   "main": "background.js",
   "dependencies": {
@@ -46,7 +47,6 @@
     "babel-eslint": "^10.0.3",
     "babel-plugin-component": "^1.1.1",
     "electron": "^7.1.8",
-    "electron-rebuild": "^1.8.8",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-config-prettier": "^6.9.0",
