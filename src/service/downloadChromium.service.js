@@ -8,6 +8,6 @@ export default async function (installPath, onProgress) {
   return download({
     revision,
     installPath,
-    onProgress
+    onProgress,
   });
 }

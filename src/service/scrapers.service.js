@@ -8,8 +8,8 @@ async function scrape(
   loginFields,
   showBrowser,
   onProgress,
+  logger,
 ) {
-  console.log('onProgress :', onProgress);
   onProgress({ percent: 0.1 }, 'Step 1: check if Chrome exists');
   const chromePath = await getChrome(installPath, onProgress);
   const options = {
@@ -21,7 +21,7 @@ async function scrape(
     // browser : Browser, // optional option from init puppeteer browser instance outside the libary scope. you can get browser diretly from puppeteer via `puppeteer.launch()` command.
     executablePath: chromePath, // string // optional. provide a patch to local chromium to be used by puppeteer. Relevant when using `israeli-bank-scrapers-core` library
   };
-  // if (logger) logger.info(JSON.stringify(options));
+  if (logger) logger.info(JSON.stringify(options));
   onProgress({ percent: 0.5 }, `Step 2: Starting to scrape ${scraperName}`);
   const scraper = createScraper(options);
   return scraper.scrape(loginFields);

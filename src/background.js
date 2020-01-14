@@ -1,9 +1,13 @@
-import { app, protocol, BrowserWindow, ipcMain,} from 'electron'; // eslint-disable-line
+// eslint-disable-next-line import/no-extraneous-dependencies
+import {
+  app, protocol, BrowserWindow, ipcMain,
+} from 'electron';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { createProtocol, installVueDevtools } from 'vue-cli-plugin-electron-builder/lib';
 import logger from 'electron-log';
 import { scrape, SCRAPERS } from './service/scrapers.service';
-import { encryptProperty, decryptProperty } from "./service/encryption/credentials.service";
-import './store'; 
+import { encryptProperty, decryptProperty } from './service/encryption/credentials.service';
+import './store';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -23,7 +27,7 @@ protocol.registerSchemesAsPrivileged([
 ]);
 
 function onProgress({ percent }, step) {
-  mainWindow.webContents.send('onProgress-message', percent, step)
+  mainWindow.webContents.send('onProgress-message', percent, step);
 }
 
 ipcMain.on('getScrapers', (event) => {
@@ -34,14 +38,14 @@ ipcMain.on('encryptProperty', async (event, importer, fields) => {
 });
 ipcMain.on('decryptProperty', (event, importer, fields) => {
   decryptProperty(importer, fields).then((decrypted) => {
-    event.reply('decryptProperty-reply', decrypted)
-  })
+    event.reply('decryptProperty-reply', decrypted);
+  });
 });
 
 ipcMain.on('scrape', (event, installPath, scraperName, loginFields, showBrowser, logger) => {
-  scrape(installPath, scraperName, loginFields, showBrowser, onProgress).then((result) => {
-    event.reply('scrape-reply', result)
-  })
+  scrape(installPath, scraperName, loginFields, showBrowser, onProgress, logger).then((result) => {
+    event.reply('scrape-reply', result);
+  });
 });
 
 
@@ -55,7 +59,7 @@ function createWindow() {
       nodeIntegration: true,
     },
   });
-  
+
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     mainWindow.loadURL(process.env.WEBPACK_DEV_SERVER_URL);
@@ -84,7 +88,6 @@ app.on('activate', () => {
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) {
     createWindow();
-
   }
 });
 
@@ -98,7 +101,8 @@ app.on('ready', async () => {
     // See https://github.com/nklayman/vue-cli-plugin-electron-builder/issues/378 for more info
     // Electron will not launch with Devtools extensions installed on Windows 10 with dark mode
     // If you are not using Windows 10 dark mode,you may uncomment these lines
-    // In addition, if the linked issue is closed, you can upgrade electron and uncomment these lines
+    // In addition, if the linked issue is closed,
+    // you can upgrade electron and uncomment these lines
     try {
       await installVueDevtools();
     } catch (e) {
