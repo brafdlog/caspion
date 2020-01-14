@@ -82,7 +82,7 @@ export default {
       let errorMessage;
 
       this.importing = true;
-      this.onProgress({ percent: 0 }, '');
+      this.onProgress(0, '');
       try {
         this.$logger.info('Request to import');
         ipcRenderer.send('scrape',
@@ -105,6 +105,7 @@ export default {
           );
         });
       } catch (error) {
+        this.onProgress(1, 'Error!');
         this.$logger.error(
           `message: ${error.message}. Error Code:${error.code}`,
         );
