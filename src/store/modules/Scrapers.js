@@ -2,7 +2,7 @@ const state = {
   scrapers: [],
 };
 
-const getters = {
+export const getters = {
   scrapersWithId: (state) => Object.keys(state.scrapers)
     .map((k) => ({ key: k, ...state.scrapers[k] })),
 };

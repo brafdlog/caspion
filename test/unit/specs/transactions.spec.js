@@ -1,5 +1,5 @@
+import { getHash } from 'modules/transactions';
 import { Transactions } from '../helpers/baseStore';
-import { getHash } from '../../../src/renderer/modules/transactions';
 
 describe('transaction.js (The transactions helper)', () => {
   it('Should create hash key for transaction', () => {

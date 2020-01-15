@@ -1,6 +1,5 @@
-import sinon from 'sinon';
-import * as keytar from '../../../src/renderer/modules/encryption/keytar';
-import { encryptObject, decryptObject } from '../../../src/renderer/modules/encryption/credentials';
+import * as keytar from 'service/encryption/keytar.service.js';
+import { encryptObject, decryptObject } from 'modules/encryption/credentials';
 
 function isNotNullOrEmptyOrUndefined(value) {
   return value && value !== null && value !== '';
@@ -10,12 +9,16 @@ const fakeKeytarValut = {};
 const fakeSaveIntoAccount = async (account, password) => {
   fakeSaveIntoAccount[account] = password;
 };
-const fakegetFromAccount = async (account) => fakeKeytarValut[account];
+const fakeGetFromAccount = async (account) => fakeKeytarValut[account];
 
-sinon.stub(keytar, 'loadSALT').returns(Promise.resolve('AAAAAAA'));
-sinon.stub(keytar, 'saveSALT');
-sinon.stub(keytar, 'saveIntoAccount').callsFake(fakeSaveIntoAccount);
-sinon.stub(keytar, 'getFromAccount').callsFake(fakegetFromAccount);
+jest.spyOn(keytar, 'loadSALT').mockImplementation().mockReturnValue(Promise.resolve('AAAAAAA'));
+jest.spyOn(keytar, 'saveSALT').mockImplementation();
+jest.spyOn(keytar, 'saveIntoAccount').mockImplementation(fakeSaveIntoAccount);
+jest.spyOn(keytar, 'getFromAccount').mockImplementation(fakeGetFromAccount);
+// sinon.stub(keytar, 'loadSALT').returns(Promise.resolve('AAAAAAA'));
+// sinon.stub(keytar, 'saveSALT');
+// sinon.stub(keytar, 'saveIntoAccount').callsFake(fakeSaveIntoAccount);
+// sinon.stub(keytar, 'getFromAccount').callsFake(fakeGetFromAccount);
 
 describe('credentials.js', () => {
   it('Should encrypt value of simple object', async () => {

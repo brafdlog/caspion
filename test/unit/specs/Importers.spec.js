@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import Importers from '@/components/MainPage/Importers';
+import Importers from 'components/MainPage/Importers';
 import baseStore from '../helpers/baseStore';
 
 const localVue = createLocalVue();
