@@ -1,23 +1,21 @@
-import electron from 'electron'
-import { Application } from 'spectron'
+const { testWithSpectron } = require('vue-cli-plugin-electron-builder');
 
 export default {
-  afterEach () {
-    this.timeout(10000)
+  afterEach() {
+    this.timeout(10000);
 
     if (this.app && this.app.isRunning()) {
-      return this.app.stop()
+      return this.app.stop();
     }
+    this.stop();
   },
-  beforeEach () {
-    this.timeout(20000)
-    this.app = new Application({
-      path: electron,
-      args: ['dist/electron/main.js'],
-      startTimeout: 10000,
-      waitTimeout: 10000
-    })
+  async beforeEach() {
+    this.timeout(20000);
+    const { app, stopServe } = await testWithSpectron();
+    this.app = app;
+    this.stop = stopServe;
 
-    return this.app.start()
-  }
-}
+
+    return this.app;
+  },
+};
