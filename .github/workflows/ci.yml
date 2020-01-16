@@ -39,6 +39,7 @@ jobs:
         sudo apt update
         sudo apt install -y xvfb graphicsmagick
         npm install -g xvfb-maybe
+        Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
     - name: yarn install
       run: yarn
     - name: yarn unit
