@@ -113,10 +113,3 @@ export function transactionArrayToObject(transactions) {
     return prev;
   }, {});
 }
-
-export function saveToFile(transactions, filename, callback) {
-  const Datastore = require('nedb');
-  const db = new Datastore({ filename, autoload: true });
-  db.insert(transactions, callback);
-  db.persistence.compactDatafile();
-}
