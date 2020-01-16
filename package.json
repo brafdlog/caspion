@@ -23,7 +23,7 @@
     "core-js": "^3.4.4",
     "download-chromium": "^2.2.0",
     "electron-log": "^4.0.3",
-    "element-ui": "^2.4.5",
+    "element-ui": "^2.13.0",
     "google-spreadsheet": "^2.0.8",
     "israeli-bank-scrapers-core": "^0.8.0",
     "keytar": "^5.0.0",
