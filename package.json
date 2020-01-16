@@ -13,7 +13,7 @@
     "lint:fix": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter --fix src",
     "test": "yarn unit && yarn e2e",
     "unit": "vue-cli-service test:unit",
-    "e2e": "jest test/e2e --config='test/e2e/jest.e2e.config.js'"
+    "e2e": "vue-cli-service test:unit --config='test/e2e/jest.e2e.config.js'"
   },
   "main": "background.js",
   "dependencies": {
@@ -64,6 +64,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "eslint-plugin-vue": "^5.0.0",
+    "expect.js": "^0.3.1",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^24.9.0",
     "jest-config": "^24.9.0",
