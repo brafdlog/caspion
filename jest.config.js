@@ -7,11 +7,11 @@ module.exports = {
   moduleFileExtensions: [...defaults.moduleFileExtensions, 'vue'],
   moduleDirectories: [...defaults.moduleDirectories, 'src'],
   transformIgnorePatterns: [
-    "node_modules/(?!(babel-jest|jest-vue-preprocessor)/)"
+    'node_modules/(?!(babel-jest|jest-vue-preprocessor)/)',
   ],
   moduleNameMapper: {
     '\\.css$': 'identity-obj-proxy',
-    'electron': '<rootDir>/test/unit/mock/electron.js'
+    electron: '<rootDir>/test/unit/mock/electron.js',
   },
   transform: {
     '.*\\.(vue)$': 'vue-jest',
