@@ -1,20 +1,8 @@
-import * as keytar from 'service/encryption/keytar.service.js';
-import { encryptObject, decryptObject } from 'modules/encryption/credentials';
+import { encryptObject, decryptObject } from 'service/encryption/credentials.service.js';
 
 function isNotNullOrEmptyOrUndefined(value) {
   return value && value !== null && value !== '';
 }
-
-const fakeKeytarValut = {};
-const fakeSaveIntoAccount = async (account, password) => {
-  fakeSaveIntoAccount[account] = password;
-};
-const fakeGetFromAccount = async (account) => fakeKeytarValut[account];
-
-jest.spyOn(keytar, 'loadSALT').mockImplementation().mockReturnValue(Promise.resolve('AAAAAAA'));
-jest.spyOn(keytar, 'saveSALT').mockImplementation();
-jest.spyOn(keytar, 'saveIntoAccount').mockImplementation(fakeSaveIntoAccount);
-jest.spyOn(keytar, 'getFromAccount').mockImplementation(fakeGetFromAccount);
 
 describe('credentials.js', () => {
   it('Should encrypt value of simple object', async () => {

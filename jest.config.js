@@ -12,6 +12,7 @@ module.exports = {
   moduleNameMapper: {
     '\\.css$': 'identity-obj-proxy',
     electron: '<rootDir>/test/unit/mock/electron.js',
+    '^keytar$': '<rootDir>/test/unit/mock/keytar.js',
   },
   transform: {
     '.*\\.(vue)$': 'vue-jest',
