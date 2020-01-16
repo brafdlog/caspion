@@ -19,6 +19,8 @@ jobs:
   test:
 
     runs-on: ${{ matrix.os }}
+    env:
+      DISPLAY: :99.0
 
     strategy:
       matrix:
@@ -37,11 +39,9 @@ jobs:
         sudo apt update
         sudo apt install -y xvfb graphicsmagick
         npm install -g xvfb-maybe
-    - name: npm install and test
-      run: |
-        Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-        yarn
-        yarn test
-      env:
-        CI: true
-        DISPLAY: :99.0
+    - name: yarn install
+      run: yarn
+    - name: yarn unit
+      run: yarn unit
+    - name: yarn e2e
+      run: yarn e2e
