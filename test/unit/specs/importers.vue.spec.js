@@ -22,6 +22,6 @@ describe('Importers', () => {
 
   it('Should contain an AddScraper component for each scraper', () => {
     const storeScrapers = fakeStore.modules.Scrapers.state.scrapers;
-    expect(wrapper.findAll(AddScraper).length).toMatch(Object.keys(storeScrapers).length);
+    expect(wrapper.findAll(AddScraper).length).toBe(Object.keys(storeScrapers).length);
   });
 });
