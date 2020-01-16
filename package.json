@@ -13,7 +13,7 @@
     "lint:fix": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter --fix src",
     "test": "yarn unit && yarn e2e",
     "unit": "vue-cli-service test:unit",
-    "e2e": "mocha test/e2e"
+    "e2e": "jest test/e2e --config='test/e2e/jest.e2e.config.js'"
   },
   "main": "background.js",
   "dependencies": {
