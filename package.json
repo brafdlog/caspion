@@ -4,6 +4,7 @@
   "author": "Baruch Rothkoff <baruchiro@gmail.com>",
   "description": "An Electron-vue project for israeli-bank-scrapers",
   "license": "MIT",
+  "main": "background.js",
   "scripts": {
     "serve": "vue-cli-service electron:serve",
     "build": "vue-cli-service electron:build",
@@ -15,7 +16,9 @@
     "unit": "vue-cli-service test:unit",
     "e2e": "vue-cli-service test:unit --config='test/e2e/jest.e2e.config.js'"
   },
-  "main": "background.js",
+  "pre-commit": [
+    "lint"
+  ],
   "dependencies": {
     "core-js": "^3.4.4",
     "download-chromium": "^2.2.0",
@@ -65,6 +68,7 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^24.9.0",
     "jest-config": "^24.9.0",
+    "pre-commit": "^1.2.2",
     "prettier": "^1.19.1",
     "require-dir": "^1.2.0",
     "vue-cli-plugin-electron-builder": "^1.4.4",
