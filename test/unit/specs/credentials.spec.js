@@ -15,10 +15,6 @@ jest.spyOn(keytar, 'loadSALT').mockImplementation().mockReturnValue(Promise.reso
 jest.spyOn(keytar, 'saveSALT').mockImplementation();
 jest.spyOn(keytar, 'saveIntoAccount').mockImplementation(fakeSaveIntoAccount);
 jest.spyOn(keytar, 'getFromAccount').mockImplementation(fakeGetFromAccount);
-// sinon.stub(keytar, 'loadSALT').returns(Promise.resolve('AAAAAAA'));
-// sinon.stub(keytar, 'saveSALT');
-// sinon.stub(keytar, 'saveIntoAccount').callsFake(fakeSaveIntoAccount);
-// sinon.stub(keytar, 'getFromAccount').callsFake(fakeGetFromAccount);
 
 describe('credentials.js', () => {
   it('Should encrypt value of simple object', async () => {
