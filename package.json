@@ -7,6 +7,7 @@
   "main": "background.js",
   "scripts": {
     "serve": "vue-cli-service electron:serve",
+    "prebuild": "node scripts/prebuild.js",
     "build": "vue-cli-service electron:build",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
@@ -70,6 +71,7 @@
     "jest-config": "^24.9.0",
     "pre-commit": "^1.2.2",
     "prettier": "^1.19.1",
+    "replace-in-file": "5.0.2",
     "vue-cli-plugin-electron-builder": "^1.4.4",
     "vue-cli-plugin-element": "^1.0.1",
     "vue-jest": "^3.0.5",
