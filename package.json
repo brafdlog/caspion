@@ -70,7 +70,6 @@
     "jest-config": "^24.9.0",
     "pre-commit": "^1.2.2",
     "prettier": "^1.19.1",
-    "require-dir": "^1.2.0",
     "vue-cli-plugin-electron-builder": "^1.4.4",
     "vue-cli-plugin-element": "^1.0.1",
     "vue-jest": "^3.0.5",
