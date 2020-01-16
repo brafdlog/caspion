@@ -37,7 +37,7 @@ export default {
       properties: {
         folder: path.join(
           remote.app.getPath('cache'),
-          remote.app.name,
+          remote.app.getName(),
         ),
         file: 'transactions.json',
       },
