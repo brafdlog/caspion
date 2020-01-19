@@ -46,3 +46,55 @@ jobs:
       run: yarn unit
     - name: yarn e2e
       run: yarn e2e
+
+  build:
+
+    runs-on: ${{ matrix.os }}
+
+    # Platforms to build on/for
+    strategy:
+      matrix:
+        os: [windows-2019, ubuntu-18.04]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set version in Env
+      shell: bash
+      run: |
+        echo ::set-env name=package_version::`awk -F ':' '/version/ {print $2}' package.json | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g'`
+        echo "Version is `awk -F ':' '/version/ {print $2}' package.json | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g'`"
+    - uses: actions/github-script@0.3.0
+      name: Check if current version is a published release (by release tag)
+      id: check_release
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        # debug: true
+        script: |
+          const result = await github.repos.listReleases({
+            owner: 'baruchiro',
+            repo: 'israeli-bank-scrapers-desktop'
+          })
+          // console.log(result)
+          const release_tags = result.data.filter(release => !release.draft).map(release => release.tag_name)
+          // console.log(release_tags)
+          const publishToRelease = !release_tags.includes('v${{ env.package_version }}')
+          console.log('publishToRelease: ' + publishToRelease)
+          console.log('Will not publish to release in PR')
+          return publishToRelease
+    - name: Build/release Electron app
+      env:
+        GOOGLE_SERVICE_PRIVATE_KEY: ${{ secrets.GOOGLE_SERVICE_PRIVATE_KEY }}
+      uses: samuelmeuli/action-electron-builder@aab12df5d99568b8426a07695135a977d30c9a95
+      with:
+        # GitHub token, automatically provided to the action
+        # (No need to define this secret in the repo settings)
+        github_token: ${{ secrets.github_token }}
+
+        # macOS code signing certificate
+        #mac_certs: ${{ secrets.mac_certs }}
+        #mac_certs_password: ${{ secrets.mac_certs_password }}
+
+
+        # If the commit is tagged with a version (e.g. "v1.0.0"),
+        # release the app after building
+        release: false
