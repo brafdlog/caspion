@@ -4175,25 +4175,6 @@ ejs@~2.5.6:
   resolved "https://registry.yarnpkg.com/ejs/-/ejs-2.5.9.tgz#7ba254582a560d267437109a68354112475b0ce5"
   integrity sha512-GJCAeDBKfREgkBtgrYSf9hQy9kTb3helv0zGdzqhM7iAkW8FA/ZF97VQDbwFiwIT8MQLLOe5VlPZOEvZAqtUAQ==
 
-electron-builder@^21.2.0:
-  version "21.2.0"
-  resolved "https://registry.yarnpkg.com/electron-builder/-/electron-builder-21.2.0.tgz#b68ec4def713fc0b8602654ce842f972432f50c5"
-  integrity sha512-x8EXrqFbAb2L3N22YlGar3dGh8vwptbB3ovo3OF6K7NTpcsmM2zEoJv7GhFyX73rNzSG2HaWpXwGAtOp2JWiEw==
-  dependencies:
-    app-builder-lib "21.2.0"
-    bluebird-lst "^1.0.9"
-    builder-util "21.2.0"
-    builder-util-runtime "8.3.0"
-    chalk "^2.4.2"
-    dmg-builder "21.2.0"
-    fs-extra "^8.1.0"
-    is-ci "^2.0.0"
-    lazy-val "^1.0.4"
-    read-config-file "5.0.0"
-    sanitize-filename "^1.6.2"
-    update-notifier "^3.0.1"
-    yargs "^13.3.0"
-
 electron-chromedriver@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/electron-chromedriver/-/electron-chromedriver-5.0.1.tgz#0c102a482f16bd47f54fcdd238cf64210395ff4a"
@@ -11612,7 +11593,7 @@ vue-cli-plugin-electron-builder@^1.4.4:
   integrity sha512-g+x4uRMQQfYvfSTEwC4swRSRQOpEhV6cRx4kKus2b2MWz/4h1pfCqYwGdR9xLeaJdhfAH3c328feugnd6MIenQ==
   dependencies:
     chokidar "^3.0.2"
-    electron-builder "^21.2.0"
+    electron-builder "^22.0.0"
     execa "^1.0.0"
     friendly-errors-webpack-plugin "^1.7.0"
     fs-extra "^8.1.0"
