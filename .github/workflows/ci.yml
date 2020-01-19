@@ -81,6 +81,13 @@ jobs:
           console.log('publishToRelease: ' + publishToRelease)
           console.log('Will not publish to release in PR')
           return publishToRelease
+    - name: Install Snapcraft
+      uses: samuelmeuli/action-snapcraft@2a2b003682661733922241b9af1c4c1c789f30f1
+      # Only install Snapcraft  on Ubuntu
+      if: startsWith(matrix.os, 'ubuntu')
+      with:
+        # Log in to  Snap Store
+        snapcraft_token: ${{ secrets.snapcraft_token }}
     - name: Build Electron app
       if: (!steps.check_release.outputs.result)
       run: |
@@ -89,7 +96,7 @@ jobs:
     - name: Build & release Electron app
       env:
         GOOGLE_SERVICE_PRIVATE_KEY: ${{ secrets.GOOGLE_SERVICE_PRIVATE_KEY }}
-        github_token: ${{ secrets.github_token }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
       if: steps.check_release.outputs.result
       run: |
         yarn
