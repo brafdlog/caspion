@@ -6,10 +6,6 @@ module.exports = {
       builderOptions: {
         productName: 'israeli-bank-scrapers-desktop',
         appId: 'com..electron.israeli-bank-scrapers-desktop',
-        extends: null,
-        files: [
-          'dist/electron/**/*',
-        ],
         dmg: {
           contents: [
             {

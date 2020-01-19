@@ -4,7 +4,7 @@
   "author": "Baruch Rothkoff <baruchiro@gmail.com>",
   "description": "An Electron-vue project for israeli-bank-scrapers",
   "license": "MIT",
-  "main": "index.js",
+  "main": "background.js",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service electron:serve",
