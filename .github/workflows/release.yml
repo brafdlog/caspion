@@ -57,7 +57,7 @@ jobs:
     - name: Build & release Electron app
       env:
         GOOGLE_SERVICE_PRIVATE_KEY: ${{ secrets.GOOGLE_SERVICE_PRIVATE_KEY }}
-        github_token: ${{ secrets.github_token }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
       if: steps.check_release.outputs.result
       run: |
         yarn
