@@ -1,6 +1,7 @@
 name: Build/Release
 
 on:
+  pull_request:
   push:
     branches: master
 
@@ -28,14 +29,16 @@ jobs:
         github-token: ${{secrets.GITHUB_TOKEN}}
         # debug: true
         script: |
-          const result = await github.repos.listReleases({
+          const releases = await github.repos.listReleases({
             owner: 'baruchiro',
             repo: 'israeli-bank-scrapers-desktop'
           })
-          // console.log(result)
-          const release_tags = result.data.filter(release => !release.draft).map(release => release.tag_name)
-          // console.log(release_tags)
-          const publishToRelease = !release_tags.includes('v${{ env.package_version }}')
+          // console.log(releases)
+          const published_release_tags = releases.data.filter(release => !release.draft).map(release => release.tag_name)
+          // console.log(published_release_tags)
+          const isPushToMaster = ${{ startsWith(github.event_name, 'push') && github.ref == 'master' }}
+          console.log('Is push to mster: ' + isPushToMaster)
+          const publishToRelease = !published_release_tags.includes('v${{ env.package_version }}') && isPushToMaster
           console.log('publishToRelease: ' + publishToRelease)
           return publishToRelease
     - name: Install Node.js, NPM and Yarn
@@ -49,11 +52,17 @@ jobs:
       with:
         # Log in to  Snap Store
         snapcraft_token: ${{ secrets.snapcraft_token }}
+    - name: Set 'publish' parameter
+      shell: python
+      run: |
+        param = 'always' if '${{ steps.check_release.outputs.result }}' == 'true' else 'never'
+        print("Will {} (for this run) publish files to draft release".format(param))
+        print("::set-env name=PUBLISH_PARAM::{}".format(param))
     - name: Build & release Electron app
+      shell: bash
       env:
         GOOGLE_SERVICE_PRIVATE_KEY: ${{ secrets.GOOGLE_SERVICE_PRIVATE_KEY }}
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      if: steps.check_release.outputs.result
       run: |
         yarn
-        yarn build --publish onTagOrDraft
+        yarn build --publish $PUBLISH_PARAM
