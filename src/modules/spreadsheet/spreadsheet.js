@@ -2,7 +2,7 @@ import { promisify } from 'util';
 import pick from 'lodash.pick';
 import mapKeys from 'lodash.mapkeys';
 import GoogleSpreadsheet from 'google-spreadsheet';
-import { properties, transactionArrayToObject } from './transactions';
+import { properties, transactionArrayToObject } from '../transactions';
 import creds from './googleServiceAccount';
 
 const spreadsheetConstName = '_ibsd';

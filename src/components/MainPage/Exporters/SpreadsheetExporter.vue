@@ -27,7 +27,7 @@
 import { mapState, mapActions } from 'vuex';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { remote } from 'electron';
-import saveTransactionsToGoogleSheets from '@/modules/spreadsheet';
+import saveTransactionsToGoogleSheets from '@/modules/spreadsheet/spreadsheet';
 
 const name = 'SpreadsheetExporter';
 const title = 'Export to Google Spreadsheet';
