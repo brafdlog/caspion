@@ -15,7 +15,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
-logger.info(`Welcome to ${app.name} log`);
+logger.info(`Welcome to ${app.getName()} log`);
 logger.info(`Version: ${app.getVersion()}`);
 
 const onError = (error) => logger.error(error);
