@@ -1,22 +1,14 @@
 // copied from https://github.com/getstation/electron-google-oauth2/blob/7082c80b8f98bad26a7cd61c671cf58b99834381/src/index.ts
 // inspired by https://github.com/parro-it/electron-google-oauth
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { shell, BrowserWindow, remote } from 'electron';
 import { EventEmitter } from 'events';
-import { OAuth2Client } from 'google-auth-library';
-import { Credentials } from 'google-auth-library/build/src/auth/credentials';
 import { google } from 'googleapis';
 import { stringify } from 'querystring';
 import * as url from 'url';
 import LoopbackRedirectServer from './LoopbackRedirectServer';
 
-const BW: typeof BrowserWindow = process.type === 'renderer' ? remote.BrowserWindow : BrowserWindow;
-
-export class UserClosedWindowError extends Error {
-  constructor() {
-    super('User closed the window');
-  }
-}
-
+const BW = process.type === 'renderer' ? remote.BrowserWindow : BrowserWindow;
 /**
  * Tokens updated event
  *
@@ -24,13 +16,7 @@ export class UserClosedWindowError extends Error {
  * @type {Credentials}
  */
 
-export type ElectronGoogleOAuth2Options = {
-  successRedirectURL: string,
-  loopbackInterfaceRedirectionPort: number,
-  refocusAfterSuccess: boolean,
-};
-
-export const defaultElectronGoogleOAuth2Options: ElectronGoogleOAuth2Options = {
+export const defaultElectronGoogleOAuth2Options = {
   successRedirectURL: 'https://getstation.com/app-login-success/',
   // can't be randomized
   loopbackInterfaceRedirectionPort: 42813,
@@ -43,12 +29,6 @@ export const defaultElectronGoogleOAuth2Options: ElectronGoogleOAuth2Options = {
  * @fires ElectronGoogleOAuth2#tokens
  */
 export default class ElectronGoogleOAuth2 extends EventEmitter {
-
-  public oauth2Client: OAuth2Client;
-  public scopes: string[];
-  protected server: LoopbackRedirectServer | null;
-  protected options: ElectronGoogleOAuth2Options;
-
   /**
    * Create a new instance of ElectronGoogleOAuth2
    * @param {string} clientId - Google Client ID
@@ -57,10 +37,10 @@ export default class ElectronGoogleOAuth2 extends EventEmitter {
    * @param {string} successRedirectURL
    */
   constructor(
-    clientId: string,
-    clientSecret: string,
-    scopes: string[],
-    options: Partial<ElectronGoogleOAuth2Options> = defaultElectronGoogleOAuth2Options,
+    clientId,
+    clientSecret,
+    scopes,
+    options = defaultElectronGoogleOAuth2Options,
   ) {
     super();
     // Force fetching id_token if not provided
@@ -71,7 +51,7 @@ export default class ElectronGoogleOAuth2 extends EventEmitter {
     this.oauth2Client = new google.auth.OAuth2(
       clientId,
       clientSecret,
-      `http://127.0.0.1:${this.options.loopbackInterfaceRedirectionPort}/callback`
+      `http://127.0.0.1:${this.options.loopbackInterfaceRedirectionPort}/callback`,
     );
     this.oauth2Client.on('tokens', (tokens) => {
       this.emit('tokens', tokens);
@@ -83,11 +63,11 @@ export default class ElectronGoogleOAuth2 extends EventEmitter {
    * @param {boolean} forceAddSession
    * @returns {string}
    */
-  generateAuthUrl(forceAddSession: boolean = false) {
+  generateAuthUrl(forceAddSession = false) {
     let url = this.oauth2Client.generateAuthUrl({
       access_type: 'offline', // 'online' (default) or 'offline' (gets refresh_token)
       scope: this.scopes,
-      redirect_uri: `http://127.0.0.1:${this.options.loopbackInterfaceRedirectionPort}/callback`
+      redirect_uri: `http://127.0.0.1:${this.options.loopbackInterfaceRedirectionPort}/callback`,
     });
 
     if (forceAddSession) {
@@ -103,7 +83,7 @@ export default class ElectronGoogleOAuth2 extends EventEmitter {
    * @param {boolean} forceAddSession
    * @returns {Promise<string>}
    */
-  getAuthorizationCode(forceAddSession: boolean = false) {
+  getAuthorizationCode(forceAddSession = false) {
     const url = this.generateAuthUrl(forceAddSession);
     return this.openAuthWindowAndGetAuthorizationCode(url);
   }
@@ -113,11 +93,11 @@ export default class ElectronGoogleOAuth2 extends EventEmitter {
    * @param {string} urlParam
    * @returns {Promise<string>}
    */
-  openAuthWindowAndGetAuthorizationCode(urlParam: string) {
+  openAuthWindowAndGetAuthorizationCode(urlParam) {
     return this.openAuthPageAndGetAuthorizationCode(urlParam);
   }
 
-  async openAuthPageAndGetAuthorizationCode(urlParam: string) {
+  async openAuthPageAndGetAuthorizationCode(urlParam) {
     if (this.server) {
       // if a server is already running, we close it so that we free the port
       // and restart the process
@@ -139,38 +119,36 @@ export default class ElectronGoogleOAuth2 extends EventEmitter {
 
     const parsed = url.parse(reachedCallbackURL, true);
     if (parsed.query.error) {
-      throw new Error(parsed.query.error_description as string);
+      throw new Error(parsed.query.error_description);
     } else if (!parsed.query.code) {
       throw new Error('Unknown');
     }
 
     if (this.options.refocusAfterSuccess) {
       // refocus on the window
-      BW.getAllWindows().filter(w => w.isVisible()).forEach(w => w.show());
+      BW.getAllWindows().filter((w) => w.isVisible()).forEach((w) => w.show());
     }
-    
-    return parsed.query.code as string
+
+    return parsed.query.code;
   }
-  
+
   /**
    * Get Google tokens for given scopes
    * @param {boolean} forceAddSession
    * @returns {Promise<Credentials>}
    */
-  openAuthWindowAndGetTokens(forceAddSession: boolean = false) {
+  openAuthWindowAndGetTokens(forceAddSession = false) {
     return this
       .getAuthorizationCode(forceAddSession)
-      .then((authorizationCode) => {
-        return this.oauth2Client
-          .getToken(authorizationCode)
-          .then(response => {
-            this.oauth2Client.setCredentials(response.tokens);
-            return response.tokens;
-          });
-      });
+      .then((authorizationCode) => this.oauth2Client
+        .getToken(authorizationCode)
+        .then((response) => {
+          this.oauth2Client.setCredentials(response.tokens);
+          return response.tokens;
+        }));
   }
 
-  setTokens(tokens: Credentials) {
+  setTokens(tokens) {
     this.oauth2Client.setCredentials(tokens);
   }
 }
