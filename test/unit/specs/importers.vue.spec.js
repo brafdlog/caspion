@@ -1,12 +1,15 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
+import ElementUI from 'element-ui';
+
 import fakeStore from '../helpers/baseStore';
-import Importers from '../../../src/renderer/components/MainPage/Importers';
-import AddScraper from '../../../src/renderer/components/MainPage/Importers/AddScraper';
+import Importers from '../../../src/components/MainPage/Importers';
+import AddScraper from '../../../src/components/MainPage/Importers/AddScraper';
 
 const localVue = createLocalVue();
 
 localVue.use(Vuex);
+localVue.use(ElementUI);
 
 describe('Importers', () => {
   let wrapper;
@@ -19,6 +22,6 @@ describe('Importers', () => {
 
   it('Should contain an AddScraper component for each scraper', () => {
     const storeScrapers = fakeStore.modules.Scrapers.state.scrapers;
-    expect(wrapper.findAll(AddScraper).length).equal(Object.keys(storeScrapers).length);
+    expect(wrapper.findAll(AddScraper).length).toBe(Object.keys(storeScrapers).length);
   });
 });

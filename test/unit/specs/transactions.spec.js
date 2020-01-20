@@ -1,19 +1,19 @@
+import { getHash } from 'modules/transactions';
 import { Transactions } from '../helpers/baseStore';
-import { getHash } from '../../../src/renderer/modules/transactions';
 
 describe('transaction.js (The transactions helper)', () => {
   it('Should create hash key for transaction', () => {
     const firstTransaction = Object.values(Transactions)[0];
     const hashKey = getHash(firstTransaction);
 
-    expect(hashKey).to.not.equal(0);
+    expect(hashKey).not.toBe(0);
   });
 
   it('Should be a string hash', () => {
     const firstTransaction = Object.values(Transactions)[0];
     const hashKey = getHash(firstTransaction);
 
-    expect(typeof hashKey).to.eq('string');
+    expect(typeof hashKey).toBe('string');
   });
 
   it('Should be the expected hash', () => {
@@ -22,7 +22,7 @@ describe('transaction.js (The transactions helper)', () => {
 
     const hashKey = getHash(firstTransaction);
 
-    expect(hashKey).to.eq(firstTransactionHash);
+    expect(hashKey).toBe(firstTransactionHash);
   });
 
   it('Two empty transactions in the same day - should be different hash', () => {
@@ -32,7 +32,6 @@ describe('transaction.js (The transactions helper)', () => {
 
     const firstHashKey = getHash(transactionObjects[0]);
     const secondHashKey = getHash(transactionObjects[1]);
-
-    assert.notEqual(firstHashKey, secondHashKey);
+    expect(firstHashKey).not.toMatch(secondHashKey);
   });
 });

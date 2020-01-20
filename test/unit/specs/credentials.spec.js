@@ -1,142 +1,118 @@
-import sinon from 'sinon';
-import * as keytar from '../../../src/renderer/modules/encryption/keytar';
-import { encryptObject, decryptObject } from '../../../src/renderer/modules/encryption/credentials';
+import { encryptObject, decryptObject } from 'service/encryption/credentials.service.js';
 
 function isNotNullOrEmptyOrUndefined(value) {
   return value && value !== null && value !== '';
 }
 
-const fakeKeytarValut = {};
-const fakeSaveIntoAccount = async (account, password) => {
-  fakeSaveIntoAccount[account] = password;
-};
-const fakegetFromAccount = async (account) => fakeKeytarValut[account];
+test('Should encrypt value of simple object', async () => {
+  const original = { key: 'value' };
+  const encrypted = await encryptObject(original);
 
-sinon.stub(keytar, 'loadSALT').returns(Promise.resolve('AAAAAAA'));
-sinon.stub(keytar, 'saveSALT');
-sinon.stub(keytar, 'saveIntoAccount').callsFake(fakeSaveIntoAccount);
-sinon.stub(keytar, 'getFromAccount').callsFake(fakegetFromAccount);
+  const originalKeys = Object.keys(original);
+  const encryptedKeys = Object.keys(encrypted);
 
-describe('credentials.js', () => {
-  it('Should encrypt value of simple object', async () => {
-    const original = { key: 'value' };
-    const encrypted = await encryptObject(original);
+  // keys
+  expect(encryptedKeys.length).toEqual(1);
+  expect(encryptedKeys[0]).toEqual(originalKeys[0]);
 
-    const originalKeys = Object.keys(original);
-    const encryptedKeys = Object.keys(encrypted);
+  // values
+  expect(isNotNullOrEmptyOrUndefined(encrypted[encryptedKeys[0]])).toBe(true);
+  expect(encrypted[encryptedKeys[0]]).not.toEqual(original[originalKeys[0]]);
+});
 
-    // keys
-    assert.equal(encryptedKeys.length, 1);
-    assert.equal(encryptedKeys[0], originalKeys[0]);
+test('Should throw when encrypt a number value', async () => {
+  const original = { key: 1234 };
+  await expect(encryptObject(original)).rejects.toThrowError();
+});
 
-    // values
-    assert.isTrue(isNotNullOrEmptyOrUndefined(encrypted[encryptedKeys[0]]));
-    assert.notEqual(encrypted[encryptedKeys[0]], original[originalKeys[0]]);
-  });
+test('Should encrypt an array values', async () => {
+  const original = { key: ['arr1', 'arr2', 'arr3'] };
+  const encrypted = await encryptObject(original);
 
-  it('Should throw when encrypt a number value', async () => {
-    const original = { key: 1234 };
+  const originalKeys = Object.keys(original);
+  const encryptedKeys = Object.keys(encrypted);
 
-    try {
-      const encrypted = await encryptObject(original);
-      assert.isUndefined(encrypted);
-    } catch (error) {
-      assert.instanceOf(error, Error);
-    }
-  });
+  const originalValue = original[originalKeys[0]];
+  const encryptedValue = encrypted[encryptedKeys[0]];
 
-  it('Should encrypt an array values', async () => {
-    const original = { key: ['arr1', 'arr2', 'arr3'] };
-    const encrypted = await encryptObject(original);
+  // keys
+  expect(encryptedKeys.length).toEqual(1);
+  expect(encryptedKeys[0]).toEqual(originalKeys[0]);
 
-    const originalKeys = Object.keys(original);
-    const encryptedKeys = Object.keys(encrypted);
+  // values
+  expect(isNotNullOrEmptyOrUndefined(encryptedValue)).toBe(true);
+  expect(Array.isArray(encryptedValue)).toBe(true);
+  expect(encryptedValue).not.toEqual(originalValue);
+});
 
-    const originalValue = original[originalKeys[0]];
-    const encryptedValue = encrypted[encryptedKeys[0]];
+test('Should encrypt a complex object values', async () => {
+  const original = {
+    arrKey: ['arr1', 'arr2', 'arr3'],
+    arrComplex: [
+      'arrval1',
+      { objKey: 'objval' },
+      ['arrarrval1', 'arrarrval2'],
+    ],
+    objKey: {
+      strKey: 'strValue',
+      arrKey: ['arrval1', 'arrval2'],
+    },
+    strKey: 'strval',
+  };
+  const encrypted = await encryptObject(original);
 
-    // keys
-    assert.equal(encryptedKeys.length, 1);
-    assert.equal(encryptedKeys[0], originalKeys[0]);
+  // values - arrKey
+  expect(isNotNullOrEmptyOrUndefined(encrypted.arrKey)).toBe(true);
+  expect(Array.isArray(encrypted.arrKey)).toBe(true);
+  expect(encrypted.arrKey).toHaveLength(original.arrKey.length);
+  expect(encrypted.arrKey).not.toStrictEqual(original.arrKey);
 
-    // values
-    assert.isTrue(isNotNullOrEmptyOrUndefined(encryptedValue));
-    assert.isArray(encryptedValue);
-    assert.notEqual(encryptedValue, originalValue);
-  });
+  // values - arrComplex
+  expect(isNotNullOrEmptyOrUndefined(encrypted.arrComplex)).toBe(true);
+  expect(Array.isArray(encrypted.arrComplex)).toBe(true);
+  expect(encrypted.arrComplex).toHaveLength(original.arrComplex.length);
+  expect(encrypted.arrComplex).not.toStrictEqual(original.arrComplex);
 
-  it('Should encrypt a complex object values', async () => {
-    const original = {
-      arrKey: ['arr1', 'arr2', 'arr3'],
-      arrComplex: [
-        'arrval1',
-        { objKey: 'objval' },
-        ['arrarrval1', 'arrarrval2'],
-      ],
-      objKey: {
-        strKey: 'strValue',
-        arrKey: ['arrval1', 'arrval2'],
-      },
-      strKey: 'strval',
-    };
-    const encrypted = await encryptObject(original);
+  // values - arrComplex[1] (objKey)
+  expect(isNotNullOrEmptyOrUndefined(encrypted.arrComplex[1].objKey)).toBe(true);
+  expect(typeof encrypted.arrComplex[1]).toBe('object');
+  expect(encrypted.arrComplex[1]).toMatchObject(encrypted.arrComplex[1]);
+  expect(encrypted.arrComplex[1]).not.toStrictEqual(original.arrComplex[1]);
 
-    // keys
-    assert.hasAllKeys(encrypted, original);
+  // values - arrComplex[2] (Array)
+  expect(isNotNullOrEmptyOrUndefined(encrypted.arrComplex[2])).toBe(true);
+  expect(Array.isArray(encrypted.arrComplex[2])).toBe(true);
+  expect(encrypted.arrComplex[2]).toHaveLength(original.arrComplex[2].length);
+  expect(encrypted.arrComplex[2]).not.toStrictEqual(original.arrComplex[2]);
 
-    // values - arrKey
-    assert.isTrue(isNotNullOrEmptyOrUndefined(encrypted.arrKey));
-    assert.isArray(encrypted.arrKey);
-    assert.lengthOf(encrypted.arrKey, original.arrKey.length);
-    assert.notDeepEqual(encrypted.arrKey, original.arrKey);
+  // values - objKey
+  expect(isNotNullOrEmptyOrUndefined(encrypted.objKey)).toBe(true);
+  expect(typeof encrypted.objKey).toBe('object');
+  expect(encrypted.objKey).toMatchObject(encrypted.objKey);
+  expect(encrypted.objKey).not.toStrictEqual(original.objKey);
 
-    // values - arrComplex
-    assert.isTrue(isNotNullOrEmptyOrUndefined(encrypted.arrComplex));
-    assert.isArray(encrypted.arrComplex);
-    assert.lengthOf(encrypted.arrComplex, original.arrComplex.length);
-    assert.notDeepEqual(encrypted.arrComplex, original.arrComplex);
+  // values - objKey.arrKey (Array)
+  expect(isNotNullOrEmptyOrUndefined(encrypted.objKey.arrKey)).toBe(true);
+  expect(Array.isArray(encrypted.objKey.arrKey)).toBe(true);
+  expect(encrypted.objKey.arrKey).toHaveLength(original.objKey.arrKey.length);
+  expect(encrypted.objKey.arrKey).not.toStrictEqual(original.objKey.arrKey);
+});
 
-    // values - arrComplex[1] (objKey)
-    assert.isTrue(isNotNullOrEmptyOrUndefined(encrypted.arrComplex[1].objKey), `encrypted.arrComplex[1]: ${encrypted.arrComplex[1]}`);
-    assert.isObject(encrypted.arrComplex[1]);
-    assert.hasAllKeys(encrypted.arrComplex[1], encrypted.arrComplex[1]);
-    assert.notDeepEqual(encrypted.arrComplex[1], original.arrComplex[1]);
+test('Should encrypt and decrypt and get exactly the same object', async () => {
+  const original = {
+    arrKey: ['arr1', 'arr2', 'arr3'],
+    arrComplex: [
+      'arrval1',
+      { objKey: 'objval' },
+      ['arrarrval1', 'arrarrval2'],
+    ],
+    objKey: {
+      strKey: 'strValue',
+      arrKey: ['arrval1', 'arrval2'],
+    },
+    strKey: 'strval',
+  };
+  const actual = await decryptObject(await encryptObject(original));
 
-    // values - arrComplex[2] (Array)
-    assert.isTrue(isNotNullOrEmptyOrUndefined(encrypted.arrComplex[2]));
-    assert.isArray(encrypted.arrComplex[2]);
-    assert.lengthOf(encrypted.arrComplex[2], original.arrComplex[2].length);
-    assert.notDeepEqual(encrypted.arrComplex[2], original.arrComplex[2]);
-
-    // values - objKey
-    assert.isTrue(isNotNullOrEmptyOrUndefined(encrypted.objKey), `encrypted.objKey: ${encrypted.objKey}`);
-    assert.isObject(encrypted.objKey);
-    assert.hasAllKeys(encrypted.objKey, encrypted.objKey);
-    assert.notDeepEqual(encrypted.objKey, original.objKey);
-
-    // values - objKey.arrKey (Array)
-    assert.isTrue(isNotNullOrEmptyOrUndefined(encrypted.objKey.arrKey));
-    assert.isArray(encrypted.objKey.arrKey);
-    assert.lengthOf(encrypted.objKey.arrKey, original.objKey.arrKey.length);
-    assert.notDeepEqual(encrypted.objKey.arrKey, original.objKey.arrKey);
-  });
-
-  it('Should encrypt and decrypt and get exactly the same object', async () => {
-    const original = {
-      arrKey: ['arr1', 'arr2', 'arr3'],
-      arrComplex: [
-        'arrval1',
-        { objKey: 'objval' },
-        ['arrarrval1', 'arrarrval2'],
-      ],
-      objKey: {
-        strKey: 'strValue',
-        arrKey: ['arrval1', 'arrval2'],
-      },
-      strKey: 'strval',
-    };
-    const actual = await decryptObject(await encryptObject(original));
-
-    assert.deepEqual(actual, original);
-  });
+  expect(actual).toStrictEqual(original);
 });

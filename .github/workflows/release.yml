@@ -1,6 +1,7 @@
 name: Build/Release
 
 on:
+  pull_request:
   push:
     branches: master
 
@@ -28,14 +29,16 @@ jobs:
         github-token: ${{secrets.GITHUB_TOKEN}}
         # debug: true
         script: |
-          const result = await github.repos.listReleases({
+          const releases = await github.repos.listReleases({
             owner: 'baruchiro',
             repo: 'israeli-bank-scrapers-desktop'
           })
-          // console.log(result)
-          const release_tags = result.data.filter(release => !release.draft).map(release => release.tag_name)
-          // console.log(release_tags)
-          const publishToRelease = !release_tags.includes('v${{ env.package_version }}')
+          // console.log(releases)
+          const published_release_tags = releases.data.filter(release => !release.draft).map(release => release.tag_name)
+          // console.log(published_release_tags)
+          const isPushToMaster = ${{ startsWith(github.event_name, 'push') && github.ref == 'master' }}
+          console.log('Is push to mster: ' + isPushToMaster)
+          const publishToRelease = !published_release_tags.includes('v${{ env.package_version }}') && isPushToMaster
           console.log('publishToRelease: ' + publishToRelease)
           return publishToRelease
     - name: Install Node.js, NPM and Yarn
@@ -49,20 +52,17 @@ jobs:
       with:
         # Log in to  Snap Store
         snapcraft_token: ${{ secrets.snapcraft_token }}
-    - name: Build/release Electron app
+    - name: Set 'publish' parameter
+      shell: python
+      run: |
+        param = 'always' if '${{ steps.check_release.outputs.result }}' == 'true' else 'never'
+        print("Will {} (for this run) publish files to draft release".format(param))
+        print("::set-env name=PUBLISH_PARAM::{}".format(param))
+    - name: Build & release Electron app
+      shell: bash
       env:
         GOOGLE_SERVICE_PRIVATE_KEY: ${{ secrets.GOOGLE_SERVICE_PRIVATE_KEY }}
-      uses: samuelmeuli/action-electron-builder@aab12df5d99568b8426a07695135a977d30c9a95
-      with:
-        # GitHub token, automatically provided to the action
-        # (No need to define this secret in the repo settings)
-        github_token: ${{ secrets.github_token }}
-
-        # macOS code signing certificate
-        #mac_certs: ${{ secrets.mac_certs }}
-        #mac_certs_password: ${{ secrets.mac_certs_password }}
-
-
-        # If the commit is tagged with a version (e.g. "v1.0.0"),
-        # release the app after building
-        release: ${{steps.check_release.outputs.result}}
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        yarn
+        yarn build --publish $PUBLISH_PARAM

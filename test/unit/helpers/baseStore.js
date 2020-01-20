@@ -1,4 +1,4 @@
-import { getters as scrapersGetters } from '../../../src/renderer/store/modules/Scrapers';
+import { getters as scrapersGetters } from '../../../src/store/modules/Scrapers';
 
 export const Transactions = {
   '1541628000000-501420296066': {
