@@ -17,7 +17,7 @@ const BW = process.type === 'renderer' ? remote.BrowserWindow : BrowserWindow;
  */
 
 export const defaultElectronGoogleOAuth2Options = {
-  successRedirectURL: 'https://getstation.com/app-login-success/',
+  successRedirectURL: 'https://github.com/baruchiro/israeli-bank-scrapers-desktop',
   // can't be randomized
   loopbackInterfaceRedirectionPort: 42813,
   refocusAfterSuccess: true,
@@ -137,15 +137,11 @@ export default class ElectronGoogleOAuth2 extends EventEmitter {
    * @param {boolean} forceAddSession
    * @returns {Promise<Credentials>}
    */
-  openAuthWindowAndGetTokens(forceAddSession = false) {
-    return this
-      .getAuthorizationCode(forceAddSession)
-      .then((authorizationCode) => this.oauth2Client
-        .getToken(authorizationCode)
-        .then((response) => {
-          this.oauth2Client.setCredentials(response.tokens);
-          return response.tokens;
-        }));
+  async openAuthWindowAndGetTokens(forceAddSession = false) {
+    const authorizationCode = await this.getAuthorizationCode(forceAddSession);
+    const response = await this.oauth2Client.getToken(authorizationCode);
+    this.oauth2Client.setCredentials(response.tokens);
+    return response.tokens;
   }
 
   setTokens(tokens) {
