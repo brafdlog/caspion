@@ -77,5 +77,8 @@
     "vue-cli-plugin-element": "^1.0.1",
     "vue-jest": "^3.0.5",
     "vue-template-compiler": "^2.6.10"
+  },
+  "resolutions": {
+    "electron-builder": "^22.0.0"
   }
 }
