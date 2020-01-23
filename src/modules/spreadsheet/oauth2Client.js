@@ -6,7 +6,7 @@ import { EventEmitter } from 'events';
 import { google } from 'googleapis';
 import { stringify } from 'querystring';
 import * as url from 'url';
-import LoopbackRedirectServer from './LoopbackRedirectServer';
+import LoopbackRedirectServer from './loopbackRedirectServer';
 
 const BW = process.type === 'renderer' ? remote.BrowserWindow : BrowserWindow;
 /**
