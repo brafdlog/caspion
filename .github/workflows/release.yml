@@ -38,7 +38,7 @@ jobs:
           // console.log(published_release_tags)
           // github.event_name: ${{ github.event_name }}
           // github.ref: ${{ github.ref }}
-          const isPushToMaster = ${{ startsWith(github.event_name, 'push') && github.ref == 'refs/heads/master' }}
+          const isPushToMaster = ${{ startsWith(github.event_name, 'push') && github.ref == 'refs/heads/FixRelease' }}
           console.log('Is push to mster: ' + isPushToMaster)
           const publishToRelease = !published_release_tags.includes('v${{ env.package_version }}') && isPushToMaster
           console.log('publishToRelease: ' + publishToRelease)
