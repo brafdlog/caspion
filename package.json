@@ -1,6 +1,6 @@
 {
   "name": "israeli-bank-scrapers-desktop",
-  "version": "999.999.999.3",
+  "version": "999.999.999.4",
   "author": "Baruch Rothkoff <baruchiro@gmail.com>",
   "description": "An Electron-vue project for israeli-bank-scrapers",
   "license": "MIT",
@@ -22,7 +22,6 @@
     "lint"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.8.3",
     "core-js": "^3.4.4",
     "download-chromium": "^2.2.0",
     "electron-log": "^4.0.3",
@@ -40,7 +39,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.8.3",
-    "@babel/plugin-transform-runtime": "^7.8.3",
     "@babel/preset-env": "^7.8.3",
     "@babel/register": "^7.8.3",
     "@vue/cli-plugin-babel": "^4.1.0",
