@@ -1,6 +1,6 @@
 {
   "name": "israeli-bank-scrapers-desktop",
-  "version": "999.999.999.2",
+  "version": "999.999.999.3",
   "author": "Baruch Rothkoff <baruchiro@gmail.com>",
   "description": "An Electron-vue project for israeli-bank-scrapers",
   "license": "MIT",
@@ -81,6 +81,7 @@
     "vue-template-compiler": "^2.6.10"
   },
   "resolutions": {
+    "deepmerge": "^4.0.0",
     "electron-builder": "^22.0.0"
   }
 }
