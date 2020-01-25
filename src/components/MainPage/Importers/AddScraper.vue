@@ -32,8 +32,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { ipcRenderer } from 'electron';
+import { encryptProperty } from '@/service/encryption/credentials.service';
 
 function scraperToImporter(scraper) {
   const importer = { ...scraper, loginFields: {} };
@@ -65,7 +64,7 @@ export default {
   methods: {
     async submitForm() {
       if (this.isFormValid) {
-        const encrypted = ipcRenderer.sendSync('encryptProperty', this.importerToAdd, 'loginFields');
+        const encrypted = await encryptProperty(this.importerToAdd, 'loginFields');
         this.addImporterAction(encrypted);
         this.resetForm();
       }
