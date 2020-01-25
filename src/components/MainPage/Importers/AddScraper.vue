@@ -32,7 +32,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { encryptProperty } from '@/service/encryption/credentials.service';
+import { encryptProperty } from '@/modules/encryption/credentials';
 
 function scraperToImporter(scraper) {
   const importer = { ...scraper, loginFields: {} };

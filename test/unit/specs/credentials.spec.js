@@ -1,4 +1,4 @@
-import { encryptObject, decryptObject } from 'service/encryption/credentials.service.js';
+import { encryptObject, decryptObject } from 'modules/encryption/credentials.js';
 
 function isNotNullOrEmptyOrUndefined(value) {
   return value && value !== null && value !== '';

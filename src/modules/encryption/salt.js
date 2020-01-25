@@ -1,4 +1,4 @@
-import { loadSALT, saveSALT } from './keytar.service';
+import { loadSALT, saveSALT } from './keytar';
 
 export default async function SALT(defaultValue) {
   const SALT = await loadSALT();

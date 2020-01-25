@@ -44,7 +44,7 @@ import { mapActions } from 'vuex';
 import { MessageBox } from 'element-ui';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ipcRenderer, remote } from 'electron';
-import { decryptProperty } from '@/service/encryption/credentials.service';
+import { decryptProperty } from '@/modules/encryption/credentials';
 
 export default {
   props: {
