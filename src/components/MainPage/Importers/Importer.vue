@@ -44,7 +44,7 @@ import { mapActions } from 'vuex';
 import { MessageBox } from 'element-ui';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ipcRenderer, remote } from 'electron';
-
+import { decryptProperty } from '@/service/encryption/credentials.service';
 
 export default {
   props: {
@@ -63,8 +63,9 @@ export default {
     };
   },
   created() {
-    ipcRenderer.send('decryptProperty', this.importer, 'loginFields');
-    ipcRenderer.on('decryptProperty-reply', (event, decrypted) => {
+    this.decryptedImporter = decryptProperty(this.importer, 'loginFields').then((decrypted) => {
+      this.$logger.info(`Importer '${this.importer.name}' with id:${this.importer.id} `
+        + `decrypted with ${Object.keys(decrypted.loginFields).length} fields`);
       this.decryptedImporter = decrypted;
     });
 
