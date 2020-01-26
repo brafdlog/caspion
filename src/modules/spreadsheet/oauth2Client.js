@@ -150,6 +150,10 @@ export default class ElectronGoogleOAuth2 extends EventEmitter {
   setTokens(tokens) {
     this.oauth2Client.setCredentials(tokens);
   }
+
+  getClient() {
+    return this.oauth2Client;
+  }
 }
 
 const keytarAccount = 'googleOauth2Token';
@@ -168,9 +172,10 @@ async function loadToken() {
 }
 
 export async function CreateClient() {
+  const clientDetails = require('./client_secret.json');
   const myApiOauth = new ElectronGoogleOAuth2(
-    'CLIENT_ID',
-    'CLIENT_SECRET',
+    clientDetails.client_id,
+    clientDetails.client_secret,
     ['https://www.googleapis.com/auth/drive.metadata.readonly'],
   );
 
@@ -183,6 +188,7 @@ export async function CreateClient() {
     await saveToken(token);
     myApiOauth.setTokens(token);
   }
+  return myApiOauth.GetClient();
 }
 
 export async function isConnected() {

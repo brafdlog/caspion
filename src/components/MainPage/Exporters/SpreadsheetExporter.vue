@@ -1,7 +1,7 @@
 <template>
   <el-form>
     <el-select
-      v-if="oauth2Client"
+      v-if="isLogin"
       v-model="properties.spreadsheetId"
       filterable
       allow-create
@@ -52,6 +52,7 @@ export default {
         spreadsheetId: null,
       },
       oauth2Client: null,
+      isLogin: false,
       loading: false,
     };
   },
@@ -96,6 +97,8 @@ export default {
     },
     async login() {
       this.oauth2Client = await CreateClient();
+
+      this.isLogin = true;
     },
   },
 };
