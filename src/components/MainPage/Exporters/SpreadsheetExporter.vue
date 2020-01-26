@@ -1,16 +1,27 @@
 <template>
   <el-form>
-    <el-link
-      type="primary"
-      href="https://github.com/baruchiro/israeli-bank-scrapers-desktop/blob/master/docs/share-spreadsheet.md"
-      target="_blank"
-      @click.prevent="openExternalBrowser"
+    <el-select
+      v-if="oauth2Client"
+      v-model="properties.spreadsheetId"
+      filterable
+      allow-create
+      default-first-option
+      placeholder="Choose Spreadsheet"
     >
-      Creating Sharing Link
-    </el-link>
-    <el-form-item label="Spreadsheet Sharing Link">
-      <el-input v-model="properties.fileUrl" />
-    </el-form-item>
+      <el-option
+        v-for="spreadsheet in properties.spreadsheets"
+        :key="spreadsheet.id"
+        :label="spreadsheet.title"
+        :value="spreadsheet.id"
+      />
+    </el-select>
+    <el-button
+      v-else
+      type="primary"
+      @click="login"
+    >
+      Login to Google
+    </el-button>
     <el-form-item>
       <el-button
         type="primary"
@@ -25,8 +36,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { remote } from 'electron';
+import { isConnected, CreateClient } from '@/modules/spreadsheet/oauth2Client';
 import saveTransactionsToGoogleSheets from '@/modules/spreadsheet/spreadsheet';
 
 const name = 'SpreadsheetExporter';
@@ -38,8 +48,10 @@ export default {
   data() {
     return {
       properties: {
-        fileUrl: '',
+        spreadsheets: [],
+        spreadsheetId: null,
       },
+      oauth2Client: null,
       loading: false,
     };
   },
@@ -51,6 +63,11 @@ export default {
   },
   created() {
     this.properties = { ...this.properties, ...this.storeProperties };
+    isConnected().then((isConnected) => {
+      if (isConnected) {
+        this.login();
+      }
+    });
   },
   methods: {
     ...mapActions(['saveExporterProperties']),
@@ -69,7 +86,7 @@ export default {
         this.emitStatus(
           true,
           `There were ${result.before} transactions, 
-        we uploaded ${result.new} transactions and now there are ${result.combine} transactions.`,
+            we uploaded ${result.new} transactions and now there are ${result.combine} transactions.`,
         );
       } catch (error) {
         this.$logger.error(error);
@@ -77,8 +94,8 @@ export default {
       }
       this.loading = false;
     },
-    openExternalBrowser(e) {
-      remote.shell.openExternal(e.target.href);
+    async login() {
+      this.oauth2Client = await CreateClient();
     },
   },
 };

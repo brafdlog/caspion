@@ -8,6 +8,9 @@ import { stringify } from 'querystring';
 import * as url from 'url';
 import LoopbackRedirectServer from './loopbackRedirectServer';
 
+import { encryptObject, decryptObject } from '@/service/encryption/credentials.service';
+import { saveIntoAccount, getFromAccount } from '@/service/encryption/keytar.service';
+
 const BW = process.type === 'renderer' ? remote.BrowserWindow : BrowserWindow;
 /**
  * Tokens updated event
@@ -147,4 +150,41 @@ export default class ElectronGoogleOAuth2 extends EventEmitter {
   setTokens(tokens) {
     this.oauth2Client.setCredentials(tokens);
   }
+}
+
+const keytarAccount = 'googleOauth2Token';
+
+async function saveToken(token) {
+  const encryptedToken = await encryptObject(token);
+  const strToken = JSON.stringify(encryptedToken);
+  return saveIntoAccount(keytarAccount, strToken);
+}
+
+async function loadToken() {
+  const strToken = await getFromAccount(keytarAccount);
+  if (strToken === null) return null;
+  const encryptedToken = JSON.parse(strToken);
+  return decryptObject(encryptedToken);
+}
+
+export async function CreateClient() {
+  const myApiOauth = new ElectronGoogleOAuth2(
+    'CLIENT_ID',
+    'CLIENT_SECRET',
+    ['https://www.googleapis.com/auth/drive.metadata.readonly'],
+  );
+
+  const savedToken = await loadToken();
+
+  if (savedToken !== null) {
+    myApiOauth.SetTokens(saveToken);
+  } else {
+    const token = await myApiOauth.openAuthWindowAndGetTokens();
+    await saveToken(token);
+    myApiOauth.setTokens(token);
+  }
+}
+
+export async function isConnected() {
+  return (await loadToken()) !== null;
 }
