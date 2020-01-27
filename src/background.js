@@ -4,9 +4,8 @@ import {
 } from 'electron';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createProtocol, installVueDevtools } from 'vue-cli-plugin-electron-builder/lib';
-import logger from 'electron-log';
 import { scrape, SCRAPERS } from './service/scrapers.service';
-import { encryptProperty, decryptProperty } from './service/encryption/credentials.service';
+import CreateLogger from './logger';
 import './store';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
@@ -15,12 +14,9 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
-logger.info(`Welcome to ${app.getName()} log`);
-logger.info(`Version: ${app.getVersion()}`);
+global.logger = CreateLogger(app);
+const { logger } = global;
 
-const onError = (error) => logger.error(error);
-logger.catchErrors({ onError });
-global.logger = logger;
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } },
@@ -32,14 +28,6 @@ function onProgress({ percent }, step) {
 
 ipcMain.on('getScrapers', (event) => {
   event.reply('getScrapers-reply', SCRAPERS);
-});
-ipcMain.on('encryptProperty', async (event, importer, fields) => {
-  event.returnValue = await encryptProperty(importer, fields);
-});
-ipcMain.on('decryptProperty', (event, importer, fields) => {
-  decryptProperty(importer, fields).then((decrypted) => {
-    event.reply('decryptProperty-reply', decrypted);
-  });
 });
 
 ipcMain.on('scrape', (event, installPath, scraperName, loginFields, showBrowser) => {
