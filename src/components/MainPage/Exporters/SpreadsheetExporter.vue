@@ -18,7 +18,7 @@
     <el-button
       v-else
       type="primary"
-      @click="login"
+      @click="login()"
     >
       Login to Google
     </el-button>
@@ -90,15 +90,18 @@ export default {
             we uploaded ${result.new} transactions and now there are ${result.combine} transactions.`,
         );
       } catch (error) {
-        this.$logger.error(error);
+        this.$logger.error(error.message, error);
         this.emitStatus(false, error.message);
       }
       this.loading = false;
     },
     async login() {
-      this.oauth2Client = await CreateClient();
-
-      this.isLogin = true;
+      try {
+        this.oauth2Client = await CreateClient();
+        this.isLogin = true;
+      } catch (e) {
+        this.$logger.error(e.message, e);
+      }
     },
   },
 };

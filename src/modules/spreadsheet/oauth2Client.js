@@ -158,8 +158,9 @@ export default class ElectronGoogleOAuth2 extends EventEmitter {
 
 const keytarAccount = 'googleOauth2Token';
 
-async function saveToken(token) {
-  const encryptedToken = await encryptObject(token);
+// eslint-disable-next-line camelcase
+async function saveToken({ refresh_token }) {
+  const encryptedToken = await encryptObject({ refresh_token });
   const strToken = JSON.stringify(encryptedToken);
   return saveIntoAccount(keytarAccount, strToken);
 }
@@ -182,13 +183,13 @@ export async function CreateClient() {
   const savedToken = await loadToken();
 
   if (savedToken !== null) {
-    myApiOauth.SetTokens(saveToken);
+    myApiOauth.setTokens(savedToken);
   } else {
     const token = await myApiOauth.openAuthWindowAndGetTokens();
     await saveToken(token);
     myApiOauth.setTokens(token);
   }
-  return myApiOauth.GetClient();
+  return myApiOauth.getClient();
 }
 
 export async function isConnected() {
