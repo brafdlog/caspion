@@ -8,8 +8,8 @@ import { stringify } from 'querystring';
 import * as url from 'url';
 import LoopbackRedirectServer from './loopbackRedirectServer';
 
-import { encryptObject, decryptObject } from '@/service/encryption/credentials.service';
-import { saveIntoAccount, getFromAccount } from '@/service/encryption/keytar.service';
+import { encryptObject, decryptObject } from '@/modules/encryption/credentials';
+import { saveIntoAccount, getFromAccount } from '@/modules/encryption/keytar';
 
 const BW = process.type === 'renderer' ? remote.BrowserWindow : BrowserWindow;
 /**
