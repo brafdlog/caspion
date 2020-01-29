@@ -26,6 +26,12 @@ export async function CreateClient() {
     ['https://www.googleapis.com/auth/drive.metadata.readonly'],
   );
 
+  myApiOauth.on('tokens', async (tokens) => {
+    if (tokens.refresh_token) {
+      await saveToken(tokens);
+    }
+  });
+
   const savedToken = await loadToken();
 
   if (savedToken !== null) {
