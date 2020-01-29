@@ -1,29 +1,40 @@
 <template>
   <el-form>
-    <el-select
+    <el-form-item
       v-if="isLogin"
-      v-model="properties.spreadsheetId"
-      filterable
-      allow-create
-      default-first-option
-      placeholder="Choose Spreadsheet"
     >
-      <el-option
-        v-for="spreadsheet in properties.spreadsheets"
-        :key="spreadsheet.id"
-        :label="spreadsheet.name"
-        :value="spreadsheet.id"
+      <el-select
+        v-model="properties.spreadsheetId"
+        filterable
+        allow-create
+        default-first-option
+        placeholder="Choose Spreadsheet"
+      >
+        <el-option
+          v-for="spreadsheet in properties.spreadsheets"
+          :key="spreadsheet.id"
+          :label="spreadsheet.name"
+          :value="spreadsheet.id"
+        />
+      </el-select>
+      <el-alert
+        v-show="isNewSpreadsheet"
+        title="Will create a new spreadsheet"
+        type="info"
+        show-icon
       />
-    </el-select>
-    <el-button
-      v-else
-      type="primary"
-      @click="login()"
-    >
-      Login to Google
-    </el-button>
+    </el-form-item>
+    <el-form-item v-else>
+      <el-button
+        type="primary"
+        @click="login()"
+      >
+        Login to Google
+      </el-button>
+    </el-form-item>
     <el-form-item>
       <el-button
+        :disabled="!properties.spreadsheetId"
         type="primary"
         :loading="loading"
         @click="submitForm()"
@@ -37,7 +48,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { isConnected, CreateClient } from '@/modules/googleOauth';
-import saveTransactionsToGoogleSheets, { listAllSpreadsheets } from '@/modules/spreadsheet/spreadsheet';
+import { listAllSpreadsheets, createNewSpreadsheet } from '@/modules/spreadsheet/spreadsheet';
 
 const name = 'SpreadsheetExporter';
 const title = 'Export to Google Spreadsheet';
@@ -58,6 +69,11 @@ export default {
   computed: {
     isLogin() {
       return this.oauth2Client !== null;
+    },
+    isNewSpreadsheet() {
+      return this.properties.spreadsheetId
+      && !this.properties.spreadsheets.map((spreadsheet) => spreadsheet.id)
+        .includes(this.properties.spreadsheetId);
     },
     ...mapState({
       storeProperties: (state) => state.Exporters[name],
@@ -81,16 +97,22 @@ export default {
     async submitForm() {
       this.loading = true;
       try {
+        if (this.isNewSpreadsheet) {
+          this.$logger.info(`Creating new spreadsheet: '${this.properties.spreadsheetId}'`);
+          const spreadsheet = await createNewSpreadsheet(
+            this.oauth2Client,
+            this.properties.spreadsheetId,
+          );
+          const spreadsheetStructured = {
+            id: spreadsheet.spreadsheetId,
+            name: spreadsheet.properties.title,
+          };
+          this.$logger.info(`Created new spreadsheet: '${JSON.stringify(spreadsheetStructured)}'`);
+          this.properties.spreadsheets.push(spreadsheetStructured);
+          this.properties.spreadsheetId = spreadsheetStructured.id;
+        }
+
         this.saveExporterProperties({ name, properties: this.properties });
-        const result = await saveTransactionsToGoogleSheets(
-          this.properties.fileUrl,
-          this.transactions,
-        );
-        this.emitStatus(
-          true,
-          `There were ${result.before} transactions, 
-            we uploaded ${result.new} transactions and now there are ${result.combine} transactions.`,
-        );
       } catch (error) {
         this.$logger.error(error.message, error);
         this.emitStatus(false, error.message);

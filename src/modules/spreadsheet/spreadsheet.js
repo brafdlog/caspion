@@ -93,15 +93,23 @@ export default async function saveTransactionsToGoogleSheets(
   };
 }
 
-export async function listAllSpreadsheets(oauthClient) {
-  const drive = google.drive({
-    version: 'v3',
-    auth: oauthClient,
-  });
+export async function listAllSpreadsheets(auth) {
+  const drive = google.drive({ version: 'v3', auth });
 
   const response = await drive.files.list({
     q: 'mimeType="application/vnd.google-apps.spreadsheet"',
   });
 
   return response.data.files;
+}
+
+export async function createNewSpreadsheet(auth, title) {
+  const resource = {
+    properties: {
+      title,
+    },
+  };
+  const sheets = google.sheets({ version: 'v4', auth });
+
+  return (await sheets.spreadsheets.create({ resource })).data;
 }
