@@ -52,11 +52,13 @@ export default {
         spreadsheetId: null,
       },
       oauth2Client: null,
-      isLogin: false,
       loading: false,
     };
   },
   computed: {
+    isLogin() {
+      return this.oauth2Client !== null;
+    },
     ...mapState({
       storeProperties: (state) => state.Exporters[name],
       transactions: (state) => state.Transactions.transactions,
@@ -98,7 +100,6 @@ export default {
     async login() {
       try {
         this.oauth2Client = await CreateClient();
-        this.isLogin = true;
       } catch (e) {
         this.$logger.error(e.message, e);
       }
