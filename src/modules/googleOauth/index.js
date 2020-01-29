@@ -23,7 +23,10 @@ export async function CreateClient() {
   const myApiOauth = new ElectronGoogleOAuth2(
     clientDetails.client_id,
     clientDetails.client_secret,
-    ['https://www.googleapis.com/auth/drive.metadata.readonly'],
+    [
+      'https://www.googleapis.com/auth/drive.metadata.readonly',
+      'https://www.googleapis.com/auth/spreadsheets',
+    ],
   );
 
   myApiOauth.on('tokens', async (tokens) => {
