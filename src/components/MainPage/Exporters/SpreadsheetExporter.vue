@@ -11,7 +11,7 @@
       <el-option
         v-for="spreadsheet in properties.spreadsheets"
         :key="spreadsheet.id"
-        :label="spreadsheet.title"
+        :label="spreadsheet.name"
         :value="spreadsheet.id"
       />
     </el-select>
@@ -37,7 +37,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { isConnected, CreateClient } from '@/modules/googleOauth';
-import saveTransactionsToGoogleSheets from '@/modules/spreadsheet/spreadsheet';
+import saveTransactionsToGoogleSheets, { listAllSpreadsheets } from '@/modules/spreadsheet/spreadsheet';
 
 const name = 'SpreadsheetExporter';
 const title = 'Export to Google Spreadsheet';
@@ -100,6 +100,7 @@ export default {
     async login() {
       try {
         this.oauth2Client = await CreateClient();
+        this.properties.spreadsheets = await listAllSpreadsheets(this.oauth2Client);
       } catch (e) {
         this.$logger.error(e.message, e);
       }

@@ -1,7 +1,8 @@
-import { promisify } from 'util';
-import pick from 'lodash.pick';
-import mapKeys from 'lodash.mapkeys';
 import GoogleSpreadsheet from 'google-spreadsheet';
+import { google } from 'googleapis';
+import mapKeys from 'lodash.mapkeys';
+import pick from 'lodash.pick';
+import { promisify } from 'util';
 import { properties, transactionArrayToObject } from '../transactions';
 import creds from './googleServiceAccount';
 
@@ -90,4 +91,17 @@ export default async function saveTransactionsToGoogleSheets(
     new: Object.keys(transactionsObjectToSave).length,
     combine: Object.keys(transactionsCombine).length,
   };
+}
+
+export async function listAllSpreadsheets(oauthClient) {
+  const drive = google.drive({
+    version: 'v3',
+    auth: oauthClient,
+  });
+
+  const response = await drive.files.list({
+    q: 'mimeType="application/vnd.google-apps.spreadsheet"',
+  });
+
+  return response.data.files;
 }
