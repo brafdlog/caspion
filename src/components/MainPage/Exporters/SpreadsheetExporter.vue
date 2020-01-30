@@ -98,19 +98,9 @@ export default {
       this.loading = true;
       try {
         if (this.isNewSpreadsheet) {
-          this.$logger.info(`Creating new spreadsheet: '${this.properties.spreadsheetId}'`);
-          const spreadsheet = await createNewSpreadsheet(
-            this.oauth2Client,
-            this.properties.spreadsheetId,
-          );
-          const spreadsheetStructured = {
-            id: spreadsheet.spreadsheetId,
-            name: spreadsheet.properties.title,
-          };
-          this.$logger.info(`Created new spreadsheet: '${JSON.stringify(spreadsheetStructured)}'`);
-          this.properties.spreadsheets.push(spreadsheetStructured);
-          this.properties.spreadsheetId = spreadsheetStructured.id;
+          await this.createNewSpreadsheet();
         }
+
 
         this.saveExporterProperties({ name, properties: this.properties });
       } catch (error) {
@@ -126,6 +116,20 @@ export default {
       } catch (e) {
         this.$logger.error(e.message, e);
       }
+    },
+    async createNewSpreadsheet() {
+      this.$logger.info(`Creating new spreadsheet: '${this.properties.spreadsheetId}'`);
+      const spreadsheet = await createNewSpreadsheet(
+        this.oauth2Client,
+        this.properties.spreadsheetId,
+      );
+      const spreadsheetStructured = {
+        id: spreadsheet.spreadsheetId,
+        name: spreadsheet.properties.title,
+      };
+      this.$logger.info(`Created new spreadsheet: '${JSON.stringify(spreadsheetStructured)}'`);
+      this.properties.spreadsheets.push(spreadsheetStructured);
+      this.properties.spreadsheetId = spreadsheetStructured.id;
     },
   },
 };

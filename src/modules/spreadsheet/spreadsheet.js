@@ -108,6 +108,13 @@ export async function createNewSpreadsheet(auth, title) {
     properties: {
       title,
     },
+    sheets: [
+      {
+        properties: {
+          title: spreadsheetConstName,
+        },
+      },
+    ],
   };
   const sheets = google.sheets({ version: 'v4', auth });
 
