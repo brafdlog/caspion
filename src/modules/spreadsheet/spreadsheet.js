@@ -1,95 +1,96 @@
-import GoogleSpreadsheet from 'google-spreadsheet';
 import { google } from 'googleapis';
-import mapKeys from 'lodash.mapkeys';
-import pick from 'lodash.pick';
-import { promisify } from 'util';
-import { properties, transactionArrayToObject } from '../transactions';
-import creds from './googleServiceAccount';
+import { properties as transactionProperties, transactionArrayToObject } from '../transactions';
 
 const spreadsheetConstName = '_ibsd';
 
-const headers = properties.map((prop) => prop.name.toLowerCase());
-const lowerHeaderToUpper = properties.reduce((prev, current) => {
-  prev[current.name.toLowerCase()] = current.name;
-  return prev;
-}, {});
+const headers = transactionProperties.map((property) => property.name);
+const requiredHeaders = transactionProperties.filter((property) => property.hash)
+  .map((property) => property.name);
 
-// Promisify
-async function useServiceAccountAuth(doc, creds) {
-  await promisify(doc.useServiceAccountAuth)(creds);
-}
-
-async function getInfo(doc) {
-  return promisify(doc.getInfo)();
-}
-
-async function addWorksheet(doc, options) {
-  return promisify(doc.addWorksheet).call(doc, options);
-}
-
-async function getRows(worksheet, options) {
-  return promisify(worksheet.getRows)(options);
-}
-
-async function clear(worksheet) {
-  return promisify(worksheet.clear)();
-}
-
-async function setHeaderRow(worksheet, values) {
-  return promisify(worksheet.setHeaderRow)(values);
-}
-
-async function addRow(worksheet, newRow) {
-  return promisify(worksheet.addRow)(newRow);
-}
-
-
-async function getGoogleSpreadsheetDoc(spreadsheetID) {
-  const doc = new GoogleSpreadsheet(spreadsheetID);
-  await useServiceAccountAuth(doc, creds);
-  return doc;
-}
-
-async function getWorksheet(doc, title) {
-  const worksheet = (await getInfo(doc)).worksheets.find((worksheet) => worksheet.title === title);
-  if (worksheet) return worksheet;
-
-  return addWorksheet(doc, { title, headers });
-}
-
-async function readTransactionsFromWorksheet(worksheet) {
-  const transactions = (await getRows(worksheet, {})).map((row) => pick(row, headers));
-  const transactionsRealProperties = transactions.map(
-    (transaction) => mapKeys(transaction, (_value, key) => lowerHeaderToUpper[key]),
-  );
-  return transactionArrayToObject(transactionsRealProperties);
-}
-
-async function SaveTransactionsToWorksheet(worksheet, transactionsArray) {
-  await clear(worksheet);
-  await setHeaderRow(worksheet, headers);
-
-  transactionsArray.map((transaction) => mapKeys(transaction, (_value, key) => key.toLowerCase()))
-    .forEach(async (transaction) => {
-      await addRow(worksheet, transaction);
+async function fetchExistingTransactions(sheets, spreadsheetId) {
+  try {
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId,
+      range: spreadsheetConstName,
     });
+    return response.data.values || [headers];
+  } catch (error) {
+    if (error.code && error.code === 400) {
+      return [headers];
+    }
+    throw error;
+  }
 }
 
-export default async function saveTransactionsToGoogleSheets(
-  sheetSharingLink, transactionsObjectToSave,
-) {
-  const spreadsheetID = sheetSharingLink.match(/\w{30}-\w{13}/)[0];
-  const doc = await getGoogleSpreadsheetDoc(spreadsheetID);
-  const worksheet = await getWorksheet(doc, spreadsheetConstName);
-  const transactionsFromWs = await readTransactionsFromWorksheet(worksheet);
+function zip(keys, values) {
+  return keys.reduce((prev, current, index) => ({ ...prev, [current]: values[index] }), {});
+}
 
-  const transactionsCombine = { ...transactionsFromWs, ...transactionsObjectToSave };
-  await SaveTransactionsToWorksheet(worksheet, Object.values(transactionsCombine));
+function validateHeaders(headers) {
+  const missingHeaders = requiredHeaders.filter((header) => !headers.includes(header));
+  if (missingHeaders.length > 0) {
+    throw new Error(`Missing required headers: [${missingHeaders}] in [${headers}]`);
+  }
+}
+
+function convertTransactionsArraysToObject(transactionsArrays) {
+  const headers = transactionsArrays.shift();
+  validateHeaders(headers);
+  const arrayOfObjects = transactionsArrays.map((transaction) => zip(headers, transaction));
+  return transactionArrayToObject(arrayOfObjects);
+}
+
+async function getExistingTransactionsObject(sheets, spreadsheetId) {
+  const existsArrays = await fetchExistingTransactions(sheets, spreadsheetId);
+  return convertTransactionsArraysToObject(existsArrays);
+}
+
+function convertTransactionObjectToArrays(transactionObject) {
+  const rows = [headers];
+  Object.values(transactionObject).forEach((transaction) => {
+    const transactionRow = [];
+    headers.forEach((header) => {
+      transactionRow.push(transaction[header] || '');
+    });
+    rows.push(transactionRow);
+  });
+  return rows;
+}
+
+async function saveTransactionsAsObjectToGoogleSheets(sheets, spreadsheetId, transactionObject) {
+  const arrays = convertTransactionObjectToArrays(transactionObject);
+  const request = {
+    spreadsheetId,
+    range: spreadsheetConstName,
+    valueInputOption: 'USER_ENTERED',
+    includeValuesInResponse: true,
+    resource: {
+      values: arrays,
+    },
+  };
+  return sheets.spreadsheets.values.update(request);
+}
+
+export async function saveTransactionsToGoogleSheets(
+  auth,
+  spreadsheetId,
+  transactionsObject,
+) {
+  const sheets = google.sheets({ version: 'v4', auth });
+  const existTransactionsObject = await getExistingTransactionsObject(sheets, spreadsheetId);
+  const existTransactions = Object.keys(existTransactionsObject).length;
+  const combinedTransactions = { ...existTransactionsObject, ...transactionsObject };
+  const response = await saveTransactionsAsObjectToGoogleSheets(
+    sheets,
+    spreadsheetId,
+    combinedTransactions,
+  );
 
   return {
-    before: Object.keys(transactionsFromWs).length,
-    new: Object.keys(transactionsObjectToSave).length,
-    combine: Object.keys(transactionsCombine).length,
+    status: response.status,
+    existTransactions,
+    updatedTransactions: response.data.updatedRows - 1,
+    statusText: response.statusText,
   };
 }
 

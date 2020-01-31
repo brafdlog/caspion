@@ -48,7 +48,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { isConnected, CreateClient } from '@/modules/googleOauth';
-import { listAllSpreadsheets, createNewSpreadsheet } from '@/modules/spreadsheet/spreadsheet';
+import { listAllSpreadsheets, createNewSpreadsheet, saveTransactionsToGoogleSheets } from '@/modules/spreadsheet/spreadsheet';
 
 const name = 'SpreadsheetExporter';
 const title = 'Export to Google Spreadsheet';
@@ -101,6 +101,22 @@ export default {
           await this.createNewSpreadsheet();
         }
 
+        const result = await saveTransactionsToGoogleSheets(
+          this.oauth2Client,
+          this.properties.spreadsheetId,
+          this.transactions,
+        );
+
+        const statusMessage = result.status === 200
+          ? `There were ${result.existTransactions} transactions in the sheet. `
+            + `We were asked to add ${Object.keys(this.transactions).length} transactions, `
+            + `and now there are ${result.updatedTransactions}.`
+          : result.statusText || 'Unknown error';
+
+        this.emitStatus(
+          result.status === 200,
+          statusMessage,
+        );
 
         this.saveExporterProperties({ name, properties: this.properties });
       } catch (error) {
