@@ -1,20 +1,30 @@
 /* eslint-disable no-console */
-if (process.env.GOOGLE_SERVICE_PRIVATE_KEY) {
-  console.log('Replacing private key');
-  // eslint-disable-next-line import/no-extraneous-dependencies
-  const replace = require('replace-in-file');
-  const options = {
-    files: '**/googleServiceAccount.js',
-    from: /GOOGLE_SERVICE_PRIVATE_KEY/g,
-    to: process.env.GOOGLE_SERVICE_PRIVATE_KEY,
-  };
+// eslint-disable-next-line import/no-extraneous-dependencies
+const replace = require('replace-in-file');
 
-  try {
-    const results = replace.sync(options);
-    console.log('Replacement results:', results);
-  } catch (error) {
-    console.error('Error occurred:', error);
+function replaceValueByEnvVar(key) {
+  if (process.env[key]) {
+    console.log(`Replacing ${key}`);
+    const options = {
+      files: '**/client_secret.json',
+      from: new RegExp(key, 'g'),
+      to: process.env[key],
+    };
+
+    try {
+      const results = replace.sync(options);
+      console.log('Replacement results:', results);
+    } catch (error) {
+      console.error('Error occurred:', error);
+    }
+  } else {
+    console.log(`No key ${key} inject`);
   }
-} else {
-  console.log('No private key to inject');
 }
+
+const envsToReplace = [
+  'GOOGLE_CLIENT_ID',
+  'GOOGLE_CLIENT_SECRET',
+];
+
+envsToReplace.forEach((env) => replaceValueByEnvVar(env));
