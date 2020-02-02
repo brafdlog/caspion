@@ -50,7 +50,7 @@ function convertTransactionObjectToArrays(transactionObject) {
   Object.values(transactionObject).forEach((transaction) => {
     const transactionRow = [];
     headers.forEach((header) => {
-      transactionRow.push(transaction[header] || '');
+      transactionRow.push(transaction[header]);
     });
     rows.push(transactionRow);
   });
