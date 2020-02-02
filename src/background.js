@@ -4,7 +4,7 @@ import {
 } from 'electron';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createProtocol, installVueDevtools } from 'vue-cli-plugin-electron-builder/lib';
-import { scrape, SCRAPERS } from './service/scrapers.service';
+import { scrape } from './service/scrapers.service';
 import CreateLogger from './logger';
 import './store';
 
@@ -25,10 +25,6 @@ protocol.registerSchemesAsPrivileged([
 function onProgress({ percent }, step) {
   mainWindow.webContents.send('onProgress-message', percent, step);
 }
-
-ipcMain.on('getScrapers', (event) => {
-  event.reply('getScrapers-reply', SCRAPERS);
-});
 
 ipcMain.on('scrape', (event, installPath, scraperName, loginFields, showBrowser) => {
   scrape(installPath, scraperName, loginFields, showBrowser, onProgress, logger).then((result) => {
