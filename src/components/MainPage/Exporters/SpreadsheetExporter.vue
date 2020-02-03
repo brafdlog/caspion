@@ -123,7 +123,9 @@ export default {
         this.$logger.error(error.message, error);
         this.emitStatus(false, error.message);
       }
-      this.loading = false;
+       finally {
+        this.loading = false;
+      }
     },
     async login() {
       try {
