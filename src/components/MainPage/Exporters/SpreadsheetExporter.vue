@@ -122,8 +122,7 @@ export default {
       } catch (error) {
         this.$logger.error(error.message, error);
         this.emitStatus(false, error.message);
-      }
-       finally {
+      } finally {
         this.loading = false;
       }
     },
