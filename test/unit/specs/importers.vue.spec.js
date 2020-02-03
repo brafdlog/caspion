@@ -1,6 +1,7 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
 import ElementUI from 'element-ui';
+import { SCRAPERS } from 'israeli-bank-scrapers-core';
 
 import fakeStore from '../helpers/baseStore';
 import Importers from '../../../src/components/MainPage/Importers';
@@ -21,7 +22,6 @@ describe('Importers', () => {
   });
 
   it('Should contain an AddScraper component for each scraper', () => {
-    const storeScrapers = fakeStore.modules.Scrapers.state.scrapers;
-    expect(wrapper.findAll(AddScraper).length).toBe(Object.keys(storeScrapers).length);
+    expect(wrapper.findAll(AddScraper).length).toBe(Object.keys(SCRAPERS).length);
   });
 });
