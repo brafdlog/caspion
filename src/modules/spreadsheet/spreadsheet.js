@@ -1,11 +1,48 @@
 import { google } from 'googleapis';
 import { properties as transactionProperties, transactionArrayToObject } from '../transactions';
 
+// TODO: I think this module should be a class or two.
 const spreadsheetConstName = '_ibsd';
 
 const headers = transactionProperties.map((property) => property.name);
 const requiredHeaders = transactionProperties.filter((property) => property.hash)
   .map((property) => property.name);
+
+const getSpreadsheetRequest = (spreadsheetId) => ({
+  spreadsheetId,
+  includeGridData: false,
+});
+
+const createSheetRequest = (spreadsheetId) => ({
+  spreadsheetId,
+  requestBody:
+  {
+    includeSpreadsheetInResponse: true,
+    responseIncludeGridData: false,
+    requests: [
+      {
+        addSheet: {
+          properties: {
+            title: spreadsheetConstName,
+          },
+        },
+      },
+    ],
+  },
+});
+
+async function getSheetsTitles(sheets, spreadsheetId) {
+  const spreadsheet = await sheets.spreadsheets.get(getSpreadsheetRequest(spreadsheetId))
+    .then((res) => res.data);
+  return spreadsheet.sheets.map((sheet) => sheet.properties.title);
+}
+
+async function createNewSheetIfNotExist(sheets, spreadsheetId) {
+  const sheetsTitles = await getSheetsTitles(sheets, spreadsheetId);
+  if (!sheetsTitles.includes(spreadsheetConstName)) {
+    await sheets.spreadsheets.batchUpdate(createSheetRequest(spreadsheetId));
+  }
+}
 
 async function fetchExistingTransactions(sheets, spreadsheetId) {
   try {
@@ -59,6 +96,7 @@ function convertTransactionObjectToArrays(transactionObject) {
 
 async function saveTransactionsAsObjectToGoogleSheets(sheets, spreadsheetId, transactionObject) {
   const arrays = convertTransactionObjectToArrays(transactionObject);
+  await createNewSheetIfNotExist(sheets, spreadsheetId);
   const request = {
     spreadsheetId,
     range: spreadsheetConstName,
