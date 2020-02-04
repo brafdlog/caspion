@@ -1,6 +1,6 @@
 const { testWithSpectron } = require('vue-cli-plugin-electron-builder');
 
-jest.setTimeout(100000);
+jest.setTimeout(200000);
 
 // Remove when https://github.com/nklayman/vue-cli-plugin-electron-builder/issues/625 closed
 const skip = process.env.GITHUB_ACTIONS && process.platform === 'win32';
@@ -30,7 +30,7 @@ const skip = process.env.GITHUB_ACTIONS && process.platform === 'win32';
     expect(height).toBeGreaterThan(0);
     // App is loaded properly
     expect(
-      /israeli-bank-scrapers-desktop/.test(
+      /Israeli Bank Scrapers Desktop/.test(
         await client.getHTML('#app'),
       ),
     ).toBe(true);
