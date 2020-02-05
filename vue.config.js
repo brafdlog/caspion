@@ -5,7 +5,7 @@ module.exports = {
       externals: ['keytar', 'israeli-bank-scrapers-core'],
       builderOptions: {
         productName: 'israeli-bank-scrapers-desktop',
-        appId: 'com..electron.israeli-bank-scrapers-desktop',
+        appId: 'com.electron.israeli-bank-scrapers-desktop',
         dmg: {
           contents: [
             {
