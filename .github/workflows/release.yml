@@ -69,3 +69,10 @@ jobs:
       run: |
         yarn
         yarn build --publish $PUBLISH_PARAM
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        # Artifact name
+        name: ${{ matrix.os}-artifact
+        # Directory containing files to upload
+        path: dist_electron
