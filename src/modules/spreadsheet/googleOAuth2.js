@@ -1,6 +1,6 @@
 import { encryptObject, decryptObject } from '@/modules/encryption/credentials';
 import { saveIntoAccount, getFromAccount } from '@/modules/encryption/keytar';
-import ElectronGoogleOAuth2 from './oauth2Client';
+import ElectronGoogleOAuth2 from '@getstation/electron-google-oauth2';
 
 const keytarAccount = 'googleOauth2Token';
 
@@ -27,6 +27,7 @@ export async function CreateClient() {
       'https://www.googleapis.com/auth/drive.metadata.readonly',
       'https://www.googleapis.com/auth/spreadsheets',
     ],
+    'https://github.com/baruchiro/israeli-bank-scrapers-desktop',
   );
 
   myApiOauth.on('tokens', async (tokens) => {
