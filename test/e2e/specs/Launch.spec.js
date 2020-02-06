@@ -1,5 +1,6 @@
 import { testWithSpectron } from 'vue-cli-plugin-electron-builder';
 import Interactions from '../utils/interactions';
+import { SCRAPERS } from 'israeli-bank-scrapers-core';
 
 jest.setTimeout(200000);
 
@@ -10,6 +11,7 @@ const skip = process.env.GITHUB_ACTIONS && process.platform === 'win32';
   let stopServe;
   let win;
   let client;
+  let interactions;
 
   beforeEach(async () => {
     let app;
@@ -18,6 +20,7 @@ const skip = process.env.GITHUB_ACTIONS && process.platform === 'win32';
     // Wait for dev server to start
     win = app.browserWindow;
     ({ client } = app);
+    interactions = new Interactions(client);
   });
 
   test('shows the proper application title', async () => {
@@ -39,12 +42,24 @@ const skip = process.env.GITHUB_ACTIONS && process.platform === 'win32';
     ).toBe(true);
   });
 
+  test('should be AddScraper per scraper', async () => {
+    const addScrapers = await interactions.getAddScrapers();
+    expect(addScrapers.length).toEqual(Object.keys(SCRAPERS).length);
+  });
+
+  test('Hide AddScraper components by default', async () => {
+    const addScrapers = await interactions.getAddScrapers();
+    const visiblities = await Promise.all(addScrapers.map((scraper) => scraper.isVisible()));
+    expect(visiblities).not.toContain(true);
+    expect(visiblities).toContain(false);
+  });
+
   test('Show AddScraper components when clicking on AddScraper', async () => {
-    const interactions = new Interactions(client);
+    await interactions.clickCollapseAddImporter();
 
     const addScrapers = await interactions.getAddScrapers();
-    expect(addScrapers.map((component) => component.isDisplayed())).not.toContain(false);
-    await interactions.clickCollapseAddImporter();
+    const visiblities = await Promise.all(addScrapers.map((scraper) => scraper.isVisible()));
+    expect(visiblities).not.toContain(false);
   });
 
   afterEach(async () => {
