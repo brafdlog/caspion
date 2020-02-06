@@ -12,6 +12,6 @@ export default class Interactions {
   }
 
   async getAddScrapers() {
-    return this.client.findElements(AddScrapers);
+    return this.client.$$(AddScrapers);
   }
 }
