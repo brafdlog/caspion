@@ -7,6 +7,7 @@
       <el-collapse-item
         title="Add new Importer"
         name="1"
+        data-test="CollapseAddImporter"
       >
         <el-collapse
           v-model="activeKey"

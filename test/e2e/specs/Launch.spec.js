@@ -1,4 +1,5 @@
-const { testWithSpectron } = require('vue-cli-plugin-electron-builder');
+import { testWithSpectron } from 'vue-cli-plugin-electron-builder';
+import Interactions from '../utils/interactions';
 
 jest.setTimeout(200000);
 
@@ -6,18 +7,20 @@ jest.setTimeout(200000);
 const skip = process.env.GITHUB_ACTIONS && process.platform === 'win32';
 
 (skip ? describe.skip : describe)('Launch', () => {
-  let app;
   let stopServe;
+  let win;
+  let client;
 
   beforeEach(async () => {
+    let app;
     ({ app, stopServe } = await testWithSpectron());
+
+    // Wait for dev server to start
+    win = app.browserWindow;
+    ({ client } = app);
   });
 
   test('shows the proper application title', async () => {
-    // Wait for dev server to start
-    const win = app.browserWindow;
-    const { client } = app;
-
     // Window was created
     expect(await client.getWindowCount()).toBe(1);
     // It is not minimized
@@ -34,6 +37,14 @@ const skip = process.env.GITHUB_ACTIONS && process.platform === 'win32';
         await client.getHTML('#app'),
       ),
     ).toBe(true);
+  });
+
+  test('Show AddScraper components when clicking on AddScraper', async () => {
+    const interactions = new Interactions(client);
+
+    const addScrapers = await interactions.getAddScrapers();
+    expect(addScrapers.map((component) => component.isDisplayed())).not.toContain(false);
+    await interactions.clickCollapseAddImporter();
   });
 
   afterEach(async () => {
