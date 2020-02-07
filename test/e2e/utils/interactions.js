@@ -8,15 +8,17 @@ export default class Interactions {
     this.client = client;
   }
 
-  async clickCollapseAddImporter() {
+  async getCollapseAddImporter() {
     const json = await this.client.$(CollapseAddImporter);
-    console.log(json);
-    const element = new Element(this.client, json.value);
-    return element.click();
+    return new Element(this.client, json.value);
   }
 
   async getAddScrapers() {
     return (await this.client.$$(AddScrapers))
       .map((element) => new Element(this.client, element));
+  }
+
+  async waitForAddScrapersVisible() {
+    return this.client.waitForVisible(AddScrapers, 1000);
   }
 }
