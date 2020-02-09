@@ -129,7 +129,4 @@ i.header-icon.el-icon-error {
 i.header-icon.el-icon-success {
   color: green;
 }
-.progress-bar {
-  padding-top: 10px;
-}
 </style>
