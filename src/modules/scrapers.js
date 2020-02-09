@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { createScraper, SCRAPERS } from 'israeli-bank-scrapers-core';
-import getChrome from './downloadChromium.service';
+import getChrome from './downloadChromium';
 
 async function scrape(
   installPath,
