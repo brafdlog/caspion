@@ -53,7 +53,12 @@ Please note that we are currently in **beta**, and issues under [Beta Milestone]
 
 ### Build Setup
 
-#### Linux
+#### Prerequisites
+
+- [NodeJS](https://nodejs.org/) version `^10.13.0`
+- [Yarn](https://classic.yarnpkg.com) (`v1`-classic)
+
+##### Linux
 
 Currently, this project depends on `libsecret`, so you may need to install it before running `yarn`.
 
@@ -65,7 +70,7 @@ Depending on your distribution, you will need to run the following command:
 
 Then you can run the commands below:
 
-#### Windows / Linux
+#### Commands
 ``` bash
 # install dependencies
 yarn
