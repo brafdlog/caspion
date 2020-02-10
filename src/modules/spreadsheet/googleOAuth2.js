@@ -1,8 +1,9 @@
 import { encryptObject, decryptObject } from '@/modules/encryption/credentials';
 import { saveIntoAccount, getFromAccount } from '@/modules/encryption/keytar';
-import ElectronGoogleOAuth2 from './oauth2Client';
+import ElectronGoogleOAuth2 from '@getstation/electron-google-oauth2';
 
 const keytarAccount = 'googleOauth2Token';
+const successRedirectURL = 'https://github.com/baruchiro/israeli-bank-scrapers-desktop';
 
 // eslint-disable-next-line camelcase
 async function saveToken({ refresh_token }) {
@@ -27,6 +28,7 @@ export async function CreateClient() {
       'https://www.googleapis.com/auth/drive.metadata.readonly',
       'https://www.googleapis.com/auth/spreadsheets',
     ],
+    { successRedirectURL },
   );
 
   myApiOauth.on('tokens', async (tokens) => {

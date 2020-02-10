@@ -47,7 +47,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { isConnected, CreateClient } from '@/modules/googleOauth';
+import { isConnected, CreateClient } from '@/modules/spreadsheet/googleOAuth2';
 import { listAllSpreadsheets, createNewSpreadsheet, saveTransactionsToGoogleSheets } from '@/modules/spreadsheet/spreadsheet';
 
 const name = 'SpreadsheetExporter';
