@@ -1,5 +1,3 @@
-import { getters as scrapersGetters } from '../../../src/store/modules/Scrapers';
-
 export const Transactions = {
   '1541628000000-501420296066': {
     chargedAmount: -50,
@@ -27,34 +25,8 @@ export const Transactions = {
   },
 };
 
-const scrapers = {
-  scrapername1: {
-    name: 'Scraper Name 1',
-    loginFields: [
-      'field1',
-      'field2',
-    ],
-  },
-  scrapername2: {
-    name: 'Scraper Name 2',
-    loginFields: [
-      'field1',
-      'field2',
-      'field3',
-    ],
-  },
-};
-
 export default {
   modules: {
-    Scrapers: {
-      state: {
-        scrapers,
-      },
-      getters: {
-        ...scrapersGetters,
-      },
-    },
     Importers: {
       importers: [],
     },

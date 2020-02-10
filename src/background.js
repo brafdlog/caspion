@@ -1,10 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import {
-  app, protocol, BrowserWindow, ipcMain,
-} from 'electron';
+import { app, BrowserWindow } from 'electron';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createProtocol, installVueDevtools } from 'vue-cli-plugin-electron-builder/lib';
-import { scrape, SCRAPERS } from './service/scrapers.service';
 import CreateLogger from './logger';
 import './store';
 
@@ -16,25 +13,6 @@ let mainWindow;
 
 global.logger = CreateLogger(app);
 const { logger } = global;
-
-// Scheme must be registered before the app is ready
-protocol.registerSchemesAsPrivileged([
-  { scheme: 'app', privileges: { secure: true, standard: true } },
-]);
-
-function onProgress({ percent }, step) {
-  mainWindow.webContents.send('onProgress-message', percent, step);
-}
-
-ipcMain.on('getScrapers', (event) => {
-  event.reply('getScrapers-reply', SCRAPERS);
-});
-
-ipcMain.on('scrape', (event, installPath, scraperName, loginFields, showBrowser) => {
-  scrape(installPath, scraperName, loginFields, showBrowser, onProgress, logger).then((result) => {
-    event.reply('scrape-reply', result);
-  });
-});
 
 
 function createWindow() {

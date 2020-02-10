@@ -30,7 +30,7 @@
     <el-progress
       v-show="importing"
       :percentage="percentage"
-      :show-text="step.startsWith('Step 1')"
+      :status="status"
       class="progress-bar"
     />
     <div v-show="importing">
@@ -43,8 +43,9 @@
 import { mapActions } from 'vuex';
 import { MessageBox } from 'element-ui';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { ipcRenderer, remote } from 'electron';
+import { remote } from 'electron';
 import { decryptProperty } from '@/modules/encryption/credentials';
+import { scrape } from '@/modules/scrapers';
 
 export default {
   props: {
@@ -60,73 +61,76 @@ export default {
       decryptedImporter: null,
       percentage: 0,
       step: '',
+      status: undefined,
     };
   },
   created() {
-    this.decryptedImporter = decryptProperty(this.importer, 'loginFields').then((decrypted) => {
-      this.$logger.info(`Importer '${this.importer.name}' with id:${this.importer.id} `
-        + `decrypted with ${Object.keys(decrypted.loginFields).length} fields`);
-      this.decryptedImporter = decrypted;
-    });
-
-    ipcRenderer.on('onProgress-message', (event, percent, step) => {
-      this.onProgress(percent, step);
-    });
+    this.decryptedImporter = decryptProperty(this.importer, 'loginFields').then(
+      (decrypted) => {
+        this.$logger.info(
+          `Importer '${this.importer.name}' with id:${this.importer.id} `
+            + `decrypted with ${Object.keys(decrypted.loginFields).length} fields`,
+        );
+        this.decryptedImporter = decrypted;
+      },
+    );
   },
   methods: {
     async scrape() {
-      let success;
-      let errorMessage;
-
       this.importing = true;
-      this.onProgress(0, '');
+      this.onProgress({ percent: 0, message: `Request to import ${this.decryptedImporter.key}` });
       try {
-        this.$logger.info('Request to import');
-        ipcRenderer.send('scrape',
+        const result = await scrape(
           remote.app.getPath('cache'),
           this.decryptedImporter.key,
           this.decryptedImporter.loginFields,
-          this.showBrowser);
-        ipcRenderer.on('scrape-reply', (event, result) => {
-          this.$logger.info(result);
-          success = result.success;
-          errorMessage = result.errorMessage || result.errorType;
-          if (result.success) {
-            result.accounts.forEach((account) => {
-              this.addTransactionsAction(account);
-            });
-          }
-          this.updateStatus(success, errorMessage);
-          this.$logger.info(
-            `Success: ${success}. Error Message: ${errorMessage}`,
-          );
-        });
-      } catch (error) {
-        this.onProgress(1, 'Error!');
-        this.$logger.error(
-          `message: ${error.message}. Error Code:${error.code}`,
+          this.showBrowser,
+          this.onProgress,
+          this.$logger,
         );
-        this.$logger.verbose(error.stack);
-        success = false;
-        errorMessage = error.message;
+
+        if (result.success) {
+          const message = result.accounts
+            .map((account) => `${account.accountNumber} with ${account.txns.length}`).join();
+          this.onProgress({ percent: 1, message });
+          result.accounts.forEach((account) => {
+            this.addTransactionsAction(account);
+          });
+        } else {
+          const message = result.errorMessage || result.errorType;
+          this.onProgress({ percent: 1, message, error: message });
+        }
+      } catch (error) {
+        this.onProgress({ percent: 1, message: error.message, error });
       }
     },
-    onProgress(percent, step) {
+    onProgress({ percent, message, error }) {
+      if (percent === undefined) throw new Error('You must to set \'percent\' value for progress');
+
       this.percentage = Math.floor(percent * 100);
-      if (step) {
-        this.step = step;
+
+      if (message) {
+        this.step = message;
+        this.$logger.info(message);
       }
-    },
-    updateStatus(success, errorMessage) {
-      this.importing = false;
-      const status = {
-        success,
-        lastMessage: null,
-      };
-      if (success === false) {
-        status.lastMessage = errorMessage || 'UNKNOWN_ERROR';
+
+      if (error) {
+        this.$logger.error(error);
+        if (error.stack) this.$logger.verbose(error.stack);
+        this.status = 'exception';
       }
-      this.updateImporterStatus({ id: this.importer.id, status });
+
+      if (percent >= 1) {
+        this.importing = false;
+        const success = this.status !== 'exception' && !error;
+        this.status = success ? 'success' : 'exception';
+
+        const status = {
+          success,
+          lastMessage: this.step,
+        };
+        this.updateImporterStatus({ id: this.importer.id, status });
+      }
     },
     async promptDelete() {
       await MessageBox.confirm(
@@ -149,4 +153,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.progress-bar {
+  padding-top: 10px;
+}
+</style>

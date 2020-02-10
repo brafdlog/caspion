@@ -2,6 +2,7 @@
   <el-collapse-item
     :title="scraper.name"
     :name="scraper.key"
+    :data-test="scraper.key"
   >
     <el-form
       ref="addScraperForm"

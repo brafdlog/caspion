@@ -7,14 +7,15 @@
       <el-collapse-item
         title="Add new Importer"
         name="1"
+        data-test="CollapseAddImporter"
       >
         <el-collapse
-          v-model="activeName"
+          v-model="activeKey"
           accordion
         >
           <add-scraper
-            v-for="scraper in scrapersWithId"
-            :key="scraper.name"
+            v-for="scraper in scrapers"
+            :key="scraper.key"
             :scraper="scraper"
             class="add-scraper"
           />
@@ -53,9 +54,8 @@
 </template>
 
 <script>
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { ipcRenderer } from 'electron';
-import { mapState, mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
+import { SCRAPERS } from 'israeli-bank-scrapers-core';
 import AddScraper from './Importers/AddScraper';
 import Importer from './Importers/Importer';
 
@@ -64,23 +64,19 @@ export default {
   data() {
     return {
       activeNames: [],
-      activeName: '',
+      activeKey: '',
     };
   },
   computed: {
-    ...mapState({
-      scrapers: (state) => state.Scrapers.scrapers,
-    }),
-    ...mapGetters(['scrapersWithId', 'importers']),
-  },
-  created() {
-    ipcRenderer.send('getScrapers');
-    ipcRenderer.on('getScrapers-reply', (event, scrapers) => {
-      this.set_scraper(scrapers);
-    });
+    scrapers() {
+      return Object.keys(SCRAPERS).map((key) => ({
+        key,
+        ...SCRAPERS[key],
+      }));
+    },
+    ...mapGetters(['importers']),
   },
   methods: {
-    ...mapActions(['set_scraper']),
     iconClass(success) {
       return {
         'el-icon-question': success === null,
@@ -132,8 +128,5 @@ i.header-icon.el-icon-error {
 
 i.header-icon.el-icon-success {
   color: green;
-}
-.progress-bar {
-  padding-top: 10px;
 }
 </style>

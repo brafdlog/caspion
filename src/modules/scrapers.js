@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { createScraper, SCRAPERS } from 'israeli-bank-scrapers-core';
-import getChrome from './downloadChromium.service';
+import getChrome from './downloadChromium';
 
 async function scrape(
   installPath,
@@ -10,7 +10,7 @@ async function scrape(
   onProgress,
   logger,
 ) {
-  onProgress({ percent: 0.1 }, 'Step 1: check if Chrome exists');
+  onProgress({ percent: 0.01, message: 'Step 1: check if Chrome exists' });
   const chromePath = await getChrome(installPath, onProgress);
   const options = {
     companyId: scraperName, // mandatory; one of 'hapoalim', 'leumi', 'discount', 'otsarHahayal', 'visaCal', 'leumiCard', 'isracard', 'amex'
@@ -22,7 +22,7 @@ async function scrape(
     executablePath: chromePath, // string // optional. provide a patch to local chromium to be used by puppeteer. Relevant when using `israeli-bank-scrapers-core` library
   };
   if (logger) logger.info(JSON.stringify(options));
-  onProgress({ percent: 0.5 }, `Step 2: Starting to scrape ${scraperName}`);
+  onProgress({ percent: 0.5, message: `Step 2: Starting to scrape ${scraperName}` });
   const scraper = createScraper(options);
   return scraper.scrape(loginFields);
 }
