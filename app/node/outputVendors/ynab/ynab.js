@@ -8,6 +8,8 @@ const NOW = moment();
 
 const ynabConfig = config.outputVendors.ynab;
 
+const PAYEE_NAME_MAX_LENGTH = ynabConfig.maxPayeeNameLength || 50;
+
 const BUDGET_ID = ynabConfig.budgetId;
 const ACCOUNT_NUMBER_TO_YNAB_ACCOUNT_ID = ynabConfig.accountNumbersToYnabAccountIds;
 
@@ -64,7 +66,7 @@ function convertTransactionToYnabFormat(originalTransaction) {
     date, // "2019-01-17",
     amount,
     // "payee_id": "string",
-    payee_name: originalTransaction.description,
+    payee_name: originalTransaction.description.substring(0, PAYEE_NAME_MAX_LENGTH),
     category_id: getYnabCategoryIdFromCategoryName(originalTransaction.category),
     memo: originalTransaction.memo,
     cleared: 'cleared'
