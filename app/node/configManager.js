@@ -2,6 +2,7 @@ const { app } = require('electron');
 const { promisify } = require('util');
 const path = require('path');
 const fs = require('fs');
+const encryption = require('./encryption');
 
 const configExample = require('./config-example');
 
@@ -17,9 +18,8 @@ async function getConfig() {
     const configFromFile = await readFile(CONFIG_FILE_PATH, {
       encoding: 'utf8'
     });
-    if (configFromFile) {
-      return JSON.parse(configFromFile);
-    }
+    const decryptedConfig = decryptConfigIfNeeded(configFromFile);
+    return decryptedConfig;
   } catch (e) {
     console.debug('Failed reading config file', e);
   }
@@ -30,7 +30,22 @@ async function getConfig() {
 
 async function updateConfig(configToUpdate) {
   const stringifiedConfig = JSON.stringify(configToUpdate, null, 2);
-  await writeFile(CONFIG_FILE_PATH, stringifiedConfig);
+  const encryptedConfigStr = encryptConfig(stringifiedConfig);
+  await writeFile(CONFIG_FILE_PATH, encryptedConfigStr);
+}
+
+function encryptConfig(stringifiedConfig) {
+  const encryptedConfig = encryption.encrypt(stringifiedConfig);
+  return JSON.stringify(encryptedConfig);
+}
+
+function decryptConfigIfNeeded(configFromFile) {
+  const isEncrypted = configFromFile.encryptedData;
+  if (isEncrypted) {
+    const decryptedConfig = encryption.decrypt(configFromFile);
+    return JSON.parse(decryptedConfig);
+  }
+  return configFromFile;
 }
 
 module.exports = {
