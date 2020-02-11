@@ -1,7 +1,6 @@
 const fs = require('fs');
 const readline = require('readline');
 const { google } = require('googleapis/build/src/index');
-const config = require('../../config');
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
@@ -10,12 +9,10 @@ const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 // time.
 const TOKEN_PATH = 'googleApiToken.json';
 
-const GOOGLE_API_CREDENTIALS_JSON_FILE_PATH = config.outputVendors.googleSheets.credentialsJsonFilePath;
-
-async function loadCredentialsAndAuthorize() {
+async function loadCredentialsAndAuthorize(credentialsFilePath) {
   const credentialsStr = await new Promise((resolve, reject) => {
     // Load client secrets from a local file.
-    fs.readFile(GOOGLE_API_CREDENTIALS_JSON_FILE_PATH, (err, content) => {
+    fs.readFile(credentialsFilePath, (err, content) => {
       if (err) {
         console.log('Error loading client secret file:', err);
         reject(err);
@@ -86,8 +83,8 @@ function getNewToken(oAuth2Client, callback) {
  * @see https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
  * @param {google.auth.OAuth2} auth The authenticated Google OAuth client.
  */
-async function appendToSpreadsheet({ spreadsheetId, range, values }) {
-  const auth = await loadCredentialsAndAuthorize();
+async function appendToSpreadsheet({ spreadsheetId, range, values, credentialsFilePath }) {
+  const auth = await loadCredentialsAndAuthorize(credentialsFilePath);
   const sheets = google.sheets({ version: 'v4', auth });
 
   const resource = {
