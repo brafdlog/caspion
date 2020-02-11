@@ -1,24 +1,25 @@
 const ynab = require('ynab/dist/index');
 const moment = require('moment/moment');
-const config = require('../../config');
 
 const YNAB_DATE_FORMAT = 'YYYY-MM-DD';
 const DID_NOTHING_RESPONSE = [];
 const NOW = moment();
 
-const ynabConfig = config.outputVendors.ynab;
-
-const PAYEE_NAME_MAX_LENGTH = ynabConfig.maxPayeeNameLength || 50;
-
-const BUDGET_ID = ynabConfig.budgetId;
-const ACCOUNT_NUMBER_TO_YNAB_ACCOUNT_ID = ynabConfig.accountNumbersToYnabAccountIds;
-
 const categoriesMap = new Map();
 const transactionsFromYnab = new Map();
-const ynabAPI = new ynab.API(ynabConfig.accessToken);
-// const importIdMap = new Map();
+
+let ynabConfig;
+let ynabAPI;
+
+function init(config) {
+  ynabConfig = config.outputVendors.ynab;
+  ynabAPI = new ynab.API(ynabConfig.accessToken);
+}
 
 async function createTransactions(transactionsToCreate, startDate) {
+  if (!ynabConfig) {
+    throw new Error('Must call init before using ynab functions');
+  }
   if (!categoriesMap.size) {
     await initCategoriesMap();
   }
@@ -32,7 +33,7 @@ async function createTransactions(transactionsToCreate, startDate) {
   }
   console.log('Creating the following transactions in ynab: ', transactionsThatDontExistInYnab);
   try {
-    const transactionCreationResult = await ynabAPI.transactions.createTransactions(BUDGET_ID, {
+    const transactionCreationResult = await ynabAPI.transactions.createTransactions(ynabConfig.budgetId, {
       transactions: transactionsThatDontExistInYnab
     });
     return transactionCreationResult;
@@ -43,7 +44,7 @@ async function createTransactions(transactionsToCreate, startDate) {
 }
 
 function getTransactions(startDate) {
-  return ynabAPI.transactions.getTransactions(BUDGET_ID, moment(startDate).format(YNAB_DATE_FORMAT));
+  return ynabAPI.transactions.getTransactions(ynabConfig.budgetId, moment(startDate).format(YNAB_DATE_FORMAT));
 }
 
 // function buildImportId(payeeName, amount, date) {
@@ -59,6 +60,7 @@ function getTransactions(startDate) {
 // }
 
 function convertTransactionToYnabFormat(originalTransaction) {
+  const payeeNameMaxLength = ynabConfig.maxPayeeNameLength || 50;
   const amount = Math.round(originalTransaction.chargedAmount * 1000);
   const date = convertTimestampToYnabDateFormat(originalTransaction);
   return {
@@ -66,7 +68,7 @@ function convertTransactionToYnabFormat(originalTransaction) {
     date, // "2019-01-17",
     amount,
     // "payee_id": "string",
-    payee_name: originalTransaction.description.substring(0, PAYEE_NAME_MAX_LENGTH),
+    payee_name: originalTransaction.description.substring(0, payeeNameMaxLength),
     category_id: getYnabCategoryIdFromCategoryName(originalTransaction.category),
     memo: originalTransaction.memo,
     cleared: 'cleared'
@@ -77,7 +79,7 @@ function convertTransactionToYnabFormat(originalTransaction) {
 }
 
 function getYnabAccountIdByAccountNumberFromTransaction(transactionAccountNumber) {
-  const ynabAccountId = ACCOUNT_NUMBER_TO_YNAB_ACCOUNT_ID[transactionAccountNumber];
+  const ynabAccountId = ynabConfig.accountNumbersToYnabAccountIds[transactionAccountNumber];
   if (!ynabAccountId) {
     throw new Error(`Unhandled account number ${transactionAccountNumber}`);
   }
@@ -99,7 +101,7 @@ function getYnabCategoryIdFromCategoryName(categoryName) {
 }
 
 async function initCategoriesMap() {
-  const categories = await ynabAPI.categories.getCategories(BUDGET_ID);
+  const categories = await ynabAPI.categories.getCategories(ynabConfig.budgetId);
   categories.data.category_groups.forEach(categoryGroup => {
     categoryGroup.categories
       .map(category => ({
@@ -152,6 +154,7 @@ function normalizeWhitespace(str) {
 }
 
 module.exports = {
+  init,
   createTransactions,
   initCategories: initCategoriesMap,
   isSameTransaction,
@@ -165,7 +168,7 @@ module.exports = {
 //   //   console.log(`Budget Name: ${budget.name}`);
 //   // }
 //
-//   const categories = await ynabAPI.categories.getCategories(BUDGET_ID);
+//   const categories = await ynabAPI.categories.getCategories(ynabConfig.budgetId);
 //   console.log(categories);
 //
 //
