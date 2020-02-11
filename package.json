@@ -68,7 +68,7 @@
     "eslint-plugin-vue": "^6.1.2",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^25.1.0",
-    "jest-config": "^24.9.0",
+    "jest-config": "^25.1.0",
     "pre-commit": "^1.2.2",
     "prettier": "^1.19.1",
     "replace-in-file": "5.0.2",
