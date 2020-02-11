@@ -4,7 +4,6 @@ const bankScraper = require('./bankScraper');
 const ynab = require('./outputVendors/ynab/ynab');
 const googleSheets = require('./outputVendors/googleSheets/googleSheets');
 const categoryCalculation = require('./categoryCalculationScript');
-const emailSender = require('./emailSender');
 const configManager = require('./configManager');
 
 const TRANSACTION_STATUS_COMPLETED = 'completed';
@@ -63,10 +62,6 @@ async function scrapeAndUpdateOutputVendors() {
     ${JSON.stringify(executionResult, null, 2)}
   `;
   console.log(resultToLog);
-
-  if (config.monitoring.email.sendReport) {
-    await emailSender.sendEmail({ text: resultToLog });
-  }
 
   return executionResult;
 }
