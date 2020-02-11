@@ -1,6 +1,5 @@
 <template>
   <div id="wrapper">
-    <span class="title">Israeli Bank Scrapers Desktop</span>
     <el-container>
       <el-aside>
         <Importers />
@@ -45,7 +44,7 @@ body {
     rgba(255, 255, 255, 1) 40%,
     rgba(229, 229, 229, 0.9) 100%
   );
-  height: 100vh;
+  height: 100%;
   width: 100vw;
   display: flex;
   flex-direction: column;
