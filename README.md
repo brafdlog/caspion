@@ -51,14 +51,12 @@ Please note that we are currently in **beta**, and issues under [Beta Milestone]
 - [Brainstorming](https://github.com/baruchiro/israeli-bank-scrapers-desktop/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+label%3Abrainstorming+)- Design issues that I need help with and consultation from experienced people.
 - [Help wanted](https://github.com/baruchiro/israeli-bank-scrapers-desktop/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22)- Issues I don't think I can do at this time.
 
-### Build Setup
-
-#### Prerequisites
+### Prerequisites
 
 - [NodeJS](https://nodejs.org/) version `^10.13.0`
 - [Yarn](https://classic.yarnpkg.com) (`v1`-classic)
 
-##### Linux
+#### Linux
 
 Currently, this project depends on `libsecret`, so you may need to install it before running `yarn`.
 
@@ -70,7 +68,8 @@ Depending on your distribution, you will need to run the following command:
 
 Then you can run the commands below:
 
-#### Commands
+### Build Setup
+
 ``` bash
 # install dependencies
 yarn
@@ -87,4 +86,72 @@ yarn test
 # lint all JS/Vue component files in `src/`
 yarn lint
 
+```
+
+### Project Structure
+
+```
++---.github/workflows // Github Actions files
++---build/icons       // Icons for Electron-Builder (used in vue.config.js)
++---dist/electron     // Webpack temporary output
+|
++---dist_electron     // Installer and info files
+|   +---bundled       // Bundle
+|   \---win-unpacked  // Unpacked- what you will get after you run the installer
+|
++---docs              // Resources for documentation porpuse
++---public
++---scripts           // Scripts for Git hooks and other needs
+|
++---src
+|   +---assets
+|   +---components
+|   |   \---MainPage
+|   |       +---Exporters
+|   |       \---Importers
+|   +---modules
+|   |   +---encryption
+|   |   \---spreadsheet
+|   +---plugins
+|   +---router
+|   +---service
+|   \---store
+|       +---migrations
+|       \---modules
+\---test
+    +---e2e
+    |   \---specs
+    \---unit
+        +---coverage
+        |   \---lcov-report
+        |       \---renderer
+        |           +---components
+        |           |   \---MainPage
+        |           |       +---Exporters
+        |           |       \---Importers
+        |           +---modules
+        |           |   +---encryption
+        |           |   \---spreadsheet
+        |           +---store
+        |           |   +---migrations
+        |           |   \---modules
+        |           \---vue-plugins
+        +---helpers
+        +---integrationSpecs
+        +---mock
+        \---specs
+|
+|   .eslintrc.js
+|   .gitignore
+|   babel.config.js
+|   bash.txt
+|   jest.config.js
+|   jsconfig.json
+|   LICENSE
+|   package.json
+|   README.md
+|   tree.txt
+|   vue.config.js
+|   yarn-error.log
+|   yarn.lock
 ```
