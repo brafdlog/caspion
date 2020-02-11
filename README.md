@@ -91,67 +91,31 @@ yarn lint
 ### Project Structure
 
 ```
-+---.github/workflows // Github Actions files
-+---build/icons       // Icons for Electron-Builder (used in vue.config.js)
-+---dist/electron     // Webpack temporary output
++---.github/workflows       // Github Actions files
++---build/icons             // Icons for Electron-Builder (used in vue.config.js)
++---dist/electron           // Webpack temporary output
 |
-+---dist_electron     // Installer and info files
-|   +---bundled       // Bundle
-|   \---win-unpacked  // Unpacked- what you will get after you run the installer
++---dist_electron           // Installer and info files
+|   +---bundled             // Bundle
+|   +---win-unpacked        // Unpacked- what you will get after you run the installer
 |
-+---docs              // Resources for documentation porpuse
++---docs                    // Resources for documentation porpuse
 +---public
-+---scripts           // Scripts for Git hooks and other needs
++---scripts                 // Scripts for Git hooks and other needs
 |
 +---src
 |   +---assets
 |   +---components
-|   |   \---MainPage
-|   |       +---Exporters
-|   |       \---Importers
 |   +---modules
-|   |   +---encryption
-|   |   \---spreadsheet
-|   +---plugins
-|   +---router
-|   +---service
-|   \---store
+|   +---plugins             // Vue plugins
+|   +---router              // Vue-Router (for future use)
+|   \---store               // Vuex
 |       +---migrations
-|       \---modules
-\---test
-    +---e2e
-    |   \---specs
-    \---unit
-        +---coverage
-        |   \---lcov-report
-        |       \---renderer
-        |           +---components
-        |           |   \---MainPage
-        |           |       +---Exporters
-        |           |       \---Importers
-        |           +---modules
-        |           |   +---encryption
-        |           |   \---spreadsheet
-        |           +---store
-        |           |   +---migrations
-        |           |   \---modules
-        |           \---vue-plugins
-        +---helpers
-        +---integrationSpecs
-        +---mock
-        \---specs
+|       +---modules
 |
-|   .eslintrc.js
-|   .gitignore
-|   babel.config.js
-|   bash.txt
-|   jest.config.js
-|   jsconfig.json
-|   LICENSE
-|   package.json
-|   README.md
-|   tree.txt
-|   vue.config.js
-|   yarn-error.log
-|   yarn.lock
+\---test
+|   +---e2e
+|   +---unit
+|
+|   vue.config.js           // vue-cli-plugin-electron-builder (includes electron-builder config)
 ```
