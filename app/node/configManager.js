@@ -18,7 +18,8 @@ async function getConfig() {
     const configFromFile = await readFile(CONFIG_FILE_PATH, {
       encoding: 'utf8'
     });
-    const decryptedConfig = decryptConfigIfNeeded(configFromFile);
+    const parsedConfig = JSON.parse(configFromFile);
+    const decryptedConfig = decryptConfigIfNeeded(parsedConfig);
     return decryptedConfig;
   } catch (e) {
     console.debug('Failed reading config file', e);
