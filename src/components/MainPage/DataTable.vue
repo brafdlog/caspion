@@ -1,52 +1,59 @@
 <template>
-  <el-table
-    :data="transactions"
-    :default-sort="{ prop: 'date', order: 'descending' }"
-    border
-    stripe
-  >
-    <el-table-column type="expand">
-      <template slot-scope="props">
-        <p
-          v-for="column in filterEmptyColumn(props)"
-          :key="column.name"
-        >
-          <span class="bold">{{ column.title }}: </span>
-          {{ format(column.name, props.row[column.name]) }}
-        </p>
+  <div>
+    <v-data-table
+      :headers="headers"
+      :items="transactionsWithId"
+      :items-per-page="10"
+      item-key="id"
+      show-expand
+      class="elevation-1"
+    >
+      <template v-slot:expanded-item="{ item }">
+        <td :colspan="headers.length">
+          <ul>
+            <li
+              v-for="field in filterEmptyFields(item)"
+              :key="field.value"
+            >
+              <span class="bold">{{ field.text }}: </span>
+              {{ format(field.value, item[field.value]) }}
+            </li>
+          </ul>
+        </td>
       </template>
-    </el-table-column>
-    <el-table-column
-      v-for="column in tableColumns"
-      :key="column.name"
-      :prop="column.name"
-      :label="column.title"
-      :formatter="formatterWrapper"
-      sortable
-    />
-  </el-table>
+    </v-data-table>
+  </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import { format } from '../../modules/transactions';
+import { format, properties } from '../../modules/transactions';
+
+const detailes = properties.map((prop) => ({
+  text: prop.title,
+  value: prop.name,
+  ...prop,
+}));
 
 export default {
   name: 'DataTable',
   computed: {
+    headers: () => detailes.filter((detail) => detail.column),
+    expanded: () => detailes.filter((detail) => !detail.column),
     ...mapGetters({
-      tableColumns: 'tableColumns',
-      propertiesColumns: 'propertiesColumns',
       transactions: 'transactionsArray',
     }),
+    transactionsWithId() {
+      return this.transactions.map((txn, id) => ({ id, ...txn }));
+    },
   },
   methods: {
     format: (property, value) => format(property, value),
     formatterWrapper(row, { property }, cellValue) {
       return format(property, cellValue);
     },
-    filterEmptyColumn(props) {
-      return this.propertiesColumns.filter((col) => props.row[col.name]);
+    filterEmptyFields(item) {
+      return this.expanded.filter((col) => item[col.name]);
     },
   },
 };
