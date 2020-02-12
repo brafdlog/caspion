@@ -6,7 +6,7 @@
       dark
     >
       <div class="d-flex align-center">
-        <span class="shrink mr-2 headline">{{ appName }} </span>
+        <span class="shrink mr-2 headline">Israeli Bank Scrapers Desktop</span>
       </div>
 
       <v-spacer />
@@ -28,21 +28,12 @@
 </template>
 
 <script>
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { remote } from 'electron';
 import MainPage from './components/MainPage';
-
-const appName = remote.app.getName();
 
 export default {
   name: 'IsraeliBankScrapersDesktop',
   components: {
     MainPage,
-  },
-  data() {
-    return {
-      appName,
-    };
   },
 };
 </script>
