@@ -131,7 +131,8 @@ export default {
         this.oauth2Client = await CreateClient();
         this.properties.spreadsheets = await listAllSpreadsheets(this.oauth2Client);
       } catch (e) {
-        this.$logger.error(e.message, e);
+        this.$logger.error(e.message);
+        if (e.stack) this.$logger.verbose(e.stack);
       }
     },
     async createNewSpreadsheet() {
