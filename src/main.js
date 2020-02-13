@@ -11,8 +11,7 @@ import vuetify from './plugins/vuetify';
 
 
 const logger = electron.remote.getGlobal('logger');
-Object.assign(console, logger.functions);
-console.info('The renderer process got the logger');
+logger.info('The renderer process got the logger');
 Vue.use(LoggerPlugin, { logger });
 
 Vue.config.productionTip = process.env.NODE_ENV !== 'production';
