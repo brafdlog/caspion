@@ -9,7 +9,7 @@ const skip = process.env.GITHUB_ACTIONS && process.platform === 'win32';
 
 (skip ? describe.skip : describe)('Launch', () => {
   let stopServe;
-  let window;
+  let win;
   let client;
   let interactions;
 
@@ -18,7 +18,7 @@ const skip = process.env.GITHUB_ACTIONS && process.platform === 'win32';
     ({ app, stopServe } = await testWithSpectron());
 
     // Wait for dev server to start
-    window = app.browserWindow;
+    win = app.browserWindow;
     ({ client } = app);
     interactions = new Interactions(client);
   });
@@ -27,11 +27,11 @@ const skip = process.env.GITHUB_ACTIONS && process.platform === 'win32';
     // Window was created
     expect(await client.getWindowCount()).toBe(1);
     // It is not minimized
-    expect(await window.isMinimized()).toBe(false);
+    expect(await win.isMinimized()).toBe(false);
     // Window is visible
-    expect(await window.isVisible()).toBe(true);
+    expect(await win.isVisible()).toBe(true);
     // Size is correct
-    const { width, height } = await window.getBounds();
+    const { width, height } = await win.getBounds();
     expect(width).toBeGreaterThan(0);
     expect(height).toBeGreaterThan(0);
     // App is loaded properly
@@ -51,7 +51,6 @@ const skip = process.env.GITHUB_ACTIONS && process.platform === 'win32';
   });
 
   test('Show AddScraper components when clicking on AddScraper', async () => {
-    window.maximize();
     await interactions.getCollapseAddImporter().then((element) => element.click());
     await interactions.waitForAddScrapersVisible();
 
