@@ -2,7 +2,10 @@ module.exports = {
   pluginOptions: {
     electronBuilder: {
       // List native deps here if they don't work
-      externals: ['keytar', 'israeli-bank-scrapers-core'],
+      externals: [
+        'keytar',
+        'israeli-bank-scrapers-core',
+      ],
       builderOptions: {
         productName: 'israeli-bank-scrapers-desktop',
         appId: 'com.electron.israeli-bank-scrapers-desktop',
@@ -37,6 +40,11 @@ module.exports = {
         },
       },
     },
-    mainProcessWatch: ['src/service'],
+    mainProcessWatch: [
+      'src/service',
+    ],
   },
+  transpileDependencies: [
+    'vuetify',
+  ],
 };
