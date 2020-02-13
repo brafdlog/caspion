@@ -40,7 +40,8 @@ const skip = process.env.GITHUB_ACTIONS && process.platform === 'win32';
 
   test('should be AddScraper per scraper', async () => {
     const addScrapers = await interactions.getAddScrapers();
-    expect(addScrapers.length).toEqual(Object.keys(SCRAPERS).length);
+    // leumiCard to max
+    expect(addScrapers.length).toEqual(Object.keys(SCRAPERS).length - 1);
   });
 
   test('Hide AddScraper components by default', async () => {

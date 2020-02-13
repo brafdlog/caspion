@@ -69,7 +69,8 @@ export default {
   },
   computed: {
     scrapers() {
-      return Object.keys(SCRAPERS).map((key) => ({
+      // leumiCard to max
+      return Object.keys(SCRAPERS).filter((key) => key !== 'leumiCard').map((key) => ({
         key,
         ...SCRAPERS[key],
       }));

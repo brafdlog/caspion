@@ -22,6 +22,6 @@ describe('Importers', () => {
   });
 
   it('Should contain an AddScraper component for each scraper', () => {
-    expect(wrapper.findAll(AddScraper).length).toBe(Object.keys(SCRAPERS).length);
+    expect(wrapper.findAll(AddScraper).length).toBe(Object.keys(SCRAPERS).length - 1);
   });
 });

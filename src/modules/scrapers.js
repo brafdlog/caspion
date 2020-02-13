@@ -1,8 +1,8 @@
 /* eslint-disable max-len */
-import { createScraper, SCRAPERS } from 'israeli-bank-scrapers-core';
+import { createScraper } from 'israeli-bank-scrapers-core';
 import getChrome from './downloadChromium';
 
-async function scrape(
+export default async function scrape(
   installPath,
   scraperName,
   loginFields,
@@ -26,8 +26,3 @@ async function scrape(
   const scraper = createScraper(options);
   return scraper.scrape(loginFields);
 }
-
-export {
-  SCRAPERS,
-  scrape,
-};
