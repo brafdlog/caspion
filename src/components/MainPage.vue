@@ -4,7 +4,10 @@
       app
       color="primary"
     >
-      <v-app-bar-nav-icon @click.stop="drawerLeft = !drawerLeft" />
+      <v-app-bar-nav-icon
+        data-test="drawerLeftToggle"
+        @click.stop="drawerLeft = !drawerLeft"
+      />
       <div class="d-flex align-center">
         <span class="shrink mr-2 headline">Israeli Bank Scrapers Desktop</span>
       </div>

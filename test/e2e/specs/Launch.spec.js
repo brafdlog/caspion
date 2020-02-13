@@ -51,6 +51,7 @@ const skip = process.env.GITHUB_ACTIONS && process.platform === 'win32';
   });
 
   test('Show AddScraper components when clicking on AddScraper', async () => {
+    await interactions.openLeftDrawer();
     await interactions.getCollapseAddImporter().then((element) => element.click());
     await interactions.waitForAddScrapersVisible();
 
