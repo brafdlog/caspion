@@ -1,6 +1,6 @@
-import { SCRAPERS } from 'israeli-bank-scrapers-core';
 import { testWithSpectron } from 'vue-cli-plugin-electron-builder';
 import Interactions from '../utils/interactions';
+import { scrapers } from './../../../src/modules/scrapers';
 
 jest.setTimeout(200000);
 
@@ -40,8 +40,7 @@ const skip = process.env.GITHUB_ACTIONS && process.platform === 'win32';
 
   test('should be AddScraper per scraper', async () => {
     const addScrapers = await interactions.getAddScrapers();
-    // leumiCard to max
-    expect(addScrapers.length).toEqual(Object.keys(SCRAPERS).length - 1);
+    expect(addScrapers.length).toEqual(scrapers.length);
   });
 
   test('Hide AddScraper components by default', async () => {

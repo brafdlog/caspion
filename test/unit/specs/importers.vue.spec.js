@@ -1,11 +1,11 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
 import ElementUI from 'element-ui';
-import { SCRAPERS } from 'israeli-bank-scrapers-core';
 
 import fakeStore from '../helpers/baseStore';
 import Importers from '../../../src/components/MainPage/Importers';
 import AddScraper from '../../../src/components/MainPage/Importers/AddScraper';
+import { scrapers } from './../../../src/modules/scrapers';
 
 const localVue = createLocalVue();
 
@@ -22,6 +22,6 @@ describe('Importers', () => {
   });
 
   it('Should contain an AddScraper component for each scraper', () => {
-    expect(wrapper.findAll(AddScraper).length).toBe(Object.keys(SCRAPERS).length - 1);
+    expect(wrapper.findAll(AddScraper).length).toBe(scrapers.length);
   });
 });

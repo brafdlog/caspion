@@ -55,7 +55,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { SCRAPERS } from 'israeli-bank-scrapers-core';
+import { scrapers } from '@/modules/scrapers';
 import AddScraper from './Importers/AddScraper';
 import Importer from './Importers/Importer';
 
@@ -69,11 +69,7 @@ export default {
   },
   computed: {
     scrapers() {
-      // leumiCard to max
-      return Object.keys(SCRAPERS).filter((key) => key !== 'leumiCard').map((key) => ({
-        key,
-        ...SCRAPERS[key],
-      }));
+      return scrapers;
     },
     ...mapGetters(['importers']),
   },
