@@ -6,7 +6,7 @@ async function scrape({ companyId, credentials, startDate, showBrowser = false }
   //   console.log('USING MOCK DATA');
   //   return mockTransactions[companyId];
   // }
-  if (!credentials || (!credentials.username && credentials.num) || !credentials.password) {
+  if (!credentials || (!credentials.username && !credentials.num) || !credentials.password) {
     throw new Error(`Missing credentials for scraper. CompanyId: ${companyId}. Credentials: ${credentials && JSON.stringify(credentials)}`);
   }
 
