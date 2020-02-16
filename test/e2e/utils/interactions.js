@@ -1,6 +1,7 @@
 import Element from './element';
 
 const CollapseAddImporter = 'div[data-test="CollapseAddImporter"]';
+const CollapseAddImporterButton = 'div[data-test="CollapseAddImporter"] div[role="button"]';
 const AddScrapers = `${CollapseAddImporter} div[data-test]`;
 const DrawerLeftToggle = 'button[data-test="drawerLeftToggle"]';
 
@@ -10,7 +11,8 @@ export default class Interactions {
   }
 
   async click(json) {
-    return this.client.elementIdClick(json.ELEMENT);
+    const element = json.ELEMENT || json.value.ELEMENT;
+    return this.client.elementIdClick(element);
   }
 
   async getCollapseAddImporter() {
@@ -27,11 +29,12 @@ export default class Interactions {
     return this.client.waitForVisible(AddScrapers, 1000);
   }
 
-  async openLeftDrawer() {
-    const visible = await this.getCollapseAddImporter().then((elem) => elem.isVisible());
-    if (!visible) {
-      await this.client.$(DrawerLeftToggle).then((json) => this.click(json));
-      await this.client.waitForVisible(CollapseAddImporter, 1000);
-    }
+  async toggleLeftDrawer() {
+    await this.client.$(DrawerLeftToggle).then((json) => this.click(json.value));
+    await this.client.waitForVisible(CollapseAddImporter, 1000);
+  }
+
+  async clickCollapseAddImporter() {
+    return this.client.$(CollapseAddImporterButton).then((json) => this.click(json));
   }
 }
