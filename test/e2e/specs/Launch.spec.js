@@ -65,14 +65,12 @@ const skip = process.env.GITHUB_ACTIONS && process.platform === 'win32';
   });
 
   afterEach(async () => {
-    if (!fs.existsSync(screenshotsDir)) {
-      fs.mkdirSync(screenshotsDir);
-    }
-
     if (global.lastTest.failed) {
-      const screenshotFile = path.join(screenshotsDir, `${global.lastTest.test.name.trim()}.png`);
-      // eslint-disable-next-line no-console
-      console.log(`Test '${global.lastTest.test.name}' failed. Screenshot will be saved on '${screenshotFile}'`);
+      if (!fs.existsSync(screenshotsDir)) {
+        fs.mkdirSync(screenshotsDir);
+      }
+
+      const screenshotFile = path.join(screenshotsDir, `${global.lastTest.test.name.replace(' ', '')}.png`);
       const imgBuffer = await win.capturePage();
       fs.writeFileSync(screenshotFile, imgBuffer);
     }

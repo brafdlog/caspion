@@ -1,17 +1,29 @@
-const JSDOMEnvironment = require('jest-environment-jsdom')
+const JSDOMEnvironment = require('jest-environment-jsdom');
 
 class ScreenshotEnvironment extends JSDOMEnvironment {
   constructor(config, context) {
-    super(config, context)
+    super(config, context);
 
-    this.global.hasTestFailures = false;
+    this.global.lastTest = {};
   }
 
   handleTestEvent(event) {
-    this.global.lastTest = {
-      failed: event.name === 'test_fn_failure',
-      test: event.test,
-    };
+    switch (event.name) {
+      case 'test_fn_success':
+        this.global.lastTest = {
+          failed: false,
+          test: event.test,
+        };
+        break;
+      case 'test_fn_failure':
+        this.global.lastTest = {
+          failed: true,
+          test: event.test,
+        };
+        break;
+      default:
+        break;
+    }
   }
 }
 
