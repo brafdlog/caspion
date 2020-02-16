@@ -36,6 +36,6 @@ export default class Interactions {
 
   async clickCollapseAddImporter() {
     await this.client.$(CollapseAddImporterButton).then((json) => this.click(json));
-    return this.client.waitForVisible(`${AddScrapers}:nth-of-type(3)`, 1000);
+    return this.client.waitForVisible(AddScrapers, 1000);
   }
 }
