@@ -2903,10 +2903,10 @@ buffer@^5.1.0:
     base64-js "^1.0.2"
     ieee754 "^1.1.4"
 
-build-url@^1.1.2:
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/build-url/-/build-url-1.3.3.tgz#fad1ef30d8861931f85bc1f41fca0a537be31e5f"
-  integrity sha512-uSC8d+d4SlbXTu/9nBhwEKi33CE0KQgCvfy8QwyrrO5vCuXr9hN021ZBh8ip5vxPbMOrZiPwgqcupuhezxiP3g==
+build-url@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/build-url/-/build-url-2.0.0.tgz#7bdd4045e51caa96c1586990e4ca514937598fc2"
+  integrity sha512-LYvvOlDc9jT07wFXTQTKoQLYaXIJriVl/DgatTsSzY963+ip1O7M6G/jWBrlKKJ1L7HGD3oK+WykmOvbcSYXlQ==
 
 builder-util-runtime@8.6.0:
   version "8.6.0"
@@ -6969,12 +6969,12 @@ isobject@^3.0.0, isobject@^3.0.1:
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
   integrity sha1-TkMekrEalzFjaqH5yNHMvP2reN8=
 
-israeli-bank-scrapers-core@^0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/israeli-bank-scrapers-core/-/israeli-bank-scrapers-core-0.8.0.tgz#c6dfc5ebdc073a38392d500cce0a895baf330668"
-  integrity sha512-3eqS2MeUu0szFxTjHYoKl9frimNt/Xz49/wDRQuboKFW+MoHbDfnM1TA+ptSMV9wU2ssc+S40y3X3YWlMVR5oQ==
+israeli-bank-scrapers-core@^0.8.1:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/israeli-bank-scrapers-core/-/israeli-bank-scrapers-core-0.8.1.tgz#c160c500a803b9b87b846543e5fcbe202a7e3787"
+  integrity sha512-OWJsDd8NIWkRBBGsNYE7ZY4pOqBLedaXbQCc2XHTKncltORt99ggCep8I3CZZ6QmW+TNE0WqZgTi0QMBWq6RCg==
   dependencies:
-    build-url "^1.1.2"
+    build-url "^2.0.0"
     core-js "^3.1.4"
     lodash "^4.17.10"
     moment "^2.22.2"
