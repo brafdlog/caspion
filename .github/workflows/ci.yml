@@ -46,3 +46,11 @@ jobs:
       run: yarn unit
     - name: yarn e2e
       run: yarn e2e
+    - name: Upload screenshots
+      if: failure()
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        # Artifact name
+        name: ${{ matrix.os }}-screenshots
+        # Directory containing files to upload
+        path: screenshots
