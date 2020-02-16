@@ -55,7 +55,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { SCRAPERS } from 'israeli-bank-scrapers-core';
+import { scrapers } from '@/modules/scrapers';
 import AddScraper from './Importers/AddScraper';
 import Importer from './Importers/Importer';
 
@@ -69,10 +69,7 @@ export default {
   },
   computed: {
     scrapers() {
-      return Object.keys(SCRAPERS).map((key) => ({
-        key,
-        ...SCRAPERS[key],
-      }));
+      return scrapers;
     },
     ...mapGetters(['importers']),
   },

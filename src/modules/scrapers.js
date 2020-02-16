@@ -2,7 +2,14 @@
 import { createScraper, SCRAPERS } from 'israeli-bank-scrapers-core';
 import getChrome from './downloadChromium';
 
-async function scrape(
+export const scrapers = Object.keys(SCRAPERS)
+  .filter((key) => key !== 'leumiCard')
+  .map((key) => ({
+    key,
+    ...SCRAPERS[key],
+  }));
+
+export async function scrape(
   installPath,
   scraperName,
   loginFields,
@@ -26,8 +33,3 @@ async function scrape(
   const scraper = createScraper(options);
   return scraper.scrape(loginFields);
 }
-
-export {
-  SCRAPERS,
-  scrape,
-};
