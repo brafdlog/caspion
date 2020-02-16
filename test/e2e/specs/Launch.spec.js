@@ -1,6 +1,9 @@
+import fs from 'fs';
 import { SCRAPERS } from 'israeli-bank-scrapers-core';
 import { testWithSpectron } from 'vue-cli-plugin-electron-builder';
 import Interactions from '../utils/interactions';
+
+const screenshotsDir = './screenshots';
 
 jest.setTimeout(200000);
 
@@ -60,6 +63,13 @@ const skip = process.env.GITHUB_ACTIONS && process.platform === 'win32';
   });
 
   afterEach(async () => {
+    if (!fs.existsSync(screenshotsDir)) {
+      fs.mkdirSync(screenshotsDir);
+    }
+    if (global.lastTest.failed) {
+      const imgBuffer = await win.capturePage();
+      fs.writeFileSync(`${global.lastTest.test.name.trim()}.png`, imgBuffer);
+    }
     await stopServe();
   });
 });
