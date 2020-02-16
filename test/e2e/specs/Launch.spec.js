@@ -1,5 +1,6 @@
 import fs from 'fs';
 import { SCRAPERS } from 'israeli-bank-scrapers-core';
+import path from 'path';
 import { testWithSpectron } from 'vue-cli-plugin-electron-builder';
 import Interactions from '../utils/interactions';
 import { scrapers } from './../../../src/modules/scrapers';
@@ -67,9 +68,11 @@ const skip = process.env.GITHUB_ACTIONS && process.platform === 'win32';
     if (!fs.existsSync(screenshotsDir)) {
       fs.mkdirSync(screenshotsDir);
     }
+
     if (global.lastTest.failed) {
+      const screenshotFile = path.join(screenshotsDir, `${global.lastTest.test.name.trim()}.png`);
       const imgBuffer = await win.capturePage();
-      fs.writeFileSync(`${global.lastTest.test.name.trim()}.png`, imgBuffer);
+      fs.writeFileSync(screenshotFile, imgBuffer);
     }
     await stopServe();
   });
