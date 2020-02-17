@@ -1,6 +1,11 @@
+import fs from 'fs';
 import { SCRAPERS } from 'israeli-bank-scrapers-core';
+import path from 'path';
 import { testWithSpectron } from 'vue-cli-plugin-electron-builder';
 import Interactions from '../utils/interactions';
+import { scrapers } from './../../../src/modules/scrapers';
+
+const screenshotsDir = './screenshots';
 
 jest.setTimeout(200000);
 
@@ -40,7 +45,7 @@ const skip = process.env.GITHUB_ACTIONS && process.platform === 'win32';
 
   test('should be AddScraper per scraper', async () => {
     const addScrapers = await interactions.getAddScrapers();
-    expect(addScrapers.length).toEqual(Object.keys(SCRAPERS).length);
+    expect(addScrapers.length).toEqual(scrapers.length);
   });
 
   test('Hide AddScraper components by default', async () => {
@@ -60,6 +65,15 @@ const skip = process.env.GITHUB_ACTIONS && process.platform === 'win32';
   });
 
   afterEach(async () => {
+    if (!fs.existsSync(screenshotsDir)) {
+      fs.mkdirSync(screenshotsDir);
+    }
+
+    if (global.lastTest.failed) {
+      const screenshotFile = path.join(screenshotsDir, `${global.lastTest.test.name.trim()}.png`);
+      const imgBuffer = await win.capturePage();
+      fs.writeFileSync(screenshotFile, imgBuffer);
+    }
     await stopServe();
   });
 });
