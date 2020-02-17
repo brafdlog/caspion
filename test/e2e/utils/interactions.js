@@ -5,6 +5,8 @@ const CollapseAddImporterButton = 'div[data-test="CollapseAddImporter"] div[role
 const AddScrapers = `${CollapseAddImporter} div[data-test]`;
 const DrawerLeftToggle = 'button[data-test="drawerLeftToggle"]';
 
+const wait = async (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export default class Interactions {
   constructor(client) {
     this.client = client;
@@ -31,7 +33,7 @@ export default class Interactions {
 
   async toggleLeftDrawer() {
     await this.client.$(DrawerLeftToggle).then((json) => this.click(json.value));
-    await this.client.waitForVisible(CollapseAddImporter, 1000);
+    await wait(1000);
   }
 
   async clickCollapseAddImporter() {
