@@ -56,8 +56,8 @@ const skip = process.env.GITHUB_ACTIONS && process.platform === 'win32';
   });
 
   test('Show AddScraper components when clicking on AddScraper', async () => {
-    await interactions.getCollapseAddImporter().then((element) => element.click());
-    await interactions.waitForAddScrapersVisible();
+    await interactions.toggleLeftDrawer();
+    await interactions.clickCollapseAddImporter();
 
     const addScrapers = await interactions.getAddScrapers();
     const visiblities = await Promise.all(addScrapers.map((scraper) => scraper.isVisible()));
@@ -65,12 +65,12 @@ const skip = process.env.GITHUB_ACTIONS && process.platform === 'win32';
   });
 
   afterEach(async () => {
-    if (!fs.existsSync(screenshotsDir)) {
-      fs.mkdirSync(screenshotsDir);
-    }
-
     if (global.lastTest.failed) {
-      const screenshotFile = path.join(screenshotsDir, `${global.lastTest.test.name.trim()}.png`);
+      if (!fs.existsSync(screenshotsDir)) {
+        fs.mkdirSync(screenshotsDir);
+      }
+
+      const screenshotFile = path.join(screenshotsDir, `${global.lastTest.test.name.replace(/\s/g, '')}.png`);
       const imgBuffer = await win.capturePage();
       fs.writeFileSync(screenshotFile, imgBuffer);
     }
