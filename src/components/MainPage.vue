@@ -1,17 +1,48 @@
 <template>
-  <div id="wrapper">
-    <el-container>
-      <el-aside>
-        <Importers />
-      </el-aside>
-      <el-main>
-        <DataTable />
-      </el-main>
-      <el-aside border="solid">
-        <Exporters />
-      </el-aside>
-    </el-container>
-  </div>
+  <v-app>
+    <v-app-bar
+      app
+      color="primary"
+    >
+      <v-app-bar-nav-icon
+        data-test="drawerLeftToggle"
+        @click.stop="drawerLeft = !drawerLeft"
+      />
+      <div class="d-flex align-center">
+        <span class="shrink mr-2 headline">Israeli Bank Scrapers Desktop</span>
+      </div>
+
+      <v-spacer />
+
+      <v-btn
+        href="https://github.com/baruchiro/israeli-bank-scrapers-desktop"
+        target="_blank"
+        text
+      >
+        <span class="mr-2">Open in Github</span>
+        <v-icon>mdi-open-in-new</v-icon>
+      </v-btn>
+      <v-app-bar-nav-icon @click.stop="drawerRight = !drawerRight" />
+    </v-app-bar>
+
+    <v-navigation-drawer
+      v-model="drawerLeft"
+      app
+      left
+    >
+      <Importers />
+    </v-navigation-drawer>
+    <v-content>
+      <DataTable />
+    </v-content>
+    <v-navigation-drawer
+      v-model="drawerRight"
+      app
+      right
+    >
+      <Exporters />
+    </v-navigation-drawer>
+  </v-app>
 </template>
 
 <script>
@@ -22,6 +53,12 @@ import Exporters from '@/components/MainPage/Exporters';
 export default {
   name: 'MainPage',
   components: { Importers, DataTable, Exporters },
+  data() {
+    return {
+      drawerLeft: null,
+      drawerRight: null,
+    };
+  },
 };
 </script>
 
@@ -45,7 +82,6 @@ body {
     rgba(229, 229, 229, 0.9) 100%
   );
   height: 100%;
-  width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: stretch;
