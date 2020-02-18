@@ -120,7 +120,8 @@ export default {
 
         this.saveExporterProperties({ name, properties: this.properties });
       } catch (error) {
-        this.$logger.error(error.message, error);
+        this.$logger.error(error.message);
+        if (error.stack) this.$logger.verbose(error.stack);
         this.emitStatus(false, error.message);
       } finally {
         this.loading = false;
@@ -131,7 +132,8 @@ export default {
         this.oauth2Client = await CreateClient();
         this.properties.spreadsheets = await listAllSpreadsheets(this.oauth2Client);
       } catch (e) {
-        this.$logger.error(e.message, e);
+        this.$logger.error(e.message);
+        if (e.stack) this.$logger.verbose(e.stack);
       }
     },
     async createNewSpreadsheet() {

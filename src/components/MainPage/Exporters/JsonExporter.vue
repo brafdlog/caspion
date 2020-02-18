@@ -78,7 +78,8 @@ export default {
         );
         this.emitStatus(true, `Your data saved in ${filePath}`);
       } catch (error) {
-        this.$logger.error(error);
+        this.$logger.error(error.message);
+        if (error.stack) this.$logger.verbose(error.stack);
         this.emitStatus(false, error.message);
       }
       this.loading = false;
