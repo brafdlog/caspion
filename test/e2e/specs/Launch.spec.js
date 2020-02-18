@@ -1,9 +1,8 @@
 import fs from 'fs';
-import { SCRAPERS } from 'israeli-bank-scrapers-core';
 import path from 'path';
 import { testWithSpectron } from 'vue-cli-plugin-electron-builder';
+import { scrapers } from '../../../src/modules/scrapers';
 import Interactions from '../utils/interactions';
-import { scrapers } from './../../../src/modules/scrapers';
 
 const screenshotsDir = './screenshots';
 
@@ -13,18 +12,25 @@ jest.setTimeout(200000);
 const skip = process.env.GITHUB_ACTIONS && process.platform === 'win32';
 
 (skip ? describe.skip : describe)('Launch', () => {
+  let app;
   let stopServe;
-  let win;
+  let browserWindow;
   let client;
   let interactions;
 
-  beforeEach(async () => {
-    let app;
-    ({ app, stopServe } = await testWithSpectron());
+  beforeAll(async () => {
+    let stdout;
+    ({ app, stopServe, stdout } = await testWithSpectron());
 
-    // Wait for dev server to start
-    win = app.browserWindow;
-    ({ client } = app);
+    // eslint-disable-next-line no-console
+    console.log(stdout);
+  });
+
+  beforeEach(async () => {
+    app = await app.restart();
+
+    ({ client, browserWindow } = app);
+    await client.waitUntilWindowLoaded();
     interactions = new Interactions(client);
   });
 
@@ -32,11 +38,11 @@ const skip = process.env.GITHUB_ACTIONS && process.platform === 'win32';
     // Window was created
     expect(await client.getWindowCount()).toBe(1);
     // It is not minimized
-    expect(await win.isMinimized()).toBe(false);
+    expect(await browserWindow.isMinimized()).toBe(false);
     // Window is visible
-    expect(await win.isVisible()).toBe(true);
+    expect(await browserWindow.isVisible()).toBe(true);
     // Size is correct
-    const { width, height } = await win.getBounds();
+    const { width, height } = await browserWindow.getBounds();
     expect(width).toBeGreaterThan(0);
     expect(height).toBeGreaterThan(0);
     // App is loaded properly
@@ -71,9 +77,10 @@ const skip = process.env.GITHUB_ACTIONS && process.platform === 'win32';
       }
 
       const screenshotFile = path.join(screenshotsDir, `${global.lastTest.test.name.replace(/\s/g, '')}.png`);
-      const imgBuffer = await win.capturePage();
+      const imgBuffer = await browserWindow.capturePage();
       fs.writeFileSync(screenshotFile, imgBuffer);
     }
-    await stopServe();
   });
+
+  afterAll(async () => stopServe());
 });
