@@ -1,12 +1,18 @@
 <template>
-  <div>
+  <v-layout
+    v-resize="onResize"
+    fluid
+  >
     <v-data-table
+      style="width: 100%"
       :headers="headers"
       :items="transactionsWithId"
       :items-per-page="10"
       item-key="id"
       show-expand
       class="elevation-1"
+      :height="contentHeight"
+      fixed-header
     >
       <template v-slot:expanded-item="{ item }">
         <td :colspan="headers.length">
@@ -22,7 +28,7 @@
         </td>
       </template>
     </v-data-table>
-  </div>
+  </v-layout>
 </template>
 
 <script>
@@ -35,8 +41,16 @@ const detailes = properties.map((prop) => ({
   ...prop,
 }));
 
+const tableFooterHeight = 59;
+
+
 export default {
   name: 'DataTable',
+  data() {
+    return {
+      contentHeight: 0,
+    };
+  },
   computed: {
     headers: () => detailes.filter((detail) => detail.column),
     expanded: () => detailes.filter((detail) => !detail.column),
@@ -54,6 +68,9 @@ export default {
     },
     filterEmptyFields(item) {
       return this.expanded.filter((col) => item[col.name]);
+    },
+    onResize() {
+      this.contentHeight = window.innerHeight - this.$vuetify.application.top - tableFooterHeight;
     },
   },
 };
