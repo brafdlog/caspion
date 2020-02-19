@@ -1,8 +1,10 @@
 <template>
   <div>
-    <div class="title">
-      <Span>Importers</Span>
-    </div>
+    <v-toolbar>
+      <v-toolbar-title>
+        Importers
+      </v-toolbar-title>
+    </v-toolbar>
     <el-collapse v-model="activeNames">
       <el-collapse-item
         title="Add new Importer"
@@ -86,15 +88,6 @@ export default {
 </script>
 
 <style scoped>
-.title {
-  color: #888;
-  font-size: 18px;
-  font-weight: initial;
-  letter-spacing: 0.25px;
-  margin-top: 10px;
-  display: flex;
-  justify-content: space-between;
-}
 
 .items {
   margin-top: 8px;
