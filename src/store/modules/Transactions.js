@@ -7,8 +7,6 @@ const state = {
 
 const getters = {
   transactionsArray: (state) => Object.values(state.transactions),
-  tableColumns: (state) => state.properties.filter((prop) => prop.column),
-  propertiesColumns: (state) => state.properties.filter((prop) => !prop.column),
 };
 
 const mutations = {
