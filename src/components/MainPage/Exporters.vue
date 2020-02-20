@@ -1,34 +1,41 @@
 <template>
-  <el-collapse
-    v-model="accordionActiveItem"
-    accordion
-  >
-    <el-collapse-item
-      v-for="comp in exportersComponents"
-      :key="comp.name"
-      :name="comp.name"
+  <div>
+    <v-toolbar>
+      <v-toolbar-title>
+        Exporters
+      </v-toolbar-title>
+    </v-toolbar>
+    <el-collapse
+      v-model="accordionActiveItem"
+      accordion
     >
-      <div slot="title">
-        <span>{{ comp.title }}</span>
-        <el-tooltip
-          effect="dark"
-          :disabled="statuses[comp.name].lastMessage === null"
-          :content="statuses[comp.name].lastMessage"
-          placement="left"
-        >
-          <i
-            class="header-icon"
-            :class="iconClass(statuses[comp.name].success)"
-          />
-        </el-tooltip>
-      </div>
-      <component
-        :is="comp.name"
-        :message.sync="statuses[comp.name].lastMessage"
-        :success.sync="statuses[comp.name].success"
-      />
-    </el-collapse-item>
-  </el-collapse>
+      <el-collapse-item
+        v-for="comp in exportersComponents"
+        :key="comp.name"
+        :name="comp.name"
+      >
+        <div slot="title">
+          <span>{{ comp.title }}</span>
+          <el-tooltip
+            effect="dark"
+            :disabled="statuses[comp.name].lastMessage === null"
+            :content="statuses[comp.name].lastMessage"
+            placement="left"
+          >
+            <i
+              class="header-icon"
+              :class="iconClass(statuses[comp.name].success)"
+            />
+          </el-tooltip>
+        </div>
+        <component
+          :is="comp.name"
+          :message.sync="statuses[comp.name].lastMessage"
+          :success.sync="statuses[comp.name].success"
+        />
+      </el-collapse-item>
+    </el-collapse>
+  </div>
 </template>
 
 <script>
