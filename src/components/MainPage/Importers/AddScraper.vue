@@ -1,13 +1,62 @@
 <template>
-  <el-collapse-item
+  <v-list class="pa-0 my-0">
+    <v-list-group
+      no-action
+      sub-group
+      value="true"
+    >
+      <template v-slot:activator>
+        <v-list-item-title
+          :data-test="scraper.key"
+          :name="scraper.key"
+        >
+          {{
+            scraper.name
+          }}
+        </v-list-item-title>
+      </template>
+      <v-form
+        ref="addScraperForm"
+        :model="importerToAdd"
+      >
+        <v-container
+          class="py-0"
+        >
+          <v-row
+            v-for="(value, loginField) in importerToAdd.loginFields"
+            :key="loginField"
+          >
+            <v-col
+              cols="12"
+              class="pa-0"
+              :label="loginField"
+            >
+              <v-text-field
+                v-model="importerToAdd.loginFields[loginField]"
+                :label="loginField"
+                :type="loginField == 'password' ? 'password' : 'text'"
+              />
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-btn
+              color="primary"
+              :disabled="!isFormValid"
+              @click="submitForm()"
+            >
+              Add
+            </v-btn>
+          </v-row>
+        </v-container>
+      </v-form>
+    </v-list-group>
+  </v-list>
+  <!-- <el-collapse-item
     :title="scraper.name"
     :name="scraper.key"
     :data-test="scraper.key"
   >
-    <el-form
-      ref="addScraperForm"
-      :model="importerToAdd"
-    >
+    <el-form ref="addScraperForm" :model="importerToAdd">
       <el-form-item
         v-for="(value, loginField) in importerToAdd.loginFields"
         :key="loginField"
@@ -28,7 +77,7 @@
         </el-button>
       </el-form-item>
     </el-form>
-  </el-collapse-item>
+  </el-collapse-item> -->
 </template>
 
 <script>
@@ -65,7 +114,10 @@ export default {
   methods: {
     async submitForm() {
       if (this.isFormValid) {
-        const encrypted = await encryptProperty(this.importerToAdd, 'loginFields');
+        const encrypted = await encryptProperty(
+          this.importerToAdd,
+          'loginFields',
+        );
         this.addImporterAction(encrypted);
         this.resetForm();
       }

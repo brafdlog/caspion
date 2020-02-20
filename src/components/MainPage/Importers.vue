@@ -5,7 +5,28 @@
         Importers
       </v-toolbar-title>
     </v-toolbar>
-    <el-collapse v-model="activeNames">
+    <v-card
+      class="mx-auto"
+      width="300"
+    >
+      <v-list class="pa-0 my-0">
+        <v-list-group
+          v-model="activeNames"
+          value="true"
+        >
+          <template v-slot:activator>
+            <v-list-item-title>Add new Importer</v-list-item-title>
+          </template>
+          <add-scraper
+            v-for="scraper in scrapers"
+            :key="scraper.key"
+            :scraper="scraper"
+            class="add-scraper"
+          />
+        </v-list-group>
+      </v-list>
+    </v-card>
+    <!-- <el-collapse v-model="activeNames">
       <el-collapse-item
         title="Add new Importer"
         name="1"
@@ -23,7 +44,7 @@
           />
         </el-collapse>
       </el-collapse-item>
-    </el-collapse>
+    </el-collapse> -->
     <el-collapse>
       <el-card
         v-for="importer in importers"
@@ -88,7 +109,6 @@ export default {
 </script>
 
 <style scoped>
-
 .items {
   margin-top: 8px;
 }
