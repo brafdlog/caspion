@@ -15,12 +15,11 @@
       <v-spacer />
 
       <v-btn
-        href="https://github.com/baruchiro/israeli-bank-scrapers-desktop"
-        target="_blank"
         text
+        @click="() => openExternal('https://github.com/baruchiro/israeli-bank-scrapers-desktop/issues/new')"
       >
-        <span class="mr-2">Open in Github</span>
-        <v-icon>mdi-open-in-new</v-icon>
+        <span class="mr-2">Report a problem</span>
+        <v-icon>mdi-chat-alert-outline</v-icon>
       </v-btn>
       <v-app-bar-nav-icon @click.stop="drawerRight = !drawerRight" />
     </v-app-bar>
@@ -42,62 +41,73 @@
     >
       <Exporters />
     </v-navigation-drawer>
+    <v-footer
+      app
+      color="primary"
+    >
+      <profile-chip
+        v-for="profile in profiles"
+        :key="profile.email"
+        :profile="profile"
+      />
+      <v-spacer />
+      <v-btn
+        text
+        small
+        @click="() => openExternal('https://github.com/baruchiro/israeli-bank-scrapers-desktop')"
+      >
+        <span class="mr-2">Open in Github</span>
+        <v-icon>mdi-open-in-new</v-icon>
+      </v-btn>
+    </v-footer>
   </v-app>
 </template>
 
 <script>
+import { shell } from 'electron';
 import Importers from '@/components/MainPage/Importers';
 import DataTable from '@/components/MainPage/DataTable';
 import Exporters from '@/components/MainPage/Exporters';
+import ProfileChip from '@/components/MainPage/ProfileChip';
 
 export default {
   name: 'MainPage',
-  components: { Importers, DataTable, Exporters },
+  components: {
+    Importers, DataTable, Exporters, ProfileChip,
+  },
   data() {
     return {
       drawerLeft: null,
       drawerRight: null,
+      profiles: [
+        {
+          avatar: 'https://avatars3.githubusercontent.com/u/17686879',
+          name: 'Baruch Odem',
+          email: 'baruchiro@gmail.com',
+          networks: [
+            'https://github.com/baruchiro',
+            'https://www.linkedin.com/in/baruch-rothkoff/',
+          ],
+        },
+        {
+          avatar: 'https://media-exp1.licdn.com/dms/image/C5603AQHBVlsYLgmvNw/profile-displayphoto-shrink_800_800/0?e=1587600000&v=beta&t=iRvw54ZS2K6k3PKi4jgtpe-noj9XTzyUf3IMJvaWShQ',
+          name: 'Ariel Gordon',
+          email: 'arielgordon123@gmail.com',
+          networks: [
+            'https://github.com/Arielgordon123',
+            'https://www.linkedin.com/in/ariel-gordon-462b14156/',
+          ],
+        },
+      ],
     };
+  },
+  methods: {
+    openExternal(url) {
+      shell.openExternal(url);
+    },
   },
 };
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: "Source Sans Pro", sans-serif;
-}
-
-#wrapper {
-  background: radial-gradient(
-    ellipse at top left,
-    rgba(255, 255, 255, 1) 40%,
-    rgba(229, 229, 229, 0.9) 100%
-  );
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-}
-
-.title {
-  color: #2c3e50;
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 6px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.title.alt {
-  font-size: 18px;
-  margin-bottom: 10px;
-}
 </style>
