@@ -1,8 +1,8 @@
 import { loadSALT, saveSALT } from './keytar';
 
 export default async function SALT(defaultValue) {
-  const SALT = await loadSALT();
-  if (SALT) return SALT;
+  const existedSALT = await loadSALT();
+  if (existedSALT) return existedSALT;
 
   if (!defaultValue) throw Error('SALT not exist');
 

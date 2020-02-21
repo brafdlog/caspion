@@ -42,7 +42,6 @@
 <script>
 import { mapActions } from 'vuex';
 import { MessageBox } from 'element-ui';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { remote } from 'electron';
 import { decryptProperty } from '@/modules/encryption/credentials';
 import { scrape } from '@/modules/scrapers';
