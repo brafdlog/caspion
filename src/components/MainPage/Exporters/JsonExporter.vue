@@ -20,7 +20,6 @@
 
 <script>
 import path from 'path';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { remote } from 'electron';
 import { mapState, mapActions } from 'vuex';
 import { transactionArrayToObject } from '@/modules/transactions';

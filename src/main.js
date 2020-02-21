@@ -1,11 +1,11 @@
 import Vue from 'vue';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import electron from 'electron';
-import App from './App.vue';
+import App from './App';
 import router from './router';
 import store from './store';
 
-import './plugins/element.js';
+import './plugins/element';
 import LoggerPlugin from './plugins/logger';
 import vuetify from './plugins/vuetify';
 

@@ -1,6 +1,8 @@
 import { encryptObject, decryptObject } from '@/modules/encryption/credentials';
 import { saveIntoAccount, getFromAccount } from '@/modules/encryption/keytar';
 import ElectronGoogleOAuth2 from '@getstation/electron-google-oauth2';
+import clientDetails from './client_secret.json';
+
 
 const keytarAccount = 'googleOauth2Token';
 const successRedirectURL = 'https://github.com/baruchiro/israeli-bank-scrapers-desktop';
@@ -20,7 +22,6 @@ async function loadToken() {
 }
 
 export async function CreateClient() {
-  const clientDetails = require('./client_secret.json');
   const myApiOauth = new ElectronGoogleOAuth2(
     clientDetails.client_id,
     clientDetails.client_secret,
