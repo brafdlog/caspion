@@ -24,6 +24,7 @@ module.exports = {
   ],
 
   settings: {
+    'import/core-modules': [ 'electron' ],
     'import/resolver': {
       alias: {
         map: [
