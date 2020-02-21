@@ -31,9 +31,6 @@
     >
       <Importers />
     </v-navigation-drawer>
-    <v-content>
-      <DataTable />
-    </v-content>
     <v-navigation-drawer
       v-model="drawerRight"
       app
@@ -60,6 +57,11 @@
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
     </v-footer>
+    <!-- The content come after all the 'app' components,
+    to render when the $vuetify.application is ready -->
+    <v-content>
+      <DataTable />
+    </v-content>
   </v-app>
 </template>
 

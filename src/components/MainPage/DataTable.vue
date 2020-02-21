@@ -72,7 +72,7 @@ export default {
     onResize() {
       this.contentHeight = window.innerHeight
                               - this.$vuetify.application.top
-                              - this.$vuetify.application.footer - 4
+                              - this.$vuetify.application.footer
                               - tableFooterHeight;
     },
   },

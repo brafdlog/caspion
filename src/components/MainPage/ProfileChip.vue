@@ -9,6 +9,7 @@
         pill
         color="indigo"
         text-color="white"
+        small
         v-on="on"
       >
         <v-avatar left>
