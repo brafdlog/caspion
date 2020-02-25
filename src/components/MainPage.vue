@@ -14,13 +14,17 @@
 
       <v-spacer />
 
-      <v-btn
-        text
-        @click="() => openExternal('https://github.com/baruchiro/israeli-bank-scrapers-desktop/issues/new')"
-      >
-        <span class="mr-2">Report a problem</span>
-        <v-icon>mdi-chat-alert-outline</v-icon>
-      </v-btn>
+      <report-problem-dialog>
+        <template v-slot="{ on }">
+          <v-btn
+            text
+            v-on="on"
+          >
+            <span class="mr-2">Report a problem</span>
+            <v-icon>mdi-chat-alert-outline</v-icon>
+          </v-btn>
+        </template>
+      </report-problem-dialog>
       <v-app-bar-nav-icon @click.stop="drawerRight = !drawerRight" />
     </v-app-bar>
 
@@ -71,11 +75,12 @@ import Importers from '@/components/MainPage/Importers';
 import DataTable from '@/components/MainPage/DataTable';
 import Exporters from '@/components/MainPage/Exporters';
 import ProfileChip from '@/components/MainPage/ProfileChip';
+import ReportProblemDialog from './MainPage/ReportProblemDialog';
 
 export default {
   name: 'MainPage',
   components: {
-    Importers, DataTable, Exporters, ProfileChip,
+    Importers, DataTable, Exporters, ProfileChip, ReportProblemDialog,
   },
   data() {
     return {
