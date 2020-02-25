@@ -20,8 +20,6 @@
 </template>
 
 <script>
-import fs from 'fs';
-
 export default {
   name: 'LogSheet',
   props: {
@@ -35,9 +33,7 @@ export default {
     textToShow() {
       if (this.raw) return this.raw;
 
-      const lines = fs.readFileSync(this.$logger.transports.file.getFile().path).toString().split('\n');
-      const lastLines = lines.slice(lines.length - 10);
-      return lastLines.join('\n');
+      return this.$logger.getLastLines(10);
     },
   },
 };

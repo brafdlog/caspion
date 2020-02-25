@@ -81,7 +81,6 @@
 </template>
 
 <script>
-import fs from 'fs';
 import { shell } from 'electron';
 import LogSheet from './LogSheet';
 
@@ -122,11 +121,7 @@ export default {
       this.$nextTick(this.$refs.form.validate);
     },
     dialog() {
-      fs.promises.readFile(this.$logger.transports.file.getFile().path).then((text) => {
-        const lines = text.toString().split('\n');
-        const lastLines = lines.slice(lines.length - 10);
-        this.raw = lastLines.join('\n');
-      });
+      this.raw = this.$logger.getLastLines(10);
     },
   },
   methods: {
