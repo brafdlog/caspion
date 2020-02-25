@@ -1,8 +1,8 @@
 <template>
-  <v-bottom-sheet scrollable>
-    <template v-slot:activator="{ on }">
-      <slot :on="on" />
-    </template>
+  <v-bottom-sheet
+    v-model="sheet"
+    scrollable
+  >
     <v-card>
       <v-card-title>
         Current Log
@@ -23,6 +23,10 @@
 export default {
   name: 'LogSheet',
   props: {
+    value: {
+      type: Boolean,
+      required: true,
+    },
     raw: {
       type: String,
       required: false,
@@ -30,6 +34,10 @@ export default {
     },
   },
   computed: {
+    sheet: {
+      get() { return this.value; },
+      set(visible) { this.$emit('input', visible); },
+    },
     textToShow() {
       if (this.raw) return this.raw;
 

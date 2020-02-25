@@ -40,13 +40,11 @@
                   :required="!formData.detailes"
                 >
                   <template slot="label">
-                    Attach logs &nbsp;(
-                    <log-sheet :raw="raw">
-                      <template v-slot="{ on }">
-                        <a @click.prevent="on.click">see</a>
-                      </template>
-                    </log-sheet>
-                    )
+                    Attach logs (<a @click.prevent="sheet = true">see</a>)
+                    <log-sheet
+                      v-model="sheet"
+                      :raw="raw"
+                    />
                   </template>
                 </v-checkbox>
               </v-col>
@@ -110,6 +108,7 @@ export default {
   data() {
     return {
       valid: false,
+      sheet: false,
       formData: {
         title: '',
         detailes: '',
