@@ -1,18 +1,14 @@
 <template>
   <v-list class="pa-0 my-0">
     <v-list-group
-      no-action
-      sub-group
-      value="true"
+      v-model="scraper.active"
     >
       <template v-slot:activator>
         <v-list-item-title
           :data-test="scraper.key"
           :name="scraper.key"
         >
-          {{
-            scraper.name
-          }}
+          {{ scraper.name }}
         </v-list-item-title>
       </template>
       <v-form
@@ -35,6 +31,7 @@
                 v-model="importerToAdd.loginFields[loginField]"
                 :label="loginField"
                 :type="loginField == 'password' ? 'password' : 'text'"
+                outlined
               />
             </v-col>
           </v-row>
@@ -51,33 +48,6 @@
       </v-form>
     </v-list-group>
   </v-list>
-  <!-- <el-collapse-item
-    :title="scraper.name"
-    :name="scraper.key"
-    :data-test="scraper.key"
-  >
-    <el-form ref="addScraperForm" :model="importerToAdd">
-      <el-form-item
-        v-for="(value, loginField) in importerToAdd.loginFields"
-        :key="loginField"
-        :label="loginField"
-      >
-        <el-input
-          v-model="importerToAdd.loginFields[loginField]"
-          :show-password="loginField == 'password'"
-        />
-      </el-form-item>
-      <el-form-item>
-        <el-button
-          type="primary"
-          :disabled="!isFormValid"
-          @click="submitForm()"
-        >
-          Add
-        </el-button>
-      </el-form-item>
-    </el-form>
-  </el-collapse-item> -->
 </template>
 
 <script>
@@ -140,5 +110,10 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.theme--light.v-btn.v-btn--disabled:not(.v-btn--flat):not(.v-btn--text):not(.v-btn-outlined) {
+  color: #fff !important;
+  background-color: #a0cfff !important;
+  border-color: #a0cfff !important;
 }
 </style>
