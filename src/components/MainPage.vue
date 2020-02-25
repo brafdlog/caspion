@@ -14,17 +14,15 @@
 
       <v-spacer />
 
-      <report-problem-dialog>
-        <template v-slot="{ on }">
-          <v-btn
-            text
-            v-on="on"
-          >
-            <span class="mr-2">Report a problem</span>
-            <v-icon>mdi-chat-alert-outline</v-icon>
-          </v-btn>
-        </template>
-      </report-problem-dialog>
+      <report-problem-dialog v-model="reportProblemDialog" />
+      <v-btn
+        text
+        @click.stop="reportProblemDialog = true"
+      >
+        <span class="mr-2">Report a problem</span>
+        <v-icon>mdi-chat-alert-outline</v-icon>
+      </v-btn>
+
       <v-app-bar-nav-icon @click.stop="drawerRight = !drawerRight" />
     </v-app-bar>
 
@@ -86,6 +84,7 @@ export default {
     return {
       drawerLeft: null,
       drawerRight: null,
+      reportProblemDialog: false,
       profiles: [
         {
           avatar: 'https://avatars3.githubusercontent.com/u/17686879',

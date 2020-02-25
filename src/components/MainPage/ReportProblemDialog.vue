@@ -1,8 +1,5 @@
 <template>
   <v-dialog v-model="dialog">
-    <template v-slot:activator="{ on }">
-      <slot :on="on" />
-    </template>
     <v-card>
       <v-card-title>
         <span class="headline">Report a problem</span>
@@ -104,9 +101,14 @@ ${log}
 export default {
   name: 'ReportProblemDialog',
   components: { LogSheet },
+  props: {
+    value: {
+      type: Boolean,
+      required: true,
+    },
+  },
   data() {
     return {
-      dialog: false,
       valid: false,
       formData: {
         title: '',
@@ -115,6 +117,12 @@ export default {
       },
       raw: null,
     };
+  },
+  computed: {
+    dialog: {
+      get() { return this.value; },
+      set(visible) { this.$emit('input', visible); },
+    },
   },
   watch: {
     formData() {
