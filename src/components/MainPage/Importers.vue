@@ -37,8 +37,9 @@
       v-model="drawer"
       absolute
       temporary
+      data-test="ToggleAddImporter"
     >
-      <h3>Add new scraper</h3>
+      <h3>Add new Importer</h3>
       <add-scraper
         v-for="scraper in scrapers"
         :key="scraper.key"
@@ -70,6 +71,7 @@
         absolute
         bottom
         left
+        data-test="CollapseAddImporter"
         style="margin-bottom: 39px;"
         @click.stop="drawer = !drawer"
       >

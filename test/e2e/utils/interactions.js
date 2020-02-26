@@ -1,7 +1,7 @@
 import Element from './element';
 
-const CollapseAddImporter = 'div[data-test="CollapseAddImporter"]';
-const CollapseAddImporterButton = 'div[data-test="CollapseAddImporter"] div[role="button"]';
+const CollapseAddImporter = 'aside[data-test="ToggleAddImporter"]';
+const CollapseAddImporterButton = 'button[data-test="CollapseAddImporter"]';
 const AddScrapers = `${CollapseAddImporter} div[data-test]`;
 const DrawerLeftToggle = 'button[data-test="drawerLeftToggle"]';
 
@@ -38,6 +38,6 @@ export default class Interactions {
 
   async clickCollapseAddImporter() {
     await this.client.$(CollapseAddImporterButton).then((json) => this.click(json));
-    return this.client.waitForVisible(`${AddScrapers}:nth-of-type(3)`, 1000);
+    return this.client.waitForVisible(`${AddScrapers}`, 1000);
   }
 }
