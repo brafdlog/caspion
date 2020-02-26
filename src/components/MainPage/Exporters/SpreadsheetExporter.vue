@@ -82,8 +82,8 @@ export default {
   },
   created() {
     this.properties = { ...this.properties, ...this.storeProperties };
-    isConnected().then((isConnected) => {
-      if (isConnected) {
+    isConnected().then((connected) => {
+      if (connected) {
         this.login();
       }
     });

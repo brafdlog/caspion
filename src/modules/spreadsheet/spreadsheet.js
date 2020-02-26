@@ -63,16 +63,16 @@ function zip(keys, values) {
   return keys.reduce((prev, current, index) => ({ ...prev, [current]: values[index] }), {});
 }
 
-function validateHeaders(headers) {
-  const missingHeaders = requiredHeaders.filter((header) => !headers.includes(header));
+function validateHeaders(headersRow) {
+  const missingHeaders = requiredHeaders.filter((header) => !headersRow.includes(header));
   if (missingHeaders.length > 0) {
-    throw new Error(`Missing required headers: [${missingHeaders}] in [${headers}]`);
+    throw new Error(`Missing required headers: [${missingHeaders}] in [${headersRow}]`);
   }
 }
 
 function convertTransactionsArraysToObject(transactionsArrays) {
-  const headers = transactionsArrays.shift();
-  validateHeaders(headers);
+  const headersRow = transactionsArrays.shift();
+  validateHeaders(headersRow);
   const arrayOfObjects = transactionsArrays.map((transaction) => zip(headers, transaction));
   return transactionArrayToObject(arrayOfObjects);
 }
