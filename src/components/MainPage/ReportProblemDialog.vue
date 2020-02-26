@@ -96,6 +96,12 @@ ${log}
           + `&body=${escape(formattedDetailes)}${escape(formattedLog)}`;
 };
 
+const defaultFormData = {
+  title: '',
+  detailes: '',
+  attachLogs: true,
+};
+
 export default {
   name: 'ReportProblemDialog',
   components: { LogSheet },
@@ -109,11 +115,7 @@ export default {
     return {
       valid: false,
       sheet: false,
-      formData: {
-        title: '',
-        detailes: '',
-        attachLogs: true,
-      },
+      formData: { ...defaultFormData },
       raw: null,
     };
   },
@@ -128,7 +130,7 @@ export default {
       this.$nextTick(this.$refs.form.validate);
     },
     dialog() {
-      this.raw = this.$logger.getLastLines(10);
+      this.$nextTick(this.resetForm);
     },
   },
   methods: {
@@ -142,6 +144,10 @@ export default {
         this.$logger.info(`Open bug report url with title: ${this.formData.title}`);
         shell.openExternal(url);
       }
+    },
+    resetForm() {
+      this.raw = this.$logger.getLastLines(10);
+      this.formData = { ...defaultFormData };
     },
   },
 };
