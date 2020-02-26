@@ -70,7 +70,10 @@ export default {
       return this.expanded.filter((col) => item[col.name]);
     },
     onResize() {
-      this.contentHeight = window.innerHeight - this.$vuetify.application.top - tableFooterHeight;
+      this.contentHeight = window.innerHeight
+                              - this.$vuetify.application.top
+                              - this.$vuetify.application.footer
+                              - tableFooterHeight;
     },
   },
 };

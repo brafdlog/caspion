@@ -1,5 +1,5 @@
 import { formatDate, unixMilli } from './dates';
-import hash from './hash';
+import calculateHash from './hash';
 
 /*
 {
@@ -65,7 +65,7 @@ export const properties = [
     name: 'description',
     title: 'Description',
     column: true,
-    hash: (value) => hash(value),
+    hash: (value) => calculateHash(value),
   },
   {
     name: 'memo',
