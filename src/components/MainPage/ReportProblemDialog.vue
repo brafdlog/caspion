@@ -26,7 +26,7 @@
               <v-col>
                 <v-textarea
                   v-model="formData.detailes"
-                  label="Bug Details (אפשר לכתוב בעברית)"
+                  label="Bug Details"
                   filled
                   :rules="[detailesRule]"
                   :required="!formData.attachLogs"
