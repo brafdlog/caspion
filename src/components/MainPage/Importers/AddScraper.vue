@@ -90,6 +90,7 @@ export default {
         );
         this.addImporterAction(encrypted);
         this.resetForm();
+        this.$emit('scraperAdded', true);
       }
     },
     resetForm() {

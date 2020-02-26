@@ -45,6 +45,7 @@
         :key="scraper.key"
         :scraper="scraper"
         class="add-scraper"
+        @scraperAdded="drawer = !drawer"
       />
       <v-fab-transition>
         <v-btn
