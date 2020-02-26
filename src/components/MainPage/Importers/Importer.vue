@@ -1,53 +1,67 @@
 <template>
-  <div v-if="decryptedImporter">
-    <div>
-      <el-checkbox v-model="showBrowser">
-        Show browser
-      </el-checkbox>
+  <v-container>
+    <div v-if="decryptedImporter">
+      <v-checkbox
+        v-model="showBrowser"
+        :label="`Show browser`"
+      />
+      <div
+        v-for="(value, loginField) in decryptedImporter.loginFields"
+        :key="loginField"
+      >
+        {{ loginField }}:
+        {{ loginField != "password" ? value : "*".repeat(value.length) }}
+      </div>
+      <v-btn
+        color="primary"
+        class="mx-1"
+        :loading="importing"
+        @click="scrape()"
+      >
+        Import
+      </v-btn>
+      <v-btn
+        color="error"
+        dark
+        class="mx-1"
+        @click="deleteDialog = true"
+      >
+        <v-icon>mdi-delete</v-icon>
+        Delete
+      </v-btn>
+      <DeleteImporterDialog
+        v-model="deleteDialog"
+        @confirm="DeleteImporter"
+      />
+      <v-progress-linear
+        v-show="importing"
+        v-model="percentage"
+        height="25"
+        reactive
+      >
+        <template v-slot="{ value }">
+          <strong>{{ value }}%</strong>
+        </template>
+      </v-progress-linear>
+      <div v-show="importing">
+        {{ step }}
+      </div>
     </div>
-    <div
-      v-for="(value, loginField) in decryptedImporter.loginFields"
-      :key="loginField"
-    >
-      {{ loginField }}:
-      {{ loginField != "password" ? value : "*".repeat(value.length) }}
-    </div>
-    <el-button
-      type="primary"
-      :loading="importing"
-      @click="scrape()"
-    >
-      Import
-    </el-button>
-    <el-button
-      type="danger"
-      icon="el-icon-delete"
-      :disabled="importing"
-      @click="promptDelete()"
-    >
-      Delete
-    </el-button>
-    <el-progress
-      v-show="importing"
-      :percentage="percentage"
-      :status="status"
-      class="progress-bar"
-    />
-    <div v-show="importing">
-      {{ step }}
-    </div>
-  </div>
+  </v-container>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
-import { MessageBox } from 'element-ui';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { remote } from 'electron';
 import { decryptProperty } from '@/modules/encryption/credentials';
 import { scrape } from '@/modules/scrapers';
+import DeleteImporterDialog from '@/components/MainPage/Importers/DeleteImporterDialog';
 
 export default {
+  components: {
+    DeleteImporterDialog,
+  },
   props: {
     importer: {
       type: Object,
@@ -62,6 +76,7 @@ export default {
       percentage: 0,
       step: '',
       status: undefined,
+      deleteDialog: false,
     };
   },
   created() {
@@ -88,7 +103,6 @@ export default {
           this.onProgress,
           this.$logger,
         );
-
         if (result.success) {
           const message = result.accounts
             .map((account) => `${account.accountNumber} with ${account.txns.length}`).join();
@@ -106,25 +120,20 @@ export default {
     },
     onProgress({ percent, message, error }) {
       if (percent === undefined) throw new Error('You must to set \'percent\' value for progress');
-
       this.percentage = Math.floor(percent * 100);
-
       if (message) {
         this.step = message;
         this.$logger.info(message);
       }
-
       if (error) {
-        this.$logger.error(error.message);
+        this.$logger.error(error);
         if (error.stack) this.$logger.verbose(error.stack);
         this.status = 'exception';
       }
-
       if (percent >= 1) {
         this.importing = false;
         const success = this.status !== 'exception' && !error;
         this.status = success ? 'success' : 'exception';
-
         const status = {
           success,
           lastMessage: this.step,
@@ -132,16 +141,8 @@ export default {
         this.updateImporterStatus({ id: this.importer.id, status });
       }
     },
-    async promptDelete() {
-      await MessageBox.confirm(
-        'This will permanently delete the importer. Continue?',
-        'Warning',
-        {
-          confirmButtonText: 'OK',
-          cancelButtonText: 'Cancel',
-          type: 'warning',
-        },
-      );
+    DeleteImporter() {
+      this.deleteDialog = false;
       this.removeImporterAction(this.decryptedImporter.id);
     },
     ...mapActions([
@@ -154,7 +155,18 @@ export default {
 </script>
 
 <style scoped>
-.progress-bar {
-  padding-top: 10px;
+.v-input--selection-controls {
+      margin-top: 0px;
+      padding-top: 0px;
+}
+.v-input__slot {
+  margin-bottom: 0px;
+}
+.v-messages {
+  flex: 1 1 auto;
+  font-size: 12px;
+  min-height: 0px;
+  min-width: 1px;
+  position: relative;
 }
 </style>

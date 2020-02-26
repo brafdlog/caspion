@@ -5,34 +5,43 @@
         Importers
       </v-toolbar-title>
     </v-toolbar>
-    <el-collapse>
-      <el-card
+    <v-list>
+      <v-list-group
         v-for="importer in importers"
         :key="importer.id"
-        :body-style="{ padding: '0px' }"
+        color="primary"
+        no-action
       >
-        <el-collapse-item :name="importer.id">
-          <div slot="title">
-            <span>{{ importer.name }}</span>
-            <el-tooltip
-              effect="dark"
-              :disabled="importer.status.lastMessage === null"
-              :content="importer.status.lastMessage"
-              placement="right"
+        <template v-slot:activator>
+          <v-list-item-content>
+            <v-list-item-title v-text="importer.name" />
+            {{ importer.active }}
+            <v-tooltip
+              v-if="importer.status.lastMessage !== null"
+              bottom
             >
-              <i
-                class="header-icon"
-                :class="iconClass(importer.status.success)"
-              />
-            </el-tooltip>
-          </div>
+              <template v-slot:activator="{ on }">
+                <v-icon
+                  color="primary"
+                  left
+                  dark
+                  v-on="on"
+                >
+                  {{ iconClass(importer.status.success) }}
+                </v-icon>
+              </template>
+              <span>{{ importer.status.lastMessage }}</span>
+            </v-tooltip>
+          </v-list-item-content>
+        </template>
+        <v-list-item-content>
           <importer
             :key="importer.id"
             :importer="importer"
           />
-        </el-collapse-item>
-      </el-card>
-    </el-collapse>
+        </v-list-item-content>
+      </v-list-group>
+    </v-list>
     <v-navigation-drawer
       v-model="drawer"
       absolute
@@ -83,7 +92,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import { scrapers } from '@/modules/scrapers';
 import AddScraper from './Importers/AddScraper';
 import Importer from './Importers/Importer';
@@ -92,7 +101,7 @@ export default {
   components: { AddScraper, Importer },
   data() {
     return {
-      active: false,
+      id: null,
       drawer: null,
     };
   },
@@ -101,14 +110,16 @@ export default {
       return scrapers;
     },
     ...mapGetters(['importers']),
+    ...mapActions(['updateImporterIsActive']),
   },
   methods: {
     iconClass(success) {
-      return {
-        'el-icon-question': success === null,
-        'el-icon-success': success,
-        'el-icon-error': success === false,
-      };
+      if (success === true) { return 'mdi-check-circle'; }
+      if (success === false) { return 'mdi-alert-circle'; }
+      return 'mdi-help-circle';
+    },
+    setActive(importer, value) {
+      this.updateImporterIsActive({ id: importer.id, isActive: !value });
     },
   },
 };
@@ -144,5 +155,8 @@ i.header-icon.el-icon-error {
 
 i.header-icon.el-icon-success {
   color: green;
+}
+.v-icon.v-icon {
+  display: inline !important;
 }
 </style>
