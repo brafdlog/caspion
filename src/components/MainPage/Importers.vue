@@ -15,7 +15,6 @@
         <template v-slot:activator>
           <v-list-item-content>
             <v-list-item-title v-text="importer.name" />
-            {{ importer.active }}
             <v-tooltip
               v-if="importer.status.lastMessage !== null"
               bottom
