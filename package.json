@@ -23,6 +23,7 @@
   ],
   "dependencies": {
     "@getstation/electron-google-oauth2": "2.1.0",
+    "@sentry/electron": "^1.2.1",
     "core-js": "^3.4.4",
     "download-chromium": "^2.2.0",
     "electron-log": "^4.0.7",
