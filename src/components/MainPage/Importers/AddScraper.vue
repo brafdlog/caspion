@@ -1,16 +1,12 @@
 <template>
-  <v-list class="pa-0 my-0">
-    <v-list-group
-      v-model="scraper.active"
+  <v-expansion-panel class="ma-1">
+    <v-expansion-panel-header
+      expand-icon="mdi-menu-down"
+      :data-test="scraper.key"
     >
-      <template v-slot:activator>
-        <v-list-item-title
-          :data-test="scraper.key"
-          :name="scraper.key"
-        >
-          {{ scraper.name }}
-        </v-list-item-title>
-      </template>
+      {{ scraper.name }}
+    </v-expansion-panel-header>
+    <v-expansion-panel-content>
       <v-form
         ref="addScraperForm"
         :model="importerToAdd"
@@ -46,8 +42,8 @@
           </v-row>
         </v-container>
       </v-form>
-    </v-list-group>
-  </v-list>
+    </v-expansion-panel-content>
+  </v-expansion-panel>
 </template>
 
 <script>

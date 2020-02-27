@@ -5,42 +5,26 @@
         Importers
       </v-toolbar-title>
     </v-toolbar>
-    <v-list>
-      <v-list-group
+    <v-expansion-panels>
+      <v-expansion-panel
         v-for="importer in importers"
         :key="importer.id"
-        color="primary"
-        no-action
+        class="ma-1"
       >
-        <template v-slot:activator>
-          <v-list-item-content>
-            <v-list-item-title v-text="importer.name" />
-            <v-tooltip
-              v-if="importer.status.lastMessage !== null"
-              bottom
-            >
-              <template v-slot:activator="{ on }">
-                <v-icon
-                  color="primary"
-                  left
-                  dark
-                  v-on="on"
-                >
-                  {{ iconClass(importer.status.success) }}
-                </v-icon>
-              </template>
-              <span>{{ importer.status.lastMessage }}</span>
-            </v-tooltip>
-          </v-list-item-content>
-        </template>
-        <v-list-item-content>
+        <v-expansion-panel-header disable-icon-rotate>
+          {{ importer.name }}
+          <template v-slot:actions>
+            <v-icon>{{ iconClass(importer.status.success) }}</v-icon>
+          </template>
+        </v-expansion-panel-header>
+        <v-expansion-panel-content>
           <importer
             :key="importer.id"
             :importer="importer"
           />
-        </v-list-item-content>
-      </v-list-group>
-    </v-list>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
     <v-navigation-drawer
       v-model="drawer"
       absolute
@@ -48,28 +32,15 @@
       data-test="ToggleAddImporter"
     >
       <h3>Add new Importer</h3>
-      <add-scraper
-        v-for="scraper in scrapers"
-        :key="scraper.key"
-        :scraper="scraper"
-        class="add-scraper"
-        @scraperAdded="drawer = !drawer"
-      />
-      <v-fab-transition>
-        <v-btn
-          color="error"
-          fab
-          dark
-          small
-          absolute
-          bottom
-          left
-          style="margin-bottom: 39px;"
-          @click.stop="drawer = !drawer"
-        >
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-      </v-fab-transition>
+      <v-expansion-panels>
+        <add-scraper
+          v-for="scraper in scrapers"
+          :key="scraper.key"
+          :scraper="scraper"
+          class="add-scraper"
+          @scraperAdded="drawer = !drawer"
+        />
+      </v-expansion-panels>
     </v-navigation-drawer>
     <v-fab-transition>
       <v-btn
@@ -116,9 +87,6 @@ export default {
       if (success === true) { return 'mdi-check-circle'; }
       if (success === false) { return 'mdi-alert-circle'; }
       return 'mdi-help-circle';
-    },
-    setActive(importer, value) {
-      this.updateImporterIsActive({ id: importer.id, isActive: !value });
     },
   },
 };

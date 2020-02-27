@@ -2,7 +2,7 @@ import Element from './element';
 
 const CollapseAddImporter = 'aside[data-test="ToggleAddImporter"]';
 const CollapseAddImporterButton = 'button[data-test="CollapseAddImporter"]';
-const AddScrapers = `${CollapseAddImporter} div[data-test]`;
+const AddScrapers = `${CollapseAddImporter} div:nth-of-type(1) [data-test]`;
 const DrawerLeftToggle = 'button[data-test="drawerLeftToggle"]';
 
 const wait = async (ms) => new Promise((resolve) => setTimeout(resolve, ms));
