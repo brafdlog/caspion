@@ -1,7 +1,7 @@
 import { encryptObject, decryptObject } from '@/modules/encryption/credentials';
 import { saveIntoAccount, getFromAccount } from '@/modules/encryption/keytar';
 import ElectronGoogleOAuth2 from '@getstation/electron-google-oauth2';
-import clientDetails from './client_secret.json';
+import clientDetails from './google_client_secret.config';
 
 
 const keytarAccount = 'googleOauth2Token';

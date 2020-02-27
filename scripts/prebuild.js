@@ -6,7 +6,7 @@ function replaceValueByEnvVar(key) {
   if (process.env[key]) {
     console.log(`Replacing ${key}`);
     const options = {
-      files: '**/client_secret.json',
+      files: 'src/**/*.config.js',
       from: new RegExp(key, 'g'),
       to: process.env[key],
     };
@@ -18,13 +18,14 @@ function replaceValueByEnvVar(key) {
       console.error('Error occurred:', error);
     }
   } else {
-    console.log(`No key ${key} inject`);
+    console.log(`No key ${key} to inject`);
   }
 }
 
 const envsToReplace = [
   'GOOGLE_CLIENT_ID',
   'GOOGLE_CLIENT_SECRET',
+  'SENTRY_DSN',
 ];
 
 envsToReplace.forEach((env) => replaceValueByEnvVar(env));
