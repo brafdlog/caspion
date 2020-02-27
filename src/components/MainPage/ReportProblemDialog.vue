@@ -92,8 +92,8 @@ ${log}
 \`\`\`` : '';
 
   return 'https://github.com/baruchiro/israeli-bank-scrapers-desktop/issues/new?'
-          + `title=${escape(title)}`
-          + `&body=${escape(formattedDetailes)}${escape(formattedLog)}`;
+          + `title=${encodeURIComponent(title)}`
+          + `&body=${encodeURIComponent(formattedDetailes)}${encodeURIComponent(formattedLog)}`;
 };
 
 const defaultFormData = {
