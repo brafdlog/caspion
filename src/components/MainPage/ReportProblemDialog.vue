@@ -74,7 +74,6 @@
         <v-btn
           color="blue darken-1"
           text
-          :disabled="!valid"
           @click="openGithub"
         >
           Open Github Issue
@@ -82,7 +81,6 @@
         <v-btn
           color="blue darken-1"
           text
-          :disabled="!valid"
           @click="sendReport"
         >
           Send Report
@@ -134,6 +132,7 @@ export default {
     return {
       valid: false,
       sheet: false,
+      validateEmail: false,
       formData: { ...defaultFormData },
       raw: null,
     };
@@ -145,28 +144,31 @@ export default {
     },
   },
   watch: {
-    formData() {
-      this.$nextTick(this.$refs.form.validate);
-    },
     dialog() {
       this.$nextTick(this.resetForm);
     },
   },
   methods: {
     titleRule: (v) => !!v || 'Title is required',
-    emailExistRule: (v) => !!v || 'Email is required',
-    emailValidRule: (v) => /.+@.+\..+/.test(v) || 'Email must be valid',
+    emailExistRule(v) { return !this.validateEmail || !!v || 'Email is required'; },
+    emailValidRule(v) { return !this.validateEmail || /.+@.+\..+/.test(v) || 'Email must be valid'; },
     detailesRule() {
       return !!this.formData.detailes || this.formData.attachLogs || 'You must describe your report or attach the logs';
     },
     openGithub() {
+      this.validateEmail = false;
       if (this.$refs.form.validate()) {
-        const url = createGithubIssueLink(this.formData.title, this.formData.detailes, this.formData.attachLogs ? this.raw : '');
+        const url = createGithubIssueLink(
+          this.formData.title,
+          this.formData.detailes,
+          this.formData.attachLogs ? this.raw : '',
+        );
         this.$logger.info(`Open bug report url with title: ${this.formData.title}`);
         shell.openExternal(url);
       }
     },
     sendReport() {
+      this.validateEmail = true;
       if (this.$refs.form.validate()) {
         const eventId = ReportProblem(
           this.formData.title,
@@ -182,11 +184,11 @@ export default {
     resetForm() {
       this.raw = this.$logger.getLastLines(10);
       this.formData = { ...defaultFormData };
+      this.validateEmail = false;
     },
   },
 };
 </script>
 
 <style>
-
 </style>
