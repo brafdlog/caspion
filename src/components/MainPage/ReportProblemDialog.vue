@@ -25,7 +25,7 @@
                 <v-text-field
                   v-model="formData.email"
                   label="Email"
-                  hint="We need your mail to contact you"
+                  hint="We need your mail to contact you if you send a report"
                   persistent-hint
                   :rules="[emailExistRule, emailValidRule]"
                 />
