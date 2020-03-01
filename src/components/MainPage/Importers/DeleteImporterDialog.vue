@@ -9,9 +9,14 @@
         <v-card-title
           class="headline"
         >
-          This will permanently delete the importer. Continue?
+          Warning
+          <v-icon color="info">
+            mdi-alert-circle
+          </v-icon>
         </v-card-title>
-        <v-card-text />
+        <v-card-text>
+          This will permanently delete the importer. Continue?
+        </v-card-text>
         <v-card-actions>
           <v-spacer />
           <v-btn
