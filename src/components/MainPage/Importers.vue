@@ -14,7 +14,21 @@
         <v-expansion-panel-header disable-icon-rotate>
           {{ importer.name }}
           <template v-slot:actions>
-            <v-icon>{{ iconClass(importer.status.success) }}</v-icon>
+            <v-tooltip
+              :disabled="importer.status.lastMessage === null"
+              bottom
+            >
+              <template v-slot:activator="{ on }">
+                <v-icon
+                  color="primary"
+                  dark
+                  v-on="on"
+                >
+                  {{ iconClass(importer.status.success) }}
+                </v-icon>
+              </template>
+              <span>{{ importer.status.lastMessage }}</span>
+            </v-tooltip>
           </template>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
