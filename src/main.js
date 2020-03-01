@@ -2,14 +2,14 @@
 import electron from 'electron';
 import Vue from 'vue';
 import App from './App';
-import { initializeReporterRenderer } from './modules/reporting';
+import { initializeReporter } from './modules/reporting';
 import './plugins/element';
 import LoggerPlugin from './plugins/logger';
 import vuetify from './plugins/vuetify';
 import router from './router';
 import store from './store';
 
-initializeReporterRenderer();
+initializeReporter();
 
 
 const logger = electron.remote.getGlobal('logger');
