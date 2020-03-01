@@ -31,7 +31,11 @@
       temporary
       data-test="ToggleAddImporter"
     >
-      <h3>Add new Importer</h3>
+      <v-toolbar>
+        <v-toolbar-title>
+          Add new Importer
+        </v-toolbar-title>
+      </v-toolbar>
       <v-expansion-panels>
         <add-scraper
           v-for="scraper in scrapers"

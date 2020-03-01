@@ -44,7 +44,7 @@ export default {
         return this.value;
       },
       set(value) {
-        this.value = value;
+        this.$emit('input', value);
       },
     },
   },
