@@ -1,6 +1,8 @@
 <template>
   <div>
-    <v-container v-if="decryptedImporter">
+    <v-card
+      v-if="decryptedImporter"
+    >
       <v-checkbox
         v-model="showBrowser"
         :label="`Show browser`"
@@ -46,7 +48,7 @@
       <div v-show="importing">
         {{ step }}
       </div>
-    </v-container>
+    </v-card>
     <v-skeleton-loader
       v-else
       type="paragraph"
