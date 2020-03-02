@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 import { scrapers } from '@/modules/scrapers';
 import AddScraper from './Importers/AddScraper';
 import Importer from './Importers/Importer';
@@ -98,7 +98,6 @@ export default {
       return scrapers;
     },
     ...mapGetters(['importers']),
-    ...mapActions(['updateImporterIsActive']),
   },
   methods: {
     iconClass(success) {
