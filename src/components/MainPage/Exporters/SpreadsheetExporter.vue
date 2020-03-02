@@ -176,6 +176,7 @@ export default {
       this.$logger.info(`Created new spreadsheet: '${JSON.stringify(spreadsheetStructured)}'`);
       this.properties.spreadsheets.push(spreadsheetStructured);
       this.properties.spreadsheetId = spreadsheetStructured.id;
+      this.createNewSheet = false;
     },
     resetSheet() {
       this.properties.spreadsheetId = '';
