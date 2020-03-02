@@ -1,3 +1,5 @@
+const globals = require('./globals')
+
 module.exports = {
   root: true,
 
@@ -15,6 +17,10 @@ module.exports = {
 
   globals: {
     __static: true,
+    ...globals.reduce((prev, curr) => {
+      prev[curr] = true;
+      return prev;
+    }, {}),
   },
 
   plugins: [

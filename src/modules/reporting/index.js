@@ -1,28 +1,26 @@
 import * as Sentry from '@sentry/electron';
-import config from './sentry.config';
 
 // https://github.com/getsentry/sentry-electron/issues/142
 const { init } = (process.type === 'browser'
   ? require('@sentry/electron/dist/main')
   : require('@sentry/electron/dist/renderer'));
 
+
 const reporterConfiguration = {
-  ...config,
+  dsn: SENTRY_DSN,
   defaultIntegrations: false,
+  environment: process.env.NODE_ENV,
+  enableJavaScript: false,
+  enableNative: false,
+  enableUnresponsive: false,
 };
 
 export function initializeReporter() {
-  if (process.env.NODE_ENV === 'production') init(reporterConfiguration);
-}
-
-function isSentryInitialized() {
-  return !!Sentry.getCurrentHub().getClient();
+  init(reporterConfiguration);
 }
 
 export function ReportProblem(title, body, logs, email, extra) {
-  const suffix = isSentryInitialized() ? '' : `-${process.env.NODE_ENV}`;
-
-  const eventId = Sentry.captureEvent({
+  return Sentry.captureEvent({
     message: title,
     logger: logs,
     user: {
@@ -33,6 +31,4 @@ export function ReportProblem(title, body, logs, email, extra) {
       ...extra,
     },
   });
-
-  return eventId + suffix;
 }

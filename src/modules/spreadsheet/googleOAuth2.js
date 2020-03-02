@@ -1,7 +1,6 @@
 import { encryptObject, decryptObject } from '@/modules/encryption/credentials';
 import { saveIntoAccount, getFromAccount } from '@/modules/encryption/keytar';
 import ElectronGoogleOAuth2 from '@getstation/electron-google-oauth2';
-import clientDetails from './google_client_secret.config';
 
 
 const keytarAccount = 'googleOauth2Token';
@@ -23,8 +22,8 @@ async function loadToken() {
 
 export async function CreateClient() {
   const myApiOauth = new ElectronGoogleOAuth2(
-    clientDetails.client_id,
-    clientDetails.client_secret,
+    GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET,
     [
       'https://www.googleapis.com/auth/drive.metadata.readonly',
       'https://www.googleapis.com/auth/spreadsheets',
