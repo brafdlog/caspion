@@ -131,7 +131,7 @@ export default {
         this.$logger.info(message);
       }
       if (error) {
-        this.$logger.error(error);
+        this.$logger.error(error.message);
         if (error.stack) this.$logger.verbose(error.stack);
         this.status = 'exception';
       }
