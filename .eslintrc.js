@@ -16,9 +16,9 @@ module.exports = {
   extends: ['airbnb-base', 'plugin:vue/recommended'],
 
   globals: {
-    __static: true,
+    __static: 'writable',
     ...globals.reduce((prev, curr) => {
-      prev[curr] = true;
+      prev[curr] = 'readonly';
       return prev;
     }, {}),
   },
