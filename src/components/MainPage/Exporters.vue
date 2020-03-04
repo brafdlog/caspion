@@ -15,16 +15,16 @@
           {{ comp.title }}
           <template v-slot:actions>
             <v-tooltip
-              :disabled="statuses[comp.name].lastMessage === null"
+              v-if="statuses[comp.name].lastMessage !== null"
               left
             >
               <template v-slot:activator="{ on }">
                 <v-icon
-                  :color="statuses[comp.name].success == true ? 'green' : 'error'"
+                  :color="iconClass(statuses[comp.name].success).color"
                   dark
                   v-on="on"
                 >
-                  {{ iconClass(statuses[comp.name].success) }}
+                  {{ iconClass(statuses[comp.name].success).icon }}
                 </v-icon>
               </template>
               <span>{{ statuses[comp.name].lastMessage }}</span>
@@ -71,9 +71,22 @@ export default {
   },
   methods: {
     iconClass(success) {
-      if (success === true) { return 'mdi-check-circle'; }
-      if (success === false) { return 'mdi-alert-circle'; }
-      return 'mdi-help-circle';
+      if (success === true) {
+        return {
+          icon: 'mdi-check-circle',
+          color: 'green',
+        };
+      }
+      if (success === false) {
+        return {
+          icon: 'mdi-alert-circle',
+          color: 'error',
+        };
+      }
+      return {
+        icon: 'mdi-help-circle',
+        color: 'info',
+      };
     },
   },
 };
