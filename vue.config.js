@@ -1,6 +1,21 @@
+const globals = require('./globals');
+
+const defineGlobals = (config) => {
+  config.plugin('define').tap((args) => {
+    const defined = globals.reduce((prev, curr) => {
+      prev[curr] = JSON.stringify(process.env[curr]);
+      return prev;
+    }, {});
+    args[0] = defined;
+    return args;
+  });
+};
+
 module.exports = {
   pluginOptions: {
     electronBuilder: {
+      chainWebpackMainProcess: defineGlobals,
+      chainWebpackRendererProcess: defineGlobals,
       // List native deps here if they don't work
       externals: [
         'keytar',

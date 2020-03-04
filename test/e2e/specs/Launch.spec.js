@@ -6,7 +6,7 @@ import Interactions from '../utils/interactions';
 
 const screenshotsDir = './screenshots';
 
-jest.setTimeout(200000);
+jest.setTimeout(1000000);
 
 // Remove when https://github.com/nklayman/vue-cli-plugin-electron-builder/issues/625 closed
 const skip = process.env.GITHUB_ACTIONS && process.platform === 'win32';

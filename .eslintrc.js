@@ -1,3 +1,5 @@
+const globals = require('./globals')
+
 module.exports = {
   root: true,
 
@@ -14,7 +16,11 @@ module.exports = {
   extends: ['airbnb-base', 'plugin:vue/recommended'],
 
   globals: {
-    __static: true,
+    __static: 'writable',
+    ...globals.reduce((prev, curr) => {
+      prev[curr] = 'readonly';
+      return prev;
+    }, {}),
   },
 
   plugins: [
