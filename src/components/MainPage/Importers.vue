@@ -110,37 +110,5 @@ export default {
 </script>
 
 <style scoped>
-.items {
-  margin-top: 8px;
-}
 
-.item {
-  display: flex;
-  margin-bottom: 6px;
-}
-
-.item .name {
-  color: #6a6a6a;
-  margin-right: 6px;
-}
-
-.item .value {
-  color: #35495e;
-  font-weight: bold;
-}
-
-.add-scraper {
-  margin: 10px;
-}
-
-i.header-icon.el-icon-error {
-  color: red;
-}
-
-i.header-icon.el-icon-success {
-  color: green;
-}
-.v-icon.v-icon {
-  display: inline !important;
-}
 </style>
