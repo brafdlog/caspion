@@ -1,3 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CallToAction renders properly 1`] = `"<div><img src=\\"~assets/img/wave-top.svg\\" alt=\\"\\"> <call-to-action-content-stub></call-to-action-content-stub></div>"`;
+exports[`CallToAction renders properly 1`] = `
+"<div><img src=\\"~assets/img/wave-top.svg\\" alt=\\"\\">
+  <call-to-action-content-stub></call-to-action-content-stub>
+</div>"
+`;
