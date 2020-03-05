@@ -90,9 +90,5 @@ export default {
 </script>
 
 <style scoped>
-.theme--light.v-btn.v-btn--disabled:not(.v-btn--flat):not(.v-btn--text):not(.v-btn-outlined) {
-  color: #fff !important;
-  background-color: #a0cfff !important;
-  border-color: #a0cfff !important;
-}
+
 </style>
