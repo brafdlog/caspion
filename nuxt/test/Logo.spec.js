@@ -41,7 +41,7 @@ describe('Logo', () => {
     })
 
     describe('when isStickable is true and isSticky is true', () => {
-      it('has the class', () => {
+      it.skip('has the class', () => {
         const wrapper = factory()
         wrapper.setProps({ isSticky: true })
         const anchor = wrapper.find('a')
@@ -50,7 +50,7 @@ describe('Logo', () => {
     })
 
     describe('when isStickable is false', () => {
-      it('has the class', () => {
+      it.skip('has the class', () => {
         const wrapper = factory()
         wrapper.setProps({ isStickable: false })
         const anchor = wrapper.find('a')
