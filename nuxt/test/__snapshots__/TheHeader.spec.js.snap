@@ -15,7 +15,9 @@ exports[`TheHeader renders properly 1`] = `
         <li class=\\"mr-3\\"><a href=\\"#\\" class=\\"inline-block py-2 px-4 text-black font-bold no-underline\\">Active</a></li>
         <li class=\\"mr-3\\"><a href=\\"#\\" class=\\"inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4\\">link</a></li>
         <li class=\\"mr-3\\"><a href=\\"#\\" class=\\"inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4\\">link</a></li>
-      </ul> <button class=\\"mx-auto lg:mx-0 hover:underline font-bold rounded-full mt-4 lg:mt-0 py-4 px-8 shadow opacity-75 bg-white text-gray-800\\">Action</button>
+      </ul> <button class=\\"mx-auto lg:mx-0 hover:underline font-bold rounded-full mt-4 lg:mt-0 py-4 px-8 shadow opacity-75 bg-white text-gray-800\\">
+        Action
+      </button>
     </div>
   </div>
   <hr class=\\"border-b border-gray-100 opacity-25 my-0 py-0\\">
