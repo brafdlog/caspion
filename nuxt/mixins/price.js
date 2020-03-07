@@ -2,24 +2,24 @@ export default {
   props: {
     name: {
       type: String,
-      required: true
+      required: true,
     },
     price: {
       type: String,
-      required: true
+      required: true,
     },
     limited: {
       type: Boolean,
-      default: true
+      default: true,
     },
     list: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
     pricePer() {
-      return this.limited ? 'for one user' : '/ per user'
-    }
-  }
-}
+      return this.limited ? 'for one user' : '/ per user';
+    },
+  },
+};

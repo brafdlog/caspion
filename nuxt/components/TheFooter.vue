@@ -7,7 +7,9 @@
         </div>
 
         <div class="flex-1">
-          <p class="uppercase text-gray-500 md:mb-6">Links</p>
+          <p class="uppercase text-gray-500 md:mb-6">
+            Links
+          </p>
           <ul class="list-reset mb-6">
             <li class="mt-2 inline-block mr-2 md:block md:mr-0">
               <a
@@ -30,7 +32,9 @@
           </ul>
         </div>
         <div class="flex-1">
-          <p class="uppercase text-gray-500 md:mb-6">Legal</p>
+          <p class="uppercase text-gray-500 md:mb-6">
+            Legal
+          </p>
           <ul class="list-reset mb-6">
             <li class="mt-2 inline-block mr-2 md:block md:mr-0">
               <a
@@ -47,7 +51,9 @@
           </ul>
         </div>
         <div class="flex-1">
-          <p class="uppercase text-gray-500 md:mb-6">Social</p>
+          <p class="uppercase text-gray-500 md:mb-6">
+            Social
+          </p>
           <ul class="list-reset mb-6">
             <li class="mt-2 inline-block mr-2 md:block md:mr-0">
               <a
@@ -70,7 +76,9 @@
           </ul>
         </div>
         <div class="flex-1">
-          <p class="uppercase text-gray-500 md:mb-6">Company</p>
+          <p class="uppercase text-gray-500 md:mb-6">
+            Company
+          </p>
           <ul class="list-reset mb-6">
             <li class="mt-2 inline-block mr-2 md:block md:mr-0">
               <a
@@ -102,12 +110,12 @@
 </template>
 
 <script>
-import Logo from '@/components/Logo'
+import Logo from '@/components/Logo';
 
 export default {
   name: 'TheFooter',
   components: {
-    logo: Logo
-  }
-}
+    logo: Logo,
+  },
+};
 </script>

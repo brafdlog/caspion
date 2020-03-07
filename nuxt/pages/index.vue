@@ -9,11 +9,11 @@
 </template>
 
 <script>
-import Hero from '@/components/Hero'
-import Features from '@/components/Features'
-import Teasers from '@/components/Teasers'
-import Prices from '@/components/Prices'
-import CallToAction from '@/components/CallToAction'
+import Hero from '@/components/Hero';
+import Features from '@/components/Features';
+import Teasers from '@/components/Teasers';
+import Prices from '@/components/Prices';
+import CallToAction from '@/components/CallToAction';
 
 export default {
   name: 'LandingPage',
@@ -22,7 +22,7 @@ export default {
     features: Features,
     teasers: Teasers,
     prices: Prices,
-    'call-to-action': CallToAction
-  }
-}
+    'call-to-action': CallToAction,
+  },
+};
 </script>

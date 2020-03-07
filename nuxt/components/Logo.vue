@@ -32,23 +32,23 @@ export default {
   props: {
     isStickable: {
       type: Boolean,
-      default: false
+      default: false,
     },
     isSticky: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     classList() {
-      let classList = ''
+      let classList = '';
       if (this.isStickable) {
-        classList = this.isSticky ? 'text-gray-800' : 'text-white'
+        classList = this.isSticky ? 'text-gray-800' : 'text-white';
       } else {
-        classList = 'text-orange-600'
+        classList = 'text-orange-600';
       }
-      return classList
-    }
-  }
-}
+      return classList;
+    },
+  },
+};
 </script>

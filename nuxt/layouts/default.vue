@@ -7,15 +7,15 @@
 </template>
 
 <script>
-import TheHeader from '@/components/TheHeader.vue'
-import TheFooter from '@/components/TheFooter.vue'
+import TheHeader from '@/components/TheHeader';
+import TheFooter from '@/components/TheFooter';
 
 export default {
   components: {
     'the-header': TheHeader,
-    'the-footer': TheFooter
-  }
-}
+    'the-footer': TheFooter,
+  },
+};
 </script>
 
 <style>
