@@ -15,8 +15,8 @@
     "generate": "nuxt generate",
     "test": "jest",
     "test:dev": "jest --watch",
-    "lint": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter components layouts mixins pages store",
-    "lint:fix": "eslint --ext .js,.vue --fix -f ./node_modules/eslint-friendly-formatter components layouts mixins pages store"
+    "lint": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter .",
+    "lint:fix": "eslint --ext .js,.vue --fix -f ./node_modules/eslint-friendly-formatter ."
   },
   "dependencies": {
     "@nuxtjs/svg": "^0.1.6",

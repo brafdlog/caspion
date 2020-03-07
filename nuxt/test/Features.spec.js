@@ -1,18 +1,16 @@
-import { shallowMount } from '@vue/test-utils'
-import Features from '@/components/Features'
+import { shallowMount } from '@vue/test-utils';
+import Features from '@/components/Features';
 
-const factory = () => {
-  return shallowMount(Features)
-}
+const factory = () => shallowMount(Features);
 
 describe('Features', () => {
   it('is a Vue instance', () => {
-    const wrapper = factory()
-    expect(wrapper.isVueInstance()).toBeTruthy()
-  })
+    const wrapper = factory();
+    expect(wrapper.isVueInstance()).toBeTruthy();
+  });
 
   it('renders properly', () => {
-    const wrapper = factory()
-    expect(wrapper.html()).toMatchSnapshot()
-  })
-})
+    const wrapper = factory();
+    expect(wrapper.html()).toMatchSnapshot();
+  });
+});

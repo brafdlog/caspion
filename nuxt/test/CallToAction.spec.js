@@ -1,18 +1,16 @@
-import { shallowMount } from '@vue/test-utils'
-import CallToAction from '@/components/CallToAction'
+import { shallowMount } from '@vue/test-utils';
+import CallToAction from '@/components/CallToAction';
 
-const factory = () => {
-  return shallowMount(CallToAction)
-}
+const factory = () => shallowMount(CallToAction);
 
 describe('CallToAction', () => {
   it('is a Vue instance', () => {
-    const wrapper = factory()
-    expect(wrapper.isVueInstance()).toBeTruthy()
-  })
+    const wrapper = factory();
+    expect(wrapper.isVueInstance()).toBeTruthy();
+  });
 
   it('renders properly', () => {
-    const wrapper = factory()
-    expect(wrapper.html()).toMatchSnapshot()
-  })
-})
+    const wrapper = factory();
+    expect(wrapper.html()).toMatchSnapshot();
+  });
+});
