@@ -27,7 +27,7 @@
     "download-chromium": "^2.2.0",
     "electron-log": "^4.0.7",
     "element-ui": "^2.13.0",
-    "googleapis": "^47.0.0",
+    "googleapis": "^48.0.0",
     "israeli-bank-scrapers-core": "^0.8.1",
     "keytar": "^5.2.0",
     "moment": "^2.24.0",
