@@ -74,7 +74,7 @@
     "jest-config": "^25.1.0",
     "jest-environment-jsdom": "^25.1.0",
     "pre-commit": "^1.2.2",
-    "prettier": "^1.19.1",
+    "prettier": "^2.0.2",
     "replace-in-file": "5.0.2",
     "sass": "^1.26.3",
     "sass-loader": "^8.0.0",
