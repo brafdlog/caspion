@@ -1,6 +1,8 @@
 # israeli-bank-scrapers-desktop
 
-> Secure desktop app for retriving your bank transactions. Works for all israeli banks and credit cards.
+> ### Due to COVID-19 we are busy with other things, but if this is the opportunity for you to be busy with this project, we are here to help.
+
+Secure desktop app for retriving your bank transactions. Works for all israeli banks and credit cards.
 
 Based on [israeli-bank-scrapers](https://github.com/eshaham/israeli-bank-scrapers) project.
 
