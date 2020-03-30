@@ -1,12 +1,5 @@
 {
-  "name": "tailwind_landing_nuxt",
   "version": "1.0.0",
-  "description": "Tailwind Landing Page (Nuxt.js Version)",
-  "author": {
-    "name": "Vanessa Böhner",
-    "email": "boehner.vanessa@gmail.com",
-    "url": "https://vannsl.io/"
-  },
   "private": true,
   "scripts": {
     "dev": "nuxt",

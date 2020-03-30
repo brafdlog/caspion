@@ -51,6 +51,15 @@ export default {
      ** You can extend webpack config here
      */
     // eslint-disable-next-line no-unused-vars
-    extend(config, ctx) {},
+    extend(config, ctx) {
+      config.module.rules.push({
+        test: /\.icon?$/,
+        loader: 'url-loader',
+        query: {
+          limit: 1000, // 1kB
+          name: 'img/[name].[hash:7].[ext]',
+        },
+      });
+    },
   },
 };

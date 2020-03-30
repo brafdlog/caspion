@@ -3,24 +3,25 @@
     <div class="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
       <!--Left Col-->
       <div
-        class="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left"
+        class="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-right"
       >
         <p class="uppercase tracking-loose w-full">
-          What business are you?
+          קשה לך לעקוב אחרי ההוצאות?
         </p>
         <h1 class="my-4 text-5xl font-bold leading-tight">
-          Main Hero Message to sell yourself!
+          עו"שלי מרכז למקום אחד את כל פירוטי ההוצאות שלך
         </h1>
         <p
           class="leading-normal text-2xl mb-8"
         >
-          Sub-hero message, not too long and not too short. Make it just right!
+          בצורה מאובטחת, ללא צד שלישי ובפיקוח הקהילה
         </p>
 
         <button
           class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg"
+          @click.native="download"
         >
-          Subscribe
+          התקן עכשיו
         </button>
       </div>
       <!--Right Col-->
@@ -38,5 +39,22 @@
 <script>
 export default {
   name: 'HeroContent',
+  methods: {
+    download() {
+      // This script sets OSName variable as follows:
+      // "Windows"    for all versions of Windows
+      // "MacOS"      for all versions of Macintosh OS
+      // "Linux"      for all versions of Linux
+      // "UNIX"       for all other UNIX flavors
+      // "Unknown OS" indicates failure to detect the OS
+
+      let OSName = 'Unknown OS';
+      if (navigator.appVersion.indexOf('Win') !== -1) OSName = 'Windows';
+      if (navigator.appVersion.indexOf('Mac') !== -1) OSName = 'MacOS';
+      if (navigator.appVersion.indexOf('X11') !== -1) OSName = 'UNIX';
+      if (navigator.appVersion.indexOf('Linux') !== -1) OSName = 'Linux';
+      window.open(`https://www.google.com?q=${OSName}`, '_blank');
+    },
+  },
 };
 </script>
