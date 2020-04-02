@@ -4,9 +4,16 @@ This project automatically fetches financial transactions from Israeli banks and
 
 Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israeli-bank-scrapers) npm package.
 
-This is a work in progress.
+**This is a work in progress**
 
-TODO:
+### What is currently supported:
+- Defining multiple banks/credit cards to track
+- One click to fetch all the data from the defined accounts and send them to google spreadsheet
+- A configuration for automatically classifying transactions to categories according to predefined patterns
+- A very basic UI for configuration
+- Most of the configuration is currently in an encrypted JSON file and options that are not avaiable in the ui need to be change manually in the JSON.
+
+### TODO:
 
 - [x] Extract configuration logic to a config file.
 - [ ] Update README with full instructions on setting up project.
@@ -55,6 +62,6 @@ Then,
 $ yarn package-all
 ```
 
-#### disclaimer
+#### Disclaimer
 
 Providing your financial account credentials to software is not risk free. We will do our best to protect your credentials but take no responsibility for any possible damages. If you want to use this we suggest you ask your bank for credentials for a user that has only read access to the bank account and use those credentials.
