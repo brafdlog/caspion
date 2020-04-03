@@ -1,9 +1,8 @@
-const CELL_PHONE = 'טלפון נייד';
-const INTERNET = 'אינטרנט';
-const ELECTRICITY = 'חשמל';
+const INTERNET = 'Internet';
+const ELECTRICITY = 'Electric';
 
 function getCategoryNameByTransactionDescription(transactionDescription) {
-  if (containsStr('פלאפון')) return CELL_PHONE;
+  if (containsStr('אינטרנט')) return INTERNET;
 
   switch (transactionDescription) {
     case 'בזק בינלאומי בע"מ':
