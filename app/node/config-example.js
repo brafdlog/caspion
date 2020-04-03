@@ -1,3 +1,4 @@
+// This file is used as the initial config until the user saves the config for the first time to the file system
 module.exports = {
   scraping: {
     numDaysBack: 4,

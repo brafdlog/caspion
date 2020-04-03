@@ -14,19 +14,15 @@ const CONFIG_FILE_NAME = 'config.json';
 const CONFIG_FILE_PATH = path.join(appDataFolderPath, CONFIG_FILE_NAME);
 
 async function getConfig() {
-  try {
-    const configFromFile = await readFile(CONFIG_FILE_PATH, {
-      encoding: 'utf8'
-    });
-    const parsedConfig = JSON.parse(configFromFile);
-    const decryptedConfig = decryptConfigIfNeeded(parsedConfig);
-    return decryptedConfig;
-  } catch (e) {
-    console.debug('Failed reading config file', e);
+  if (!fs.existsSync(CONFIG_FILE_PATH)) {
+    return configExample;
   }
-  return {
-    ...configExample
-  };
+  const configFromFile = await readFile(CONFIG_FILE_PATH, {
+    encoding: 'utf8'
+  });
+  const parsedConfig = JSON.parse(configFromFile);
+  const decryptedConfig = decryptConfigIfNeeded(parsedConfig);
+  return decryptedConfig;
 }
 
 async function updateConfig(configToUpdate) {
