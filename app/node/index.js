@@ -128,5 +128,6 @@ function transactionsDateComperator(t1, t2) {
 
 module.exports = {
   scrapeAndUpdateOutputVendors,
+  getYnabAccountDetails: ynab.getYnabAccountDetails,
   configManager
 };

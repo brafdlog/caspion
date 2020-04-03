@@ -1,5 +1,7 @@
+const _ = require('lodash');
 const ynab = require('ynab/dist/index');
 const moment = require('moment/moment');
+const configManager = require('../../configManager');
 const configExample = require('../../config-example');
 
 const INITIAL_YNAB_ACCESS_TOKEN = configExample.outputVendors.ynab.accessToken;
@@ -12,8 +14,17 @@ const transactionsFromYnab = new Map();
 
 let ynabConfig;
 let ynabAPI;
+let ynabAccountDetails;
 
-function init(config) {
+async function init(config) {
+  if (ynabConfig && ynabAPI) {
+    console.log('Ynab already initialized, skipping');
+    return;
+  }
+
+  if (!config) {
+    config = await configManager.getConfig();
+  }
   ynabConfig = config.outputVendors.ynab;
   verifyYnabAccessTokenWasDefined();
   ynabAPI = new ynab.API(ynabConfig.accessToken);
@@ -150,10 +161,48 @@ function verifyYnabAccessTokenWasDefined() {
   }
 }
 
+async function getYnabAccountDetails() {
+  if (!ynabAccountDetails) {
+    await init();
+    const budgets = await getBudgetsAndAccountsData();
+    const categoryNames = await getYnabCategories();
+    ynabAccountDetails = {
+      budgets,
+      categories: categoryNames
+    };
+  }
+  return ynabAccountDetails;
+}
+
+async function getBudgetsAndAccountsData() {
+  const budgetsResponse = await ynabAPI.budgets.getBudgets();
+  let budgets = budgetsResponse.data.budgets;
+  budgets = await Promise.all(
+    budgets.map(async budget => {
+      const budgetAccountsResponse = await ynabAPI.accounts.getAccounts(budget.id);
+      const budgetAccounts = budgetAccountsResponse.data.accounts.map(({ id, name, type }) => ({ id, name, type }));
+      return {
+        id: budget.id,
+        name: budget.name,
+        accounts: budgetAccounts
+      };
+    })
+  );
+  return budgets;
+}
+
+async function getYnabCategories() {
+  const categoriesResponse = await ynabAPI.categories.getCategories(ynabConfig.budgetId);
+  const categories = _.flatMap(categoriesResponse.data.category_groups, categoryGroup => categoryGroup.categories);
+  const categoryNames = categories.map(category => category.name);
+  return categoryNames;
+}
+
 module.exports = {
   init,
   createTransactions,
   initCategories: initCategoriesMap,
   isSameTransaction,
-  areStringsEqualIgnoreCaseAndWhitespace
+  areStringsEqualIgnoreCaseAndWhitespace,
+  getYnabAccountDetails
 };

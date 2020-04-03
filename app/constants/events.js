@@ -9,5 +9,9 @@ module.exports = {
     updateConfig: 'config:update',
     updatedConfig: 'config:updated',
     gotCurrentConfig: 'config:gotCurrent'
+  },
+  ynab: {
+    getYnabAccountData: 'ynab:getAccountData',
+    gotYnabAccountData: 'ynab:gotAccountData'
   }
 };

@@ -1,6 +1,6 @@
 const { ipcMain } = require('electron');
 const events = require('./constants/events');
-const { scrapeAndUpdateOutputVendors, configManager } = require('./node/index');
+const { scrapeAndUpdateOutputVendors, configManager, getYnabAccountDetails } = require('./node/index');
 
 ipcMain.on(events.scraping.start, async event => {
   try {
@@ -14,6 +14,11 @@ ipcMain.on(events.scraping.start, async event => {
 ipcMain.on(events.config.getCurrentConfig, async event => {
   const config = await configManager.getConfig();
   event.sender.send(events.config.gotCurrentConfig, config);
+});
+
+ipcMain.on(events.ynab.getYnabAccountData, async event => {
+  const ynabAccountDetails = await getYnabAccountDetails();
+  event.sender.send(events.ynab.gotYnabAccountData, ynabAccountDetails);
 });
 
 ipcMain.on(events.config.updateConfig, async (event, configToUpdate) => {
