@@ -1,6 +1,8 @@
 const ynab = require('ynab/dist/index');
 const moment = require('moment/moment');
+const configExample = require('../../config-example');
 
+const INITIAL_YNAB_ACCESS_TOKEN = configExample.outputVendors.ynab.accessToken;
 const YNAB_DATE_FORMAT = 'YYYY-MM-DD';
 const DID_NOTHING_RESPONSE = [];
 const NOW = moment();
@@ -13,6 +15,7 @@ let ynabAPI;
 
 function init(config) {
   ynabConfig = config.outputVendors.ynab;
+  verifyYnabAccessTokenWasDefined();
   ynabAPI = new ynab.API(ynabConfig.accessToken);
 }
 
@@ -151,6 +154,12 @@ function areStringsEqualIgnoreCaseAndWhitespace(str1 = '', str2 = '') {
 
 function normalizeWhitespace(str) {
   return str && str.trim().replace(/\s+/g, ' ');
+}
+
+function verifyYnabAccessTokenWasDefined() {
+  if (ynabConfig.accessToken === INITIAL_YNAB_ACCESS_TOKEN) {
+    throw new Error('You need to set the ynab access token in the config');
+  }
 }
 
 module.exports = {
