@@ -257,7 +257,7 @@
   "devEngines": {
     "node": ">=7.x",
     "npm": ">=4.x",
-    "yarn": ">=0.21.3"
+    "yarn": ">=1.22.0"
   },
   "browserslist": [
     "electron 1.6"
