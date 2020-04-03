@@ -1,7 +1,7 @@
 // This file is used as the initial config until the user saves the config for the first time to the file system
 module.exports = {
   scraping: {
-    numDaysBack: 4,
+    numDaysBack: 40,
     showBrowser: false,
     accountsToScrape: [
       // Add the accounts you want to scrape here
@@ -36,10 +36,10 @@ module.exports = {
     },
     googleSheets: {
       active: false,
-      credentialsJsonFilePath: '/###########/google_api_credentials.json',
       options: {
         spreadsheetId: '############################################',
-        sheetName: '###############'
+        sheetName: '###############',
+        credentialsFilePath: '/###########/google_api_credentials.json'
       }
     }
   },
