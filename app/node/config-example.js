@@ -25,7 +25,7 @@ module.exports = {
   outputVendors: {
     ynab: {
       active: true,
-      accessToken: process.env.YNAB_ACCESS_TOKEN,
+      accessToken: 'YNAB_ACCESS_TOKEN_GOES_HERE',
       budgetId: '########-####-####-####-############',
       accountNumbersToYnabAccountIds: {
         '1234': '########-####-####-####-############',
