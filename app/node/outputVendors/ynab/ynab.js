@@ -50,18 +50,6 @@ function getTransactions(startDate) {
   return ynabAPI.transactions.getTransactions(ynabConfig.budgetId, moment(startDate).format(YNAB_DATE_FORMAT));
 }
 
-// function buildImportId(payeeName, amount, date) {
-//   // The import Id length is maximum 36 chars. Limiting the payee name to make sure we don't exceed 36 chars in importId
-//   const payeeNameShort = payeeName.substr(0, 14);
-//   const importId = `${payeeNameShort}:${amount}:${date}`;
-//   if (!importIdMap.has(importId)) {
-//     importIdMap.set(importId, 0);
-//   }
-//   const occurance = importIdMap.get(importId) + 1;
-//   importIdMap.set(importId, occurance);
-//   return `${importId}:${occurance}`;
-// }
-
 function convertTransactionToYnabFormat(originalTransaction) {
   const payeeNameMaxLength = ynabConfig.maxPayeeNameLength || 50;
   const amount = Math.round(originalTransaction.chargedAmount * 1000);
@@ -169,16 +157,3 @@ module.exports = {
   isSameTransaction,
   areStringsEqualIgnoreCaseAndWhitespace
 };
-
-// (async function() {
-//   // const budgetsResponse = await ynabAPI.budgets.getBudgets();
-//   // const budgets = budgetsResponse.data.budgets;
-//   // for (let budget of budgets) {
-//   //   console.log(`Budget Name: ${budget.name}`);
-//   // }
-//
-//   const categories = await ynabAPI.categories.getCategories(ynabConfig.budgetId);
-//   console.log(categories);
-//
-//
-// })();
