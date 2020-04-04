@@ -25,7 +25,6 @@ build/Release
 
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
-node_modules
 
 # OSX
 .DS_Store
@@ -49,15 +48,14 @@ main.js.map
 
 .idea
 npm-debug.log.*
-.idea
 .env
 mockData
 googleApiToken.json
 node_modules
-.DS_Store
 log
 bin
 ynabConfig.json
 budgetApps/ynab/consts.js
 categoryCalculationScript.js
 config.js
+config.json

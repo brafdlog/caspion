@@ -9,26 +9,39 @@ const configExample = require('./config-example');
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
 
-const appDataFolderPath = app.getPath('userData');
+const appDataFolderPath = app ? app.getPath('userData') : '';
 const CONFIG_FILE_NAME = 'config.json';
-const CONFIG_FILE_PATH = path.join(appDataFolderPath, CONFIG_FILE_NAME);
+const APP_DATA_CONFIG_FILE_PATH = path.join(appDataFolderPath, CONFIG_FILE_NAME);
+const LOCAL_CONFIG_FILE_PATH = CONFIG_FILE_NAME;
 
 async function getConfig() {
-  if (!fs.existsSync(CONFIG_FILE_PATH)) {
-    return configExample;
+  let configFromFile = await getConfigFromFile(LOCAL_CONFIG_FILE_PATH);
+  if (!configFromFile) {
+    // Fallback to APP_DATA config if local configuration doesn't exist.
+    configFromFile = await getConfigFromFile(APP_DATA_CONFIG_FILE_PATH);
   }
-  const configFromFile = await readFile(CONFIG_FILE_PATH, {
-    encoding: 'utf8'
-  });
+  if (!configFromFile) {
+    // Fallback to configExample if there is no config file defined at all
+    configFromFile = configExample;
+  }
   const parsedConfig = JSON.parse(configFromFile);
   const decryptedConfig = decryptConfigIfNeeded(parsedConfig);
   return decryptedConfig;
 }
 
+async function getConfigFromFile(configFilePath) {
+  if (fs.existsSync(configFilePath)) {
+    return readFile(configFilePath, {
+      encoding: 'utf8'
+    });
+  }
+  return null;
+}
+
 async function updateConfig(configToUpdate) {
   const stringifiedConfig = JSON.stringify(configToUpdate, null, 2);
   const encryptedConfigStr = encryptConfig(stringifiedConfig);
-  await writeFile(CONFIG_FILE_PATH, encryptedConfigStr);
+  await writeFile(LOCAL_CONFIG_FILE_PATH, encryptedConfigStr);
 }
 
 function encryptConfig(stringifiedConfig) {
