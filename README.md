@@ -26,12 +26,12 @@ Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israel
 - [x] Extract configuration logic to a config file.
 - [x] Encrypt the configuration file
 - [x] Update README with full instructions on setting up the project.
-- [ ] Create a script to make initial YNAB setup easier
+- [x] Create a script that collects data to make initial YNAB setup easier
   - [x] Fetch budget id from ynab
   - [x] Account ids from ynab
   - [x] Prints categories from YNAB
   - [x] Expose the result of this script
-  - [ ] Account ids from financial institutions
+  - [x] Account ids from financial institutions
 - [ ] Take classification logic from a json instead of code
 - [ ] Google sheets integration
   - [ ] Add ui for authenticating with google instead of oauth link in the console
@@ -76,12 +76,11 @@ YNAB is a budgeting software. If you want to manage your budget there and have y
     - Set this in the JSON under `outputVendors.ynab.budgetId`
   - **YNAB account ids**
     - Each account you created in YNAB has an id and we need those ids in order to match each transaction from a financial institution to the correct account in YNAB
-    - We will need these ids to setup the matching between financial account id to the corresponding ynab account id.
-- Run the app by clicking on the `תראה לי ת׳כסף` button.
-  - Initially it will fail because it doesn't have the mapping between the account id of the financial institution and the ynab account id. Each time it fails, the log will print an error like: `Unhandled account number 8888`
-  - The number there is the account number in the financial institution.
-  - For each of these, go to the JSON and under `outputVendors.ynab.accountNumbersToYnabAccountIds` add a mapping from the account number to the equivalent ynab account id
-  - **Click on Save to save the configuration**
+    - We will need these ids to setup the matching between financial account number to the corresponding ynab account id.
+  - **Financial institutions account numbers**
+    - These are the account numbers in the banks/credit card companies you added
+- For each financial account number from a previous step, find the corresponding ynab account and add to `ynab.accountNumbersToYnabAccountIds` an entry like: `accountNumber: ynabAccountId`
+- **Click on Save to save the configuration**
 
 ## Google spreadsheet integration setup (optional)
 
