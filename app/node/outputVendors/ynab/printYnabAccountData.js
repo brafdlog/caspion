@@ -15,9 +15,6 @@ async function printYnabAccountData() {
   console.log('------Financial institutions account numbers------');
   console.log(companyIdToAccountNumbers);
   console.log();
-  console.log('------YNAB Expense categories------');
-  console.log(ynabAccountData.categories);
-  console.log();
 }
 
 printYnabAccountData();

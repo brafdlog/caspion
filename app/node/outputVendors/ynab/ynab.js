@@ -183,7 +183,7 @@ async function getBudgetsAndAccountsData() {
   await Promise.all(
     budgets.map(async budget => {
       const budgetAccountsResponse = await ynabAPI.accounts.getAccounts(budget.id);
-      const budgetAccounts = budgetAccountsResponse.data.accounts.map(({ id, name, type }) => ({ id, name, type, budgetId: budget.id }));
+      const budgetAccounts = budgetAccountsResponse.data.accounts.map(({ id, name, type }) => ({ id, name, type, budgetName: budget.name }));
       accounts.push(...budgetAccounts);
     })
   );
