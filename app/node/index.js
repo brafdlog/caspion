@@ -10,7 +10,7 @@ const TRANSACTION_STATUS_COMPLETED = 'completed';
 
 async function scrapeAndUpdateOutputVendors() {
   const config = await configManager.getConfig();
-  ynab.init(config);
+  await ynab.init(config);
 
   const startDate = moment()
     .subtract(config.scraping.numDaysBack, 'days')
