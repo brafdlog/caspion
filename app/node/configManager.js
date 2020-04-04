@@ -15,16 +15,18 @@ const APP_DATA_CONFIG_FILE_PATH = path.join(appDataFolderPath, CONFIG_FILE_NAME)
 const LOCAL_CONFIG_FILE_PATH = CONFIG_FILE_NAME;
 
 async function getConfig() {
+  let parsedConfig;
   let configFromFile = await getConfigFromFile(LOCAL_CONFIG_FILE_PATH);
   if (!configFromFile) {
     // Fallback to APP_DATA config if local configuration doesn't exist.
     configFromFile = await getConfigFromFile(APP_DATA_CONFIG_FILE_PATH);
   }
-  if (!configFromFile) {
+  if (configFromFile) {
+    parsedConfig = JSON.parse(configFromFile);
+  } else {
     // Fallback to configExample if there is no config file defined at all
-    configFromFile = configExample;
+    parsedConfig = configExample;
   }
-  const parsedConfig = JSON.parse(configFromFile);
   const decryptedConfig = decryptConfigIfNeeded(parsedConfig);
   return decryptedConfig;
 }
