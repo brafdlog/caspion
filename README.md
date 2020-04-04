@@ -27,9 +27,11 @@ Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israel
 - [x] Encrypt the configuration file
 - [x] Update README with full instructions on setting up the project.
 - [ ] Create a script to make initial YNAB setup easier
-  - [ ] Fetch budget id from ynab
-  - [ ] Account ids from ynab and financial institutions
-  - [ ] Prints categories from YNAB
+  - [x] Fetch budget id from ynab
+  - [x] Account ids from ynab
+  - [x] Prints categories from YNAB
+  - [x] Expose the result of this script
+  - [ ] Account ids from financial institutions
 - [ ] Take classification logic from a json instead of code
 - [ ] Google sheets integration
   - [ ] Add ui for authenticating with google instead of oauth link in the console
@@ -63,24 +65,20 @@ YNAB is a budgeting software. If you want to manage your budget there and have y
 
 - Create an account in [YNAB](https://ynab.com/referral/?ref=Z5wPbP0cYTWjdTQj&utm_source=customer_referral)
 - Create in YNAB unlinked accounts for each financial account you want to track (bank accounts and credit cards)
-- Now collect the following details from YNAB
+- Get the **YNAB access token**
+  - In YNAB go to `Account settings -> Developer settings`
+  - Click on `New Token` and `generate`
+  - On the top of the screen you will see the full token (the token with XXXX in it is not the full one).
+  - In the budget app open `הגדרות מתקדמות` and edit the JSON set `outputVendors.ynab.accessToken` to the access token.
+  - Click on save.
+- Collect ynab account details by running `yarn print-ynab-account-data`. This will log among others the following:
   - **YNAB budget id**
-    - In YNAB, the home page url will look like this: `https://app.youneedabudget.com/XXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXX/budget`. The XXX part is your **YNAB budget id**.
-  - **YNAB access token**
-    - In YNAB go to `Account settings -> Developer settings`
-    - Click on `New Token` and `generate`
-    - On the top of the screen you will see the full token (the token with XXXX in it is not the full one).
-    - This is your YNAB access token
+    - Set this in the JSON under `outputVendors.ynab.budgetId`
   - **YNAB account ids**
     - Each account you created in YNAB has an id and we need those ids in order to match each transaction from a financial institution to the correct account in YNAB
-    - To get the account ids, click on each account in ynab. The url will look like: `https://app.youneedabudget.com/XXXXXXXXXX/accounts/YYYYY-YYYYY-YYYY-YYYY`
-    - The `YYYYY-YYYYY-YYYY-YYYY` is the ynab account id
-- In the budget app open `הגדרות מתקדמות` and edit the JSON as follows:
-  - In `outputVendors.ynab.budgetId` paste the **YNAB budget id** you saved earlier
-  - In `outputVendors.ynab.accessToken` paste your YNAB access token
-  - **Click on Save to save the configuration**
+    - We will need these ids to setup the matching between financial account id to the corresponding ynab account id.
 - Run the app by clicking on the `תראה לי ת׳כסף` button.
-  - Initially it will fail because it doesn't have the mapping between the account id of the financial instituion and the ynab account id. Each time it fails, the log will print an error like: `Unhandled account number 8888`
+  - Initially it will fail because it doesn't have the mapping between the account id of the financial institution and the ynab account id. Each time it fails, the log will print an error like: `Unhandled account number 8888`
   - The number there is the account number in the financial institution.
   - For each of these, go to the JSON and under `outputVendors.ynab.accountNumbersToYnabAccountIds` add a mapping from the account number to the equivalent ynab account id
   - **Click on Save to save the configuration**
