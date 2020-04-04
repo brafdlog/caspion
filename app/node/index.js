@@ -124,6 +124,25 @@ async function createTransactionsInVedor(vendor, transactions, startDate) {
   return vendorResult;
 }
 
+async function getFinancialAccountNumbers() {
+  const config = await configManager.getConfig();
+
+  const startDate = moment()
+    .subtract(30, 'days')
+    .startOf('day')
+    .toDate();
+
+  console.log('Fetching data from financial institutions to determine the account numbers');
+  const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config, startDate);
+  const companyIdToAccountNumbers = {};
+  Object.keys(companyIdToTransactions).forEach(companyId => {
+    let accountNumbers = companyIdToTransactions[companyId].map(transaction => transaction.accountNumber);
+    accountNumbers = _.uniq(accountNumbers);
+    companyIdToAccountNumbers[companyId] = accountNumbers;
+  });
+  return companyIdToAccountNumbers;
+}
+
 function transactionsDateComperator(t1, t2) {
   const date1 = moment(t1.date);
   const date2 = moment(t2.date);
@@ -139,5 +158,6 @@ function transactionsDateComperator(t1, t2) {
 module.exports = {
   scrapeAndUpdateOutputVendors,
   getYnabAccountDetails: ynab.getYnabAccountDetails,
-  configManager
+  configManager,
+  getFinancialAccountNumbers
 };

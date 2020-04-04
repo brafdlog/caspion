@@ -1,16 +1,21 @@
 const { getYnabAccountDetails } = require('./ynab');
+const { getFinancialAccountNumbers } = require('../../index');
 
 async function printYnabAccountData() {
   const ynabAccountData = await getYnabAccountDetails();
-  const allAccounts = ynabAccountData.budgets.flatMap(budget => budget.accounts);
-  ynabAccountData.accounts = allAccounts;
-  console.log('------Budgets------');
+  const companyIdToAccountNumbers = await getFinancialAccountNumbers();
+  console.log();
+  console.log();
+  console.log('------YNAB Budgets------');
   console.log(ynabAccountData.budgets);
   console.log();
-  console.log('------Accounts------');
+  console.log('------YNAB Accounts------');
   console.log(ynabAccountData.accounts);
   console.log();
-  console.log('------Expense categories------');
+  console.log('------Financial institutions account numbers------');
+  console.log(companyIdToAccountNumbers);
+  console.log();
+  console.log('------YNAB Expense categories------');
   console.log(ynabAccountData.categories);
   console.log();
 }

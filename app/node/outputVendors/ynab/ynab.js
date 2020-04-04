@@ -164,10 +164,11 @@ function verifyYnabAccessTokenWasDefined() {
 async function getYnabAccountDetails() {
   if (!ynabAccountDetails) {
     await init();
-    const budgets = await getBudgetsAndAccountsData();
+    const { budgets, accounts } = await getBudgetsAndAccountsData();
     const categoryNames = await getYnabCategories();
     ynabAccountDetails = {
       budgets,
+      accounts,
       categories: categoryNames
     };
   }
@@ -177,18 +178,19 @@ async function getYnabAccountDetails() {
 async function getBudgetsAndAccountsData() {
   const budgetsResponse = await ynabAPI.budgets.getBudgets();
   let budgets = budgetsResponse.data.budgets;
-  budgets = await Promise.all(
+  budgets = budgets.map(budget => ({ id: budget.id, name: budget.name }));
+  const accounts = [];
+  await Promise.all(
     budgets.map(async budget => {
       const budgetAccountsResponse = await ynabAPI.accounts.getAccounts(budget.id);
-      const budgetAccounts = budgetAccountsResponse.data.accounts.map(({ id, name, type }) => ({ id, name, type }));
-      return {
-        id: budget.id,
-        name: budget.name,
-        accounts: budgetAccounts
-      };
+      const budgetAccounts = budgetAccountsResponse.data.accounts.map(({ id, name, type }) => ({ id, name, type, budgetId: budget.id }));
+      accounts.push(...budgetAccounts);
     })
   );
-  return budgets;
+  return {
+    budgets,
+    accounts
+  };
 }
 
 async function getYnabCategories() {
