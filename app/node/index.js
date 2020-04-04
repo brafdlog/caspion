@@ -1,4 +1,5 @@
 require('dotenv').config();
+const _ = require('lodash');
 const moment = require('moment');
 const bankScraper = require('./bankScraper');
 const ynab = require('./outputVendors/ynab/ynab');
@@ -10,52 +11,14 @@ const TRANSACTION_STATUS_COMPLETED = 'completed';
 
 async function scrapeAndUpdateOutputVendors() {
   const config = await configManager.getConfig();
-  await ynab.init(config);
 
   const startDate = moment()
     .subtract(config.scraping.numDaysBack, 'days')
     .startOf('day')
     .toDate();
 
-  const outputVendors = [
-    {
-      name: 'ynab',
-      createTransactionFunction: ynab.createTransactions,
-      options: config.outputVendors.ynab.options
-    },
-    {
-      name: 'googleSheets',
-      createTransactionFunction: googleSheets.createTransactionsInGoogleSheets,
-      options: config.outputVendors.googleSheets.options
-    }
-  ];
-
-  const executionResult = {};
-  const accountsToScrape = config.scraping.accountsToScrape.filter(accountToScrape => accountToScrape.active !== false);
-  for (let i = 0; i < accountsToScrape.length; i++) {
-    const { companyId, credentials } = accountsToScrape[i];
-    executionResult[companyId] = {};
-    try {
-      const scrapeResult = await fetchTransactions(companyId, credentials, startDate, config);
-      let transactions = classifyTransactionCategories(scrapeResult, companyId);
-      // Filter out pending transactions
-      transactions = transactions.filter(transaction => transaction.status === TRANSACTION_STATUS_COMPLETED);
-      transactions.sort(transactionsDateComperator);
-
-      for (let j = 0; j < outputVendors.length; j++) {
-        const vendor = outputVendors[j];
-        if (config.outputVendors[vendor.name].active) {
-          const vendorResult = await createTransactionsInVedor(vendor, transactions, startDate);
-          executionResult[companyId][vendor.name] = vendorResult;
-        }
-      }
-      console.log('=================== Finished for ', companyId, ' ===================');
-    } catch (e) {
-      executionResult[companyId] = `Error running job for company ${companyId}. Error: ${e.message}`;
-      console.error(`Error running job for company ${companyId}. Error: `, e);
-      throw e;
-    }
-  }
+  const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config, startDate);
+  const executionResult = await createTransactionsInExternalVendors(config, companyIdToTransactions, startDate);
 
   const resultToLog = `
     Results of job:
@@ -66,9 +29,29 @@ async function scrapeAndUpdateOutputVendors() {
   return executionResult;
 }
 
-async function fetchTransactions(companyId, credentials, startDate, config) {
-  console.log('=================== Starting for ', companyId, ' ===================');
+async function scrapeFinancialAccountsAndFetchTransactions(config, startDate) {
+  const companyIdToTransactions = {};
+  const accountsToScrape = config.scraping.accountsToScrape.filter(accountToScrape => accountToScrape.active !== false);
+  for (let i = 0; i < accountsToScrape.length; i++) {
+    const { companyId, credentials } = accountsToScrape[i];
+    try {
+      console.log(`=================== Start fetching transactions for ${companyId} ===================`);
+      const scrapeResult = await fetchTransactions(companyId, credentials, startDate, config);
+      let transactions = classifyTransactionCategories(scrapeResult, companyId);
+      // Filter out pending transactions
+      transactions = transactions.filter(transaction => transaction.status === TRANSACTION_STATUS_COMPLETED);
+      transactions.sort(transactionsDateComperator);
+      companyIdToTransactions[companyId] = transactions;
+      console.log(`=================== Finished fetching transactions for ${companyId} ===================`);
+    } catch (e) {
+      console.error(`Error fetching transactions for ${companyId}. Error: `, e);
+      throw e;
+    }
+  }
+  return companyIdToTransactions;
+}
 
+async function fetchTransactions(companyId, credentials, startDate, config) {
   console.log(`Start scraping ${companyId} from date: ${moment(startDate).format('DD/MM/YYYY')}`);
   const scrapeResult = await bankScraper.scrape({
     companyId,
@@ -102,6 +85,33 @@ function classifyTransactionCategories(scrapeResult, companyId) {
   });
   console.log('Finished category enrichment');
   return transactions;
+}
+
+async function createTransactionsInExternalVendors(config, companyIdToTransactions, startDate) {
+  await ynab.init(config);
+  const outputVendors = [
+    {
+      name: 'ynab',
+      createTransactionFunction: ynab.createTransactions,
+      options: config.outputVendors.ynab.options
+    },
+    {
+      name: 'googleSheets',
+      createTransactionFunction: googleSheets.createTransactionsInGoogleSheets,
+      options: config.outputVendors.googleSheets.options
+    }
+  ];
+  const executionResult = {};
+  const allTransactions = _.flatten(Object.values(companyIdToTransactions));
+
+  for (let j = 0; j < outputVendors.length; j++) {
+    const vendor = outputVendors[j];
+    if (config.outputVendors[vendor.name].active) {
+      const vendorResult = await createTransactionsInVedor(vendor, allTransactions, startDate);
+      executionResult[vendor.name] = vendorResult;
+    }
+  }
+  return executionResult;
 }
 
 async function createTransactionsInVedor(vendor, transactions, startDate) {
