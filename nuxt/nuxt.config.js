@@ -1,3 +1,5 @@
+import { DefinePlugin } from 'webpack';
+
 export default {
   mode: 'universal',
   /*
@@ -61,5 +63,11 @@ export default {
         },
       });
     },
+
+    plugins: [
+      new DefinePlugin({
+        GithubRepo: '"baruchiro/israeli-bank-scrapers-desktop"',
+      }),
+    ],
   },
 };

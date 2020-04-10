@@ -50,12 +50,10 @@
             >link</a>
           </li>
         </ul>
-        <button
-          :class="navActionClassList"
-          class="mx-auto lg:mx-0 hover:underline font-bold rounded-full mt-4 lg:mt-0 py-4 px-8 shadow opacity-75"
-        >
-          Action
-        </button>
+        <download-button
+          :show-more-downloads="false"
+          :button-style="navActionClassList"
+        />
       </div>
     </div>
     <hr class="border-b border-gray-100 opacity-25 my-0 py-0">
@@ -64,11 +62,13 @@
 
 <script>
 import Logo from '@/components/Logo';
+import DownloadButton from '@/components/DownloadButton';
 
 export default {
   name: 'TheHeader',
   components: {
     logo: Logo,
+    'download-button': DownloadButton,
   },
   data() {
     return {
@@ -84,7 +84,8 @@ export default {
       return this.isSticky ? 'bg-white shadow' : '';
     },
     navActionClassList() {
-      return this.isSticky ? 'gradient text-white' : 'bg-white text-gray-800';
+      const sticky = this.isSticky ? 'gradient text-white' : 'bg-white text-gray-800';
+      return `${sticky} shadow opacity-75 mt-4 lg:mt-0`;
     },
     navContentClassList() {
       let classList = this.isSticky ? 'bg-white' : 'bg-gray-100';
