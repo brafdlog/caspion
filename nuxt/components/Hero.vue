@@ -1,7 +1,7 @@
 <template>
   <div>
     <hero-content />
-    <div class="relative -mt-12 lg:-mt-24">
+    <div class="relative -mt-6 lg:-mt-20">
       <img
         src="~assets/img/hero-wave.svg"
         alt

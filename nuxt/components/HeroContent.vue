@@ -29,25 +29,23 @@
               הורדות נוספות
             </button>
             <div
-              class="w-full text-right"
+              class="w-full text-gray-800 "
               :style="{visibility: showDownloads? 'visible' : 'hidden'}"
             >
-              <ul>
-                <li
-                  v-for="obj in downloads"
-                  :key="obj.name"
-                >
-                  <a
-                    class="no-underline hover:underline text-blue-600"
-                    :href="obj.url"
-                    :title="obj.name"
-                  >קובץ {{ obj.extension }}</a>
-                </li>
-              </ul>
+              <span
+                v-for="obj in downloads"
+                :key="obj.name"
+              >
+                <a
+                  class="no-underline hover:underline text-blue-600"
+                  :href="obj.url"
+                  :title="obj.name"
+                >{{ obj.extension }}</a>, </span>
               <a
-                class="text-sm text-gray-800 font-bold"
+                class="font-bold hover:underline"
                 href="https://github.com/baruchiro/israeli-bank-scrapers-desktop/releases"
               >עוד...</a>
+              </span>
             </div>
           </div>
         </div>
@@ -76,10 +74,11 @@ const getOS = () => {
     // "UNIX"       for all other UNIX flavors
     // "Unknown" indicates failure to detect the OS
 
-    if (navigator.appVersion.indexOf('Win') !== -1) return 'Windows';
-    if (navigator.appVersion.indexOf('Mac') !== -1) return 'MacOS';
-    if (navigator.appVersion.indexOf('Linux') !== -1) return 'Linux';
-    if (navigator.appVersion.indexOf('X11') !== -1) return 'UNIX';
+    if (navigator.appVersion.includes('Android')) return 'Windows';
+    if (navigator.appVersion.includes('Win')) return 'Windows';
+    if (navigator.appVersion.includes('Mac')) return 'MacOS';
+    if (navigator.appVersion.includes('Linux')) return 'Linux';
+    if (navigator.appVersion.includes('X11')) return 'Linux';
   }
 
   return 'Unknown';
@@ -87,10 +86,6 @@ const getOS = () => {
 
 const osToExtension = {
   Linux: {
-    default: 'AppImage',
-    extensions: ['AppImage', 'deb'],
-  },
-  UNIX: {
     default: 'AppImage',
     extensions: ['AppImage', 'deb'],
   },
