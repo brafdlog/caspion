@@ -43,7 +43,8 @@
                 >{{ obj.extension }}</a>, </span>
               <a
                 class="font-bold hover:underline"
-                href="https://github.com/baruchiro/israeli-bank-scrapers-desktop/releases"
+                :href="releasesUrl"
+                target="_blank"
               >עוד...</a>
               </span>
             </div>
@@ -64,6 +65,9 @@
 
 <script>
 import axios from 'axios';
+
+const user = 'baruchiro';
+const repo = 'israeli-bank-scrapers-desktop';
 
 const getOS = () => {
   if (process.client) {
@@ -106,12 +110,13 @@ export default {
       downloads: [],
       os: 'Unknown',
       showDownloads: false,
+      releasesUrl: `https://github.com/${user}/${repo}/releases`,
     };
   },
   created() {
     this.os = getOS();
 
-    axios.get('https://api.github.com/repos/baruchiro/israeli-bank-scrapers-desktop/releases')
+    axios.get(`https://api.github.com/repos/${user}/${repo}/releases`)
       .then((response) => response.data)
       .then((releases) => releases
         .sort((a, b) => new Date(b.published_at) - new Date(a.published_at))
@@ -143,15 +148,18 @@ export default {
       if (download) {
         window.open(download.url);
       } else {
-        window.open('https://github.com/baruchiro/israeli-bank-scrapers-desktop/releases', '_blank');
+        this.openReleasesPage();
       }
     },
     moreDownloads() {
       if (this.downloads.length > 1) {
         this.showDownloads = !this.showDownloads;
       } else {
-        window.open('https://github.com/baruchiro/israeli-bank-scrapers-desktop/releases', '_blank');
+        this.openReleasesPage();
       }
+    },
+    openReleasesPage() {
+      window.open(this.releasesUrl, '_blank');
     },
   },
 };
