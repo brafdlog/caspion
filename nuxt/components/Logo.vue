@@ -9,7 +9,7 @@
       class="h-8 fill-current inline"
       src="../../public/favicon.ico"
     >
-    &nbsp;עו"שלי
+    &nbsp;עו"שי
   </a>
 </template>
 
