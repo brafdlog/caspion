@@ -1,6 +1,6 @@
 
 <template>
-  <div>
+  <div id="contact">
     <img
       src="~assets/img/wave-top.svg"
       alt

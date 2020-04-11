@@ -40,7 +40,10 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: ['@nuxtjs/svg'],
+  modules: [
+    '@nuxtjs/svg',
+    'vue-scrollto/nuxt',
+  ],
   purgeCSS: {
     whitelist: ['hidden'],
     whitelistPatterns: [/md:w-[1-6]/],

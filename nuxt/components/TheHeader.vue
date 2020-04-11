@@ -20,7 +20,7 @@
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <title>Menu</title>
+            <title>תפריט</title>
             <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
           </svg>
         </button>
@@ -33,21 +33,31 @@
         <ul class="list-reset lg:flex justify-end flex-1 items-center">
           <li class="mr-3">
             <a
+              v-scroll-to="'#hero'"
               class="inline-block py-2 px-4 text-black font-bold no-underline"
               href="#"
-            >Active</a>
+            >ראשי</a>
           </li>
           <li class="mr-3">
             <a
+              v-scroll-to="'#features'"
               class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4"
               href="#"
-            >link</a>
+            >תכונות</a>
           </li>
           <li class="mr-3">
             <a
+              v-scroll-to="'#security'"
               class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4"
               href="#"
-            >link</a>
+            >אבטחה</a>
+          </li>
+          <li class="mr-3">
+            <a
+              v-scroll-to="'#contact'"
+              class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4"
+              href="#"
+            >צור קשר</a>
           </li>
         </ul>
         <download-button

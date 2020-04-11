@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="hero">
     <hero-content />
     <div class="relative -mt-6 lg:-mt-20">
       <img
