@@ -5,7 +5,7 @@
   >
     <div class="flex-1 bg-white rounded-t rounded-b-none overflow-hidden shadow">
       <a
-        href="#"
+        :href="link"
         class="flex flex-wrap no-underline hover:no-underline"
       >
         <p class="w-full text-gray-600 text-xs md:text-sm px-6">
@@ -48,6 +48,11 @@ export default {
       type: String,
       default: '',
     },
+    link: {
+      type: String,
+      required: false,
+      default: null,
+    },
   },
   computed: {
     classList() {
@@ -59,7 +64,6 @@ export default {
   },
   methods: {
     onClick() {
-      // NOTE: is fired, but not handled in this template
       this.$emit('clicked');
     },
   },
