@@ -6,66 +6,26 @@
           <logo />
         </div>
 
-        <div class="flex-1">
+        <div
+          v-for="(allLinks, name) in links"
+          :key="name"
+          class="flex-1"
+        >
           <p class="uppercase text-gray-500 md:mb-6">
-            קישורים
+            {{ name }}
           </p>
           <ul class="list-reset mb-6">
-            <li class="mt-2 inline-block mr-2 md:block md:mr-0">
+            <li
+              v-for="link in allLinks"
+              :key="link.text"
+              class="mt-2 inline-block mr-2 md:block md:mr-0"
+            >
               <a
-                href="#"
+                :href="link.href"
+                :target="link.href.startsWith('#')? '' : '_blank'"
                 class="no-underline hover:underline text-gray-800 hover:text-orange-500"
-              >שאלות נפוצות</a>
-            </li>
-            <li class="mt-2 inline-block mr-2 md:block md:mr-0">
-              <a
-                href="#"
-                class="no-underline hover:underline text-gray-800 hover:text-orange-500"
-              >צור קשר</a>
-            </li>
-            <li class="mt-2 inline-block mr-2 md:block md:mr-0">
-              <a
-                href="#"
-                class="no-underline hover:underline text-gray-800 hover:text-orange-500"
-              >תמיכה</a>
-            </li>
-          </ul>
-        </div>
-        <div class="flex-1">
-          <p class="uppercase text-gray-500 md:mb-6">
-            משפטי
-          </p>
-          <ul class="list-reset mb-6">
-            <li class="mt-2 inline-block mr-2 md:block md:mr-0">
-              <a
-                href="#"
-                class="no-underline hover:underline text-gray-800 hover:text-orange-500"
-              >רשיון</a>
-            </li>
-          </ul>
-        </div>
-        <div class="flex-1">
-          <p class="uppercase text-gray-500 md:mb-6">
-            המפתחים
-          </p>
-          <ul class="list-reset mb-6">
-            <li class="mt-2 inline-block mr-2 md:block md:mr-0">
-              <a
-                href="#"
-                class="no-underline hover:underline text-gray-800 hover:text-orange-500"
-              >GitHub</a>
-            </li>
-            <li class="mt-2 inline-block mr-2 md:block md:mr-0">
-              <a
-                href="#"
-                class="no-underline hover:underline text-gray-800 hover:text-orange-500"
-              >ברוך אודם</a>
-            </li>
-            <li class="mt-2 inline-block mr-2 md:block md:mr-0">
-              <a
-                href="#"
-                class="no-underline hover:underline text-gray-800 hover:text-orange-500"
-              >אריאל גורדון</a>
+                @click="(e) => linkClick(e, link.scrollTo)"
+              >{{ link.text }}</a>
             </li>
           </ul>
         </div>
@@ -81,10 +41,64 @@
 <script>
 import Logo from '@/components/Logo';
 
+const repo = `https://github.com/${GITHUB_REPO}`;
+
+const links = {
+  קישורים: [
+    {
+      scrollTo: '#FAQ',
+      text: 'שאלות נפוצות',
+      href: '#',
+    },
+    {
+      scrollTo: '#contact',
+      text: 'צור קשר',
+      href: '#',
+    },
+    {
+      text: 'תמיכה',
+      href: `${repo}/issues/new`,
+    },
+  ],
+  משפטי: [
+    {
+      text: 'רשיון',
+      href: `${repo}/blob/master/LICENSE`,
+    }
+  ],
+  מפתחים: [
+    {
+      text: 'GitHub',
+      href: repo,
+    },
+    {
+      text: 'ברוך אודם',
+      href: 'https://github.com/baruchiro',
+    },
+    {
+      text: 'אריאל גורדון',
+      href: 'https://github.com/Arielgordon123',
+    }
+  ]
+};
+
 export default {
   name: 'TheFooter',
   components: {
     logo: Logo,
+  },
+  computed: {
+    links() {
+      return links;
+    },
+  },
+  methods: {
+    linkClick(e, scrollTo) {
+      if (scrollTo) {
+        e.preventDefault();
+        this.$scrollTo(scrollTo);
+      }
+    },
   },
 };
 </script>
