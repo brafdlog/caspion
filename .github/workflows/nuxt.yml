@@ -1,4 +1,4 @@
-name: Deploy Github Pages
+name: Test and Deploy Github Pages with Nuxt
 
 on:
   pull_request:
