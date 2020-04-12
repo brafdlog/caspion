@@ -7,7 +7,7 @@
     "start": "nuxt start",
     "generate": "nuxt generate",
     "generate:dev": "nuxt generate && serve ./dist",
-    "deploy": "yarn generate && gh-pages -d dist",
+    "deploy": "yarn generate && gh-pages -d dist -t",
     "test": "jest",
     "test:dev": "jest --watch",
     "lint": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter .",
