@@ -11,7 +11,7 @@
       >
         <img
           slot="svg"
-          src="~assets/img/travel-booking.svg"
+          src="~assets/img/cloud_files.svg"
           alt
         >
       </feature-right>
@@ -21,7 +21,7 @@
       >
         <img
           slot="svg"
-          src="~assets/img/connected-world.svg"
+          src="~assets/img/file_sync.svg"
           alt
         >
       </feature-left>

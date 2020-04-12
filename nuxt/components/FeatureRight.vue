@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-wrap">
+  <div class="flex flex-wrap items-center">
     <div class="w-5/6 sm:w-1/2 p-6">
       <h3 class="text-3xl text-gray-800 font-bold leading-none mb-3">
         {{ headline }}

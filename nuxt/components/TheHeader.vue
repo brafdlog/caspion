@@ -74,12 +74,12 @@ const sections = [
     text: 'אבטחה',
   },
   {
-    scrollTo: '#contact',
-    text: 'צור קשר',
-  },
-  {
     scrollTo: '#FAQ',
     text: 'שאלות נפוצות',
+  },
+  {
+    scrollTo: '#contact',
+    text: 'צור קשר',
   },
 ];
 

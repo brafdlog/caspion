@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-wrap flex-col-reverse sm:flex-row">
+  <div class="flex flex-wrap flex-col-reverse sm:flex-row items-center">
     <div class="w-full sm:w-1/2 p-6 mt-6">
       <slot name="svg" />
     </div>
