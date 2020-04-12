@@ -18,4 +18,4 @@ jobs:
       - name: yarn
         run: yarn
       - name: deploy
-        run: yarn deploy -u ${{ github.actor }}
+        run: yarn deploy -u "${{ github.actor }} <${{ github.actor }}@fake.com>"
