@@ -9,41 +9,30 @@ exports[`TheFooter renders properly 1`] = `
       </div>
       <div class=\\"flex-1\\">
         <p class=\\"uppercase text-gray-500 md:mb-6\\">
-          Links
+          קישורים
         </p>
         <ul class=\\"list-reset mb-6\\">
-          <li class=\\"mt-2 inline-block mr-2 md:block md:mr-0\\"><a href=\\"#\\" class=\\"no-underline hover:underline text-gray-800 hover:text-orange-500\\">FAQ</a></li>
-          <li class=\\"mt-2 inline-block mr-2 md:block md:mr-0\\"><a href=\\"#\\" class=\\"no-underline hover:underline text-gray-800 hover:text-orange-500\\">Help</a></li>
-          <li class=\\"mt-2 inline-block mr-2 md:block md:mr-0\\"><a href=\\"#\\" class=\\"no-underline hover:underline text-gray-800 hover:text-orange-500\\">Support</a></li>
+          <li class=\\"mt-2 inline-block mr-2 md:block md:mr-0\\"><a href=\\"#\\" class=\\"no-underline hover:underline text-gray-800 hover:text-orange-500\\">שאלות נפוצות</a></li>
+          <li class=\\"mt-2 inline-block mr-2 md:block md:mr-0\\"><a href=\\"#\\" class=\\"no-underline hover:underline text-gray-800 hover:text-orange-500\\">צור קשר</a></li>
+          <li class=\\"mt-2 inline-block mr-2 md:block md:mr-0\\"><a href=\\"#\\" class=\\"no-underline hover:underline text-gray-800 hover:text-orange-500\\">תמיכה</a></li>
         </ul>
       </div>
       <div class=\\"flex-1\\">
         <p class=\\"uppercase text-gray-500 md:mb-6\\">
-          Legal
+          משפטי
         </p>
         <ul class=\\"list-reset mb-6\\">
-          <li class=\\"mt-2 inline-block mr-2 md:block md:mr-0\\"><a href=\\"#\\" class=\\"no-underline hover:underline text-gray-800 hover:text-orange-500\\">Terms</a></li>
-          <li class=\\"mt-2 inline-block mr-2 md:block md:mr-0\\"><a href=\\"#\\" class=\\"no-underline hover:underline text-gray-800 hover:text-orange-500\\">Privacy</a></li>
+          <li class=\\"mt-2 inline-block mr-2 md:block md:mr-0\\"><a href=\\"#\\" class=\\"no-underline hover:underline text-gray-800 hover:text-orange-500\\">רשיון</a></li>
         </ul>
       </div>
       <div class=\\"flex-1\\">
         <p class=\\"uppercase text-gray-500 md:mb-6\\">
-          Social
+          המפתחים
         </p>
         <ul class=\\"list-reset mb-6\\">
-          <li class=\\"mt-2 inline-block mr-2 md:block md:mr-0\\"><a href=\\"#\\" class=\\"no-underline hover:underline text-gray-800 hover:text-orange-500\\">Facebook</a></li>
-          <li class=\\"mt-2 inline-block mr-2 md:block md:mr-0\\"><a href=\\"#\\" class=\\"no-underline hover:underline text-gray-800 hover:text-orange-500\\">Linkedin</a></li>
-          <li class=\\"mt-2 inline-block mr-2 md:block md:mr-0\\"><a href=\\"#\\" class=\\"no-underline hover:underline text-gray-800 hover:text-orange-500\\">Twitter</a></li>
-        </ul>
-      </div>
-      <div class=\\"flex-1\\">
-        <p class=\\"uppercase text-gray-500 md:mb-6\\">
-          Company
-        </p>
-        <ul class=\\"list-reset mb-6\\">
-          <li class=\\"mt-2 inline-block mr-2 md:block md:mr-0\\"><a href=\\"#\\" class=\\"no-underline hover:underline text-gray-800 hover:text-orange-500\\">Official Blog</a></li>
-          <li class=\\"mt-2 inline-block mr-2 md:block md:mr-0\\"><a href=\\"#\\" class=\\"no-underline hover:underline text-gray-800 hover:text-orange-500\\">About Us</a></li>
-          <li class=\\"mt-2 inline-block mr-2 md:block md:mr-0\\"><a href=\\"#\\" class=\\"no-underline hover:underline text-gray-800 hover:text-orange-500\\">Contact</a></li>
+          <li class=\\"mt-2 inline-block mr-2 md:block md:mr-0\\"><a href=\\"#\\" class=\\"no-underline hover:underline text-gray-800 hover:text-orange-500\\">GitHub</a></li>
+          <li class=\\"mt-2 inline-block mr-2 md:block md:mr-0\\"><a href=\\"#\\" class=\\"no-underline hover:underline text-gray-800 hover:text-orange-500\\">ברוך אודם</a></li>
+          <li class=\\"mt-2 inline-block mr-2 md:block md:mr-0\\"><a href=\\"#\\" class=\\"no-underline hover:underline text-gray-800 hover:text-orange-500\\">אריאל גורדון</a></li>
         </ul>
       </div>
     </div>

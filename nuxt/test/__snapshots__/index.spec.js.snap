@@ -5,7 +5,7 @@ exports[`index renders properly 1`] = `
   <hero-stub></hero-stub>
   <features-stub></features-stub>
   <teasers-stub></teasers-stub>
-  <prices-stub></prices-stub>
+  <faq-stub></faq-stub>
   <call-to-action-stub></call-to-action-stub>
 </div>"
 `;
