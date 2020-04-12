@@ -1,14 +1,30 @@
 name: Deploy Github Pages
 
 on:
+  pull_request:
   push:
-    branches: nuxt
+    branches: master
     paths:
       - 'nuxt/**'
       - '.github/workflows/*nuxt*.yml'
 
 jobs:
+  test:
+    runs-on: [ubuntu-latest]
+    defaults:
+      run:
+        working-directory: nuxt
+    steps:
+      - uses: actions/checkout@v2
+      - run: yarn
+      - run: |
+          yarn lint
+          yarn test
+  
+  
   deploy:
+    if: github.ref == 'refs/heads/master'
+    needs: test
     defaults:
       run:
         working-directory: nuxt
