@@ -17,9 +17,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: yarn
-      - run: |
-          yarn lint
-          yarn test
+      - run: yarn lint
+      - run: yarn test
   
   
   deploy:
