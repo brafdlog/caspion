@@ -18,4 +18,4 @@ jobs:
       - name: yarn
         run: yarn
       - name: deploy
-        run: yarn deploy
+        run: yarn deploy -u ${{ github.actor }}
