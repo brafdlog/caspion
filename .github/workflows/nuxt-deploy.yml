@@ -18,4 +18,4 @@ jobs:
       - name: yarn
         run: yarn
       - name: deploy
-        run: yarn deploy -r "https://${{ secrets.GITHUB_TOKEN }}@github.com/baruchiro/israeli-bank-scrapers-desktop.git" -u "Baruch Odem <baruchiro@gmail.com>"
+        run: yarn deploy -r "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/baruchiro/israeli-bank-scrapers-desktop.git" -u "Baruch Odem <baruchiro@gmail.com>"
