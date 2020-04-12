@@ -29,6 +29,7 @@
     "eslint": "^6.8.0",
     "eslint-friendly-formatter": "^4.0.1",
     "eslint-import-resolver-alias": "^1.1.2",
+    "husky": "^4.2.5",
     "jest": "^25.1.0",
     "jest-serializer-vue": "^2.0.2",
     "serve": "^11.3.0",
