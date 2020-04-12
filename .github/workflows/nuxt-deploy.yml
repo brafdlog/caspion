@@ -1,1 +1,21 @@
+name: Deploy Github Pages
 
+on:
+  push:
+    branches: nuxt
+    paths:
+      - 'nuxt/**'
+      - '.github/workflows/*nuxt*.yml'
+
+jobs:
+  deploy:
+    defaults:
+      run:
+        working-directory: nuxt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: yarn
+        run: yarn
+      - name: deploy
+        run: yarn deploy
