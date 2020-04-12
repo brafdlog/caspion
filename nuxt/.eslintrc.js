@@ -6,6 +6,7 @@ const globals = Object.keys(allGlobals).reduce((acc, globalName) => {
 }, {});
 
 module.exports = {
+    root: true,
     settings: {
         'import/resolver': {
           alias: {
@@ -16,12 +17,31 @@ module.exports = {
           }
         }
     },
-    extends: ['../.eslintrc.js'],
+
+    env: {
+      browser: true,
+    },
+
+    extends: ['airbnb-base', 'plugin:vue/recommended'],
+
+    plugins: [
+      'import',
+      'vue',
+      'html',
+    ],
 
     globals,
 
     rules: {
-        'max-len': 0,
-        "import/no-extraneous-dependencies": ["error", {"devDependencies": ["*.config.js", "**/*.spec.js"]}]
+      'no-param-reassign': ['error', { ignorePropertyModificationsFor: ['state'] }],
+      'no-shadow': ['error', { allow: ['state'] }],
+      'import/extensions': ['error', { js: 'never', vue: 'never', json: 'always' }],
+      'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
+      // allow debugger during development
+      'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
+      'no-console': process.env.NODE_ENV === 'production' ? 2 : 1,
+      'linebreak-style': process.platform === 'win32' ? 0 : 2,
+      'max-len': 0,
+      "import/no-extraneous-dependencies": ["error", {"devDependencies": ["*.config.js", "**/*.spec.js"]}]
     },
 }
