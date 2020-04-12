@@ -64,7 +64,7 @@ const links = {
     {
       text: 'רשיון',
       href: `${repo}/blob/master/LICENSE`,
-    }
+    },
   ],
   מפתחים: [
     {
@@ -78,8 +78,8 @@ const links = {
     {
       text: 'אריאל גורדון',
       href: 'https://github.com/Arielgordon123',
-    }
-  ]
+    },
+  ],
 };
 
 export default {

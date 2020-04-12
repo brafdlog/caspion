@@ -7,6 +7,7 @@
     "start": "nuxt start",
     "generate": "nuxt generate",
     "generate:dev": "nuxt generate && serve ./dist",
+    "deploy": "yarn generate && push-dir --dir=dist --branch=gh-pages --cleanup",
     "test": "jest",
     "test:dev": "jest --watch",
     "lint": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter .",
@@ -32,6 +33,7 @@
     "husky": "^4.2.5",
     "jest": "^25.1.0",
     "jest-serializer-vue": "^2.0.2",
+    "push-dir": "^0.4.1",
     "serve": "^11.3.0",
     "vue-jest": "^4.0.0-beta.2",
     "webpack": "^4.42.1"
