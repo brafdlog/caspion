@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     openGithub() {
-      window.open(`https://github.com/${GithubRepo}`, '_blank');
+      window.open(`https://github.com/${GITHUB_REPO}`, '_blank');
     },
   },
 };

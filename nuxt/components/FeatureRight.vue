@@ -26,11 +26,11 @@ export default {
   props: {
     headline: {
       type: String,
-      required: false,
+      required: true,
     },
     content: {
       type: String,
-      required: false,
+      required: true,
     },
   },
 };

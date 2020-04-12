@@ -80,7 +80,7 @@ const sections = [
   {
     scrollTo: '#FAQ',
     text: 'שאלות נפוצות',
-  }
+  },
 ];
 
 export default {

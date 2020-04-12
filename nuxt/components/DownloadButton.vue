@@ -32,7 +32,6 @@
           :href="releasesUrl"
           target="_blank"
         >עוד...</a>
-        </span>
       </div>
     </div>
   </div>
@@ -94,13 +93,13 @@ export default {
       downloads: [],
       os: 'Unknown',
       showDownloads: false,
-      releasesUrl: `https://github.com/${GithubRepo}/releases`,
+      releasesUrl: `https://github.com/${GITHUB_REPO}/releases`,
     };
   },
   created() {
     this.os = getOS();
 
-    axios.get(`https://api.github.com/repos/${GithubRepo}/releases`)
+    axios.get(`https://api.github.com/repos/${GITHUB_REPO}/releases`)
       .then((response) => response.data)
       .then((releases) => releases
         .sort((a, b) => new Date(b.published_at) - new Date(a.published_at))

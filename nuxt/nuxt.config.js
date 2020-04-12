@@ -1,10 +1,5 @@
 import { DefinePlugin } from 'webpack';
-import fs from 'fs';
-import path from 'path';
-
-const faqDir = './content/FAQ';
-const allMD = fs.readdirSync(faqDir);
-const allContent = allMD.map((file) => fs.readFileSync(path.join(faqDir, file)).toString());
+import globals from './globals.config';
 
 export default {
   mode: 'universal',
@@ -78,10 +73,7 @@ export default {
     },
 
     plugins: [
-      new DefinePlugin({
-        GithubRepo: JSON.stringify('baruchiro/israeli-bank-scrapers-desktop'),
-        QaA_STRING_LIST: JSON.stringify(allContent),
-      }),
+      new DefinePlugin(globals),
     ],
   },
 };

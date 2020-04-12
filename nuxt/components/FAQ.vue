@@ -23,7 +23,7 @@ export default {
   },
   computed: {
     allQuestions() {
-      return QaA_STRING_LIST;
+      return FAQ_STRINGS_LIST;
     },
   },
 };

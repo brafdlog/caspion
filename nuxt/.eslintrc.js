@@ -1,3 +1,10 @@
+const allGlobals = require('./globals.config');
+
+const globals = Object.keys(allGlobals).reduce((acc, globalName) => {
+  acc[globalName] = 'readonly';
+  return acc
+}, {});
+
 module.exports = {
     settings: {
         'import/resolver': {
@@ -11,7 +18,10 @@ module.exports = {
     },
     extends: ['../.eslintrc.js'],
 
+    globals,
+
     rules: {
         'max-len': 0,
+        "import/no-extraneous-dependencies": ["error", {"devDependencies": ["*.config.js", "**/*.spec.js"]}]
     },
 }

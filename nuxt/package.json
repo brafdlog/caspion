@@ -10,7 +10,7 @@
     "test": "jest",
     "test:dev": "jest --watch",
     "lint": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter .",
-    "lint:fix": "eslint --ext .js,.vue --fix -f ./node_modules/eslint-friendly-formatter ."
+    "lint:fix": "yarn lint --fix"
   },
   "dependencies": {
     "@nuxtjs/markdownit": "^1.2.9",
@@ -33,6 +33,7 @@
     "jest": "^25.1.0",
     "jest-serializer-vue": "^2.0.2",
     "serve": "^11.3.0",
-    "vue-jest": "^4.0.0-beta.2"
+    "vue-jest": "^4.0.0-beta.2",
+    "webpack": "^4.42.1"
   }
 }
