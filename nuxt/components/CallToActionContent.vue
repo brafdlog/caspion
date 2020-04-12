@@ -1,19 +1,16 @@
 <template>
   <section class="container mx-auto text-center py-6 mb-12">
-    <h1 class="w-full my-2 text-5xl font-bold leading-tight text-center text-white">
+    <section-title white>
       צור קשר
-    </h1>
-    <div class="w-full mb-4">
-      <div class="h-1 mx-auto bg-white w-1/6 opacity-25 my-0 py-0 rounded-t" />
-    </div>
+    </section-title>
 
     <h3 class="my-4 text-3xl leading-tight">
       אנחנו שמחים לשמוע פידבקים, דיווחי באגים ובקשות לשיפור.
     </h3>
 
     <p>
-      אם יש לך רעיון לייבוא נתונים ממקומות נוספים חוץ מאשר הבנקים וחברות האשראי.
-      או תוכנה נוספת שאפשר לייצא אליה את הנתונים.
+      אם יש לך רעיון לייבוא נתונים ממקומות נוספים חוץ מאשר הבנקים וחברות האשראי.<br>
+      או תוכנה נוספת שאפשר לייצא אליה את הנתונים.<br>
       נשמח מאוד לשמוע!
     </p>
 
@@ -28,7 +25,12 @@
 </template>
 
 <script>
+import SectionTitle from '@/components/SectionTitle';
+
 export default {
   name: 'CallToActionContent',
+  components: {
+    'section-title': SectionTitle,
+  },
 };
 </script>

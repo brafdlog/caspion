@@ -38,26 +38,16 @@
               href="#"
             >ראשי</a>
           </li>
-          <li class="mr-3">
+          <li
+            v-for="section in sections"
+            :key="section.scrollTo"
+            class="mr-3"
+          >
             <a
-              v-scroll-to="'#features'"
+              v-scroll-to="section.scrollTo"
               class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4"
               href="#"
-            >תכונות</a>
-          </li>
-          <li class="mr-3">
-            <a
-              v-scroll-to="'#security'"
-              class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4"
-              href="#"
-            >אבטחה</a>
-          </li>
-          <li class="mr-3">
-            <a
-              v-scroll-to="'#contact'"
-              class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4"
-              href="#"
-            >צור קשר</a>
+            >{{ section.text }}</a>
           </li>
         </ul>
         <download-button
@@ -73,6 +63,25 @@
 <script>
 import Logo from '@/components/Logo';
 import DownloadButton from '@/components/DownloadButton';
+
+const sections = [
+  {
+    scrollTo: '#features',
+    text: 'תכונות',
+  },
+  {
+    scrollTo: '#security',
+    text: 'אבטחה',
+  },
+  {
+    scrollTo: '#contact',
+    text: 'צור קשר',
+  },
+  {
+    scrollTo: '#FAQ',
+    text: 'שאלות נפוצות',
+  }
+];
 
 export default {
   name: 'TheHeader',
@@ -103,6 +112,9 @@ export default {
         classList += ' hidden';
       }
       return classList;
+    },
+    sections() {
+      return sections;
     },
   },
   mounted() {

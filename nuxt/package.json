@@ -13,6 +13,7 @@
     "lint:fix": "eslint --ext .js,.vue --fix -f ./node_modules/eslint-friendly-formatter ."
   },
   "dependencies": {
+    "@nuxtjs/markdownit": "^1.2.9",
     "@nuxtjs/svg": "^0.1.6",
     "axios": "^0.19.2",
     "nuxt": "^2.11.0",

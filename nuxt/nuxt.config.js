@@ -1,4 +1,10 @@
 import { DefinePlugin } from 'webpack';
+import fs from 'fs';
+import path from 'path';
+
+const faqDir = './content/FAQ';
+const allMD = fs.readdirSync(faqDir);
+const allContent = allMD.map((file) => fs.readFileSync(path.join(faqDir, file)).toString());
 
 export default {
   mode: 'universal',
@@ -43,7 +49,11 @@ export default {
   modules: [
     '@nuxtjs/svg',
     'vue-scrollto/nuxt',
+    '@nuxtjs/markdownit',
   ],
+  markdownit: {
+    injected: true,
+  },
   purgeCSS: {
     whitelist: ['hidden'],
     whitelistPatterns: [/md:w-[1-6]/],
@@ -69,7 +79,8 @@ export default {
 
     plugins: [
       new DefinePlugin({
-        GithubRepo: '"baruchiro/israeli-bank-scrapers-desktop"',
+        GithubRepo: JSON.stringify('baruchiro/israeli-bank-scrapers-desktop'),
+        QaA_STRING_LIST: JSON.stringify(allContent),
       }),
     ],
   },
