@@ -1,12 +1,7 @@
-const fs = require('fs');
-const path = require('path');
-
-const faqDir = './content/FAQ';
-const allMD = fs.readdirSync(faqDir);
-const allContent = allMD.map((file) => fs.readFileSync(path.join(faqDir, file)).toString());
+const faq = require('./content/FAQ');
 
 const globals = {
-  FAQ_STRINGS_LIST: allContent,
+  FAQ_STRINGS_LIST: faq,
   GITHUB_REPO: 'baruchiro/israeli-bank-scrapers-desktop',
 };
 

@@ -1,6 +1,7 @@
 .qa {
   @apply bg-white;
   @apply text-gray-700;
+  @apply py-1;
 }
 
 .qa h1 {
@@ -27,6 +28,8 @@
   overflow: hidden;
 
   transition: max-height 0.25s ease-in-out;
+
+  @apply pr-4;
 }
 
 .qa-close p {
