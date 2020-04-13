@@ -112,7 +112,5 @@ export default {
 </script>
 
 <style>
-.v-expansion-panel-content__wrap {
-  padding: 5px !important;
-}
+
 </style>
