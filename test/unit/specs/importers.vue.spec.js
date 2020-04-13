@@ -1,6 +1,5 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import ElementUI from 'element-ui';
 
 import fakeStore from '../helpers/baseStore';
 import Importers from '../../../src/components/MainPage/Importers';
@@ -10,7 +9,6 @@ import { scrapers } from './../../../src/modules/scrapers';
 const localVue = createLocalVue();
 
 localVue.use(Vuex);
-localVue.use(ElementUI);
 
 describe('Importers', () => {
   let wrapper;
