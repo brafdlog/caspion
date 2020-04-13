@@ -5,53 +5,77 @@
         Importers
       </v-toolbar-title>
     </v-toolbar>
-    <el-collapse v-model="activeNames">
-      <el-collapse-item
-        title="Add new Importer"
-        name="1"
-        data-test="CollapseAddImporter"
-      >
-        <el-collapse
-          v-model="activeKey"
-          accordion
-        >
-          <add-scraper
-            v-for="scraper in scrapers"
-            :key="scraper.key"
-            :scraper="scraper"
-            class="add-scraper"
-          />
-        </el-collapse>
-      </el-collapse-item>
-    </el-collapse>
-    <el-collapse>
-      <el-card
+    <v-expansion-panels>
+      <v-expansion-panel
         v-for="importer in importers"
         :key="importer.id"
-        :body-style="{ padding: '0px' }"
+        class="ma-1"
       >
-        <el-collapse-item :name="importer.id">
-          <div slot="title">
-            <span>{{ importer.name }}</span>
-            <el-tooltip
-              effect="dark"
-              :disabled="importer.status.lastMessage === null"
-              :content="importer.status.lastMessage"
-              placement="right"
+        <v-expansion-panel-header disable-icon-rotate>
+          {{ importer.name }}
+          <template v-slot:actions>
+            <v-tooltip
+              v-if="importer.status.lastMessage !== null"
+              bottom
             >
-              <i
-                class="header-icon"
-                :class="iconClass(importer.status.success)"
-              />
-            </el-tooltip>
-          </div>
+              <template v-slot:activator="{ on }">
+                <v-icon
+                  :color="iconClass(importer.status.success).color"
+                  dark
+                  v-on="on"
+                >
+                  {{ iconClass(importer.status.success).icon }}
+                </v-icon>
+              </template>
+              <span>{{ importer.status.lastMessage }}</span>
+            </v-tooltip>
+          </template>
+        </v-expansion-panel-header>
+        <v-expansion-panel-content>
           <importer
             :key="importer.id"
             :importer="importer"
           />
-        </el-collapse-item>
-      </el-card>
-    </el-collapse>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
+    <v-navigation-drawer
+      v-model="drawer"
+      absolute
+      temporary
+      data-test="ToggleAddImporter"
+    >
+      <v-toolbar>
+        <v-toolbar-title>
+          Add new Importer
+        </v-toolbar-title>
+      </v-toolbar>
+      <v-expansion-panels>
+        <add-scraper
+          v-for="scraper in scrapers"
+          :key="scraper.key"
+          :scraper="scraper"
+          class="add-scraper"
+          @scraperAdded="drawer = !drawer"
+        />
+      </v-expansion-panels>
+    </v-navigation-drawer>
+    <v-fab-transition>
+      <v-btn
+        color="primary"
+        fab
+        dark
+        small
+        absolute
+        bottom
+        left
+        data-test="CollapseAddImporter"
+        style="margin-bottom: 39px;"
+        @click.stop="drawer = !drawer"
+      >
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+    </v-fab-transition>
   </div>
 </template>
 
@@ -65,8 +89,8 @@ export default {
   components: { AddScraper, Importer },
   data() {
     return {
-      activeNames: [],
-      activeKey: '',
+      id: null,
+      drawer: null,
     };
   },
   computed: {
@@ -77,10 +101,21 @@ export default {
   },
   methods: {
     iconClass(success) {
+      if (success === true) {
+        return {
+          icon: 'mdi-check-circle',
+          color: 'green',
+        };
+      }
+      if (success === false) {
+        return {
+          icon: 'mdi-alert-circle',
+          color: 'error',
+        };
+      }
       return {
-        'el-icon-question': success === null,
-        'el-icon-success': success,
-        'el-icon-error': success === false,
+        icon: 'mdi-help-circle',
+        color: 'info',
       };
     },
   },
@@ -88,35 +123,7 @@ export default {
 </script>
 
 <style scoped>
-
-.items {
-  margin-top: 8px;
-}
-
-.item {
-  display: flex;
-  margin-bottom: 6px;
-}
-
-.item .name {
-  color: #6a6a6a;
-  margin-right: 6px;
-}
-
-.item .value {
-  color: #35495e;
-  font-weight: bold;
-}
-
-.add-scraper {
-  margin: 10px;
-}
-
-i.header-icon.el-icon-error {
-  color: red;
-}
-
-i.header-icon.el-icon-success {
-  color: green;
+.v-expansion-panel-content__wrap {
+  padding: 5px !important;
 }
 </style>
