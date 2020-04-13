@@ -7,7 +7,7 @@
         </div>
 
         <div
-          v-for="(allLinks, name) in links"
+          v-for="(link, name) in links"
           :key="name"
           class="flex-1"
         >
@@ -16,16 +16,16 @@
           </p>
           <ul class="list-reset mb-6">
             <li
-              v-for="link in allLinks"
-              :key="link.text"
+              v-for="(href, text) in link"
+              :key="text"
               class="mt-2 inline-block mr-2 md:block md:mr-0"
             >
               <a
-                :href="link.href"
-                :target="link.href.startsWith('#')? '' : '_blank'"
+                v-scroll-to="href.startsWith('#') ? href : null"
+                :href="href.startsWith('#') ? '#' : href"
+                :target="href.startsWith('#')? null : '_blank'"
                 class="no-underline hover:underline text-gray-800 hover:text-orange-500"
-                v-scroll-to="link.scrollTo"
-              >{{ link.text }}</a>
+              >{{ text }}</a>
             </li>
           </ul>
         </div>
@@ -44,42 +44,19 @@ import Logo from '@/components/Logo';
 const repo = `https://github.com/${GITHUB_REPO}`;
 
 const links = {
-  קישורים: [
-    {
-      scrollTo: '#FAQ',
-      text: 'שאלות נפוצות',
-      href: '#',
-    },
-    {
-      scrollTo: '#contact',
-      text: 'צור קשר',
-      href: '#',
-    },
-    {
-      text: 'תמיכה',
-      href: `${repo}/issues/new`,
-    },
-  ],
-  משפטי: [
-    {
-      text: 'רשיון',
-      href: `${repo}/blob/master/LICENSE`,
-    },
-  ],
-  מפתחים: [
-    {
-      text: 'GitHub',
-      href: repo,
-    },
-    {
-      text: 'ברוך אודם',
-      href: 'https://github.com/baruchiro',
-    },
-    {
-      text: 'אריאל גורדון',
-      href: 'https://github.com/Arielgordon123',
-    },
-  ],
+  קישורים: {
+    'שאלות נפוצות': '#FAQ',
+    'צור קשר': '#contact',
+    תמיכה: `${repo}/issues/new`,
+  },
+  משפטי: {
+    רשיון: `${repo}/blob/master/LICENSE`,
+  },
+  מפתחים: {
+    GitHub: repo,
+    'ברוך אודם': 'https://github.com/baruchiro',
+    'אריאל גורדון': 'https://github.com/Arielgordon123',
+  },
 };
 
 export default {
