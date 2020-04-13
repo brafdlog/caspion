@@ -1,3 +1,5 @@
+const { globals } = require('./globals.config');
+
 module.exports = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
@@ -14,4 +16,5 @@ module.exports = {
     '<rootDir>/components/**/*.vue',
     '<rootDir>/pages/**/*.vue',
   ],
+  globals,
 };

@@ -1,6 +1,6 @@
-const allGlobals = require('./globals.config');
+const { stringified } = require('./globals.config');
 
-const globals = Object.keys(allGlobals).reduce((acc, globalName) => {
+const globals = Object.keys(stringified).reduce((acc, globalName) => {
   acc[globalName] = 'readonly';
   return acc
 }, {});

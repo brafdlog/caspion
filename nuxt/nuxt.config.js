@@ -1,5 +1,5 @@
 import { DefinePlugin } from 'webpack';
-import globals from './globals.config';
+import { stringified } from './globals.config';
 
 // only add `router.base = '/<repository-name>/'` if `GITHUB_ACTIONS` is `true`
 const routerBase = process.env.GITHUB_ACTIONS ? {
@@ -81,7 +81,7 @@ export default {
     },
 
     plugins: [
-      new DefinePlugin(globals),
+      new DefinePlugin(stringified),
     ],
   },
 };
