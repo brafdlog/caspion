@@ -1,48 +1,55 @@
 <template>
-  <el-form>
-    <el-form-item
+  <v-form>
+    <div
       v-if="isLogin"
     >
-      <el-select
+      <v-autocomplete
+        v-if="!createNewSheet"
         v-model="properties.spreadsheetId"
-        filterable
-        allow-create
-        default-first-option
-        placeholder="Choose Spreadsheet"
-      >
-        <el-option
-          v-for="spreadsheet in properties.spreadsheets"
-          :key="spreadsheet.id"
-          :label="spreadsheet.name"
-          :value="spreadsheet.id"
-        />
-      </el-select>
-      <el-alert
-        v-show="isNewSpreadsheet"
-        title="Will create a new spreadsheet"
-        type="info"
-        show-icon
+        :loading="isLoadingSheets"
+        :items="properties.spreadsheets"
+        :search-input.sync="search"
+        clearable
+        hide-details
+        hide-selected
+        item-text="name"
+        item-value="id"
+        label="Choose Spreadsheet"
       />
-    </el-form-item>
-    <el-form-item v-else>
-      <el-button
-        type="primary"
-        @click="login()"
+      <v-text-field
+        v-else
+        v-model="properties.spreadsheetId"
+        label="Name"
+        outlined
+      />
+      <v-switch
+        label="Create new sheet"
+        @change="resetSheet"
+      />
+      <v-alert
+        v-show="isNewSpreadsheet"
+        type="info"
       >
-        Login to Google
-      </el-button>
-    </el-form-item>
-    <el-form-item>
-      <el-button
+        Will create a new spreadsheet
+      </v-alert>
+      <v-btn
         :disabled="!properties.spreadsheetId"
-        type="primary"
+        color="primary"
         :loading="loading"
         @click="submitForm()"
       >
         Export
-      </el-button>
-    </el-form-item>
-  </el-form>
+      </v-btn>
+    </div>
+    <div v-else>
+      <v-btn
+        color="primary"
+        @click="login()"
+      >
+        Login to Google
+      </v-btn>
+    </div>
+  </v-form>
 </template>
 
 <script>
@@ -64,6 +71,9 @@ export default {
       },
       oauth2Client: null,
       loading: false,
+      isLoadingSheets: false,
+      search: null,
+      createNewSheet: false,
     };
   },
   computed: {
@@ -79,6 +89,24 @@ export default {
       storeProperties: (state) => state.Exporters[name],
       transactions: (state) => state.Transactions.transactions,
     }),
+  },
+  watch: {
+    search() {
+      // Items have already been loaded
+      if (this.properties.spreadsheets.length > 0) return;
+
+      this.isLoadingSheets = true;
+
+      // Lazily load input items
+      listAllSpreadsheets(this.oauth2Client)
+        .then((res) => {
+          this.properties.spreadsheets = res;
+        })
+        .catch((e) => {
+          this.$logger.error(e.message);
+        })
+        .finally(() => { this.isLoadingSheets = false; });
+    },
   },
   created() {
     this.properties = { ...this.properties, ...this.storeProperties };
@@ -130,7 +158,6 @@ export default {
     async login() {
       try {
         this.oauth2Client = await CreateClient();
-        this.properties.spreadsheets = await listAllSpreadsheets(this.oauth2Client);
       } catch (e) {
         this.$logger.error(e.message);
         if (e.stack) this.$logger.verbose(e.stack);
@@ -149,6 +176,11 @@ export default {
       this.$logger.info(`Created new spreadsheet: '${JSON.stringify(spreadsheetStructured)}'`);
       this.properties.spreadsheets.push(spreadsheetStructured);
       this.properties.spreadsheetId = spreadsheetStructured.id;
+      this.createNewSheet = false;
+    },
+    resetSheet() {
+      this.properties.spreadsheetId = '';
+      this.createNewSheet = !this.createNewSheet;
     },
   },
 };

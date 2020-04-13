@@ -1,21 +1,23 @@
 <template>
-  <el-form>
-    <el-form-item label="Folder to save">
-      <el-input v-model="properties.folder" />
-    </el-form-item>
-    <el-form-item label="File to save">
-      <el-input v-model="properties.file" />
-    </el-form-item>
-    <el-form-item>
-      <el-button
-        type="primary"
-        :loading="loading"
-        @click="submitForm()"
-      >
-        Export
-      </el-button>
-    </el-form-item>
-  </el-form>
+  <v-form>
+    <v-text-field
+      v-model="properties.folder"
+      label="Folder to save"
+      outlined
+    />
+    <v-text-field
+      v-model="properties.file"
+      label="File to save"
+      outlined
+    />
+    <v-btn
+      color="primary"
+      :loading="loading"
+      @click="submitForm()"
+    >
+      Export
+    </v-btn>
+  </v-form>
 </template>
 
 <script>
@@ -87,4 +89,6 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+
+</style>
