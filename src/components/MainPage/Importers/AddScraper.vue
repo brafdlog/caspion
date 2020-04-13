@@ -1,34 +1,49 @@
 <template>
-  <el-collapse-item
-    :title="scraper.name"
-    :name="scraper.key"
-    :data-test="scraper.key"
-  >
-    <el-form
-      ref="addScraperForm"
-      :model="importerToAdd"
+  <v-expansion-panel class="ma-1">
+    <v-expansion-panel-header
+      expand-icon="mdi-menu-down"
+      :data-test="scraper.key"
     >
-      <el-form-item
-        v-for="(value, loginField) in importerToAdd.loginFields"
-        :key="loginField"
-        :label="loginField"
+      {{ scraper.name }}
+    </v-expansion-panel-header>
+    <v-expansion-panel-content>
+      <v-form
+        ref="addScraperForm"
+        :model="importerToAdd"
       >
-        <el-input
-          v-model="importerToAdd.loginFields[loginField]"
-          :show-password="loginField == 'password'"
-        />
-      </el-form-item>
-      <el-form-item>
-        <el-button
-          type="primary"
-          :disabled="!isFormValid"
-          @click="submitForm()"
+        <v-container
+          class="py-0"
         >
-          Add
-        </el-button>
-      </el-form-item>
-    </el-form>
-  </el-collapse-item>
+          <v-row
+            v-for="(value, loginField) in importerToAdd.loginFields"
+            :key="loginField"
+          >
+            <v-col
+              cols="12"
+              class="pa-0"
+              :label="loginField"
+            >
+              <v-text-field
+                v-model="importerToAdd.loginFields[loginField]"
+                :label="loginField"
+                :type="loginField == 'password' ? 'password' : 'text'"
+                outlined
+              />
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-btn
+              color="primary"
+              :disabled="!isFormValid"
+              @click="submitForm()"
+            >
+              Add
+            </v-btn>
+          </v-row>
+        </v-container>
+      </v-form>
+    </v-expansion-panel-content>
+  </v-expansion-panel>
 </template>
 
 <script>
@@ -65,9 +80,13 @@ export default {
   methods: {
     async submitForm() {
       if (this.isFormValid) {
-        const encrypted = await encryptProperty(this.importerToAdd, 'loginFields');
+        const encrypted = await encryptProperty(
+          this.importerToAdd,
+          'loginFields',
+        );
         this.addImporterAction(encrypted);
         this.resetForm();
+        this.$emit('scraperAdded', true);
       }
     },
     resetForm() {
@@ -79,14 +98,5 @@ export default {
 </script>
 
 <style scoped>
-.add-scraper {
-  display: flex;
-  flex-direction: column;
-}
 
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
 </style>
