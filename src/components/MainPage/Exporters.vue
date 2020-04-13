@@ -5,36 +5,41 @@
         Exporters
       </v-toolbar-title>
     </v-toolbar>
-    <el-collapse
-      v-model="accordionActiveItem"
-      accordion
-    >
-      <el-collapse-item
+    <v-expansion-panels>
+      <v-expansion-panel
         v-for="comp in exportersComponents"
         :key="comp.name"
         :name="comp.name"
       >
-        <div slot="title">
-          <span>{{ comp.title }}</span>
-          <el-tooltip
-            effect="dark"
-            :disabled="statuses[comp.name].lastMessage === null"
-            :content="statuses[comp.name].lastMessage"
-            placement="left"
-          >
-            <i
-              class="header-icon"
-              :class="iconClass(statuses[comp.name].success)"
-            />
-          </el-tooltip>
-        </div>
-        <component
-          :is="comp.name"
-          :message.sync="statuses[comp.name].lastMessage"
-          :success.sync="statuses[comp.name].success"
-        />
-      </el-collapse-item>
-    </el-collapse>
+        <v-expansion-panel-header disable-icon-rotate>
+          {{ comp.title }}
+          <template v-slot:actions>
+            <v-tooltip
+              v-if="statuses[comp.name].lastMessage !== null"
+              left
+            >
+              <template v-slot:activator="{ on }">
+                <v-icon
+                  :color="iconClass(statuses[comp.name].success).color"
+                  dark
+                  v-on="on"
+                >
+                  {{ iconClass(statuses[comp.name].success).icon }}
+                </v-icon>
+              </template>
+              <span>{{ statuses[comp.name].lastMessage }}</span>
+            </v-tooltip>
+          </template>
+        </v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <component
+            :is="comp.name"
+            :message.sync="statuses[comp.name].lastMessage"
+            :success.sync="statuses[comp.name].success"
+          />
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
   </div>
 </template>
 
@@ -66,10 +71,21 @@ export default {
   },
   methods: {
     iconClass(success) {
+      if (success === true) {
+        return {
+          icon: 'mdi-check-circle',
+          color: 'green',
+        };
+      }
+      if (success === false) {
+        return {
+          icon: 'mdi-alert-circle',
+          color: 'error',
+        };
+      }
       return {
-        'el-icon-question': success === null,
-        'el-icon-success': success,
-        'el-icon-error': success === false,
+        icon: 'mdi-help-circle',
+        color: 'info',
       };
     },
   },
@@ -77,11 +93,4 @@ export default {
 </script>
 
 <style scoped>
-i.header-icon.el-icon-error {
-  color: red;
-}
-
-i.header-icon.el-icon-success {
-  color: green;
-}
 </style>
