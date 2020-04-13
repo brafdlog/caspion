@@ -24,7 +24,7 @@
                 :href="link.href"
                 :target="link.href.startsWith('#')? '' : '_blank'"
                 class="no-underline hover:underline text-gray-800 hover:text-orange-500"
-                @click="(e) => linkClick(e, link.scrollTo)"
+                v-scroll-to="link.scrollTo"
               >{{ link.text }}</a>
             </li>
           </ul>
@@ -90,14 +90,6 @@ export default {
   computed: {
     links() {
       return links;
-    },
-  },
-  methods: {
-    linkClick(e, scrollTo) {
-      if (scrollTo) {
-        e.preventDefault();
-        this.$scrollTo(scrollTo);
-      }
     },
   },
 };
