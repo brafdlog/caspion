@@ -1,0 +1,36 @@
+name: Test and Deploy Github Pages with Nuxt
+
+on:
+  pull_request:
+  push:
+    branches: master
+    paths:
+      - 'nuxt/**'
+      - '.github/workflows/*nuxt*.yml'
+
+jobs:
+  test:
+    runs-on: [ubuntu-latest]
+    defaults:
+      run:
+        working-directory: nuxt
+    steps:
+      - uses: actions/checkout@v2
+      - run: yarn
+      - run: yarn lint
+      - run: yarn test
+  
+  
+  deploy:
+    if: github.ref == 'refs/heads/master'
+    needs: test
+    defaults:
+      run:
+        working-directory: nuxt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: yarn
+        run: yarn
+      - name: deploy
+        run: yarn deploy -r "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/baruchiro/israeli-bank-scrapers-desktop.git" -u "Baruch Odem <baruchiro@gmail.com>" -m "$GITHUB_SHA"
