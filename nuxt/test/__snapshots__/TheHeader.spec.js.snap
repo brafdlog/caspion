@@ -15,8 +15,8 @@ exports[`TheHeader renders properly 1`] = `
         <li class=\\"mr-3\\"><a href=\\"#\\" class=\\"inline-block py-2 px-4 text-black font-bold no-underline\\">ראשי</a></li>
         <li class=\\"mr-3\\"><a href=\\"#\\" class=\\"inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4\\">תכונות</a></li>
         <li class=\\"mr-3\\"><a href=\\"#\\" class=\\"inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4\\">אבטחה</a></li>
-        <li class=\\"mr-3\\"><a href=\\"#\\" class=\\"inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4\\">צור קשר</a></li>
         <li class=\\"mr-3\\"><a href=\\"#\\" class=\\"inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4\\">שאלות נפוצות</a></li>
+        <li class=\\"mr-3\\"><a href=\\"#\\" class=\\"inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4\\">צור קשר</a></li>
       </ul>
       <download-button-stub buttonstyle=\\"bg-white text-gray-800 shadow opacity-75 mt-4 lg:mt-0\\"></download-button-stub>
     </div>

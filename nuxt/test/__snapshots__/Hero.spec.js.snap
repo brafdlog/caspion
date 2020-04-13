@@ -3,6 +3,6 @@
 exports[`Hero renders properly 1`] = `
 "<div id=\\"hero\\">
   <hero-content-stub></hero-content-stub>
-  <div class=\\"relative -mt-6 lg:-mt-20\\"><img src=\\"~assets/img/hero-wave.svg\\" alt=\\"\\"></div>
+  <div class=\\"relative -mt-12 lg:-mt-24\\"><img src=\\"~assets/img/hero-wave.svg\\" alt=\\"\\"></div>
 </div>"
 `;

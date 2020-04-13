@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`HeroContent renders properly 1`] = `
-"<div class=\\"pt-24\\">
+"<div class=\\"pt-24 md:mb-4 lg:mb-16 xl:mb-3\\">
   <div class=\\"container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center\\">
     <div class=\\"flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-right\\">
       <p class=\\"uppercase tracking-loose w-full\\">
@@ -17,7 +17,7 @@ exports[`HeroContent renders properly 1`] = `
         <downloadbutton-stub showmoredownloads=\\"true\\" buttonstyle=\\"bg-white text-gray-800 shadow-lg\\"></downloadbutton-stub>
       </div>
     </div>
-    <div class=\\"w-full md:w-3/5 py-6 text-center\\"><img src=\\"~/assets/img/hero.png\\" alt=\\"\\" class=\\"w-full md:w-4/5 z-50\\"></div>
+    <div class=\\"w-full md:w-3/5 py-6 md:pr-2 text-center\\"><img src=\\"~/assets/img/main-screenshot.png\\" alt=\\"\\" class=\\"w-full \\"></div>
   </div>
 </div>"
 `;

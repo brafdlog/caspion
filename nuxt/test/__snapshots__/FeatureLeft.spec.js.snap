@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`FeatureLeft renders properly 1`] = `
-"<div class=\\"flex flex-wrap flex-col-reverse sm:flex-row\\">
+"<div class=\\"flex flex-wrap flex-col-reverse sm:flex-row items-center\\">
   <div class=\\"w-full sm:w-1/2 p-6 mt-6\\"></div>
   <div class=\\"w-full sm:w-1/2 p-6 mt-6\\">
     <div class=\\"align-middle\\">
