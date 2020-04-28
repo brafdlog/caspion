@@ -6,7 +6,7 @@ The most annoying part of this process is transferring the data from the banks o
 
 This project aims to automate this process by fetching the data automatically from your Israeli financial institutions and sending it to the budgeting tool of your choice.
 
-In addition it can automatically set an expense category for transactions according to predefined patterns.
+In addition, it can automatically set an expense category for transactions according to predefined patterns.
 
 Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israeli-bank-scrapers) npm package.
 
@@ -84,18 +84,31 @@ YNAB is a budgeting software. If you want to manage your budget there and have y
 
 ## Google spreadsheet integration setup (optional)
 
-Note: The integration with google spreadsheets is currently very parital. You can play around with it but it is not yet ready for real use.
+Note: The integration with google spreadsheets is currently very partial. You can play around with it but it is not yet ready for real use.
 
-- Create a spreadsheet in google spreadsheet
-- The url will look something like: `https://docs.google.com/spreadsheets/d/########################/edit#gid=0`
-- The ############ part is the **spreadsheetId**
-- Give a name to the sheet that will contain the transactions (it can stay with the default name e.g Sheet1), this is the **sheetName**
-- In the google api console create a `google_api_credentials.json` allowing access to google spreadsheets, and save it in your file system.
-- Update the JSON as follows:
+- Setup api access in the google api console as follows:
+  - Go to the [google api console](https://console.developers.google.com/)
+  - Create a project
+  - Click enable apis and services
+    - Find google sheets and enable it
+  - Click create credentials
+  - Create service account
+  - Give it a name and copy the **service account ID** (which looks like an email address), we will need it later.
+  - Continue twice until you reach a page with a button that says "Create key"
+  - Click on the "Create key" button
+  - Choose JSON and create it
+  - Save this json somewhere in the file system
+- Create spreadsheet
+  - Create a spreadsheet in google spreadsheet
+  - The url will look something like: `https://docs.google.com/spreadsheets/d/########################/edit#gid=0`
+  - The ############ part is the **spreadsheetId**
+  - Give a name to the sheet that will contain the transactions (it can stay with the default name e.g Sheet1), this is the **sheetName**
+  - Share the spreadsheet with the service account ID that you got when creating the service account
+- Update the config JSON as follows:
   - Set `outputVendors.googleSheets.active` to `true`
   - Set `outputVendors.googleSheets.options.sheetName` to the sheetName
   - Set `outputVendors.googleSheets.options.spreadsheetId` to the spreadsheetId
-  - Set `outputVendors.googleSheets.options.credentialsFilePath` to the path in the file system where you saved the `google_api_credentials.json` file
+  - Set `outputVendors.googleSheets.options.credentialsFilePath` to the path in the file system where you saved the google credentials json file
 
 #### Disclaimer
 
