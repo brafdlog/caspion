@@ -18,15 +18,19 @@ async function scrapeAndUpdateOutputVendors() {
     .toDate();
 
   const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config, startDate);
-  const executionResult = await createTransactionsInExternalVendors(config, companyIdToTransactions, startDate);
-
-  const resultToLog = `
+  try {
+    const executionResult = await createTransactionsInExternalVendors(config, companyIdToTransactions, startDate);
+    const resultToLog = `
     Results of job:
     ${JSON.stringify(executionResult, null, 2)}
   `;
-  console.log(resultToLog);
+    console.log(resultToLog);
 
-  return executionResult;
+    return executionResult;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
 }
 
 async function scrapeFinancialAccountsAndFetchTransactions(config, startDate) {
