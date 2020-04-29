@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import { Edit, Save, Delete } from '@material-ui/icons';
-import { Select, MenuItem, Checkbox } from '@material-ui/core';
+import { Select, Checkbox } from '@material-ui/core';
+import MenuItem from '@material-ui/core/MenuItem';
 import styles from './FinancialAccountConfig.scss';
 import { FINANCIAL_COMPANIES_CONFIG } from '../../../../constants/financialCompaniesConfig';
 
@@ -39,7 +40,7 @@ const FinancialAccountConfig = props => {
             }}
           >
             {Object.values(FINANCIAL_COMPANIES_CONFIG).map(financialCompanyConfig => (
-              <MenuItem value={financialCompanyConfig.id}>{financialCompanyConfig.displayName}</MenuItem>
+              <MenuItem key={financialCompanyConfig.id} value={financialCompanyConfig.id}>{financialCompanyConfig.displayName}</MenuItem>
             ))}
           </Select>
           <input value={username} onChange={e => setUsername(e.target.value)} />
