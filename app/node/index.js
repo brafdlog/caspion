@@ -8,6 +8,7 @@ const categoryCalculation = require('./categoryCalculationScript');
 const configManager = require('./configManager');
 
 const TRANSACTION_STATUS_COMPLETED = 'completed';
+const DATE_FORMAT = 'DD/MM/YYYY';
 
 async function scrapeAndUpdateOutputVendors() {
   const config = await configManager.getConfig();
@@ -41,10 +42,8 @@ async function scrapeFinancialAccountsAndFetchTransactions(config, startDate) {
     try {
       console.log(`=================== Start fetching transactions for ${companyId} ===================`);
       const scrapeResult = await fetchTransactions(companyId, credentials, startDate, config);
-      let transactions = classifyTransactionCategories(scrapeResult, companyId);
-      // Filter out pending transactions
-      transactions = transactions.filter(transaction => transaction.status === TRANSACTION_STATUS_COMPLETED);
-      transactions.sort(transactionsDateComperator);
+      let transactions = extractTransactionsFromScrapeResult(scrapeResult, companyId);
+      transactions = await postProcessTransactions(transactions);
       companyIdToTransactions[companyId] = transactions;
       console.log(`=================== Finished fetching transactions for ${companyId} ===================`);
     } catch (e) {
@@ -56,7 +55,7 @@ async function scrapeFinancialAccountsAndFetchTransactions(config, startDate) {
 }
 
 async function fetchTransactions(companyId, credentials, startDate, config) {
-  console.log(`Start scraping ${companyId} from date: ${moment(startDate).format('DD/MM/YYYY')}`);
+  console.log(`Start scraping ${companyId} from date: ${moment(startDate).format(DATE_FORMAT)}`);
   const scrapeResult = await bankScraper.scrape({
     companyId,
     credentials,
@@ -72,9 +71,7 @@ async function fetchTransactions(companyId, credentials, startDate, config) {
   return scrapeResult;
 }
 
-function classifyTransactionCategories(scrapeResult, companyId) {
-  console.log('Start category enrichment');
-
+function extractTransactionsFromScrapeResult(scrapeResult, companyId) {
   const transactions = [];
   scrapeResult.accounts.forEach(account => {
     const accountTransactions = account.txns.map(txn => ({
@@ -82,12 +79,19 @@ function classifyTransactionCategories(scrapeResult, companyId) {
       companyId,
       accountNumber: account.accountNumber
     }));
-    accountTransactions.forEach(accountTransaction => {
-      accountTransaction.category = categoryCalculation.getCategoryNameByTransactionDescription(accountTransaction.description);
-    });
     transactions.push(...accountTransactions);
   });
-  console.log('Finished category enrichment');
+  return transactions;
+}
+
+async function postProcessTransactions(transactions) {
+  // Filter out pending transactions
+  transactions = transactions.filter(transaction => transaction.status === TRANSACTION_STATUS_COMPLETED);
+  transactions.sort(transactionsDateComperator);
+  transactions = transactions.map(transaction => ({
+    ...transaction,
+    category: categoryCalculation.getCategoryNameByTransactionDescription(transaction.description)
+  }));
   return transactions;
 }
 
