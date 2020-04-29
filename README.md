@@ -34,7 +34,7 @@ Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israel
   - [x] Account ids from financial institutions
 - [ ] Take classification logic from a json instead of code
 - [ ] Google sheets integration
-  - [ ] Add ui for authenticating with google instead of oauth link in the console
+  - [ ] Add ui for authenticating with google instead of using service account
   - [ ] Create a google spreadsheets template which is already set up with financial tracking logic and when a user connects to google sheets automatically clone that spreadsheet as a starting point for the user. See [paamonim's sheet](https://docs.google.com/spreadsheets/d/11yMAvBwtvlPzA855q8BPRMrjrdAUBsd4HKA7km1-LG0/edit?usp=sharing) for reference.
 - [ ] Create a UI for setting up the configurations so users who are not programmers could use it
   - [x] Create an electron app
@@ -45,6 +45,8 @@ Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israel
 - [ ] Allow classifying transactions that were not automatically detected and save these so future transactions like those will be automatically classified
 - [ ] Run periodically
 - [ ] Add tests
+- [ ] Simplify electron / react / webpack setup
+- [ ] Typescript
 - [ ] Allow passing the user's own encryption key for encryption the financial institution credentials
 
 ## Initial setup
