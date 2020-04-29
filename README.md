@@ -45,6 +45,7 @@ Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israel
 - [ ] Allow classifying transactions that were not automatically detected and save these so future transactions like those will be automatically classified
 - [ ] Run periodically
 - [ ] Add tests
+- [ ] Setup ci pipeline
 - [ ] Simplify electron / react / webpack setup
 - [ ] Typescript
 - [ ] Allow passing the user's own encryption key for encryption the financial institution credentials
