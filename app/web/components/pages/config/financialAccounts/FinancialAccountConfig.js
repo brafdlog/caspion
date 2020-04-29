@@ -2,8 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import { Edit, Save, Delete } from '@material-ui/icons';
-import { Select, Checkbox } from '@material-ui/core';
+import Checkbox from '@material-ui/core/Checkbox';
 import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 import styles from './FinancialAccountConfig.scss';
 import { FINANCIAL_COMPANIES_CONFIG } from '../../../../constants/financialCompaniesConfig';
 
