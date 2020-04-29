@@ -2,6 +2,7 @@ export const FINANCIAL_COMPANIES = {
   LEUMI: 'leumi',
   VISA_CAL: 'visaCal',
   LEUMI_CARD: 'leumiCard',
+  BEINLEUMI: 'beinleumi',
   HAPOALIM: 'hapoalim',
   DISCOUNT: 'discount',
   OTSAR_HAHAYAL: 'otsarHahayal',
@@ -18,6 +19,11 @@ export const FINANCIAL_COMPANIES_CONFIG = {
   [FINANCIAL_COMPANIES.VISA_CAL]: {
     logoImageSrc: 'https://cdn.freebiesupply.com/logos/large/2x/visa-2-logo-png-transparent.png',
     displayName: 'ויזה כאל'
+  },
+  [FINANCIAL_COMPANIES.BEINLEUMI]: {
+    logoImageSrc:
+      'https://is4-ssl.mzstatic.com/image/thumb/Purple113/v4/0e/34/92/0e349207-895b-7ec8-0f16-dc2f959c3185/AppIcon-0-0-1x_U007emarketing-0-0-0-5-0-0-85-220.jpeg/434x0w.jpg',
+    displayName: 'הבינלאומי'
   },
   [FINANCIAL_COMPANIES.LEUMI_CARD]: {
     logoImageSrc:

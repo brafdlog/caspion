@@ -244,7 +244,7 @@
     "electron-updater": "^3.2.3",
     "googleapis": "^37.1.0",
     "history": "^4.7.2",
-    "israeli-bank-scrapers": "^0.8.1",
+    "israeli-bank-scrapers": "0.9.1-dev.fd941b8da",
     "lodash": "~4.17.15",
     "moment": "~2.24.0",
     "react": "^16.8.6",
