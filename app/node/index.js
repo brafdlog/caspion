@@ -90,9 +90,14 @@ async function postProcessTransactions(transactions) {
   transactions.sort(transactionsDateComperator);
   transactions = transactions.map(transaction => ({
     ...transaction,
-    category: categoryCalculation.getCategoryNameByTransactionDescription(transaction.description)
+    category: categoryCalculation.getCategoryNameByTransactionDescription(transaction.description),
+    hash: calculateTransactionHash(transaction)
   }));
   return transactions;
+}
+
+function calculateTransactionHash({ date, chargedAmount, description, memo, companyId, accountNumber }) {
+  return `${date}_${chargedAmount}_${description}_${memo}_${companyId}_${accountNumber}`;
 }
 
 async function createTransactionsInExternalVendors(config, companyIdToTransactions, startDate) {
@@ -167,5 +172,6 @@ module.exports = {
   scrapeAndUpdateOutputVendors,
   getYnabAccountDetails: ynab.getYnabAccountDetails,
   configManager,
-  getFinancialAccountNumbers
+  getFinancialAccountNumbers,
+  calculateTransactionHash
 };

@@ -1,8 +1,10 @@
+const _ = require('lodash');
 const fs = require('fs');
 const { promisify } = require('util');
 const { google } = require('googleapis/build/src/index');
 
 const readFile = promisify(fs.readFile);
+const sheets = google.sheets({ version: 'v4' });
 
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 
@@ -13,8 +15,6 @@ const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
  */
 async function appendToSpreadsheet({ spreadsheetId, range, values, credentialsFilePath }) {
   const jwtClient = await loadCredentialsAndAuthorize(credentialsFilePath);
-
-  const sheets = google.sheets({ version: 'v4' });
 
   const resource = {
     values
@@ -31,6 +31,18 @@ async function appendToSpreadsheet({ spreadsheetId, range, values, credentialsFi
   return result;
 }
 
+async function getExistingHashes({ spreadsheetId, credentialsFilePath, sheetName, hashColumn = 'H' }) {
+  const jwtClient = await loadCredentialsAndAuthorize(credentialsFilePath);
+
+  const result = await sheets.spreadsheets.values.get({
+    auth: jwtClient,
+    spreadsheetId,
+    range: `${sheetName}!${hashColumn}:${hashColumn}`
+  });
+  const existingHashes = _.flatten(result.data.values);
+  return existingHashes;
+}
+
 async function loadCredentialsAndAuthorize(credentialsFilePath) {
   const credentialsStr = await readFile(credentialsFilePath, 'utf8');
   const credentials = JSON.parse(credentialsStr);
@@ -42,5 +54,6 @@ async function loadCredentialsAndAuthorize(credentialsFilePath) {
 }
 
 module.exports = {
-  appendToSpreadsheet
+  appendToSpreadsheet,
+  getExistingHashes
 };
