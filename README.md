@@ -17,7 +17,7 @@ Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israel
 - One click to fetch transactions from multiple Israeli banks and credit cards
 - A configuration for automatically classifying transactions to categories according to predefined patterns
 - Creating transactions in YNAB automatically using YNAB's api
-- Initial implementation of creating transactions in a google spreadsheet of your choice (currently a very partial integration)
+- Initial implementation of creating transactions in a google spreadsheet of your choice
 - A very basic UI for configuration
 - Most of the configuration is currently in an encrypted JSON file and options that are not available in the ui can be changed by updating the JSON manually.
 
@@ -32,23 +32,28 @@ Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israel
   - [x] Prints categories from YNAB
   - [x] Expose the result of this script
   - [x] Account ids from financial institutions
-- [ ] Take classification logic from a json instead of code
+- [ ] Implement a local db of transactions and classifications
+  - [ ] Use the past category classifications to automatically classify transactions that were classified already in the past
+  - [ ] Periodically fetch from excel/ynab the transaction category classifications back to the local db to make the app learn over time
 - [ ] Google sheets integration
-  - [ ] Add ui for authenticating with google instead of using service account
-  - [ ] Create a google spreadsheets template which is already set up with financial tracking logic and when a user connects to google sheets automatically clone that spreadsheet as a starting point for the user. See [paamonim's sheet](https://docs.google.com/spreadsheets/d/11yMAvBwtvlPzA855q8BPRMrjrdAUBsd4HKA7km1-LG0/edit?usp=sharing) for reference.
+  - [x] Create a google spreadsheets template which is set up with basic financial tracking logic.
+  - [ ] Authenticate with google using oauth flow from the ui instead of using a service account.
+  - [ ] Make the code create the google sheet that the app will work with, thus reducing the needed permissions to google sheets
+- [ ] YNAB integration
+  - [ ] Setup oauth flow for ynab instead of copying the api key. [See docs here](https://api.youneedabudget.com/#outh-applications)
 - [ ] Create a UI for setting up the configurations so users who are not programmers could use it
   - [x] Create an electron app
   - [x] Screen for adding financial institutions to track
   - [ ] Screen for setting up google sheets integration
   - [ ] Screen for connecting to YNAB
   - [ ] Screen for defining logic of transaction category classification
-- [ ] Allow classifying transactions that were not automatically detected and save these so future transactions like those will be automatically classified
 - [ ] Run periodically
 - [ ] Add tests
 - [ ] Setup ci pipeline
 - [ ] Simplify electron / react / webpack setup
 - [ ] Typescript
 - [ ] Allow passing the user's own encryption key for encryption the financial institution credentials
+- [ ] Make the classification logic configurable from the ui
 
 ## Initial setup
 
