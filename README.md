@@ -92,8 +92,6 @@ YNAB is a budgeting software. If you want to manage your budget there and have y
 
 ## Google spreadsheet integration setup (optional)
 
-Note: The integration with google spreadsheets is currently very partial. You can play around with it but it is not yet ready for real use.
-
 - Setup api access in the google api console as follows:
   - Go to the [google api console](https://console.developers.google.com/)
   - Create a project
@@ -107,11 +105,11 @@ Note: The integration with google spreadsheets is currently very partial. You ca
   - Choose JSON and create it
   - Save this json somewhere in the file system
 - Create spreadsheet
-  - Create a spreadsheet in google spreadsheet
-  - The url will look something like: `https://docs.google.com/spreadsheets/d/########################/edit#gid=0`
+  - You can start from [this template](https://docs.google.com/spreadsheets/d/1X3vhn9YvJPMi_wrldV0VChNXB2z7paSuVoIQ2J8j6vo/template/preview) that has basic budget tracking built in. Or create your own.
+  - After creating the spreadsheet, the url of the spreadsheet will look something like: `https://docs.google.com/spreadsheets/d/########################/edit#gid=0`
   - The ############ part is the **spreadsheetId**
   - Give a name to the sheet that will contain the transactions (it can stay with the default name e.g Sheet1), this is the **sheetName**
-  - Share the spreadsheet with the service account ID that you got when creating the service account
+  - From the spreadsheet screen click share, and share it with the service account ID that you got when creating the service account (see above).
 - Update the config JSON as follows:
   - Set `outputVendors.googleSheets.active` to `true`
   - Set `outputVendors.googleSheets.options.sheetName` to the sheetName
@@ -120,4 +118,4 @@ Note: The integration with google spreadsheets is currently very partial. You ca
 
 #### Disclaimer
 
-Providing your financial account credentials to software is not risk free. We will do our best to protect your credentials but we take no responsibility for any possible damages. If you want to use this we suggest you ask your financial institution for credentials for a user that has only read access to the relevant account and use those credentials.
+Providing your financial account credentials to software is not risk free. We will do our best to protect your credentials, but we take no responsibility for any possible damages. If you want to use this we suggest you ask your financial institution for credentials for a user that has only read access to the relevant account and use those credentials to reduce the potential risk.

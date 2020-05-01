@@ -26,7 +26,7 @@ async function init(config) {
     config = await configManager.getConfig();
   }
   ynabConfig = config.outputVendors.ynab;
-  
+
   if (!ynabConfig.active) {
     console.log('Ynab not enabled, skipping');
     return;
