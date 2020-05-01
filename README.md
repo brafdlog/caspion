@@ -32,9 +32,6 @@ Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israel
   - [x] Prints categories from YNAB
   - [x] Expose the result of this script
   - [x] Account ids from financial institutions
-- [ ] Implement a local db of transactions and classifications
-  - [ ] Use the past category classifications to automatically classify transactions that were classified already in the past
-  - [ ] Periodically fetch from excel/ynab the transaction category classifications back to the local db to make the app learn over time
 - [ ] Google sheets integration
   - [x] Create a google spreadsheets template which is set up with basic financial tracking logic.
   - [ ] Authenticate with google using oauth flow from the ui instead of using a service account.
@@ -47,6 +44,9 @@ Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israel
   - [ ] Screen for setting up google sheets integration
   - [ ] Screen for connecting to YNAB
   - [ ] Screen for defining logic of transaction category classification
+- [ ] Implement a local db of transactions and classifications
+  - [ ] Use the past category classifications to automatically classify transactions that were classified already in the past
+  - [ ] Periodically fetch from excel/ynab the transaction category classifications back to the local db to make the app learn over time
 - [ ] Run periodically
 - [ ] Add tests
 - [ ] Setup ci pipeline
