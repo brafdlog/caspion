@@ -119,7 +119,8 @@ async function createTransactionsInExternalVendors(config, companyIdToTransactio
 
   for (let j = 0; j < outputVendors.length; j++) {
     const vendor = outputVendors[j];
-    if (config.outputVendors[vendor.name].active) {
+    const vendorConfig = config.outputVendors[vendor.name];
+    if (vendorConfig && vendorConfig.active) {
       const vendorResult = await createTransactionsInVedor(vendor, allTransactions, startDate);
       executionResult[vendor.name] = vendorResult;
     }
