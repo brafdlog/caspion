@@ -56,6 +56,5 @@ log
 bin
 ynabConfig.json
 budgetApps/ynab/consts.js
-categoryCalculationScript.js
 config.js
 config.json

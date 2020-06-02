@@ -4,7 +4,7 @@ const moment = require('moment');
 const bankScraper = require('./bankScraper');
 const ynab = require('./outputVendors/ynab/ynab');
 const googleSheets = require('./outputVendors/googleSheets/googleSheets');
-const categoryCalculation = require('./categoryCalculationScript');
+const categoryCalculation = require('./categories/categoryCalculation');
 const configManager = require('./configManager');
 
 const TRANSACTION_STATUS_COMPLETED = 'completed';
