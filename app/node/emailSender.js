@@ -1,5 +1,5 @@
 const sgMail = require('@sendgrid/mail');
-const config = require('./config');
+const config = require('./config'); // eslint-disable-line import/no-unresolved
 
 const MY_EMAIL_ADDRESS = config.monitoring.email.toEmailAddress;
 
