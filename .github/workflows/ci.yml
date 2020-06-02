@@ -6,9 +6,9 @@ name: CI
 # events but only for the master branch
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -18,6 +18,14 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - uses: actions/checkout@v2
-    - run: yarn
-    - run: yarn test-all
+      - uses: actions/checkout@v2
+      - run: yarn
+      - run: yarn lint
+      - name: test
+        run: |
+          yarn build
+          yarn test
+      - name: e2e
+        run: |
+          yarn build-e2e
+          yarn test-e2e
