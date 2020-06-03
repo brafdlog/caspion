@@ -1,4 +1,4 @@
-import { search, exact } from './categoriesMap.json';
+const { search, exact } = require('./categoriesMap.json');
 
 const descriptionToCategory = Object.keys(exact).reduce((acc, category) => {
   const descToCategory = exact[category].map(desc => ({ [desc]: category }));
@@ -6,7 +6,7 @@ const descriptionToCategory = Object.keys(exact).reduce((acc, category) => {
   return acc;
 }, {});
 
-export function getCategoryNameByTransactionDescription(transactionDescription) {
+function getCategoryNameByTransactionDescription(transactionDescription) {
   const containsStr = strToSearchFor => transactionDescription.toLowerCase().includes(strToSearchFor.toLowerCase());
 
   if (descriptionToCategory[transactionDescription]) return descriptionToCategory[transactionDescription];
@@ -15,3 +15,7 @@ export function getCategoryNameByTransactionDescription(transactionDescription) 
 
   return stringContained ? search[stringContained] : '';
 }
+
+module.exports = {
+  getCategoryNameByTransactionDescription
+};
