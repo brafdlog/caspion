@@ -17,3 +17,6 @@ updates:
 
 - package-ecosystem: npm
   directory: "/nuxt/"
+  schedule:
+    interval: "weekly"
+  open-pull-requests-limit: 3
