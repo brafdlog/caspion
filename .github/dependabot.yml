@@ -1,0 +1,16 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: monthly
+    time: '03:00'
+  open-pull-requests-limit: 10
+  reviewers:
+  - baruchiro
+  assignees:
+  - baruchiro
+  ignore:
+  - dependency-name: electron
+    versions:
+    - "> 5.0.13"
