@@ -1,0 +1,50 @@
+.qa {
+  @apply bg-white;
+  @apply text-gray-700;
+  @apply py-1;
+}
+
+.qa h1 {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.qa h1::before {
+  content: " ";
+  display: inline-block;
+
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 5px solid black;
+
+  vertical-align: middle;
+  margin-left: 0.7rem;
+  transform: translateY(-2px);
+
+  transition: transform 0.2s ease-out;
+}
+
+.qa p {
+  overflow: hidden;
+
+  transition: max-height 0.25s ease-in-out;
+
+  @apply pr-4;
+}
+
+.qa-close p {
+  max-height: 0px;
+}
+
+.qa-open p {
+  max-height: 100vh;
+}
+
+.qa-open h1::before {
+  transform: rotate(-90deg) translateX(3px);
+}
+
+.qa-open h1 {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
