@@ -43,7 +43,8 @@ module.exports = {
   },
 
   rules: {
-    'no-param-reassign': ['error', { ignorePropertyModificationsFor: ['state'] }],
+    // 'no-param-reassign': ['error', { ignorePropertyModificationsFor: ['state'] }],
+    'no-param-reassign': 'off',
     'no-shadow': ['error', { allow: ['state'] }],
     'import/extensions': ['error', { js: 'never', vue: 'never', json: 'always' }],
     'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
@@ -53,7 +54,8 @@ module.exports = {
     'linebreak-style': process.platform === 'win32' ? 0 : 2,
     'no-use-before-define': 'off',
     'max-len': ['error', { code: 150 }],
-    'comma-dangle': 'off'
+    'comma-dangle': 'off',
+    'no-await-in-loop': 'off'
   },
 
   overrides: [

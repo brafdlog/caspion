@@ -133,7 +133,9 @@ async function filterOnlyTransactionsThatDontExistInYnabAlready(startDate, trans
     transactionsFromYnab.set(startDate, transactionsInYnabBeforeCreatingTheseTransactions);
   }
   const transactionsThatDontExistInYnab = transactionsFromFinancialAccounts.filter(
-    (transactionToCheck) => !transactionsInYnabBeforeCreatingTheseTransactions.find((existingTransaction) => isSameTransaction(transactionToCheck, existingTransaction))
+    (transactionToCheck) => !transactionsInYnabBeforeCreatingTheseTransactions.find(
+      (existingTransaction) => isSameTransaction(transactionToCheck, existingTransaction)
+    )
   );
   return transactionsThatDontExistInYnab;
 }

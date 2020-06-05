@@ -9,7 +9,7 @@ async function createTransactionsInGoogleSheets(transactions, startDate, { sprea
   const transactionsToCreate = transactions.filter((transaction) => !hashesAlreadyExistingInGoogleSheets.includes(transaction.hash));
   if (transactionsToCreate.length === 0) {
     console.log('All transactions already exist in google sheets');
-    return;
+    return null;
   }
   console.log(
     `Creating ${transactionsToCreate.length} transactions (${transactions.length
