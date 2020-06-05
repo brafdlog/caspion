@@ -1,6 +1,6 @@
 /* eslint-disable no-bitwise */
 
-export default function (str) {
+export default function hashString(str) {
   if (str.length === 0) return 0;
 
   let hash = 0;
