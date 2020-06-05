@@ -41,7 +41,9 @@ const FinancialAccountConfig = props => {
             }}
           >
             {Object.values(FINANCIAL_COMPANIES_CONFIG).map(financialCompanyConfig => (
-              <MenuItem key={financialCompanyConfig.id} value={financialCompanyConfig.id}>{financialCompanyConfig.displayName}</MenuItem>
+              <MenuItem key={financialCompanyConfig.id} value={financialCompanyConfig.id}>
+                {financialCompanyConfig.displayName}
+              </MenuItem>
             ))}
           </Select>
           <input value={username} onChange={e => setUsername(e.target.value)} />
