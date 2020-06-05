@@ -117,8 +117,13 @@ async function createTransactionsInExternalVendors(config, companyIdToTransactio
   const executionResult = {};
   const allTransactions = _.flatten(Object.values(companyIdToTransactions));
 
-  for (let j = 0; j < outputVendors.length; j++) {
-    const vendor = outputVendors[j];
+  const activeVendors = outputVendors.filter(vendor => _.get(config, `outputVendors.${vendor.name}.active`, false));
+  if (!activeVendors.length) {
+    throw new Error('You need to set at least one output vendor to be active');
+  }
+
+  for (let j = 0; j < activeVendors.length; j++) {
+    const vendor = activeVendors[j];
     const vendorConfig = config.outputVendors[vendor.name];
     if (vendorConfig && vendorConfig.active) {
       const vendorResult = await createTransactionsInVedor(vendor, allTransactions, startDate);
