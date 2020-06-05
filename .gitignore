@@ -84,8 +84,8 @@ thumbs.db
 # Google API
 client_secret.json
 
-*/dist/
-app/node/mockData
-app/node/categoryCalculationScript.js
+src/originalBudgetTrackingApp/dist/
+src/originalBudgetTrackingApp/node/mockData
+src/originalBudgetTrackingApp/node/categoryCalculationScript.js
 config.json
 googleApiToken.json
