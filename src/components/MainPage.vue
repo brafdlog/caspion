@@ -96,6 +96,7 @@ export default {
           ],
         },
         {
+          // eslint-disable-next-line max-len
           avatar: 'https://media-exp1.licdn.com/dms/image/C5603AQHBVlsYLgmvNw/profile-displayphoto-shrink_800_800/0?e=1587600000&v=beta&t=iRvw54ZS2K6k3PKi4jgtpe-noj9XTzyUf3IMJvaWShQ',
           name: 'Ariel Gordon',
           email: 'arielgordon123@gmail.com',
