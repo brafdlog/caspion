@@ -1,4 +1,6 @@
-const { createScraper } = require('israeli-bank-scrapers');
+const { createScraper } = require('israeli-bank-scrapers-core');
+const getChrome = require('../../modules/downloadChromium');
+
 // const mockTransactions = require('./mockData/mockTransactions');
 
 async function scrape({
@@ -12,13 +14,15 @@ async function scrape({
     throw new Error(`Missing credentials for scraper. CompanyId: ${companyId}. Credentials: ${credentials && JSON.stringify(credentials)}`);
   }
 
+  const chromePath = await getChrome.default(undefined, console.log);
+
   const options = {
     companyId, // mandatory; one of 'hapoalim', 'discount', 'otsarHahayal', 'leumiCard', 'isracard', 'amex'
     startDate, // the date to fetch transactions from (can't be before the minimum allowed time difference for the scraper)
     combineInstallments: false, // if set to true, all installment transactions will be combine into the first one
     showBrowser, // shows the browser while scraping, good for debugging (default false)
-    verbose: false // include more debug info about in the output
-    // browser : Browser // optional option from init puppeteer browser instance outside the libary scope. you can get browser directly from puppeteer via `puppeteer.launch()` command.
+    verbose: false, // include more debug info about in the output
+    executablePath: chromePath
   };
   const scraper = createScraper(options);
   const scrapeResult = await scraper.scrape(credentials);

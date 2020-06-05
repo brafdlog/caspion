@@ -30,7 +30,6 @@
     "download-chromium": "^2.2.0",
     "electron-log": "^4.1.1",
     "googleapis": "^49.0.0",
-    "israeli-bank-scrapers": "^0.9.0",
     "israeli-bank-scrapers-core": "^0.8.1",
     "keytar": "^5.2.0",
     "lodash": "^4.17.15",
@@ -39,7 +38,8 @@
     "vue-router": "^3.1.6",
     "vuetify": "^2.2.22",
     "vuex": "^3.1.3",
-    "vuex-electron": "^1.0.3"
+    "vuex-electron": "^1.0.3",
+    "ynab": "^1.19.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

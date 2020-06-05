@@ -1,4 +1,3 @@
-require('dotenv').config();
 const _ = require('lodash');
 const moment = require('moment');
 const bankScraper = require('./bankScraper');
@@ -36,7 +35,7 @@ async function scrapeAndUpdateOutputVendors() {
 
 async function scrapeFinancialAccountsAndFetchTransactions(config, startDate) {
   const companyIdToTransactions = {};
-  const accountsToScrape = config.scraping.accountsToScrape.filter(accountToScrape => accountToScrape.active !== false);
+  const accountsToScrape = config.scraping.accountsToScrape.filter((accountToScrape) => accountToScrape.active !== false);
   for (let i = 0; i < accountsToScrape.length; i++) {
     const { companyId, credentials } = accountsToScrape[i];
     try {
@@ -60,7 +59,7 @@ async function fetchTransactions(companyId, credentials, startDate, config) {
     companyId,
     credentials,
     startDate,
-    showBrowser: config.scraping.showBrowser
+    showBrowser: config.scraping.showBrowser,
   });
   if (!scrapeResult.success) {
     console.error('Failed scraping ', companyId);
@@ -73,11 +72,11 @@ async function fetchTransactions(companyId, credentials, startDate, config) {
 
 function extractTransactionsFromScrapeResult(scrapeResult, companyId) {
   const transactions = [];
-  scrapeResult.accounts.forEach(account => {
-    const accountTransactions = account.txns.map(txn => ({
+  scrapeResult.accounts.forEach((account) => {
+    const accountTransactions = account.txns.map((txn) => ({
       ...txn,
       companyId,
-      accountNumber: account.accountNumber
+      accountNumber: account.accountNumber,
     }));
     transactions.push(...accountTransactions);
   });
@@ -86,17 +85,19 @@ function extractTransactionsFromScrapeResult(scrapeResult, companyId) {
 
 async function postProcessTransactions(transactions) {
   // Filter out pending transactions
-  transactions = transactions.filter(transaction => transaction.status === TRANSACTION_STATUS_COMPLETED);
+  transactions = transactions.filter((transaction) => transaction.status === TRANSACTION_STATUS_COMPLETED);
   transactions.sort(transactionsDateComperator);
-  transactions = transactions.map(transaction => ({
+  transactions = transactions.map((transaction) => ({
     ...transaction,
     category: categoryCalculation.getCategoryNameByTransactionDescription(transaction.description),
-    hash: calculateTransactionHash(transaction)
+    hash: calculateTransactionHash(transaction),
   }));
   return transactions;
 }
 
-function calculateTransactionHash({ date, chargedAmount, description, memo, companyId, accountNumber }) {
+function calculateTransactionHash({
+  date, chargedAmount, description, memo, companyId, accountNumber,
+}) {
   return `${date}_${chargedAmount}_${description}_${memo}_${companyId}_${accountNumber}`;
 }
 
@@ -106,18 +107,18 @@ async function createTransactionsInExternalVendors(config, companyIdToTransactio
     {
       name: 'ynab',
       createTransactionFunction: ynab.createTransactions,
-      options: config.outputVendors.ynab.options
+      options: config.outputVendors.ynab.options,
     },
     {
       name: 'googleSheets',
       createTransactionFunction: googleSheets.createTransactionsInGoogleSheets,
-      options: config.outputVendors.googleSheets.options
-    }
+      options: config.outputVendors.googleSheets.options,
+    },
   ];
   const executionResult = {};
   const allTransactions = _.flatten(Object.values(companyIdToTransactions));
 
-  const activeVendors = outputVendors.filter(vendor => _.get(config, `outputVendors.${vendor.name}.active`, false));
+  const activeVendors = outputVendors.filter((vendor) => _.get(config, `outputVendors.${vendor.name}.active`, false));
   if (!activeVendors.length) {
     throw new Error('You need to set at least one output vendor to be active');
   }
@@ -154,8 +155,8 @@ async function getFinancialAccountNumbers() {
   console.log('Fetching data from financial institutions to determine the account numbers');
   const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config, startDate);
   const companyIdToAccountNumbers = {};
-  Object.keys(companyIdToTransactions).forEach(companyId => {
-    let accountNumbers = companyIdToTransactions[companyId].map(transaction => transaction.accountNumber);
+  Object.keys(companyIdToTransactions).forEach((companyId) => {
+    let accountNumbers = companyIdToTransactions[companyId].map((transaction) => transaction.accountNumber);
     accountNumbers = _.uniq(accountNumbers);
     companyIdToAccountNumbers[companyId] = accountNumbers;
   });

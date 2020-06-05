@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const ynab = require('ynab/dist/index');
+const ynab = require('ynab');
 const moment = require('moment/moment');
 const configManager = require('../../configManager');
 const configExample = require('../../config-example');
