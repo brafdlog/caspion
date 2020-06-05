@@ -46,7 +46,7 @@ async function createTransactions(transactionsToCreate, startDate) {
   const transactionsFromFinancialAccount = transactionsToCreate.map(convertTransactionToYnabFormat);
   let transactionsThatDontExistInYnab = await filterOnlyTransactionsThatDontExistInYnabAlready(startDate, transactionsFromFinancialAccount);
   // Filter out transactions that are in the future
-  transactionsThatDontExistInYnab = transactionsThatDontExistInYnab.filter(transaction => moment(transaction.date, YNAB_DATE_FORMAT).isBefore(NOW));
+  transactionsThatDontExistInYnab = transactionsThatDontExistInYnab.filter((transaction) => moment(transaction.date, YNAB_DATE_FORMAT).isBefore(NOW));
   if (!transactionsThatDontExistInYnab.length) {
     console.log('All transactions already exist in ynab. Doing nothing.');
     return DID_NOTHING_RESPONSE;
@@ -110,14 +110,14 @@ function getYnabCategoryIdFromCategoryName(categoryName) {
 
 async function initCategoriesMap() {
   const categories = await ynabAPI.categories.getCategories(ynabConfig.budgetId);
-  categories.data.category_groups.forEach(categoryGroup => {
+  categories.data.category_groups.forEach((categoryGroup) => {
     categoryGroup.categories
-      .map(category => ({
+      .map((category) => ({
         id: category.id,
         name: category.name,
         category_group_id: category.category_group_id
       }))
-      .forEach(category => {
+      .forEach((category) => {
         categoriesMap.set(category.name, category);
       });
   });
@@ -133,8 +133,7 @@ async function filterOnlyTransactionsThatDontExistInYnabAlready(startDate, trans
     transactionsFromYnab.set(startDate, transactionsInYnabBeforeCreatingTheseTransactions);
   }
   const transactionsThatDontExistInYnab = transactionsFromFinancialAccounts.filter(
-    transactionToCheck =>
-      !transactionsInYnabBeforeCreatingTheseTransactions.find(existingTransaction => isSameTransaction(transactionToCheck, existingTransaction))
+    (transactionToCheck) => !transactionsInYnabBeforeCreatingTheseTransactions.find((existingTransaction) => isSameTransaction(transactionToCheck, existingTransaction))
   );
   return transactionsThatDontExistInYnab;
 }
@@ -142,11 +141,11 @@ async function filterOnlyTransactionsThatDontExistInYnabAlready(startDate, trans
 function isSameTransaction(transactionA, transactionB) {
   const isATransferTransaction = transactionA.transfer_account_id || transactionB.transfer_account_id;
   return (
-    transactionA.account_id === transactionB.account_id &&
-    transactionA.date === transactionB.date &&
-    Math.abs(transactionA.amount - transactionB.amount) < 1000 &&
+    transactionA.account_id === transactionB.account_id
+    && transactionA.date === transactionB.date
+    && Math.abs(transactionA.amount - transactionB.amount) < 1000
     // In a transfer transaction the payee name changes, but we still consider this the same transaction
-    (areStringsEqualIgnoreCaseAndWhitespace(transactionA.payee_name, transactionB.payee_name) || isATransferTransaction)
+    && (areStringsEqualIgnoreCaseAndWhitespace(transactionA.payee_name, transactionB.payee_name) || isATransferTransaction)
   );
 }
 
@@ -183,13 +182,15 @@ async function getYnabAccountDetails() {
 
 async function getBudgetsAndAccountsData() {
   const budgetsResponse = await ynabAPI.budgets.getBudgets();
-  let budgets = budgetsResponse.data.budgets;
-  budgets = budgets.map(budget => ({ id: budget.id, name: budget.name }));
+  let { budgets } = budgetsResponse.data;
+  budgets = budgets.map((budget) => ({ id: budget.id, name: budget.name }));
   const accounts = [];
   await Promise.all(
-    budgets.map(async budget => {
+    budgets.map(async (budget) => {
       const budgetAccountsResponse = await ynabAPI.accounts.getAccounts(budget.id);
-      const budgetAccounts = budgetAccountsResponse.data.accounts.map(({ id, name, type }) => ({ id, name, type, budgetName: budget.name }));
+      const budgetAccounts = budgetAccountsResponse.data.accounts.map(({ id, name, type }) => ({
+        id, name, type, budgetName: budget.name
+      }));
       accounts.push(...budgetAccounts);
     })
   );
@@ -201,8 +202,8 @@ async function getBudgetsAndAccountsData() {
 
 async function getYnabCategories() {
   const categoriesResponse = await ynabAPI.categories.getCategories(ynabConfig.budgetId);
-  const categories = _.flatMap(categoriesResponse.data.category_groups, categoryGroup => categoryGroup.categories);
-  const categoryNames = categories.map(category => category.name);
+  const categories = _.flatMap(categoriesResponse.data.category_groups, (categoryGroup) => categoryGroup.categories);
+  const categoryNames = categories.map((category) => category.name);
   return categoryNames;
 }
 

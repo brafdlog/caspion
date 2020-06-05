@@ -1,4 +1,4 @@
-const globals = require('./globals')
+const globals = require('./globals');
 
 module.exports = {
   root: true,
@@ -11,6 +11,7 @@ module.exports = {
   env: {
     browser: true,
     node: true,
+    jest: true
   },
 
   extends: ['airbnb-base', 'plugin:vue/recommended'],
@@ -30,15 +31,15 @@ module.exports = {
   ],
 
   settings: {
-    'import/core-modules': [ 'electron' ],
+    'import/core-modules': ['electron'],
     'import/resolver': {
       alias: {
         map: [
           ['@', './src'],
         ],
-        extensions: ['.js', '.vue']
-      }
-    }
+        extensions: ['.js', '.vue'],
+      },
+    },
   },
 
   rules: {
@@ -48,8 +49,11 @@ module.exports = {
     'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
-    'no-console': process.env.NODE_ENV === 'production' ? 2 : 1,
+    'no-console': process.env.NODE_ENV === 'production' ? 2 : 0,
     'linebreak-style': process.platform === 'win32' ? 0 : 2,
+    'no-use-before-define': 'off',
+    'max-len': ['error', { code: 150 }],
+    'comma-dangle': 'off'
   },
 
   overrides: [

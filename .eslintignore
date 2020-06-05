@@ -49,3 +49,6 @@ __snapshots__
 # Package.json
 package.json
 .travis.yml
+
+src/originalBudgetTrackingApp/web
+src/originalBudgetTrackingApp/main*

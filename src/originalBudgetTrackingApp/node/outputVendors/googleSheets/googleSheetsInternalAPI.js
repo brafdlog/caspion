@@ -13,7 +13,9 @@ const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
  * @see https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
  * @param {google.auth.OAuth2} auth The authenticated Google OAuth client.
  */
-async function appendToSpreadsheet({ spreadsheetId, range, values, credentialsFilePath }) {
+async function appendToSpreadsheet({
+  spreadsheetId, range, values, credentialsFilePath
+}) {
   const jwtClient = await loadCredentialsAndAuthorize(credentialsFilePath);
 
   const resource = {
@@ -31,7 +33,9 @@ async function appendToSpreadsheet({ spreadsheetId, range, values, credentialsFi
   return result;
 }
 
-async function getExistingHashes({ spreadsheetId, credentialsFilePath, sheetName, hashColumn = 'H' }) {
+async function getExistingHashes({
+  spreadsheetId, credentialsFilePath, sheetName, hashColumn = 'H'
+}) {
   const jwtClient = await loadCredentialsAndAuthorize(credentialsFilePath);
 
   const result = await sheets.spreadsheets.values.get({

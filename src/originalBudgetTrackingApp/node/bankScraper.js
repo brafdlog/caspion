@@ -1,7 +1,9 @@
 const { createScraper } = require('israeli-bank-scrapers');
 // const mockTransactions = require('./mockData/mockTransactions');
 
-async function scrape({ companyId, credentials, startDate, showBrowser = false }) {
+async function scrape({
+  companyId, credentials, startDate, showBrowser = false
+}) {
   // if (process.env.USE_MOCK_DATA === 'true') {
   //   console.log('USING MOCK DATA');
   //   return mockTransactions[companyId];
