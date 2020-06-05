@@ -1,15 +1,19 @@
-const _ = require('lodash');
-const moment = require('moment');
-const bankScraper = require('./bankScraper');
-const ynab = require('./outputVendors/ynab/ynab');
-const googleSheets = require('./outputVendors/googleSheets/googleSheets');
-const categoryCalculation = require('./categoryCalculationScript');
-const configManager = require('./configManager');
+import _ from 'lodash';
+import moment from 'moment';
+import * as bankScraper from './bankScraper';
+import * as ynab from './outputVendors/ynab/ynab';
+import * as googleSheets from './outputVendors/googleSheets/googleSheets';
+import * as categoryCalculation from './categoryCalculationScript';
+import * as configManager from './configManager';
+
+export { configManager };
 
 const TRANSACTION_STATUS_COMPLETED = 'completed';
 const DATE_FORMAT = 'DD/MM/YYYY';
 
-async function scrapeAndUpdateOutputVendors() {
+export const { getYnabAccountDetails } = ynab;
+
+export async function scrapeAndUpdateOutputVendors() {
   const config = await configManager.getConfig();
 
   const startDate = moment()
@@ -95,7 +99,7 @@ async function postProcessTransactions(transactions) {
   return transactions;
 }
 
-function calculateTransactionHash({
+export function calculateTransactionHash({
   date, chargedAmount, description, memo, companyId, accountNumber,
 }) {
   return `${date}_${chargedAmount}_${description}_${memo}_${companyId}_${accountNumber}`;
@@ -144,7 +148,7 @@ async function createTransactionsInVedor(vendor, transactions, startDate) {
   return vendorResult;
 }
 
-async function getFinancialAccountNumbers() {
+export async function getFinancialAccountNumbers() {
   const config = await configManager.getConfig();
 
   const startDate = moment()
@@ -174,11 +178,3 @@ function transactionsDateComperator(t1, t2) {
   }
   return 1;
 }
-
-module.exports = {
-  scrapeAndUpdateOutputVendors,
-  getYnabAccountDetails: ynab.getYnabAccountDetails,
-  configManager,
-  getFinancialAccountNumbers,
-  calculateTransactionHash
-};

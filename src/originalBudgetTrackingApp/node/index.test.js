@@ -1,4 +1,4 @@
-const { calculateTransactionHash } = require('./index');
+import { calculateTransactionHash } from './index';
 
 const TRANSACTION_1 = {
   type: 'normal',

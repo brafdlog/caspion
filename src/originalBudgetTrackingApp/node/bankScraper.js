@@ -1,9 +1,9 @@
-const { createScraper } = require('israeli-bank-scrapers-core');
-const getChrome = require('../../modules/downloadChromium');
+import { createScraper } from 'israeli-bank-scrapers-core';
+import getChrome from '../../modules/downloadChromium';
 
-// const mockTransactions = require('./mockData/mockTransactions');
+// import mockTransactions from './mockData/mockTransactions';
 
-async function scrape({
+export async function scrape({
   companyId, credentials, startDate, showBrowser = false
 }) {
   // if (process.env.USE_MOCK_DATA === 'true') {
@@ -14,7 +14,7 @@ async function scrape({
     throw new Error(`Missing credentials for scraper. CompanyId: ${companyId}. Credentials: ${credentials && JSON.stringify(credentials)}`);
   }
 
-  const chromePath = await getChrome.default(undefined, console.log);
+  const chromePath = await getChrome(undefined, console.log);
 
   const options = {
     companyId, // mandatory; one of 'hapoalim', 'discount', 'otsarHahayal', 'leumiCard', 'isracard', 'amex'
@@ -32,7 +32,3 @@ async function scrape({
   }
   return scrapeResult;
 }
-
-module.exports = {
-  scrape
-};

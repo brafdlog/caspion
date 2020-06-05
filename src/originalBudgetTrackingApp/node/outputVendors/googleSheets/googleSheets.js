@@ -1,9 +1,9 @@
-const moment = require('moment/moment');
-const googleSheets = require('./googleSheetsInternalAPI');
+import moment from 'moment/moment';
+import * as googleSheets from './googleSheetsInternalAPI';
 
 const GOOGLE_SHEETS_DATE_FORMAT = 'DD/MM/YYYY';
 
-async function createTransactionsInGoogleSheets(transactions, startDate, { spreadsheetId, sheetName, credentialsFilePath }) {
+export async function createTransactionsInGoogleSheets(transactions, startDate, { spreadsheetId, sheetName, credentialsFilePath }) {
   console.log(`Got ${transactions.length} transactions to create in google sheets`);
   const hashesAlreadyExistingInGoogleSheets = await googleSheets.getExistingHashes({ spreadsheetId, sheetName, credentialsFilePath });
   const transactionsToCreate = transactions.filter((transaction) => !hashesAlreadyExistingInGoogleSheets.includes(transaction.hash));
@@ -35,7 +35,3 @@ async function createTransactionsInGoogleSheets(transactions, startDate, { sprea
   });
   return spreadsheetAppendResult.data;
 }
-
-module.exports = {
-  createTransactionsInGoogleSheets
-};

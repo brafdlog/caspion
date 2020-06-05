@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   scraping: {
     start: 'scraping:start',
     done: 'scraping:done',

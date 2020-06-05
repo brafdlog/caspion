@@ -1,10 +1,10 @@
-const { app } = require('electron');
-const { promisify } = require('util');
-const path = require('path');
-const fs = require('fs');
-const encryption = require('./encryption');
+import { app } from 'electron';
+import { promisify } from 'util';
+import path from 'path';
+import fs from 'fs';
+import { encrypt, decrypt } from './encryption';
 
-const configExample = require('./config-example');
+import configExample from './config-example';
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
@@ -14,7 +14,7 @@ const CONFIG_FILE_NAME = 'config.json';
 const APP_DATA_CONFIG_FILE_PATH = path.join(appDataFolderPath, CONFIG_FILE_NAME);
 const LOCAL_CONFIG_FILE_PATH = CONFIG_FILE_NAME;
 
-async function getConfig() {
+export async function getConfig() {
   let parsedConfig;
   let configFromFile = await getConfigFromFile(LOCAL_CONFIG_FILE_PATH);
   if (!configFromFile) {
@@ -40,27 +40,22 @@ async function getConfigFromFile(configFilePath) {
   return null;
 }
 
-async function updateConfig(configToUpdate) {
+export async function updateConfig(configToUpdate) {
   const stringifiedConfig = JSON.stringify(configToUpdate, null, 2);
   const encryptedConfigStr = encryptConfig(stringifiedConfig);
   await writeFile(LOCAL_CONFIG_FILE_PATH, encryptedConfigStr);
 }
 
 function encryptConfig(stringifiedConfig) {
-  const encryptedConfig = encryption.encrypt(stringifiedConfig);
+  const encryptedConfig = encrypt(stringifiedConfig);
   return JSON.stringify(encryptedConfig);
 }
 
 function decryptConfigIfNeeded(configFromFile) {
   const isEncrypted = configFromFile.encryptedData;
   if (isEncrypted) {
-    const decryptedConfig = encryption.decrypt(configFromFile);
+    const decryptedConfig = decrypt(configFromFile);
     return JSON.parse(decryptedConfig);
   }
   return configFromFile;
 }
-
-module.exports = {
-  getConfig,
-  updateConfig
-};

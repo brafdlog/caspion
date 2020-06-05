@@ -55,7 +55,8 @@ module.exports = {
     'no-use-before-define': 'off',
     'max-len': ['error', { code: 150 }],
     'comma-dangle': 'off',
-    'no-await-in-loop': 'off'
+    'no-await-in-loop': 'off',
+    'import/prefer-default-export': 'off'
   },
 
   overrides: [

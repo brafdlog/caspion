@@ -1,4 +1,4 @@
-const ynab = require('./ynab');
+import * as ynab from './ynab';
 
 describe('ynab', () => {
   describe('isSameTransaction', () => {

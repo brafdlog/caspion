@@ -1,5 +1,5 @@
 // This file is used as the initial config until the user saves the config for the first time to the file system
-module.exports = {
+export default {
   scraping: {
     numDaysBack: 40,
     showBrowser: false,

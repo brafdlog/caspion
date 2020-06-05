@@ -1,8 +1,8 @@
-const _ = require('lodash');
-const ynab = require('ynab');
-const moment = require('moment/moment');
-const configManager = require('../../configManager');
-const configExample = require('../../config-example');
+import _ from 'lodash';
+import * as ynab from 'ynab';
+import moment from 'moment/moment';
+import { getConfig } from '../../configManager';
+import configExample from '../../config-example';
 
 const INITIAL_YNAB_ACCESS_TOKEN = configExample.outputVendors.ynab.accessToken;
 const YNAB_DATE_FORMAT = 'YYYY-MM-DD';
@@ -16,14 +16,14 @@ let ynabConfig;
 let ynabAPI;
 let ynabAccountDetails;
 
-async function init(config) {
+export async function init(config) {
   if (ynabConfig && ynabAPI) {
     console.log('Ynab already initialized, skipping');
     return;
   }
 
   if (!config) {
-    config = await configManager.getConfig();
+    config = await getConfig();
   }
   ynabConfig = config.outputVendors.ynab;
 
@@ -31,17 +31,18 @@ async function init(config) {
     console.log('Ynab not enabled, skipping');
     return;
   }
-
+  const m = ynab;
+  console.log(m);
   verifyYnabAccessTokenWasDefined();
   ynabAPI = new ynab.API(ynabConfig.accessToken);
 }
 
-async function createTransactions(transactionsToCreate, startDate) {
+export async function createTransactions(transactionsToCreate, startDate) {
   if (!ynabConfig) {
     throw new Error('Must call init before using ynab functions');
   }
   if (!categoriesMap.size) {
-    await initCategoriesMap();
+    await initCategories();
   }
   const transactionsFromFinancialAccount = transactionsToCreate.map(convertTransactionToYnabFormat);
   let transactionsThatDontExistInYnab = await filterOnlyTransactionsThatDontExistInYnabAlready(startDate, transactionsFromFinancialAccount);
@@ -108,7 +109,7 @@ function getYnabCategoryIdFromCategoryName(categoryName) {
   return categoryToReturn && categoryToReturn.id;
 }
 
-async function initCategoriesMap() {
+export async function initCategories() {
   const categories = await ynabAPI.categories.getCategories(ynabConfig.budgetId);
   categories.data.category_groups.forEach((categoryGroup) => {
     categoryGroup.categories
@@ -140,7 +141,7 @@ async function filterOnlyTransactionsThatDontExistInYnabAlready(startDate, trans
   return transactionsThatDontExistInYnab;
 }
 
-function isSameTransaction(transactionA, transactionB) {
+export function isSameTransaction(transactionA, transactionB) {
   const isATransferTransaction = transactionA.transfer_account_id || transactionB.transfer_account_id;
   return (
     transactionA.account_id === transactionB.account_id
@@ -151,7 +152,7 @@ function isSameTransaction(transactionA, transactionB) {
   );
 }
 
-function areStringsEqualIgnoreCaseAndWhitespace(str1 = '', str2 = '') {
+export function areStringsEqualIgnoreCaseAndWhitespace(str1 = '', str2 = '') {
   const trimmedAndLowerCaseStr1 = str1 && normalizeWhitespace(str1.toLowerCase());
   const trimmedAndLowerCaseStr2 = str2 && normalizeWhitespace(str2.toLowerCase());
 
@@ -168,7 +169,7 @@ function verifyYnabAccessTokenWasDefined() {
   }
 }
 
-async function getYnabAccountDetails() {
+export async function getYnabAccountDetails() {
   if (!ynabAccountDetails) {
     await init();
     const { budgets, accounts } = await getBudgetsAndAccountsData();
@@ -208,12 +209,3 @@ async function getYnabCategories() {
   const categoryNames = categories.map((category) => category.name);
   return categoryNames;
 }
-
-module.exports = {
-  init,
-  createTransactions,
-  initCategories: initCategoriesMap,
-  isSameTransaction,
-  areStringsEqualIgnoreCaseAndWhitespace,
-  getYnabAccountDetails
-};

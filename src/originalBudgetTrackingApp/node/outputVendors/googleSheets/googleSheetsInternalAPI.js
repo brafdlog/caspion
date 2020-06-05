@@ -1,7 +1,7 @@
-const _ = require('lodash');
-const fs = require('fs');
-const { promisify } = require('util');
-const { google } = require('googleapis/build/src/index');
+import _ from 'lodash';
+import fs from 'fs';
+import { promisify } from 'util';
+import { google } from 'googleapis';
 
 const readFile = promisify(fs.readFile);
 const sheets = google.sheets({ version: 'v4' });
@@ -13,7 +13,7 @@ const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
  * @see https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
  * @param {google.auth.OAuth2} auth The authenticated Google OAuth client.
  */
-async function appendToSpreadsheet({
+export async function appendToSpreadsheet({
   spreadsheetId, range, values, credentialsFilePath
 }) {
   const jwtClient = await loadCredentialsAndAuthorize(credentialsFilePath);
@@ -33,7 +33,7 @@ async function appendToSpreadsheet({
   return result;
 }
 
-async function getExistingHashes({
+export async function getExistingHashes({
   spreadsheetId, credentialsFilePath, sheetName, hashColumn = 'H'
 }) {
   const jwtClient = await loadCredentialsAndAuthorize(credentialsFilePath);
@@ -56,8 +56,3 @@ async function loadCredentialsAndAuthorize(credentialsFilePath) {
 
   return jwtClient;
 }
-
-module.exports = {
-  appendToSpreadsheet,
-  getExistingHashes
-};

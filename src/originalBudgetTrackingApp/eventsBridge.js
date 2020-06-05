@@ -1,6 +1,6 @@
-const { ipcMain } = require('electron');
-const events = require('./constants/events');
-const { scrapeAndUpdateOutputVendors, configManager, getYnabAccountDetails } = require('./node');
+import { ipcMain } from 'electron';
+import events from './constants/events';
+import { scrapeAndUpdateOutputVendors, configManager, getYnabAccountDetails } from './node';
 
 ipcMain.on(events.scraping.start, async (event) => {
   try {
