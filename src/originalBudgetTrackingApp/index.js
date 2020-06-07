@@ -4,7 +4,7 @@ import * as bankScraper from './bankScraper';
 import * as ynab from './outputVendors/ynab/ynab';
 import * as googleSheets from './outputVendors/googleSheets/googleSheets';
 import * as categoryCalculation from './categoryCalculationScript';
-import * as configManager from './configManager';
+import * as configManager from './config-manager/configManager';
 
 export { configManager };
 

@@ -47,8 +47,9 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { encryptProperty } from '@/modules/encryption/credentials';
+
+import { configManager } from '@/originalBudgetTrackingApp';
+import { addAccountsToScrape } from '@/originalBudgetTrackingApp/config-manager/config-builder';
 
 function scraperToImporter(scraper) {
   const importer = { ...scraper, loginFields: {} };
@@ -80,19 +81,22 @@ export default {
   methods: {
     async submitForm() {
       if (this.isFormValid) {
-        const encrypted = await encryptProperty(
-          this.importerToAdd,
-          'loginFields',
-        );
-        this.addImporterAction(encrypted);
+        await configManager.getConfig()
+          .then((config) => addAccountsToScrape(config, {
+            companyId: this.importer.key,
+            credentials: this.importerToAdd.loginFields
+          }))
+          .then((config) => configManager.updateConfig(config))
+          // TODO error handling
+          .catch((error) => console.error(error));
+
         this.resetForm();
-        this.$emit('scraperAdded', true);
+        this.$emit('importerAdded', true);
       }
     },
     resetForm() {
       Object.assign(this.$data.importerToAdd, scraperToImporter(this.importer));
     },
-    ...mapActions(['addImporterAction']),
   },
 };
 </script>
