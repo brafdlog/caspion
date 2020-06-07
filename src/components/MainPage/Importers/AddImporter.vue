@@ -2,9 +2,9 @@
   <v-expansion-panel class="ma-1">
     <v-expansion-panel-header
       expand-icon="mdi-menu-down"
-      :data-test="scraper.key"
+      :data-test="importer.key"
     >
-      {{ scraper.name }}
+      {{ importer.name }}
     </v-expansion-panel-header>
     <v-expansion-panel-content>
       <v-form
@@ -60,14 +60,14 @@ function scraperToImporter(scraper) {
 
 export default {
   props: {
-    scraper: {
+    importer: {
       type: Object,
       required: true,
     },
   },
   data() {
     return {
-      importerToAdd: scraperToImporter(this.scraper),
+      importerToAdd: scraperToImporter(this.importer),
     };
   },
   computed: {
@@ -90,7 +90,7 @@ export default {
       }
     },
     resetForm() {
-      Object.assign(this.$data.importerToAdd, scraperToImporter(this.scraper));
+      Object.assign(this.$data.importerToAdd, scraperToImporter(this.importer));
     },
     ...mapActions(['addImporterAction']),
   },

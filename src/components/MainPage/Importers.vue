@@ -51,12 +51,12 @@
         </v-toolbar-title>
       </v-toolbar>
       <v-expansion-panels>
-        <add-scraper
-          v-for="scraper in scrapers"
-          :key="scraper.key"
-          :scraper="scraper"
-          class="add-scraper"
-          @scraperAdded="drawer = !drawer"
+        <add-importer
+          v-for="importer in importersToAdd"
+          :key="importer.key"
+          :importer="importer"
+          class="add-importer"
+          @importerAdded="drawer = !drawer"
         />
       </v-expansion-panels>
     </v-navigation-drawer>
@@ -81,12 +81,12 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { scrapers } from '@/modules/scrapers';
-import AddScraper from './Importers/AddScraper';
+import importers from '@/modules/importers';
+import AddImporter from './Importers/AddImporter';
 import Importer from './Importers/Importer';
 
 export default {
-  components: { AddScraper, Importer },
+  components: { AddImporter, Importer },
   data() {
     return {
       id: null,
@@ -94,8 +94,8 @@ export default {
     };
   },
   computed: {
-    scrapers() {
-      return scrapers;
+    importersToAdd() {
+      return importers;
     },
     ...mapGetters(['importers']),
   },
