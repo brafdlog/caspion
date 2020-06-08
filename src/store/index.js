@@ -1,22 +1,15 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-
-import { createPersistedState, createSharedMutations } from 'vuex-electron';
+import configManagerPlugin from './plugins/persisted-config';
 
 import modules from './modules';
-
 import migrations from './migrations';
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
   modules,
-  plugins: [
-    // Win location: AppData\Roaming\Electron\vuex.json
-    // linux location: ~/.config/israeli-bank-scrapers-desktop/vuex.json
-    createPersistedState(),
-    createSharedMutations(),
-  ],
+  plugins: [configManagerPlugin('config')],
   strict: process.env.NODE_ENV !== 'production',
 });
 

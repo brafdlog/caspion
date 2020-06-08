@@ -7,7 +7,7 @@ import configExample from './config-example';
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
 
-const CONFIG_FILE_NAME = 'config.json';
+const CONFIG_FILE_NAME = 'config.encrypted';
 const LOCAL_CONFIG_FILE_PATH = CONFIG_FILE_NAME;
 
 export async function getConfig() {
@@ -35,11 +35,6 @@ async function getConfigFromFile(configFilePath) {
 
 export async function updateConfig(configToUpdate) {
   const stringifiedConfig = JSON.stringify(configToUpdate, null, 2);
-  const encryptedConfigStr = encryptConfig(stringifiedConfig);
+  const encryptedConfigStr = await encrypt(stringifiedConfig);
   await writeFile(LOCAL_CONFIG_FILE_PATH, encryptedConfigStr);
-}
-
-function encryptConfig(stringifiedConfig) {
-  const encryptedConfig = encrypt(stringifiedConfig);
-  return JSON.stringify(encryptedConfig);
 }
