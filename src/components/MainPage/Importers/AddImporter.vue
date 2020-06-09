@@ -47,9 +47,8 @@
 </template>
 
 <script>
-
-import { configManager } from '@/originalBudgetTrackingApp';
-import { addAccountsToScrape } from '@/originalBudgetTrackingApp/config-manager/config-builder';
+import { mapActions } from 'vuex';
+import { ADD_IMPORTER_ACTION } from '@/store/modules/config';
 
 function scraperToImporter(scraper) {
   const importer = { ...scraper, loginFields: {} };
@@ -81,15 +80,7 @@ export default {
   methods: {
     async submitForm() {
       if (this.isFormValid) {
-        await configManager.getConfig()
-          .then((config) => addAccountsToScrape(config, {
-            companyId: this.importer.key,
-            credentials: this.importerToAdd.loginFields
-          }))
-          .then((config) => configManager.updateConfig(config))
-          // TODO error handling
-          .catch((error) => console.error(error));
-
+        this.addImporter(this.importerToAdd);
         this.resetForm();
         this.$emit('importerAdded', true);
       }
@@ -97,6 +88,9 @@ export default {
     resetForm() {
       Object.assign(this.$data.importerToAdd, scraperToImporter(this.importer));
     },
+    ...mapActions({
+      addImporter: ADD_IMPORTER_ACTION
+    })
   },
 };
 </script>
