@@ -50,12 +50,12 @@
 import { mapActions } from 'vuex';
 import { ADD_IMPORTER_ACTION } from '@/store/modules/config';
 
-function scraperToImporter(scraper) {
-  const importer = { ...scraper, loginFields: {} };
-  scraper.loginFields.forEach((element) => {
-    importer.loginFields[element] = null;
+function initData(importerProp) {
+  const importerToAdd = { ...importerProp, loginFields: {} };
+  importerProp.loginFields.forEach((element) => {
+    importerToAdd.loginFields[element] = null;
   });
-  return importer;
+  return { importerToAdd };
 }
 
 export default {
@@ -66,9 +66,7 @@ export default {
     },
   },
   data() {
-    return {
-      importerToAdd: scraperToImporter(this.importer),
-    };
+    return initData(this.importer);
   },
   computed: {
     isFormValid() {
@@ -86,7 +84,7 @@ export default {
       }
     },
     resetForm() {
-      Object.assign(this.$data.importerToAdd, scraperToImporter(this.importer));
+      Object.assign(this.$data, initData(this.importer));
     },
     ...mapActions({
       addImporter: ADD_IMPORTER_ACTION

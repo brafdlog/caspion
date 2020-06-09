@@ -7,7 +7,7 @@
     </v-toolbar>
     <v-expansion-panels>
       <v-expansion-panel
-        v-for="importer in importers"
+        v-for="importer in getImporters"
         :key="importer.id"
         class="ma-1"
       >
@@ -80,6 +80,7 @@
 </template>
 
 <script>
+import { GET_IMPORTERS_GETTER } from '@/store/modules/config';
 import { mapGetters } from 'vuex';
 import importers from '@/modules/importers';
 import AddImporter from './Importers/AddImporter';
@@ -97,7 +98,9 @@ export default {
     importersToAdd() {
       return importers;
     },
-    ...mapGetters(['importers']),
+    ...mapGetters({
+      getImporters: GET_IMPORTERS_GETTER
+    }),
   },
   methods: {
     iconClass(success) {
