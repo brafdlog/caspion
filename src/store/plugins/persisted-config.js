@@ -1,18 +1,10 @@
-import createPersistedState from 'vuex-persistedstate';
 import { configManager } from '@/originalBudgetTrackingApp';
+import VuexPersistence from 'vuex-persist';
 
-const createConfigManagerStorage = (keyName) => ({
-  getItem: async (key) => {
-    return key === keyName ? configManager.getConfig() : Promise.resolve();
-  },
-  setItem: async (key, value) => {
-    if (key === keyName) await configManager.updateConfig(value);
-  },
-  removeItem: (key) => console.log(key),
-});
-
-export default (keyName) => createPersistedState({
-  key: keyName,
-  paths: [keyName],
-  storage: createConfigManagerStorage(keyName),
-});
+export default (configModuleName) => new VuexPersistence({
+  modules: [configModuleName],
+  saveState: async (_key, state) => configManager.updateConfig(state),
+  restoreState: async (_key) => configManager.getConfig(),
+  asyncStorage: true,
+})
+  .plugin;

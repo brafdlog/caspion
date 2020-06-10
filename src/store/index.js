@@ -1,15 +1,15 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import configManagerPlugin from './plugins/persisted-config';
-
-import modules from './modules';
 import migrations from './migrations';
+import modules from './modules';
+import configPersistPlugin from './plugins/persisted-config';
+
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
   modules,
-  plugins: [configManagerPlugin('config')],
+  plugins: [configPersistPlugin('config')],
   strict: process.env.NODE_ENV !== 'production',
 });
 
