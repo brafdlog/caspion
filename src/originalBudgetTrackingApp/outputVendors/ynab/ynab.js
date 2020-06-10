@@ -2,7 +2,7 @@ import _ from 'lodash';
 import * as ynab from 'ynab';
 import moment from 'moment/moment';
 import { getConfig } from '../../config-manager/configManager';
-import configExample from '../../config-manager/config-example';
+import configExample from '../../config-manager/default-config';
 
 const INITIAL_YNAB_ACCESS_TOKEN = configExample.outputVendors.ynab.accessToken;
 const YNAB_DATE_FORMAT = 'YYYY-MM-DD';
