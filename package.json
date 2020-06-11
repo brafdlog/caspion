@@ -77,6 +77,7 @@
     "jest": "^26.0.1",
     "jest-circus": "^26.0.1",
     "jest-config": "^26.0.1",
+    "jest-each": "^26.0.1",
     "jest-environment-jsdom": "^26.0.1",
     "prettier": "^2.0.5",
     "replace-in-file": "5.0.2",
