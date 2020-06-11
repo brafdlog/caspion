@@ -30,6 +30,8 @@ const TRANSACTION_2 = {
   accountNumber: '2222'
 };
 
+jest.mock('./outputVendors', () => []);
+
 describe('Main flow tests', () => {
   describe('Transaction post processing', () => {
     test('Transaction hash', () => {

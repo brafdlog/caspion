@@ -5,7 +5,9 @@ import * as ynab from './outputVendors/ynab/ynab';
 import * as googleSheets from './outputVendors/googleSheets/googleSheets';
 import * as categoryCalculation from './categoryCalculationScript';
 import * as configManager from './configManager';
+import outputs from './outputVendors';
 
+export { outputs };
 export { configManager };
 
 const TRANSACTION_STATUS_COMPLETED = 'completed';
