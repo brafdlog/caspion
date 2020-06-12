@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { testWithSpectron } from 'vue-cli-plugin-electron-builder';
-import { scrapers } from '../../../src/modules/scrapers';
+import scrapers from '../../../src/modules/importers';
 import Interactions from '../utils/interactions';
 
 const screenshotsDir = './screenshots';
