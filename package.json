@@ -12,11 +12,11 @@
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
     "prepare": "cp -n src/originalBudgetTrackingApp/categoryCalculationScript-example.js src/originalBudgetTrackingApp/categoryCalculationScript.js || true",
-    "lint": "yarn prepare && eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter src",
+    "lint": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter src",
     "lint:fix": "yarn lint --fix",
     "test": "yarn unit && yarn e2e",
-    "unit": "yarn prepare && vue-cli-service test:unit",
-    "e2e": "yarn prepare && vue-cli-service test:unit --config='test/e2e/jest.e2e.config.js'",
+    "unit": "vue-cli-service test:unit",
+    "e2e": "vue-cli-service test:unit --config='test/e2e/jest.e2e.config.js'",
     "snyk-protect": "snyk protect"
   },
   "husky": {
