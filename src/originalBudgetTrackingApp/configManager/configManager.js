@@ -2,7 +2,7 @@ import { promisify } from 'util';
 import fs from 'fs';
 import { encrypt, decrypt } from '@/modules/encryption/crypto';
 
-import configExample from './default-config';
+import configExample from './defaultConfig';
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
