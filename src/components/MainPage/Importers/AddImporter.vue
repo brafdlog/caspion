@@ -2,9 +2,9 @@
   <v-expansion-panel class="ma-1">
     <v-expansion-panel-header
       expand-icon="mdi-menu-down"
-      :data-test="scraper.key"
+      :data-test="importer.key"
     >
-      {{ scraper.name }}
+      {{ importer.name }}
     </v-expansion-panel-header>
     <v-expansion-panel-content>
       <v-form
@@ -48,27 +48,25 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { encryptProperty } from '@/modules/encryption/credentials';
+import { ADD_IMPORTER_ACTION } from '@/store/modules/config';
 
-function scraperToImporter(scraper) {
-  const importer = { ...scraper, loginFields: {} };
-  scraper.loginFields.forEach((element) => {
-    importer.loginFields[element] = null;
+function initData(importerProp) {
+  const importerToAdd = { ...importerProp, loginFields: {} };
+  importerProp.loginFields.forEach((element) => {
+    importerToAdd.loginFields[element] = null;
   });
-  return importer;
+  return { importerToAdd };
 }
 
 export default {
   props: {
-    scraper: {
+    importer: {
       type: Object,
       required: true,
     },
   },
   data() {
-    return {
-      importerToAdd: scraperToImporter(this.scraper),
-    };
+    return initData(this.importer);
   },
   computed: {
     isFormValid() {
@@ -80,19 +78,17 @@ export default {
   methods: {
     async submitForm() {
       if (this.isFormValid) {
-        const encrypted = await encryptProperty(
-          this.importerToAdd,
-          'loginFields',
-        );
-        this.addImporterAction(encrypted);
+        this.addImporter(this.importerToAdd);
         this.resetForm();
-        this.$emit('scraperAdded', true);
+        this.$emit('importerAdded', true);
       }
     },
     resetForm() {
-      Object.assign(this.$data.importerToAdd, scraperToImporter(this.scraper));
+      Object.assign(this.$data, initData(this.importer));
     },
-    ...mapActions(['addImporterAction']),
+    ...mapActions({
+      addImporter: ADD_IMPORTER_ACTION
+    })
   },
 };
 </script>

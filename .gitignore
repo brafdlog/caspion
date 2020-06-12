@@ -85,5 +85,5 @@ client_secret.json
 
 src/originalBudgetTrackingApp/mockData
 src/originalBudgetTrackingApp/categoryCalculationScript.js
-config.json
+config.encrypted
 googleApiToken.json

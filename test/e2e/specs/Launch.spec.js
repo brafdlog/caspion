@@ -1,15 +1,16 @@
 import fs from 'fs';
 import path from 'path';
 import { testWithSpectron } from 'vue-cli-plugin-electron-builder';
-import { scrapers } from '../../../src/modules/scrapers';
+import scrapers from '../../../src/modules/importers';
 import Interactions from '../utils/interactions';
 
 const screenshotsDir = './screenshots';
 
-jest.setTimeout(1000000);
+jest.setTimeout(100000);
 
 // Remove when https://github.com/nklayman/vue-cli-plugin-electron-builder/issues/625 closed
-const skip = process.env.GITHUB_ACTIONS && process.platform === 'win32';
+// const skip = process.env.GITHUB_ACTIONS && process.platform === 'win32';
+const skip = true;
 
 (skip ? describe.skip : describe)('Launch', () => {
   let app;

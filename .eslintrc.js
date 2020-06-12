@@ -10,8 +10,7 @@ module.exports = {
 
   env: {
     browser: true,
-    node: true,
-    jest: true
+    node: true
   },
 
   extends: ['airbnb-base', 'plugin:vue/recommended'],
@@ -56,18 +55,25 @@ module.exports = {
     'max-len': ['error', { code: 150 }],
     'comma-dangle': 'off',
     'no-await-in-loop': 'off',
-    'import/prefer-default-export': 'off'
+    'import/prefer-default-export': 'off',
+    'no-unused-vars': ['error', { args: 'after-used', argsIgnorePattern: '^_' }]
   },
 
   overrides: [
     {
       files: [
-        '**/__tests__/*.{j,t}s?(x)',
-        '**/tests/unit/**/*.spec.{j,t}s?(x)',
+        '**/test/**/*.spec.{j,t}s?(x)',
+        '**/*.test.{j,t}s?(x)'
       ],
       env: {
         jest: true,
       },
     },
+    {
+      files: ['src/originalBudgetTrackingApp/**/*'],
+      rules: {
+        'no-console': 'off'
+      }
+    }
   ],
 };
