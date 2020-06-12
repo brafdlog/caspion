@@ -56,7 +56,7 @@ module.exports = {
     'comma-dangle': 'off',
     'no-await-in-loop': 'off',
     'import/prefer-default-export': 'off',
-    'no-unused-vars': ['error', { args: 'after-used', argsIgnorePattern: '^_' }],
+    'no-unused-vars': ['error', { args: 'after-used', argsIgnorePattern: '^_' }]
   },
 
   overrides: [
@@ -69,5 +69,11 @@ module.exports = {
         jest: true,
       },
     },
+    {
+      files: ['src/originalBudgetTrackingApp/**/*'],
+      rules: {
+        'no-console': 'off'
+      }
+    }
   ],
 };
