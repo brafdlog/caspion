@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-unresolved
 import { configManager } from '@/originalBudgetTrackingApp';
 import VuexPersistence from 'vuex-persist';
 

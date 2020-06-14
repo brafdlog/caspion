@@ -82,6 +82,7 @@ function extractTransactionsFromScrapeResult(scrapeResult, companyId) {
       companyId,
       accountNumber: account.accountNumber,
     }));
+    // @ts-ignore
     transactions.push(...accountTransactions);
   });
   return transactions;

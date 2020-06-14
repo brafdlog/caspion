@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import electron from 'electron';
 import Vue from 'vue';
+// @ts-ignore
 import App from './App';
 import { initializeReporter } from './modules/reporting';
 import LoggerPlugin from './plugins/logger';
@@ -24,7 +25,7 @@ new Vue({
   created() {
     logger.info('Main Vue component registered');
   },
-
+  // @ts-ignore
   vuetify,
   render: (h) => h(App),
 }).$mount('#app');

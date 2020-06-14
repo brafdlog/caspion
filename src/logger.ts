@@ -1,3 +1,4 @@
+// @ts-nocheck
 import logger from 'electron-log';
 import fs from 'fs';
 import { EOL } from 'os';
