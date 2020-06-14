@@ -5,9 +5,9 @@ import * as ynab from './outputVendors/ynab/ynab';
 import * as googleSheets from './outputVendors/googleSheets/googleSheets';
 import * as categoryCalculation from './categoryCalculationScript';
 import * as configManager from './configManager';
-import outputs from './outputVendors';
+import outputVendors from './outputVendors';
 
-export { outputs };
+export { outputVendors };
 export { configManager };
 
 const TRANSACTION_STATUS_COMPLETED = 'completed';
@@ -109,7 +109,7 @@ export function calculateTransactionHash({
 
 async function createTransactionsInExternalVendors(config, companyIdToTransactions, startDate) {
   await ynab.init(config);
-  const outputVendors = [
+  const outputVendorsInterfaces = [
     {
       name: 'ynab',
       createTransactionFunction: ynab.createTransactions,
@@ -124,7 +124,7 @@ async function createTransactionsInExternalVendors(config, companyIdToTransactio
   const executionResult = {};
   const allTransactions = _.flatten(Object.values(companyIdToTransactions));
 
-  const activeVendors = outputVendors.filter((vendor) => _.get(config, `outputVendors.${vendor.name}.active`, false));
+  const activeVendors = outputVendorsInterfaces.filter((vendor) => _.get(config, `outputVendorsInterfaces.${vendor.name}.active`, false));
   if (!activeVendors.length) {
     throw new Error('You need to set at least one output vendor to be active');
   }

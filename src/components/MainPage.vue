@@ -73,6 +73,7 @@ import Importers from '@/components/MainPage/Importers';
 import DataTable from '@/components/MainPage/DataTable';
 import Exporters from '@/components/MainPage/Exporters';
 import ProfileChip from '@/components/MainPage/ProfileChip';
+import vendors from '@/originalBudgetTrackingApp/node/outputVendors';
 import ReportProblemDialog from './MainPage/ReportProblemDialog';
 
 export default {
@@ -107,6 +108,9 @@ export default {
         },
       ],
     };
+  },
+  created() {
+    console.log(JSON.stringify(vendors));
   },
   methods: {
     openExternal(url) {

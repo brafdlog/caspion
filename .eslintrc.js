@@ -56,7 +56,8 @@ module.exports = {
     'max-len': ['error', { code: 150 }],
     'comma-dangle': 'off',
     'no-await-in-loop': 'off',
-    'import/prefer-default-export': 'off'
+    'import/prefer-default-export': 'off',
+    'no-unused-vars': ['error', { argsIgnorePattern: '^_' }]
   },
 
   overrides: [

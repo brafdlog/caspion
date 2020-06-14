@@ -1,23 +1,51 @@
 <template>
-  <v-form>
-    <v-text-field
-      v-model="properties.folder"
-      label="Folder to save"
-      outlined
-    />
-    <v-text-field
-      v-model="properties.file"
-      label="File to save"
-      outlined
-    />
-    <v-btn
-      color="primary"
-      :loading="loading"
-      @click="submitForm()"
-    >
-      Export
-    </v-btn>
-  </v-form>
+  <v-expansion-panels>
+    <v-expansion-panel>
+      <v-expansion-panel-header disable-icon-rotate>
+        {{ vendor.displayName }}
+        <template v-slot:actions>
+          <v-tooltip
+            v-if="statuses[vendor.name].lastMessage !== null"
+            left
+          >
+            <template v-slot:activator="{ on }">
+              <v-icon
+                :color="iconClass(statuses[vendor.name].success).color"
+                dark
+                v-on="on"
+              >
+                {{ iconClass(statuses[vendor.name].success).icon }}
+              </v-icon>
+            </template>
+            <span>{{ statuses[vendor.name].lastMessage }}</span>
+          </v-tooltip>
+        </template>
+      </v-expansion-panel-header>
+      <v-expansion-panel-content>
+        <v-form>
+          <form-field />
+          <v-text-field
+            v-model="properties.folder"
+            label="Folder to save"
+            outlined
+          />
+          <v-text-field
+            v-model="properties.file"
+            label="File to save"
+            outlined
+          />
+          <v-btn
+            color="primary"
+            :loading="loading"
+            @click="submitForm()"
+          >
+            Export
+          </v-btn>
+        </v-form>
+        <json-exporter />
+      </v-expansion-panel-content>
+    </v-expansion-panel>
+  </v-expansion-panels>
 </template>
 
 <script>
@@ -33,6 +61,12 @@ const title = 'Export to Json file';
 export default {
   name,
   title,
+  props: {
+    vendor: {
+      type: Object,
+      required: true,
+    }
+  },
   data() {
     return {
       properties: {
