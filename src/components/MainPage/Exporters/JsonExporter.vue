@@ -3,46 +3,23 @@
     <v-expansion-panel>
       <v-expansion-panel-header disable-icon-rotate>
         {{ vendor.displayName }}
-        <template v-slot:actions>
-          <v-tooltip
-            v-if="statuses[vendor.name].lastMessage !== null"
-            left
-          >
-            <template v-slot:activator="{ on }">
-              <v-icon
-                :color="iconClass(statuses[vendor.name].success).color"
-                dark
-                v-on="on"
-              >
-                {{ iconClass(statuses[vendor.name].success).icon }}
-              </v-icon>
-            </template>
-            <span>{{ statuses[vendor.name].lastMessage }}</span>
-          </v-tooltip>
-        </template>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
         <v-form>
-          <form-field />
-          <v-text-field
-            v-model="properties.folder"
-            label="Folder to save"
-            outlined
-          />
-          <v-text-field
+          <form-field
+            v-for="(fieldProps, fieldName) in vendor.fields"
+            :key="fieldName"
             v-model="properties.file"
-            label="File to save"
-            outlined
+            v-bind="fieldProps"
           />
           <v-btn
             color="primary"
             :loading="loading"
             @click="submitForm()"
           >
-            Export
+            Export {{ properties.file }}
           </v-btn>
         </v-form>
-        <json-exporter />
       </v-expansion-panel-content>
     </v-expansion-panel>
   </v-expansion-panels>
@@ -54,6 +31,7 @@ import { remote } from 'electron';
 import { mapState, mapActions } from 'vuex';
 import { transactionArrayToObject } from '@/modules/transactions';
 import { readFileToObject, writeFile } from '@/modules/filesystem';
+import FormField from '@/components/shared/FormField';
 
 const name = 'JsonExporter';
 const title = 'Export to Json file';
@@ -61,6 +39,9 @@ const title = 'Export to Json file';
 export default {
   name,
   title,
+  components: {
+    FormField
+  },
   props: {
     vendor: {
       type: Object,

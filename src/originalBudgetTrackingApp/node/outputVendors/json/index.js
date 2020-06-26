@@ -3,10 +3,14 @@ export const description = 'Create a new Json file with the transactions, or mer
 
 export const fields = {
   filename: {
-    displayName: 'Path to file',
-    type: 'string',
+    label: 'Path to file',
+    type: 'text',
     requierd: true,
-    validation: (value) => value && value.length > 0
+    outlined: true,
+    // value -> true | error message
+    rules: [
+      (value) => (value && value.length > 0) || 'You have to set path to filename',
+    ]
   }
 };
 

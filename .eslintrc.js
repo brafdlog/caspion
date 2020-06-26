@@ -57,7 +57,7 @@ module.exports = {
     'comma-dangle': 'off',
     'no-await-in-loop': 'off',
     'import/prefer-default-export': 'off',
-    'no-unused-vars': ['error', { argsIgnorePattern: '^_' }]
+    'no-unused-vars': ['error', { argsIgnorePattern: '^_|h' }]
   },
 
   overrides: [
