@@ -51,7 +51,7 @@
 <script>
 import { mapActions } from 'vuex';
 import { remote } from 'electron';
-import { REMOVE_IMPORTER_ACTION } from '@/store/modules/config';
+import { REMOVE_IMPORTER_ACTION } from '@/store/modules/Config';
 import { scrape } from '@/modules/scrapers';
 import DeleteImporterDialog from '@/components/MainPage/Importers/DeleteImporterDialog';
 

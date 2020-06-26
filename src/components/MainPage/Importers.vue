@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { GET_IMPORTERS_GETTER } from '@/store/modules/config';
+import { GET_IMPORTERS_GETTER } from '@/store/modules/Config';
 import { mapGetters } from 'vuex';
 import importers from '@/modules/importers';
 import AddImporter from './Importers/AddImporter';

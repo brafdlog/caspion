@@ -9,7 +9,7 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   modules,
-  plugins: [configPersistPlugin('config')],
+  plugins: [configPersistPlugin('Config')],
   strict: process.env.NODE_ENV !== 'production',
 });
 
