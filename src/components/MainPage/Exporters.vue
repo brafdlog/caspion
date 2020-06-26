@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { outputVendors } from '@/originalBudgetTrackingApp/node';
+import { outputVendors } from '@/originalBudgetTrackingApp';
 import JsonExporter from './Exporters/JsonExporter';
 
 
