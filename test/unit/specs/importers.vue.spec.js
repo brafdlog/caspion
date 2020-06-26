@@ -3,8 +3,8 @@ import Vuex from 'vuex';
 
 import fakeStore from '../helpers/baseStore';
 import Importers from '../../../src/components/MainPage/Importers';
-import AddScraper from '../../../src/components/MainPage/Importers/AddScraper';
-import { scrapers } from './../../../src/modules/scrapers';
+import AddImporter from '../../../src/components/MainPage/Importers/AddImporter';
+import scrapers from '../../../src/modules/importers';
 
 const localVue = createLocalVue();
 
@@ -20,6 +20,6 @@ describe('Importers', () => {
   });
 
   it('Should contain an AddScraper component for each scraper', () => {
-    expect(wrapper.findAll(AddScraper).length).toBe(scrapers.length);
+    expect(wrapper.findAll(AddImporter).length).toBe(scrapers.length);
   });
 });

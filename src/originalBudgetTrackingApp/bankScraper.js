@@ -1,5 +1,5 @@
 import { createScraper } from 'israeli-bank-scrapers-core';
-import getChrome from '../../modules/downloadChromium';
+import getChrome from '../modules/downloadChromium';
 
 // import mockTransactions from './mockData/mockTransactions';
 

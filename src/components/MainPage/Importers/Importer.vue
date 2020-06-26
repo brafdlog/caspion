@@ -1,65 +1,57 @@
 <template>
-  <div>
-    <v-card
-      v-if="decryptedImporter"
-    >
-      <v-checkbox
-        v-model="showBrowser"
-        :label="`Show browser`"
-      />
-      <div
-        v-for="(value, loginField) in decryptedImporter.loginFields"
-        :key="loginField"
-      >
-        {{ loginField }}:
-        {{ loginField != "password" ? value : "*".repeat(value.length) }}
-      </div>
-      <v-btn
-        color="primary"
-        class="mx-1"
-        :loading="importing"
-        @click="scrape()"
-      >
-        Import
-      </v-btn>
-      <v-btn
-        color="error"
-        dark
-        class="mx-1"
-        @click="deleteDialog = true"
-      >
-        <v-icon>mdi-delete</v-icon>
-        Delete
-      </v-btn>
-      <DeleteImporterDialog
-        v-model="deleteDialog"
-        @confirm="DeleteImporter"
-      />
-      <v-progress-linear
-        v-show="importing"
-        v-model="percentage"
-        height="25"
-        reactive
-      >
-        <template v-slot="{ value }">
-          <strong>{{ value }}%</strong>
-        </template>
-      </v-progress-linear>
-      <div v-show="importing">
-        {{ step }}
-      </div>
-    </v-card>
-    <v-skeleton-loader
-      v-else
-      type="paragraph"
+  <v-card>
+    <v-checkbox
+      v-model="showBrowser"
+      label="Show browser"
     />
-  </div>
+    <div
+      v-for="(value, loginField) in importer.loginFields"
+      :key="loginField"
+    >
+      {{ loginField }}:
+      {{ loginField != "password" ? value : "*".repeat(value.length) }}
+    </div>
+    <v-btn
+      color="primary"
+      class="mx-1"
+      :loading="importing"
+      @click="scrape()"
+    >
+      Import
+    </v-btn>
+    <v-btn
+      color="error"
+      dark
+      class="mx-1"
+      @click="deleteDialog = true"
+    >
+      <v-icon>mdi-delete</v-icon>
+      Delete
+    </v-btn>
+    <DeleteImporterDialog
+      v-model="deleteDialog"
+      @confirm="DeleteImporter"
+    />
+    <v-progress-linear
+      v-show="importing"
+      v-model="percentage"
+      height="25"
+      reactive
+    >
+      <template v-slot="{ value }">
+        <strong>{{ value }}%</strong>
+      </template>
+    </v-progress-linear>
+    <div v-show="importing">
+      {{ step }}
+    </div>
+  </v-card>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
 import { remote } from 'electron';
-import { decryptProperty } from '@/modules/encryption/credentials';
+import { REMOVE_IMPORTER_ACTION } from '@/store/modules/config';
 import { scrape } from '@/modules/scrapers';
 import DeleteImporterDialog from '@/components/MainPage/Importers/DeleteImporterDialog';
 
@@ -76,34 +68,23 @@ export default {
   data() {
     return {
       importing: false,
+      // TODO: show browser should be in config. Also maybe one for all accounts
       showBrowser: false,
-      decryptedImporter: null,
       percentage: 0,
       step: '',
       status: undefined,
       deleteDialog: false,
     };
   },
-  created() {
-    this.decryptedImporter = decryptProperty(this.importer, 'loginFields').then(
-      (decrypted) => {
-        this.$logger.info(
-          `Importer '${this.importer.name}' with id:${this.importer.id} `
-            + `decrypted with ${Object.keys(decrypted.loginFields).length} fields`,
-        );
-        this.decryptedImporter = decrypted;
-      },
-    );
-  },
   methods: {
     async scrape() {
       this.importing = true;
-      this.onProgress({ percent: 0, message: `Request to import ${this.decryptedImporter.key}` });
+      this.onProgress({ percent: 0, message: `Request to import ${this.importer.key}` });
       try {
         const result = await scrape(
           remote.app.getPath('cache'),
-          this.decryptedImporter.key,
-          this.decryptedImporter.loginFields,
+          this.importer.key,
+          this.importer.loginFields,
           this.showBrowser,
           this.onProgress,
           this.$logger,
@@ -148,10 +129,10 @@ export default {
     },
     DeleteImporter() {
       this.deleteDialog = false;
-      this.removeImporterAction(this.decryptedImporter.id);
+      this[REMOVE_IMPORTER_ACTION](this.importer.id);
     },
     ...mapActions([
-      'removeImporterAction',
+      REMOVE_IMPORTER_ACTION,
       'addTransactionsAction',
       'updateImporterStatus',
     ]),

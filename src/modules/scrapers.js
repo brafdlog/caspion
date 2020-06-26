@@ -1,13 +1,6 @@
 /* eslint-disable max-len */
-import { createScraper, SCRAPERS } from 'israeli-bank-scrapers-core';
+import { createScraper } from 'israeli-bank-scrapers-core';
 import getChrome from './downloadChromium';
-
-export const scrapers = Object.keys(SCRAPERS)
-  .filter((key) => key !== 'leumiCard')
-  .map((key) => ({
-    key,
-    ...SCRAPERS[key],
-  }));
 
 export async function scrape(
   installPath,

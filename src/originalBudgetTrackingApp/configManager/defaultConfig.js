@@ -4,22 +4,6 @@ export default {
     numDaysBack: 40,
     showBrowser: false,
     accountsToScrape: [
-      // Add the accounts you want to scrape here
-      // Possible company ids are 'hapoalim', 'leumi', 'discount', 'otsarHahayal', 'visaCal', 'leumiCard', 'isracard', 'amex'
-      {
-        companyId: 'leumi',
-        credentials: {
-          username: process.env.LEUMI_USERNAME,
-          password: process.env.LEUMI_PASSWORD
-        }
-      },
-      {
-        companyId: 'leumiCard',
-        credentials: {
-          username: process.env.LEUMI_CARD_USERNAME,
-          password: process.env.LEUMI_CARD_PASSWORD
-        }
-      }
     ]
   },
   outputVendors: {
