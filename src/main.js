@@ -2,6 +2,7 @@
 import electron from 'electron';
 import Vue from 'vue';
 import App from './App';
+import Splash from './Splash';
 import { initializeReporter } from './modules/reporting';
 import LoggerPlugin from './plugins/logger';
 import vuetify from './plugins/vuetify';
@@ -20,11 +21,23 @@ Vue.config.productionTip = process.env.NODE_ENV !== 'production';
 new Vue({
   router,
   store,
-
-  created() {
-    logger.info('Main Vue component registered');
-  },
-
   vuetify,
-  render: (h) => h(App),
+
+  data() {
+    return {
+      // TODO check
+      loaded: true,
+    };
+  },
+  created() {
+    logger.info('Vue registered');
+    console.log('created', this.$store.restored);
+    this.$store.restored.then(() => {
+      console.log('loaded');
+      this.loaded = true;
+    });
+  },
+  render(h) {
+    return this.loaded ? h(App) : h(Splash);
+  },
 }).$mount('#app');

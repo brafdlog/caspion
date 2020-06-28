@@ -29,26 +29,6 @@ export default {
   computed: {
     vendors: () => outputVendors,
   },
-  methods: {
-    iconClass(success) {
-      if (success === true) {
-        return {
-          icon: 'mdi-check-circle',
-          color: 'green',
-        };
-      }
-      if (success === false) {
-        return {
-          icon: 'mdi-alert-circle',
-          color: 'error',
-        };
-      }
-      return {
-        icon: 'mdi-help-circle',
-        color: 'info',
-      };
-    },
-  },
 };
 </script>
 

@@ -82,6 +82,7 @@
 <script>
 import { GET_IMPORTERS_GETTER } from '@/store/modules/Config';
 import { mapGetters } from 'vuex';
+// TODO get from configManager
 import importers from '@/modules/importers';
 import AddImporter from './Importers/AddImporter';
 import Importer from './Importers/Importer';

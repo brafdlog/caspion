@@ -5,19 +5,23 @@
         {{ vendor.displayName }}
       </v-expansion-panel-header>
       <v-expansion-panel-content>
-        <v-form>
+        <v-form
+          ref="form"
+          v-model="validated"
+        >
           <form-field
             v-for="(fieldProps, fieldName) in vendor.fields"
             :key="fieldName"
-            v-model="properties.file"
             v-bind="fieldProps"
+            :value="loadedExporter[fieldName]"
+            @input="updateExporter($event, fieldName)"
           />
           <v-btn
             color="primary"
-            :loading="loading"
+            :disabled="!validated"
             @click="submitForm()"
           >
-            Export {{ properties.file }}
+            Save
           </v-btn>
         </v-form>
       </v-expansion-panel-content>
@@ -26,20 +30,15 @@
 </template>
 
 <script>
-import path from 'path';
-import { remote } from 'electron';
-import { mapState, mapActions } from 'vuex';
-import { transactionArrayToObject } from '@/modules/transactions';
-import { readFileToObject, writeFile } from '@/modules/filesystem';
 import FormField from '@/components/shared/FormField';
+import { GET_EXPORTER_GETTER, ADD_EXPORTER_ACTION } from '@/store/modules/Config';
 
-const name = 'JsonExporter';
-const title = 'Export to Json file';
-
+// TODO rename to Exporter
+// TODO need indication the data saved, maybe an 'Edit' button, or 'saved' label
 export default {
-  name,
-  title,
+  name: 'JsonExporter',
   components: {
+    // TODO register global
     FormField
   },
   props: {
@@ -50,55 +49,24 @@ export default {
   },
   data() {
     return {
-      properties: {
-        folder: path.join(
-          remote.app.getPath('cache'),
-          remote.app.getName(),
-        ),
-        file: 'transactions.json',
-      },
-      loading: false,
+      exporter: {},
+      validated: true,
     };
   },
   computed: {
-    ...mapState({
-      storeProperties: (state) => state.Exporters[name],
-      transactions: (state) => state.Transactions.transactions,
-    }),
-  },
-  created() {
-    this.properties = { ...this.properties, ...this.storeProperties };
+    loadedExporter() {
+      return this.$store.getters[GET_EXPORTER_GETTER](this.vendor.name);
+    }
   },
   methods: {
-    ...mapActions(['saveExporterProperties']),
-    emitStatus(success, message) {
-      this.$emit('update:success', success);
-      this.$emit('update:message', message);
+    updateExporter(value, fieldName) {
+      this.exporter[fieldName] = value;
     },
     submitForm() {
-      this.loading = true;
-      try {
-        this.saveExporterProperties({ name, properties: this.properties });
-
-        const filePath = path.join(
-          this.properties.folder,
-          this.properties.file,
-        );
-        const savedObject = transactionArrayToObject(
-          readFileToObject(filePath, []),
-        );
-        const combineObject = { ...savedObject, ...this.transactions };
-        writeFile(
-          filePath,
-          JSON.stringify(Object.values(combineObject), null, 4),
-        );
-        this.emitStatus(true, `Your data saved in ${filePath}`);
-      } catch (error) {
-        this.$logger.error(error.message);
-        if (error.stack) this.$logger.verbose(error.stack);
-        this.emitStatus(false, error.message);
+      if (this.$refs.form.validate()) {
+        // TODO the arguments should be simple
+        this.$store.actions[ADD_EXPORTER_ACTION]({ name: this.vendor.name, ...this.exporter });
       }
-      this.loading = false;
     },
   },
 };
