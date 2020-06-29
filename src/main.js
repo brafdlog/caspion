@@ -26,14 +26,12 @@ new Vue({
   data() {
     return {
       // TODO check
-      loaded: true,
+      loaded: false,
     };
   },
   created() {
     logger.info('Vue registered');
-    console.log('created', this.$store.restored);
     this.$store.restored.then(() => {
-      console.log('loaded');
       this.loaded = true;
     });
   },

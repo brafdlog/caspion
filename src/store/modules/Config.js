@@ -1,4 +1,5 @@
 import { randomHex } from '@/modules/encryption/crypto';
+// import defaultConfig from '@/originalBudgetTrackingApp/configManager/defaultConfig';
 
 export const ADD_IMPORTER_ACTION = 'ADD_IMPORTER_ACTION';
 export const ADD_EXPORTER_ACTION = 'ADD_EXPORTER_ACTION';
@@ -6,15 +7,8 @@ export const REMOVE_IMPORTER_ACTION = 'REMOVE_IMPORTER_ACTION';
 export const GET_IMPORTERS_GETTER = 'GET_IMPORTERS_GETTER';
 export const GET_EXPORTER_GETTER = 'GET_EXPORTER_GETTER';
 
-const state = {
-  scraping: {
-    numDaysBack: 40,
-    showBrowser: false,
-    accountsToScrape: []
-  },
-  outputVendors: {},
-  monitoring: {}
-};
+// TODO defaultConfig or empty?
+const state = {}; // defaultConfig;
 
 const mutations = {
   addImporter: (state, importer) => state.scraping.accountsToScrape.push(importer),
@@ -37,7 +31,7 @@ const getters = {
     account.status = account.status || { ...emptyStatusObj };
     return account;
   }),
-  [GET_EXPORTER_GETTER]: (state) => (name) => state.outputVendors[name],
+  [GET_EXPORTER_GETTER]: (state) => (name) => state.outputVendors[name]
 };
 
 const actions = {

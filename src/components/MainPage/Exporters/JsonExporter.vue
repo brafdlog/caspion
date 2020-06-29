@@ -65,7 +65,7 @@ export default {
     submitForm() {
       if (this.$refs.form.validate()) {
         // TODO the arguments should be simple
-        this.$store.actions[ADD_EXPORTER_ACTION]({ name: this.vendor.name, ...this.exporter });
+        this.$store.dispatch(ADD_EXPORTER_ACTION, { name: this.vendor.name, ...this.exporter });
       }
     },
   },
