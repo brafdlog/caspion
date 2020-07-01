@@ -11,6 +11,11 @@ import store from './store';
 
 initializeReporter();
 
+process.on('unhandledRejection', (error) => {
+  debugger;
+  console.error(error)
+})
+
 
 const logger = electron.remote.getGlobal('logger');
 logger.info('The renderer process got the logger');

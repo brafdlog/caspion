@@ -1,7 +1,9 @@
 import textField from './TextField';
+import fileField from './FileField';
 
 const typeToComponent = {
-  text: textField
+  text: textField,
+  file: fileField,
 };
 
 export default {

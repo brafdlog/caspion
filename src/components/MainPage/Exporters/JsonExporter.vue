@@ -33,6 +33,7 @@
 import FormField from '@/components/shared/FormField';
 import { GET_EXPORTER_GETTER, ADD_EXPORTER_ACTION } from '@/store/modules/Config';
 
+// TODO checkbox enabled/disabled
 // TODO rename to Exporter
 // TODO need indication the data saved, maybe an 'Edit' button, or 'saved' label
 export default {

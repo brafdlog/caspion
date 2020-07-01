@@ -92,9 +92,5 @@
     "vue-template-compiler": "^2.6.11",
     "vuetify-loader": "^1.4.4"
   },
-  "resolutions": {
-    "deepmerge": "^4.0.0",
-    "electron-builder": "^22.0.0"
-  },
   "snyk": true
 }

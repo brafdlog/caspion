@@ -7,8 +7,7 @@ export const REMOVE_IMPORTER_ACTION = 'REMOVE_IMPORTER_ACTION';
 export const GET_IMPORTERS_GETTER = 'GET_IMPORTERS_GETTER';
 export const GET_EXPORTER_GETTER = 'GET_EXPORTER_GETTER';
 
-// TODO defaultConfig or empty?
-const state = {}; // defaultConfig;
+const state = {};
 
 const mutations = {
   addImporter: (state, importer) => state.scraping.accountsToScrape.push(importer),

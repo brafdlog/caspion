@@ -3,7 +3,7 @@ import { app, BrowserWindow } from 'electron';
 import { createProtocol, installVueDevtools } from 'vue-cli-plugin-electron-builder/lib';
 import CreateLogger from './logger';
 import { initializeReporter } from './modules/reporting';
-import './store';
+// import './store';
 
 initializeReporter();
 
