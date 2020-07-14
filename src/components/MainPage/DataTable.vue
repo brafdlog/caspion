@@ -43,7 +43,6 @@ const detailes = properties.map((prop) => ({
 
 const tableFooterHeight = 59;
 
-
 export default {
   name: 'DataTable',
   data() {

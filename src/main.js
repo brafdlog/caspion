@@ -30,7 +30,6 @@ new Vue({
 
   data() {
     return {
-      // TODO check
       loaded: false,
     };
   },

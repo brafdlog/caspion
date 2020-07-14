@@ -12,7 +12,6 @@ export default function CreateLogger(app) {
   };
   logger.catchErrors({ onError });
 
-
   logger.getLastLines = (n) => {
     const lines = fs.readFileSync(logger.transports.file.getFile().path).toString().split(EOL);
     const lastLines = lines.slice(lines.length - n);

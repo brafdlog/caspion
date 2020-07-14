@@ -56,7 +56,6 @@
 <script>
 import { shell } from 'electron';
 
-
 export default {
   name: 'ProfileChip',
   props: {

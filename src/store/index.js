@@ -4,7 +4,6 @@ import migrations from './migrations';
 import modules from './modules';
 import configPersistPlugin from './plugins/persisted-config';
 
-
 Vue.use(Vuex);
 
 const store = new Vuex.Store({

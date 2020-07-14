@@ -16,7 +16,6 @@ let mainWindow;
 global.logger = CreateLogger(app);
 const { logger } = global;
 
-
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -28,14 +27,17 @@ function createWindow() {
     },
   });
 
+  // Workaround from https://github.com/electron/electron/issues/19554
+  const loadURL = (url) => setTimeout(() => mainWindow.loadURL(url), 100);
+
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
-    mainWindow.loadURL(process.env.WEBPACK_DEV_SERVER_URL);
+    loadURL(process.env.WEBPACK_DEV_SERVER_URL);
     if (!process.env.IS_TEST) mainWindow.webContents.openDevTools();
   } else {
     createProtocol('app');
     // Load the index.html when not in development
-    mainWindow.loadURL('app://./index.html');
+    loadURL('app://./index.html');
   }
   mainWindow.on('closed', () => {
     mainWindow = null;
