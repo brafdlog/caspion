@@ -18,7 +18,7 @@
           />
           <v-btn
             color="primary"
-            :disabled="!validated"
+            :disabled="disableSave"
             @click="submitForm()"
           >
             Save
@@ -35,7 +35,6 @@ import { GET_EXPORTER_GETTER, ADD_EXPORTER_ACTION } from '@/store/modules/Config
 
 // TODO checkbox enabled/disabled
 // TODO rename to Exporter
-// TODO need indication the data saved, maybe an 'Edit' button, or 'saved' label
 export default {
   name: 'JsonExporter',
   components: {
@@ -52,21 +51,27 @@ export default {
     return {
       exporter: {},
       validated: true,
+      changed: false,
     };
   },
   computed: {
     loadedExporter() {
       return this.$store.getters[GET_EXPORTER_GETTER](this.vendor.name);
+    },
+    disableSave() {
+      return !this.validated || !this.changed;
     }
   },
   methods: {
     updateExporter(value, fieldName) {
+      this.changed = true;
       this.exporter[fieldName] = value;
     },
     submitForm() {
       if (this.$refs.form.validate()) {
         // TODO the arguments should be simple
-        this.$store.dispatch(ADD_EXPORTER_ACTION, { name: this.vendor.name, ...this.exporter });
+        this.$store.dispatch(ADD_EXPORTER_ACTION, { name: this.vendor.name, ...this.loadedExporter, ...this.exporter })
+          .then(() => { this.changed = false; });
       }
     },
   },

@@ -5,7 +5,7 @@
         Exporters
       </v-toolbar-title>
     </v-toolbar>
-    <json-exporter
+    <exporter
       v-for="vendor in vendors"
       :key="vendor.name"
       :vendor="vendor"
@@ -15,10 +15,10 @@
 
 <script>
 import { outputVendors } from '@/originalBudgetTrackingApp';
-import JsonExporter from './Exporters/JsonExporter';
+import Exporter from './Exporters/Exporter';
 
 export default {
-  components: { JsonExporter },
+  components: { Exporter },
   data() {
     return {
       accordionActiveItem: '',
