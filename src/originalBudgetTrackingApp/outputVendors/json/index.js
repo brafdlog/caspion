@@ -15,8 +15,6 @@ export const fields = {
   }
 };
 
-export const convertFieldsToConfig = (fieldsWithValues) => fieldsWithValues;
-
 export const output = async (transactions, config) => {
   console.log(transactions, config);
 };

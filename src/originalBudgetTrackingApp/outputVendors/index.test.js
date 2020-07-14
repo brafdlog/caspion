@@ -3,6 +3,13 @@ import each from 'jest-each';
 import fs from 'fs';
 import path from 'path';
 
+const pseudoInterface = {
+  displayName: typeof '',
+  description: typeof '',
+  output: typeof (async () => {}),
+  fields: typeof ({}),
+};
+
 const vendorsIndexes = fs.readdirSync(__dirname, { withFileTypes: true })
   .filter((dir) => dir.isDirectory())
   .map(({ name }) => path.join(__dirname, name))
@@ -17,9 +24,10 @@ describe('Validate vendors interface', () => {
         vendor = require(vendorPath);
       });
 
-      it('Should contains \'name\' as string', () => {
-        expect(vendor).toHaveProperty('name');
-        expect(typeof vendor.name).toBe('string');
-      });
+      each(Object.keys(pseudoInterface))
+        .it('Should contains %s with expected type', (key) => {
+          expect(vendor).toHaveProperty(key);
+          expect(typeof vendor[key]).toBe(pseudoInterface[key]);
+        });
     });
 });
