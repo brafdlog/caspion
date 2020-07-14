@@ -17,7 +17,6 @@
 import { outputVendors } from '@/originalBudgetTrackingApp';
 import JsonExporter from './Exporters/JsonExporter';
 
-
 export default {
   components: { JsonExporter },
   data() {

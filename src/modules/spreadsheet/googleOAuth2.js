@@ -2,7 +2,6 @@ import { encryptObject, decryptObject } from '@/modules/encryption/credentials';
 import { saveIntoAccount, getFromAccount } from '@/modules/encryption/keytar';
 import ElectronGoogleOAuth2 from '@getstation/electron-google-oauth2';
 
-
 const keytarAccount = 'googleOauth2Token';
 const successRedirectURL = 'https://github.com/baruchiro/israeli-bank-scrapers-desktop';
 

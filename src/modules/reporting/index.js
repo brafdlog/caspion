@@ -5,7 +5,6 @@ const { init } = (process.type === 'browser'
   ? require('@sentry/electron/dist/main')
   : require('@sentry/electron/dist/renderer'));
 
-
 const reporterConfiguration = {
   dsn: SENTRY_DSN,
   defaultIntegrations: false,
