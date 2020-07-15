@@ -32,7 +32,6 @@
 <script>
 import { GET_EXPORTER_GETTER, ADD_EXPORTER_ACTION } from '@/store/modules/Config';
 
-// TODO checkbox enabled/disabled
 export default {
   name: 'JsonExporter',
   props: {

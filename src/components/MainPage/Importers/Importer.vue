@@ -68,7 +68,6 @@ export default {
   data() {
     return {
       importing: false,
-      // TODO: show browser should be in config. Also maybe one for all accounts
       showBrowser: false,
       percentage: 0,
       step: '',

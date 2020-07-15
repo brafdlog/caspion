@@ -8,7 +8,8 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   modules,
-  // TODO: this plugin just copy the config state,
+  // TODO: https://github.com/brafdlog/budget-tracking/issues/51#issuecomment-658835043
+  // This plugin just copy the config state,
   // if the backup will fail, we will have two configs- filesystem and store
   // Maybe we need to backup in the action
   plugins: [configPersistPlugin('Config')],
