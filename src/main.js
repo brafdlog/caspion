@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import electron from 'electron';
 import Vue from 'vue';
-import App from './App';
+import Main from './components/MainPage';
 import Splash from './Splash';
 import { initializeReporter } from './modules/reporting';
 import LoggerPlugin from './plugins/logger';
@@ -28,6 +28,8 @@ new Vue({
   store,
   vuetify,
 
+  name: 'IsraeliBankScrapersDesktop',
+
   data() {
     return {
       loaded: false,
@@ -40,6 +42,6 @@ new Vue({
     });
   },
   render(h) {
-    return this.loaded ? h(App) : h(Splash);
+    return this.loaded ? h(Main) : h(Splash);
   },
 }).$mount('#app');
