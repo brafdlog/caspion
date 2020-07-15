@@ -2,11 +2,12 @@
 import electron from 'electron';
 import Vue from 'vue';
 import Main from './components/MainPage';
-import Splash from './Splash';
+import FormField from './components/shared/FormField';
 import { initializeReporter } from './modules/reporting';
 import LoggerPlugin from './plugins/logger';
 import vuetify from './plugins/vuetify';
 import router from './router';
+import Splash from './Splash';
 import store from './store';
 
 initializeReporter();
@@ -22,6 +23,8 @@ logger.info('The renderer process got the logger');
 Vue.use(LoggerPlugin, { logger });
 
 Vue.config.productionTip = process.env.NODE_ENV !== 'production';
+
+Vue.component('form-field', FormField)
 
 new Vue({
   router,

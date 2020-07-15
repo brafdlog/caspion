@@ -30,17 +30,11 @@
 </template>
 
 <script>
-import FormField from '@/components/shared/FormField';
 import { GET_EXPORTER_GETTER, ADD_EXPORTER_ACTION } from '@/store/modules/Config';
 
 // TODO checkbox enabled/disabled
-// TODO rename to Exporter
 export default {
   name: 'JsonExporter',
-  components: {
-    // TODO register global
-    FormField
-  },
   props: {
     vendor: {
       type: Object,
