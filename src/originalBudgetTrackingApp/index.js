@@ -9,6 +9,7 @@ import outputVendors from './outputVendors';
 
 export { outputVendors };
 export { configManager };
+export const { inputVendors } = bankScraper;
 
 const TRANSACTION_STATUS_COMPLETED = 'completed';
 const DATE_FORMAT = 'DD/MM/YYYY';
