@@ -35,7 +35,7 @@ Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israel
   - If using YNAB, the categories you return must match category names in YNAB
 - Run `yarn start` to start the app
 - Go to `הגדרות` and add the financial institutions you want and remove the default ones
-- Setup YNAB and/or Google spreadsheet integrations (see instructions below)
+- Setup YNAB and/or Google spreadsheet integrations (see instructions below). Make sure to disable integration that you aren't using (set active field to false)
 - Run by clicking on the `תראה לי ת׳כסף` button in the app
 
 ## YNAB integration setup (optional)
