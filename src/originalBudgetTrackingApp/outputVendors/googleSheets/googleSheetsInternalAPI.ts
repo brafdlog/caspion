@@ -22,6 +22,7 @@ export async function appendToSpreadsheet({
     values
   };
 
+  // @ts-ignore
   const result = await sheets.spreadsheets.values.append({
     auth: jwtClient,
     spreadsheetId,
@@ -50,7 +51,7 @@ export async function getExistingHashes({
 async function loadCredentialsAndAuthorize(credentialsFilePath) {
   const credentialsStr = await readFile(credentialsFilePath, 'utf8');
   const credentials = JSON.parse(credentialsStr);
-  const jwtClient = new google.auth.JWT(credentials.client_email, null, credentials.private_key, SCOPES);
+  const jwtClient = new google.auth.JWT(credentials.client_email, undefined, credentials.private_key, SCOPES);
 
   await jwtClient.authorize();
 

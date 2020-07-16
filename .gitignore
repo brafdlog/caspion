@@ -37,6 +37,7 @@ dist
 !build/icons
 build/
 dist_electron
+app/dist
 
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git

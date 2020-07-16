@@ -16,7 +16,7 @@ let ynabConfig;
 let ynabAPI;
 let ynabAccountDetails;
 
-export async function init(config) {
+export async function init(config?) {
   if (ynabConfig && ynabAPI) {
     console.log('Ynab already initialized, skipping');
     return;
@@ -194,6 +194,7 @@ async function getBudgetsAndAccountsData() {
       const budgetAccounts = budgetAccountsResponse.data.accounts.map(({ id, name, type }) => ({
         id, name, type, budgetName: budget.name
       }));
+      // @ts-ignore
       accounts.push(...budgetAccounts);
     })
   );
