@@ -33,7 +33,7 @@ bower_components
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
 dist/electron/*
-dist/web/*
+dist
 !build/icons
 build/
 dist_electron
@@ -84,6 +84,6 @@ thumbs.db
 client_secret.json
 
 src/originalBudgetTrackingApp/mockData
-src/originalBudgetTrackingApp/categoryCalculationScript.js
+src/originalBudgetTrackingApp/categoryCalculationScript.ts
 config.encrypted
 googleApiToken.json
