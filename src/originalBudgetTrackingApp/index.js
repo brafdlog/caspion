@@ -44,14 +44,16 @@ async function scrapeFinancialAccountsAndFetchTransactions(config, startDate) {
   const companyIdToTransactions = {};
   const accountsToScrape = config.scraping.accountsToScrape.filter((accountToScrape) => accountToScrape.active !== false);
   for (let i = 0; i < accountsToScrape.length; i++) {
-    const { companyId, credentials } = accountsToScrape[i];
+    const {
+      key: companyId, loginFields: credentials, name
+    } = accountsToScrape[i];
     try {
-      console.log(`=================== Start fetching transactions for ${companyId} ===================`);
+      console.log(`=================== Start fetching transactions for ${name} ===================`);
       const scrapeResult = await fetchTransactions(companyId, credentials, startDate, config);
       let transactions = extractTransactionsFromScrapeResult(scrapeResult, companyId);
       transactions = await postProcessTransactions(transactions);
       companyIdToTransactions[companyId] = transactions;
-      console.log(`=================== Finished fetching transactions for ${companyId} ===================`);
+      console.log(`=================== Finished fetching transactions for ${name} ===================`);
     } catch (e) {
       console.error(`Error fetching transactions for ${companyId}. Error: `, e);
       throw e;
