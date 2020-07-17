@@ -19,7 +19,6 @@ const mutations = {
   },
 };
 
-// TODO not sure we need that. We need a status but not in the state
 const getters = {
   [GET_IMPORTERS_GETTER]: (state) => state.scraping.accountsToScrape,
   [GET_EXPORTER_GETTER]: (state) => (name) => state.outputVendors[name]
