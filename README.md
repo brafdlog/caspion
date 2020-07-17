@@ -10,7 +10,12 @@ In addition, it can automatically set an expense category for transactions accor
 
 Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israeli-bank-scrapers) npm package.
 
-**This is a work in progress**
+
+>
+> We have decided to merge the [israeli-bank-scrapers-desktop](https://github.com/baruchiro/israeli-bank-scrapers-desktop) project into this repository, and work together on the same project. 
+>
+> The merge is in progress in the `unifyRepos` branch in this [PR](https://github.com/brafdlog/budget-tracking/pull/50)
+>  
 
 ### What is currently supported:
 

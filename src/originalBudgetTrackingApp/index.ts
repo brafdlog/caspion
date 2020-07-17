@@ -75,14 +75,13 @@ async function fetchTransactions(companyId, credentials, startDate, config) {
 }
 
 function extractTransactionsFromScrapeResult(scrapeResult, companyId) {
-  const transactions = [];
+  const transactions: any[] = [];
   scrapeResult.accounts.forEach((account) => {
     const accountTransactions = account.txns.map((txn) => ({
       ...txn,
       companyId,
       accountNumber: account.accountNumber,
     }));
-    // @ts-ignore
     transactions.push(...accountTransactions);
   });
   return transactions;

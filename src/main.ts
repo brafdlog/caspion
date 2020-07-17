@@ -21,11 +21,11 @@ Vue.config.productionTip = process.env.NODE_ENV !== 'production';
 new Vue({
   router,
   store,
+  vuetify,
 
   created() {
     logger.info('Main Vue component registered');
   },
-  // @ts-ignore
-  vuetify,
+
   render: (h) => h(App),
 }).$mount('#app');

@@ -1,7 +1,12 @@
-// @ts-nocheck
 import logger from 'electron-log';
 import fs from 'fs';
 import { EOL } from 'os';
+
+declare module 'electron-log' {
+  interface ElectronLog {
+    getLastLines: (n: number) => string
+  }
+}
 
 export default function CreateLogger(app) {
   logger.info(`Welcome to ${app.getName()} log`);
@@ -9,7 +14,7 @@ export default function CreateLogger(app) {
 
   const onError = (error) => {
     logger.error(error.message ? error.message : error);
-    if (error.stack) logger.trace(error.stack);
+    if (error.stack) logger.debug(error.stack);
   };
   logger.catchErrors({ onError });
 
