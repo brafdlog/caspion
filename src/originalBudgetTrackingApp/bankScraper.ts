@@ -1,6 +1,11 @@
-import { createScraper } from 'israeli-bank-scrapers-core';
+import { createScraper, SCRAPERS } from 'israeli-bank-scrapers-core';
 import getChrome from '../modules/downloadChromium';
 
+export const inputVendors = Object.keys(SCRAPERS)
+  .map((key) => ({
+    key,
+    ...SCRAPERS[key],
+  }));
 // import mockTransactions from './mockData/mockTransactions';
 
 export async function scrape({

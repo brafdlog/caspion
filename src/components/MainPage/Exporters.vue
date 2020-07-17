@@ -5,89 +5,28 @@
         Exporters
       </v-toolbar-title>
     </v-toolbar>
-    <v-expansion-panels>
-      <v-expansion-panel
-        v-for="comp in exportersComponents"
-        :key="comp.name"
-        :name="comp.name"
-      >
-        <v-expansion-panel-header disable-icon-rotate>
-          {{ comp.title }}
-          <template v-slot:actions>
-            <v-tooltip
-              v-if="statuses[comp.name].lastMessage !== null"
-              left
-            >
-              <template v-slot:activator="{ on }">
-                <v-icon
-                  :color="iconClass(statuses[comp.name].success).color"
-                  dark
-                  v-on="on"
-                >
-                  {{ iconClass(statuses[comp.name].success).icon }}
-                </v-icon>
-              </template>
-              <span>{{ statuses[comp.name].lastMessage }}</span>
-            </v-tooltip>
-          </template>
-        </v-expansion-panel-header>
-        <v-expansion-panel-content>
-          <component
-            :is="comp.name"
-            :message.sync="statuses[comp.name].lastMessage"
-            :success.sync="statuses[comp.name].success"
-          />
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels>
+    <exporter
+      v-for="vendor in vendors"
+      :key="vendor.name"
+      :vendor="vendor"
+    />
   </div>
 </template>
 
 <script>
-import JsonExporter from './Exporters/JsonExporter';
-import SpreadsheetExporter from './Exporters/SpreadsheetExporter';
-
-const exportersComponents = {
-  JsonExporter,
-  SpreadsheetExporter,
-};
-
-const statuses = {};
-Object.keys(exportersComponents).forEach((key) => {
-  statuses[key] = {
-    lastMessage: null,
-    success: null,
-  };
-});
+import { outputVendors } from '@/originalBudgetTrackingApp';
+import Exporter from './Exporters/Exporter';
 
 export default {
-  components: { ...exportersComponents },
+  components: { Exporter },
   data() {
     return {
       accordionActiveItem: '',
-      exportersComponents,
-      statuses,
+      statuses: {},
     };
   },
-  methods: {
-    iconClass(success) {
-      if (success === true) {
-        return {
-          icon: 'mdi-check-circle',
-          color: 'green',
-        };
-      }
-      if (success === false) {
-        return {
-          icon: 'mdi-alert-circle',
-          color: 'error',
-        };
-      }
-      return {
-        icon: 'mdi-help-circle',
-        color: 'info',
-      };
-    },
+  computed: {
+    vendors: () => outputVendors,
   },
 };
 </script>

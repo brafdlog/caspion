@@ -48,7 +48,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { ADD_IMPORTER_ACTION } from '@/store/modules/config';
+import { ADD_IMPORTER_ACTION } from '@/store/modules/Config';
 
 function initData(importerProp) {
   const importerToAdd = { ...importerProp, loginFields: {} };
