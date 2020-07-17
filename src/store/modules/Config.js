@@ -20,7 +20,13 @@ const mutations = {
 };
 
 const getters = {
-  [GET_IMPORTERS_GETTER]: (state) => state.scraping.accountsToScrape,
+  [GET_IMPORTERS_GETTER]: (state) => {
+    const importers = state.scraping.accountsToScrape.map((importer) => {
+      const status = importer.status ? importer.status : {};
+      return { ...importer, status };
+    });
+    return importers;
+  },
   [GET_EXPORTER_GETTER]: (state) => (name) => state.outputVendors[name]
 };
 
