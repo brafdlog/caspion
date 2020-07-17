@@ -18,7 +18,7 @@ export async function appendToSpreadsheet({
 }) {
   const jwtClient = await loadCredentialsAndAuthorize(credentialsFilePath);
 
-  const resource = {
+  const requestBody = {
     values
   };
 
@@ -27,7 +27,7 @@ export async function appendToSpreadsheet({
     spreadsheetId,
     range,
     valueInputOption: 'USER_ENTERED',
-    resource
+    requestBody
   });
   console.log('Updates: ', result.data.updates);
   return result;
@@ -50,7 +50,7 @@ export async function getExistingHashes({
 async function loadCredentialsAndAuthorize(credentialsFilePath) {
   const credentialsStr = await readFile(credentialsFilePath, 'utf8');
   const credentials = JSON.parse(credentialsStr);
-  const jwtClient = new google.auth.JWT(credentials.client_email, null, credentials.private_key, SCOPES);
+  const jwtClient = new google.auth.JWT(credentials.client_email, undefined, credentials.private_key, SCOPES);
 
   await jwtClient.authorize();
 
