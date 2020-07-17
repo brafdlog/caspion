@@ -30,8 +30,6 @@ export async function init(config?) {
     console.log('Ynab not enabled, skipping');
     return;
   }
-  const m = ynab;
-  console.log(m);
   verifyYnabAccessTokenWasDefined();
   ynabAPI = new ynab.API(ynabConfig.accessToken);
 }
