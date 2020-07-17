@@ -2,12 +2,10 @@
   <v-app>
     <v-app-bar
       app
+      clipped-left
+      clipped-right
       color="primary"
     >
-      <v-app-bar-nav-icon
-        data-test="drawerLeftToggle"
-        @click.stop="drawerLeft = !drawerLeft"
-      />
       <div class="d-flex align-center">
         <span class="shrink mr-2 headline">Israeli Bank Scrapers Desktop</span>
       </div>
@@ -22,19 +20,23 @@
         <span class="mr-2">Report a problem</span>
         <v-icon>mdi-chat-alert-outline</v-icon>
       </v-btn>
-
-      <v-app-bar-nav-icon @click.stop="drawerRight = !drawerRight" />
     </v-app-bar>
 
     <v-navigation-drawer
-      v-model="drawerLeft"
+      stateless
+      clipped
+      value="true"
+      disable-resize-watcher
       app
       left
     >
       <Importers />
     </v-navigation-drawer>
     <v-navigation-drawer
-      v-model="drawerRight"
+      stateless
+      clipped
+      value="true"
+      disable-resize-watcher
       app
       right
     >
@@ -82,8 +84,6 @@ export default {
   },
   data() {
     return {
-      drawerLeft: null,
-      drawerRight: null,
       reportProblemDialog: false,
       profiles: [
         {
