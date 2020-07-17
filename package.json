@@ -11,7 +11,7 @@
     "build": "vue-cli-service electron:build",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
-    "prepare": "ncp src/originalBudgetTrackingApp/categoryCalculationScript-example.js src/originalBudgetTrackingApp/categoryCalculationScript.js || true",
+    "prepare": "ncp src/originalBudgetTrackingApp/categoryCalculationScript-example.ts src/originalBudgetTrackingApp/categoryCalculationScript.ts || true",
     "lint": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter src",
     "lint:fix": "yarn lint --fix",
     "test": "yarn unit && yarn e2e",
