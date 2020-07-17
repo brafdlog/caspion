@@ -13,7 +13,6 @@ import store from './store';
 initializeReporter();
 
 process.on('unhandledRejection', (error) => {
-  debugger;
   console.error(error)
 })
 
