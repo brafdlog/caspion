@@ -63,24 +63,22 @@
     </v-footer>
     <!-- The content come after all the 'app' components,
     to render when the $vuetify.application is ready -->
-    <v-content>
-      <DataTable />
-    </v-content>
+    <v-main>
+    </v-main>
   </v-app>
 </template>
 
 <script>
 import { shell } from 'electron';
 import Importers from '@/components/MainPage/Importers';
-import DataTable from '@/components/MainPage/DataTable';
 import Exporters from '@/components/MainPage/Exporters';
 import ProfileChip from '@/components/MainPage/ProfileChip';
 import ReportProblemDialog from './MainPage/ReportProblemDialog';
 
 export default {
-  name: 'MainPage',
+  name: 'App',
   components: {
-    Importers, DataTable, Exporters, ProfileChip, ReportProblemDialog,
+    Importers, Exporters, ProfileChip, ReportProblemDialog,
   },
   data() {
     return {
