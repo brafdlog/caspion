@@ -18,17 +18,16 @@ export async function appendToSpreadsheet({
 }) {
   const jwtClient = await loadCredentialsAndAuthorize(credentialsFilePath);
 
-  const resource = {
+  const requestBody = {
     values
   };
 
-  // @ts-ignore
   const result = await sheets.spreadsheets.values.append({
     auth: jwtClient,
     spreadsheetId,
     range,
     valueInputOption: 'USER_ENTERED',
-    resource
+    requestBody
   });
   console.log('Updates: ', result.data.updates);
   return result;
