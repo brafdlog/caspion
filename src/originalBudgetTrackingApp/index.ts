@@ -80,7 +80,7 @@ async function fetchTransactions(companyId, credentials, startDate, config) {
 }
 
 function extractTransactionsFromScrapeResult(scrapeResult, companyId) {
-  const transactions = [];
+  const transactions: any[] = [];
   scrapeResult.accounts.forEach((account) => {
     const accountTransactions = account.txns.map((txn) => ({
       ...txn,
@@ -127,7 +127,7 @@ async function createTransactionsInExternalVendors(config, companyIdToTransactio
   const executionResult = {};
   const allTransactions = _.flatten(Object.values(companyIdToTransactions));
 
-  const activeVendors = outputVendorsInterfaces.filter((vendor) => _.get(config, `outputVendorsInterfaces.${vendor.name}.active`, false));
+  const activeVendors = outputVendorsInterfaces.filter((vendor) => _.get(config, `outputVendors.${vendor.name}.active`, false));
   if (!activeVendors.length) {
     throw new Error('You need to set at least one output vendor to be active');
   }

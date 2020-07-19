@@ -33,10 +33,11 @@ bower_components
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
 dist/electron/*
-dist/web/*
+dist
 !build/icons
 build/
 dist_electron
+app/dist
 
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
@@ -84,6 +85,6 @@ thumbs.db
 client_secret.json
 
 src/originalBudgetTrackingApp/mockData
-src/originalBudgetTrackingApp/categoryCalculationScript.js
+src/originalBudgetTrackingApp/categoryCalculationScript.ts
 config.encrypted
 googleApiToken.json

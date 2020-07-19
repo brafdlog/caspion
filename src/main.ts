@@ -1,3 +1,4 @@
+// @ts-nocheck
 // eslint-disable-next-line import/no-extraneous-dependencies
 import electron from 'electron';
 import Vue from 'vue';
@@ -13,8 +14,8 @@ import store from './store';
 initializeReporter();
 
 process.on('unhandledRejection', (error) => {
-  console.error(error)
-})
+  console.error(error);
+});
 
 
 const logger = electron.remote.getGlobal('logger');
@@ -23,7 +24,7 @@ Vue.use(LoggerPlugin, { logger });
 
 Vue.config.productionTip = process.env.NODE_ENV !== 'production';
 
-Vue.component('form-field', FormField)
+Vue.component('form-field', FormField);
 
 new Vue({
   router,

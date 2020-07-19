@@ -11,7 +11,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let mainWindow;
+let mainWindow: BrowserWindow | null;
 
 global.logger = CreateLogger(app);
 const { logger } = global;
@@ -28,6 +28,7 @@ function createWindow() {
   });
 
   // Workaround from https://github.com/electron/electron/issues/19554
+  // @ts-ignore
   const loadURL = (url) => setTimeout(() => mainWindow.loadURL(url), 100);
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
