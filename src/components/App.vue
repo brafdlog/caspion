@@ -64,21 +64,23 @@
     <!-- The content come after all the 'app' components,
     to render when the $vuetify.application is ready -->
     <v-main>
+      <main-content />
     </v-main>
   </v-app>
 </template>
 
 <script>
 import { shell } from 'electron';
-import Importers from '@/components/MainPage/Importers';
-import Exporters from '@/components/MainPage/Exporters';
-import ProfileChip from '@/components/MainPage/ProfileChip';
-import ReportProblemDialog from './MainPage/ReportProblemDialog';
+import Importers from '@/components/App/Importers';
+import Exporters from '@/components/App/Exporters';
+import ProfileChip from '@/components/shared/ProfileChip';
+import ReportProblemDialog from './App/ReportProblemDialog';
+import MainContent from './App/MainContent';
 
 export default {
   name: 'App',
   components: {
-    Importers, Exporters, ProfileChip, ReportProblemDialog,
+    Importers, MainContent, Exporters, ProfileChip, ReportProblemDialog,
   },
   data() {
     return {

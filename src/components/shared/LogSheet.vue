@@ -12,7 +12,7 @@
       </v-card-subtitle>
       <v-card-text style="height: 30vh;">
         <pre>
-{{ textToShow }}
+          {{ textToShow }}
         </pre>
       </v-card-text>
     </v-card>
