@@ -5,8 +5,11 @@ import * as ynab from './outputVendors/ynab/ynab';
 import * as googleSheets from './outputVendors/googleSheets/googleSheets';
 import * as categoryCalculation from './categoryCalculationScript';
 import * as configManager from './configManager/configManager';
+import outputVendors from './outputVendors';
 
+export { outputVendors };
 export { configManager };
+export const { inputVendors } = bankScraper;
 
 const TRANSACTION_STATUS_COMPLETED = 'completed';
 const DATE_FORMAT = 'DD/MM/YYYY';
@@ -41,14 +44,16 @@ async function scrapeFinancialAccountsAndFetchTransactions(config, startDate) {
   const companyIdToTransactions = {};
   const accountsToScrape = config.scraping.accountsToScrape.filter((accountToScrape) => accountToScrape.active !== false);
   for (let i = 0; i < accountsToScrape.length; i++) {
-    const { companyId, credentials } = accountsToScrape[i];
+    const {
+      key: companyId, loginFields: credentials, name
+    } = accountsToScrape[i];
     try {
-      console.log(`=================== Start fetching transactions for ${companyId} ===================`);
+      console.log(`=================== Start fetching transactions for ${name} ===================`);
       const scrapeResult = await fetchTransactions(companyId, credentials, startDate, config);
       let transactions = extractTransactionsFromScrapeResult(scrapeResult, companyId);
       transactions = await postProcessTransactions(transactions);
       companyIdToTransactions[companyId] = transactions;
-      console.log(`=================== Finished fetching transactions for ${companyId} ===================`);
+      console.log(`=================== Finished fetching transactions for ${name} ===================`);
     } catch (e) {
       console.error(`Error fetching transactions for ${companyId}. Error: `, e);
       throw e;
@@ -107,7 +112,7 @@ export function calculateTransactionHash({
 
 async function createTransactionsInExternalVendors(config, companyIdToTransactions, startDate) {
   await ynab.init(config);
-  const outputVendors = [
+  const outputVendorsInterfaces = [
     {
       name: 'ynab',
       createTransactionFunction: ynab.createTransactions,
@@ -122,7 +127,7 @@ async function createTransactionsInExternalVendors(config, companyIdToTransactio
   const executionResult = {};
   const allTransactions = _.flatten(Object.values(companyIdToTransactions));
 
-  const activeVendors = outputVendors.filter((vendor) => _.get(config, `outputVendors.${vendor.name}.active`, false));
+  const activeVendors = outputVendorsInterfaces.filter((vendor) => _.get(config, `outputVendors.${vendor.name}.active`, false));
   if (!activeVendors.length) {
     throw new Error('You need to set at least one output vendor to be active');
   }

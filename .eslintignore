@@ -53,3 +53,5 @@ package.json
 
 src/originalBudgetTrackingApp/web
 src/originalBudgetTrackingApp/main*
+
+*.d.ts
