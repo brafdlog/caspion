@@ -16,8 +16,7 @@
     "lint:fix": "yarn lint --fix",
     "test": "yarn unit && yarn e2e",
     "unit": "vue-cli-service test:unit",
-    "e2e": "vue-cli-service test:unit --config='test/e2e/jest.e2e.config.js'",
-    "snyk-protect": "snyk protect"
+    "e2e": "vue-cli-service test:unit --config='test/e2e/jest.e2e.config.js'"
   },
   "husky": {
     "hooks": {
@@ -88,13 +87,11 @@
     "replace-in-file": "5.0.2",
     "sass": "^1.26.3",
     "sass-loader": "^8.0.0",
-    "snyk": "^1.316.1",
     "typescript": "^3.9.7",
     "vue-cli-plugin-electron-builder": "^1.4.6",
     "vue-cli-plugin-vuetify": "~2.0.5",
     "vue-jest": "^3.0.5",
     "vue-template-compiler": "^2.6.11",
     "vuetify-loader": "^1.4.4"
-  },
-  "snyk": true
+  }
 }
