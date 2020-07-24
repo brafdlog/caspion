@@ -4,8 +4,9 @@ module.exports = {
   root: true,
 
   parserOptions: {
-    parser: 'babel-eslint',
+    parser: '@typescript-eslint/parser',
     sourceType: 'module',
+    ecmaVersion: 2018
   },
 
   env: {
@@ -13,7 +14,7 @@ module.exports = {
     node: true
   },
 
-  extends: ['airbnb-base', 'plugin:vue/recommended'],
+  extends: ['airbnb-base', 'plugin:vue/recommended', '@vue/typescript'],
 
   globals: {
     __static: 'writable',
@@ -56,7 +57,8 @@ module.exports = {
     'comma-dangle': 'off',
     'no-await-in-loop': 'off',
     'import/prefer-default-export': 'off',
-    'no-unused-vars': ['error', { args: 'after-used', argsIgnorePattern: '^_|h' }],
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['error', { args: 'after-used', argsIgnorePattern: '^_|h' }],
     'arrow-body-style': 'off',
   },
 

@@ -17,7 +17,6 @@ process.on('unhandledRejection', (error) => {
   console.error(error);
 });
 
-
 const logger = electron.remote.getGlobal('logger');
 logger.info('The renderer process got the logger');
 Vue.use(LoggerPlugin, { logger });
