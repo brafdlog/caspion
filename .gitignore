@@ -5,6 +5,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 screenshots/
+src/local
 
 # Runtime data
 pids
