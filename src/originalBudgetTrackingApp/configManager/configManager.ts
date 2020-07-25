@@ -1,9 +1,11 @@
 import { promisify } from 'util';
 import fs from 'fs';
+import { CompanyTypes } from 'israeli-bank-scrapers-core';
 import { encrypt, decrypt } from '@/modules/encryption/crypto';
-import { ScraperKey, LoginFieldName } from './scrapers';
 
 import configExample from './defaultConfig';
+
+export type LoginFieldName = 'id' | 'username' | 'userCode' | 'password' | 'num' | 'card6Digits';
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
@@ -44,10 +46,11 @@ export interface Config {
 }
 
 interface AccountToScrapeConfig {
-  'key': ScraperKey;
-  'name': string;
-  'loginFields': { [K in LoginFieldName]?: string };
-  'id': string;
+  id: string;
+  key: CompanyTypes;
+  name: string;
+  loginFields: { [K in LoginFieldName]?: string };
+  active?: boolean;
 }
 
 export async function getConfig(): Promise<Config> {
