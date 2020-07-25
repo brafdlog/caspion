@@ -1,23 +1,33 @@
-// This file is used as the initial config until the user saves the config for the first time to the file system
-import outputVendors from '../outputVendors';
-import { getDefaultValues } from './configUtils';
+import { Config } from './configManager';
 
-const vendorsDefaults = Object.keys(outputVendors).reduce((defaults, vendorKey) => {
-  defaults[vendorKey] = {
-    ...getDefaultValues(outputVendors[vendorKey]),
-    active: false,
-  };
-  return defaults;
-}, {});
-
-export default {
+const DEFAULT_CONFIG: Config = {
   scraping: {
     numDaysBack: 40,
     showBrowser: false,
     accountsToScrape: [
     ]
   },
-  outputVendors: vendorsDefaults,
+  outputVendors: {
+    ynab: {
+      active: false,
+      accessToken: 'YNAB_ACCESS_TOKEN_GOES_HERE',
+      budgetId: '########-####-####-####-############',
+      accountNumbersToYnabAccountIds: {
+        1234: '########-####-####-####-############',
+        5678: '########-####-####-####-############',
+        4837: '########-####-####-####-############'
+      },
+      options: {}
+    },
+    googleSheets: {
+      active: false,
+      options: {
+        spreadsheetId: '############################################',
+        sheetName: '###############',
+        credentialsFilePath: '/###########/google_api_credentials.json'
+      }
+    }
+  },
   monitoring: {
     email: {
       toEmailAddress: 'joe@someemail.com',
@@ -26,3 +36,5 @@ export default {
     }
   }
 };
+
+export default DEFAULT_CONFIG;
