@@ -5,7 +5,7 @@ import { encrypt, decrypt } from '@/modules/encryption/crypto';
 
 import configExample from './defaultConfig';
 
-export type LoginFieldName = 'id' | 'username' | 'userCode' | 'password' | 'num' | 'card6Digits';
+export type CredentialsFieldName = 'id' | 'username' | 'userCode' | 'password' | 'num' | 'card6Digits';
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
@@ -49,7 +49,7 @@ interface AccountToScrapeConfig {
   id: string;
   key: CompanyTypes;
   name: string;
-  loginFields: { [K in LoginFieldName]?: string };
+  credentials: { [K in CredentialsFieldName]?: string };
   active?: boolean;
 }
 

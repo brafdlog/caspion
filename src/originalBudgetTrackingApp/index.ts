@@ -45,7 +45,7 @@ async function scrapeFinancialAccountsAndFetchTransactions(config, startDate) {
   const accountsToScrape = config.scraping.accountsToScrape.filter((accountToScrape) => accountToScrape.active !== false);
   for (let i = 0; i < accountsToScrape.length; i++) {
     const {
-      key: companyId, loginFields: credentials, name
+      key: companyId, credentials, name
     } = accountsToScrape[i];
     try {
       console.log(`=================== Start fetching transactions for ${name} ===================`);
