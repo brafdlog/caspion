@@ -1,3 +1,4 @@
+import { App } from 'electron';
 import logger from 'electron-log';
 import fs from 'fs';
 import { EOL } from 'os';
@@ -8,11 +9,11 @@ declare module 'electron-log' {
   }
 }
 
-export default function CreateLogger(app: any) {
+export default function CreateLogger(app: App) {
   logger.info(`Welcome to ${app.getName()} log`);
   logger.info(`Version: ${app.getVersion()}`);
 
-  const onError = (error: any) => {
+  const onError = (error: Error) => {
     logger.error(error.message ? error.message : error);
     if (error.stack) logger.debug(error.stack);
   };
