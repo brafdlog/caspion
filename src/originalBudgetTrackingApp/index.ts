@@ -96,7 +96,7 @@ async function postProcessTransactions(accountToScrape: configManager.AccountToS
 
     // Filter out pending transactions
     transactions = transactions.filter((transaction) => transaction.status === TRANSACTION_STATUS_COMPLETED);
-    transactions.sort(transactionsDateComperator);
+    transactions.sort(transactionsDateComparator);
     return transactions;
   }
   return [];
@@ -143,7 +143,7 @@ async function createTransactionsInExternalVendors(config: Config, companyIdToTr
   return executionResult;
 }
 
-async function createTransactionsInVedor(vendor, transactions, startDate) {
+async function createTransactionsInVedor(vendor, transactions: EnrichedTransaction[], startDate: Date) {
   console.log(`Start creating transactions in ${vendor.name}`);
   const vendorResult = await vendor.createTransactionFunction(transactions, startDate, vendor.options);
   if (vendorResult) {
@@ -163,7 +163,7 @@ export async function getFinancialAccountNumbers() {
 
   console.log('Fetching data from financial institutions to determine the account numbers');
   const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config, startDate);
-  const companyIdToAccountNumbers = {};
+  const companyIdToAccountNumbers: Record<string, string[]> = {};
   Object.keys(companyIdToTransactions).forEach((companyId) => {
     let accountNumbers = companyIdToTransactions[companyId].map((transaction) => transaction.accountNumber);
     accountNumbers = _.uniq(accountNumbers);
@@ -184,7 +184,7 @@ function enrichTransaction(transaction: Transaction, companyId: string, accountN
   return enrichedTransaction;
 }
 
-function transactionsDateComperator(t1, t2) {
+function transactionsDateComparator(t1: Transaction, t2: Transaction) {
   const date1 = moment(t1.date);
   const date2 = moment(t2.date);
   if (date1.isAfter(date2)) {

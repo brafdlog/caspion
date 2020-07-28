@@ -8,11 +8,11 @@ declare module 'electron-log' {
   }
 }
 
-export default function CreateLogger(app) {
+export default function CreateLogger(app: any) {
   logger.info(`Welcome to ${app.getName()} log`);
   logger.info(`Version: ${app.getVersion()}`);
 
-  const onError = (error) => {
+  const onError = (error: any) => {
     logger.error(error.message ? error.message : error);
     if (error.stack) logger.debug(error.stack);
   };
