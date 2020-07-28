@@ -40,12 +40,13 @@ export interface GoogleSheetsConfig {
 }
 
 export interface YnabConfig {
-  accessToken: string;
-  accountNumbersToYnabAccountIds: { [key: string]: string };
   active: boolean;
-  budgetId: string;
-  maxPayeeNameLength?: number;
-  options: {};
+  options: {
+    accessToken: string;
+    accountNumbersToYnabAccountIds: { [key: string]: string };
+    budgetId: string;
+    maxPayeeNameLength?: number;
+  };
 }
 
 export interface AccountToScrapeConfig {

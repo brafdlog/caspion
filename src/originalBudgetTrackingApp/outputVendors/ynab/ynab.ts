@@ -39,7 +39,7 @@ export async function init(config?: Config) {
     return;
   }
   verifyYnabAccessTokenWasDefined();
-  ynabAPI = new ynab.API(ynabConfig.accessToken);
+  ynabAPI = new ynab.API(ynabConfig.options.accessToken);
 }
 
 export async function createTransactions(transactionsToCreate: EnrichedTransaction[], startDate: Date) {
@@ -59,7 +59,7 @@ export async function createTransactions(transactionsToCreate: EnrichedTransacti
   }
   console.log('Creating the following transactions in ynab: ', transactionsThatDontExistInYnab);
   try {
-    const transactionCreationResult = await ynabAPI!.transactions.createTransactions(ynabConfig.budgetId, {
+    const transactionCreationResult = await ynabAPI!.transactions.createTransactions(ynabConfig.options.budgetId, {
       transactions: transactionsThatDontExistInYnab
     });
     return transactionCreationResult;
@@ -70,11 +70,11 @@ export async function createTransactions(transactionsToCreate: EnrichedTransacti
 }
 
 function getTransactions(startDate: Date): Promise<ynab.TransactionsResponse> {
-  return ynabAPI!.transactions.getTransactions(ynabConfig!.budgetId, moment(startDate).format(YNAB_DATE_FORMAT));
+  return ynabAPI!.transactions.getTransactions(ynabConfig!.options.budgetId, moment(startDate).format(YNAB_DATE_FORMAT));
 }
 
 function convertTransactionToYnabFormat(originalTransaction: EnrichedTransaction): ynab.SaveTransaction {
-  const payeeNameMaxLength = ynabConfig!.maxPayeeNameLength || 50;
+  const payeeNameMaxLength = ynabConfig!.options.maxPayeeNameLength || 50;
   const amount = Math.round(originalTransaction.chargedAmount * 1000);
   const date = convertTimestampToYnabDateFormat(originalTransaction);
   return {
@@ -93,7 +93,7 @@ function convertTransactionToYnabFormat(originalTransaction: EnrichedTransaction
 }
 
 function getYnabAccountIdByAccountNumberFromTransaction(transactionAccountNumber: string) : string {
-  const ynabAccountId = ynabConfig!.accountNumbersToYnabAccountIds[transactionAccountNumber];
+  const ynabAccountId = ynabConfig!.options.accountNumbersToYnabAccountIds[transactionAccountNumber];
   if (!ynabAccountId) {
     throw new Error(`Unhandled account number ${transactionAccountNumber}`);
   }
@@ -118,7 +118,7 @@ function getYnabCategoryIdFromCategoryName(categoryName?: string) {
 }
 
 export async function initCategories() {
-  const categories = await ynabAPI!.categories.getCategories(ynabConfig!.budgetId);
+  const categories = await ynabAPI!.categories.getCategories(ynabConfig!.options.budgetId);
   categories.data.category_groups.forEach((categoryGroup) => {
     categoryGroup.categories
       .map((category) => ({
@@ -173,7 +173,7 @@ function normalizeWhitespace(str: string) {
 }
 
 function verifyYnabAccessTokenWasDefined() {
-  if (ynabConfig!.accessToken === INITIAL_YNAB_ACCESS_TOKEN) {
+  if (ynabConfig!.options.accessToken === INITIAL_YNAB_ACCESS_TOKEN) {
     throw new Error('You need to set the ynab access token in the config');
   }
 }
@@ -213,7 +213,7 @@ async function getBudgetsAndAccountsData() {
 }
 
 async function getYnabCategories() {
-  const categoriesResponse = await ynabAPI!.categories.getCategories(ynabConfig!.budgetId);
+  const categoriesResponse = await ynabAPI!.categories.getCategories(ynabConfig!.options.budgetId);
   const categories = _.flatMap(categoriesResponse.data.category_groups, (categoryGroup) => categoryGroup.categories);
   const categoryNames = categories.map((category) => category.name);
   return categoryNames;

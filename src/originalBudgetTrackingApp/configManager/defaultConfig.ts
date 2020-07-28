@@ -10,14 +10,15 @@ const DEFAULT_CONFIG: Config = {
   outputVendors: {
     ynab: {
       active: false,
-      accessToken: 'YNAB_ACCESS_TOKEN_GOES_HERE',
-      budgetId: '########-####-####-####-############',
-      accountNumbersToYnabAccountIds: {
-        1234: '########-####-####-####-############',
-        5678: '########-####-####-####-############',
-        4837: '########-####-####-####-############'
-      },
-      options: {}
+      options: {
+        accessToken: 'YNAB_ACCESS_TOKEN_GOES_HERE',
+        budgetId: '########-####-####-####-############',
+        accountNumbersToYnabAccountIds: {
+          1234: '########-####-####-####-############',
+          5678: '########-####-####-####-############',
+          4837: '########-####-####-####-############'
+        }
+      }
     },
     googleSheets: {
       active: false,
