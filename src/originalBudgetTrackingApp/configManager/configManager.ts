@@ -71,7 +71,7 @@ export async function updateConfig(configToUpdate: Config): Promise<void> {
   await writeFile(LOCAL_CONFIG_FILE_PATH, encryptedConfigStr);
 }
 
-async function getConfigFromFile(configFilePath) {
+async function getConfigFromFile(configFilePath: string) {
   if (fs.existsSync(configFilePath)) {
     return readFile(configFilePath, {
       encoding: 'utf8'

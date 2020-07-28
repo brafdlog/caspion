@@ -10,7 +10,6 @@ export const inputVendors = Object.keys(SCRAPERS)
     key,
     ...SCRAPERS[key],
   }));
-// import mockTransactions from './mockData/mockTransactions';
 
 interface ScrapeParameters {
   companyId: AccountToScrapeConfig['key'];
@@ -22,10 +21,6 @@ interface ScrapeParameters {
 export async function scrape({
   companyId, credentials, startDate, showBrowser = false
 }: ScrapeParameters) {
-  // if (process.env.USE_MOCK_DATA === 'true') {
-  //   console.log('USING MOCK DATA');
-  //   return mockTransactions[companyId];
-  // }
   if (!credentials || (!credentials.username && !credentials.num && !credentials.id) || !credentials.password) {
     throw new Error(`Missing credentials for scraper. CompanyId: ${companyId}. Credentials: ${credentials && JSON.stringify(credentials)}`);
   }
