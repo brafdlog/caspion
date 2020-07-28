@@ -13,21 +13,8 @@ const LOCAL_CONFIG_FILE_PATH = CONFIG_FILE_NAME;
 
 export interface Config {
   outputVendors: {
-    googleSheets?: {
-      active: boolean;
-      options: {
-        credentialsFilePath: string;
-        sheetName: string;
-        spreadsheetId: string;
-      }
-    };
-    ynab?: {
-      'accessToken': string;
-      'accountNumbersToYnabAccountIds': { [key: string]: string };
-      'active': boolean,
-      'budgetId': string,
-      'options': {}
-    }
+    googleSheets?: GoogleSheetsConfig;
+    ynab?: YnabConfig;
   };
   scraping: {
     'numDaysBack': number;
@@ -41,6 +28,24 @@ export interface Config {
       sendgridApiKey?: string;
     }
   };
+}
+
+export interface GoogleSheetsConfig {
+  active: boolean;
+  options: {
+    credentialsFilePath: string;
+    sheetName: string;
+    spreadsheetId: string;
+  }
+}
+
+export interface YnabConfig {
+  accessToken: string;
+  accountNumbersToYnabAccountIds: { [key: string]: string };
+  active: boolean;
+  budgetId: string;
+  maxPayeeNameLength?: number;
+  options: {};
 }
 
 export interface AccountToScrapeConfig {

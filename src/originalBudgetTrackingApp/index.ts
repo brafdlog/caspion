@@ -3,6 +3,7 @@ import moment from 'moment';
 import * as bankScraper from './bankScraper';
 import { ScaperScrapingResult, Transaction } from './bankScraper';
 import * as ynab from './outputVendors/ynab/ynab';
+import { EnrichedTransaction } from './commonTypes';
 import * as googleSheets from './outputVendors/googleSheets/googleSheets';
 import * as categoryCalculation from './categoryCalculationScript';
 import * as configManager from './configManager/configManager';
@@ -14,12 +15,6 @@ export { configManager };
 export const { inputVendors } = bankScraper;
 
 type AccountToScrapeConfig = configManager.AccountToScrapeConfig;
-
-interface EnrichedTransaction extends Transaction {
-  accountNumber: string;
-  category?: string;
-  hash: string;
-}
 
 const TRANSACTION_STATUS_COMPLETED = 'completed';
 const DATE_FORMAT = 'DD/MM/YYYY';
