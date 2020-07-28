@@ -1,15 +1,25 @@
 import _ from 'lodash';
 import moment from 'moment';
 import * as bankScraper from './bankScraper';
+import { ScaperScrapingResult, Transaction } from './bankScraper';
 import * as ynab from './outputVendors/ynab/ynab';
 import * as googleSheets from './outputVendors/googleSheets/googleSheets';
 import * as categoryCalculation from './categoryCalculationScript';
 import * as configManager from './configManager/configManager';
 import outputVendors from './outputVendors';
+import { Config } from './configManager/configManager';
 
 export { outputVendors };
 export { configManager };
 export const { inputVendors } = bankScraper;
+
+type AccountToScrapeConfig = configManager.AccountToScrapeConfig;
+
+interface EnrichedTransaction extends Transaction {
+  accountNumber: string;
+  category?: string;
+  hash: string;
+}
 
 const TRANSACTION_STATUS_COMPLETED = 'completed';
 const DATE_FORMAT = 'DD/MM/YYYY';
@@ -40,20 +50,18 @@ export async function scrapeAndUpdateOutputVendors() {
   }
 }
 
-async function scrapeFinancialAccountsAndFetchTransactions(config, startDate) {
-  const companyIdToTransactions = {};
+async function scrapeFinancialAccountsAndFetchTransactions(config: Config, startDate: Date) {
+  const companyIdToTransactions: Record<string, EnrichedTransaction[]> = {};
   const accountsToScrape = config.scraping.accountsToScrape.filter((accountToScrape) => accountToScrape.active !== false);
   for (let i = 0; i < accountsToScrape.length; i++) {
-    const {
-      key: companyId, credentials, name
-    } = accountsToScrape[i];
+    const accountToScrape = accountsToScrape[i];
+    const companyId = accountToScrape.key;
     try {
-      console.log(`=================== Start fetching transactions for ${name} ===================`);
-      const scrapeResult = await fetchTransactions(companyId, credentials, startDate, config);
-      let transactions = extractTransactionsFromScrapeResult(scrapeResult, companyId);
-      transactions = await postProcessTransactions(transactions);
+      console.log(`=================== Start fetching transactions for ${accountToScrape.name} ===================`);
+      const scrapeResult = await fetchTransactions(companyId, accountToScrape.credentials, startDate, config);
+      const transactions = await postProcessTransactions(accountToScrape, scrapeResult);
       companyIdToTransactions[companyId] = transactions;
-      console.log(`=================== Finished fetching transactions for ${name} ===================`);
+      console.log(`=================== Finished fetching transactions for ${accountToScrape.name} ===================`);
     } catch (e) {
       console.error(`Error fetching transactions for ${companyId}. Error: `, e);
       throw e;
@@ -62,7 +70,7 @@ async function scrapeFinancialAccountsAndFetchTransactions(config, startDate) {
   return companyIdToTransactions;
 }
 
-async function fetchTransactions(companyId, credentials, startDate, config) {
+async function fetchTransactions(companyId: AccountToScrapeConfig['key'], credentials: AccountToScrapeConfig['credentials'], startDate: Date, config: Config) {
   console.log(`Start scraping ${companyId} from date: ${moment(startDate).format(DATE_FORMAT)}`);
   const scrapeResult = await bankScraper.scrape({
     companyId,
@@ -79,55 +87,47 @@ async function fetchTransactions(companyId, credentials, startDate, config) {
   return scrapeResult;
 }
 
-function extractTransactionsFromScrapeResult(scrapeResult, companyId) {
-  const transactions: any[] = [];
-  scrapeResult.accounts.forEach((account) => {
-    const accountTransactions = account.txns.map((txn) => ({
-      ...txn,
-      companyId,
-      accountNumber: account.accountNumber,
-    }));
-    transactions.push(...accountTransactions);
-  });
-  return transactions;
-}
+// eslint-disable-next-line max-len
+async function postProcessTransactions(accountToScrape: configManager.AccountToScrapeConfig, scrapeResult: ScaperScrapingResult): Promise<EnrichedTransaction[]> {
+  if (scrapeResult.accounts) {
+    let transactions = scrapeResult.accounts.flatMap((transactionAccount) => {
+      return transactionAccount.txns.map((transaction) => enrichTransaction(transaction, accountToScrape.key, transactionAccount.accountNumber));
+    });
 
-async function postProcessTransactions(transactions) {
-  // Filter out pending transactions
-  transactions = transactions.filter((transaction) => transaction.status === TRANSACTION_STATUS_COMPLETED);
-  transactions.sort(transactionsDateComperator);
-  transactions = transactions.map((transaction) => ({
-    ...transaction,
-    category: categoryCalculation.getCategoryNameByTransactionDescription(transaction.description),
-    hash: calculateTransactionHash(transaction),
-  }));
-  return transactions;
+    // Filter out pending transactions
+    transactions = transactions.filter((transaction) => transaction.status === TRANSACTION_STATUS_COMPLETED);
+    transactions.sort(transactionsDateComperator);
+    return transactions;
+  }
+  return [];
 }
 
 export function calculateTransactionHash({
-  date, chargedAmount, description, memo, companyId, accountNumber,
-}) {
+  date, chargedAmount, description, memo
+}: Transaction, companyId: string, accountNumber: string) {
   return `${date}_${chargedAmount}_${description}_${memo}_${companyId}_${accountNumber}`;
 }
 
-async function createTransactionsInExternalVendors(config, companyIdToTransactions, startDate) {
+async function createTransactionsInExternalVendors(config: Config, companyIdToTransactions: Record<string, EnrichedTransaction[]>, startDate: Date) {
   await ynab.init(config);
-  const outputVendorsInterfaces = [
-    {
+  const activeVendors: any = [];
+  if (config.outputVendors.ynab?.active) {
+    activeVendors.push({
       name: 'ynab',
       createTransactionFunction: ynab.createTransactions,
       options: config.outputVendors.ynab.options,
-    },
-    {
+    });
+  }
+  if (config.outputVendors.googleSheets?.active) {
+    activeVendors.push({
       name: 'googleSheets',
       createTransactionFunction: googleSheets.createTransactionsInGoogleSheets,
       options: config.outputVendors.googleSheets.options,
-    },
-  ];
+    });
+  }
   const executionResult = {};
   const allTransactions = _.flatten(Object.values(companyIdToTransactions));
 
-  const activeVendors = outputVendorsInterfaces.filter((vendor) => _.get(config, `outputVendors.${vendor.name}.active`, false));
   if (!activeVendors.length) {
     throw new Error('You need to set at least one output vendor to be active');
   }
@@ -170,6 +170,18 @@ export async function getFinancialAccountNumbers() {
     companyIdToAccountNumbers[companyId] = accountNumbers;
   });
   return companyIdToAccountNumbers;
+}
+
+function enrichTransaction(transaction: Transaction, companyId: string, accountNumber: string): EnrichedTransaction {
+  const hash = calculateTransactionHash(transaction, companyId, accountNumber);
+  const category = categoryCalculation.getCategoryNameByTransactionDescription(transaction.description);
+  const enrichedTransaction: EnrichedTransaction = {
+    ...transaction,
+    accountNumber,
+    category,
+    hash
+  };
+  return enrichedTransaction;
 }
 
 function transactionsDateComperator(t1, t2) {

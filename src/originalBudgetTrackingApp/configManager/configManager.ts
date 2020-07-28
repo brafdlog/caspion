@@ -1,11 +1,9 @@
 import { promisify } from 'util';
 import fs from 'fs';
-import { CompanyTypes } from 'israeli-bank-scrapers-core';
+import { CompanyTypes } from '@brafdlog/israeli-bank-scrapers-core';
 import { encrypt, decrypt } from '@/modules/encryption/crypto';
 
 import configExample from './defaultConfig';
-
-export type CredentialsFieldName = 'id' | 'username' | 'userCode' | 'password' | 'num' | 'card6Digits';
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
@@ -45,11 +43,11 @@ export interface Config {
   };
 }
 
-interface AccountToScrapeConfig {
+export interface AccountToScrapeConfig {
   id: string;
   key: CompanyTypes;
   name: string;
-  credentials: { [K in CredentialsFieldName]?: string };
+  credentials: Record<string, string>;
   active?: boolean;
 }
 

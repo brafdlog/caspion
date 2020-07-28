@@ -1,5 +1,9 @@
-import { createScraper, SCRAPERS } from 'israeli-bank-scrapers-core';
+import { createScraper, SCRAPERS } from '@brafdlog/israeli-bank-scrapers-core';
+import { AccountToScrapeConfig } from './configManager/configManager';
 import getChrome from '../modules/downloadChromium';
+
+export { Transaction } from '@brafdlog/israeli-bank-scrapers-core/lib/transactions';
+export { ScaperScrapingResult } from '@brafdlog/israeli-bank-scrapers-core/lib/scrapers/base-scraper';
 
 export const inputVendors = Object.keys(SCRAPERS)
   .map((key) => ({
@@ -8,9 +12,16 @@ export const inputVendors = Object.keys(SCRAPERS)
   }));
 // import mockTransactions from './mockData/mockTransactions';
 
+interface ScrapeParameters {
+  companyId: AccountToScrapeConfig['key'];
+  credentials: AccountToScrapeConfig['credentials'];
+  startDate: Date;
+  showBrowser?: boolean
+}
+
 export async function scrape({
   companyId, credentials, startDate, showBrowser = false
-}) {
+}: ScrapeParameters) {
   // if (process.env.USE_MOCK_DATA === 'true') {
   //   console.log('USING MOCK DATA');
   //   return mockTransactions[companyId];
