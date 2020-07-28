@@ -14,7 +14,9 @@
     "prepare": "ncp src/originalBudgetTrackingApp/categoryCalculationScript-example.ts src/originalBudgetTrackingApp/categoryCalculationScript.ts || true",
     "lint": "eslint --ext .js,.vue,.ts -f ./node_modules/eslint-friendly-formatter src",
     "lint:fix": "yarn lint --fix",
+    "postlint": "yarn typeCheck",
     "test": "yarn unit && yarn e2e",
+    "typeCheck": "tsc --noEmit",
     "unit": "vue-cli-service test:unit",
     "e2e": "vue-cli-service test:unit --config='test/e2e/jest.e2e.config.js'"
   },
