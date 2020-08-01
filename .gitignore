@@ -89,3 +89,4 @@ src/originalBudgetTrackingApp/mockData
 src/originalBudgetTrackingApp/categoryCalculationScript.ts
 config.encrypted
 googleApiToken.json
+*.map

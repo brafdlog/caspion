@@ -5,11 +5,11 @@
       label="Show browser"
     />
     <div
-      v-for="(value, loginField) in importer.loginFields"
-      :key="loginField"
+      v-for="(value, credentialFieldName) in importer.loginFields"
+      :key="credentialFieldName"
     >
-      {{ loginField }}:
-      {{ loginField != "password" ? value : "*".repeat(value.length) }}
+      {{ credentialFieldName }}:
+      {{ credentialFieldName != "password" ? value : "*".repeat(value.length) }}
     </div>
     <v-btn
       color="primary"
