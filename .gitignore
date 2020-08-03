@@ -5,6 +5,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 screenshots/
+src/local
 
 # Runtime data
 pids
@@ -88,3 +89,4 @@ src/originalBudgetTrackingApp/mockData
 src/originalBudgetTrackingApp/categoryCalculationScript.ts
 config.encrypted
 googleApiToken.json
+*.map

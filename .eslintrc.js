@@ -4,8 +4,9 @@ module.exports = {
   root: true,
 
   parserOptions: {
-    parser: 'babel-eslint',
+    parser: '@typescript-eslint/parser',
     sourceType: 'module',
+    ecmaVersion: 2018
   },
 
   env: {
@@ -13,7 +14,7 @@ module.exports = {
     node: true
   },
 
-  extends: ['airbnb-base', 'plugin:vue/recommended'],
+  extends: ['airbnb-base', 'plugin:vue/recommended', '@vue/typescript'],
 
   globals: {
     __static: 'writable',
@@ -48,15 +49,16 @@ module.exports = {
     'import/extensions': ['error', { js: 'never', vue: 'never', json: 'always' }],
     'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
     // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
-    'no-console': process.env.NODE_ENV === 'production' ? 2 : 0,
+    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 1,
+    'no-console': process.env.NODE_ENV === 'production' ? 2 : 1,
     'linebreak-style': process.platform === 'win32' ? 0 : 2,
     'no-use-before-define': 'off',
-    'max-len': ['error', { code: 150 }],
+    'max-len': ['error', { code: 160 }],
     'comma-dangle': 'off',
     'no-await-in-loop': 'off',
     'import/prefer-default-export': 'off',
-    'no-unused-vars': ['error', { args: 'after-used', argsIgnorePattern: '^_|h' }],
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['error', { args: 'after-used', argsIgnorePattern: '^_|h' }],
     'arrow-body-style': 'off',
   },
 

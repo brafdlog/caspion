@@ -3,7 +3,7 @@ import { scrapeAndUpdateOutputVendors } from '../originalBudgetTrackingApp';
 export async function scrape(
   // installPath,
   // scraperName,
-  // loginFields,
+  // credentials,
   // showBrowser,
   // onProgress,
   // logger,

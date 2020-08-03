@@ -15,18 +15,18 @@
           class="py-0"
         >
           <v-row
-            v-for="(value, loginField) in importerToAdd.loginFields"
-            :key="loginField"
+            v-for="(value, credentialFieldName) in importerToAdd.loginFields"
+            :key="credentialFieldName"
           >
             <v-col
               cols="12"
               class="pa-0"
-              :label="loginField"
+              :label="credentialFieldName"
             >
               <v-text-field
-                v-model="importerToAdd.loginFields[loginField]"
-                :label="loginField"
-                :type="loginField == 'password' ? 'password' : 'text'"
+                v-model="importerToAdd.loginFields[credentialFieldName]"
+                :label="credentialFieldName"
+                :type="credentialFieldName == 'password' ? 'password' : 'text'"
                 outlined
               />
             </v-col>

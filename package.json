@@ -12,26 +12,26 @@
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
     "prepare": "ncp src/originalBudgetTrackingApp/categoryCalculationScript-example.ts src/originalBudgetTrackingApp/categoryCalculationScript.ts || true",
-    "lint": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter src",
+    "lint": "eslint --ext .js,.vue,.ts -f ./node_modules/eslint-friendly-formatter src",
     "lint:fix": "yarn lint --fix",
     "test": "yarn unit && yarn e2e",
+    "typeCheck": "tsc --noEmit",
     "unit": "vue-cli-service test:unit",
-    "e2e": "vue-cli-service test:unit --config='test/e2e/jest.e2e.config.js'",
-    "snyk-protect": "snyk protect"
+    "e2e": "vue-cli-service test:unit --config='test/e2e/jest.e2e.config.js'"
   },
   "husky": {
     "hooks": {
-      "pre-push": "yarn lint"
+      "pre-push": "yarn lint && yarn typeCheck"
     }
   },
   "dependencies": {
+    "@brafdlog/israeli-bank-scrapers-core": "^0.9.2",
     "@getstation/electron-google-oauth2": "2.1.0",
     "@sentry/electron": "^1.3.0",
     "core-js": "^3.4.4",
     "download-chromium": "^2.2.0",
     "electron-log": "^4.1.1",
     "googleapis": "^49.0.0",
-    "israeli-bank-scrapers-core": "^0.8.1",
     "keytar": "^5.2.0",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
@@ -44,9 +44,12 @@
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
     "@babel/preset-env": "^7.9.5",
     "@babel/preset-typescript": "^7.10.1",
     "@babel/register": "^7.9.0",
+    "@types/lodash": "^4.14.158",
+    "@typescript-eslint/eslint-plugin": "^3.7.0",
     "@typescript-eslint/parser": "^3.2.0",
     "@vue/cli-plugin-babel": "^4.3.1",
     "@vue/cli-plugin-eslint": "^4.3.1",
@@ -56,6 +59,7 @@
     "@vue/cli-plugin-vuex": "^4.3.1",
     "@vue/cli-service": "^4.3.1",
     "@vue/eslint-config-prettier": "^6.0.0",
+    "@vue/eslint-config-typescript": "^5.0.2",
     "@vue/test-utils": "^1.0.3",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
@@ -88,13 +92,11 @@
     "replace-in-file": "5.0.2",
     "sass": "^1.26.3",
     "sass-loader": "^8.0.0",
-    "snyk": "^1.316.1",
     "typescript": "^3.9.7",
     "vue-cli-plugin-electron-builder": "^1.4.6",
     "vue-cli-plugin-vuetify": "~2.0.5",
     "vue-jest": "^3.0.5",
     "vue-template-compiler": "^2.6.11",
     "vuetify-loader": "^1.4.4"
-  },
-  "snyk": true
+  }
 }

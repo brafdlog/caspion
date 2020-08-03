@@ -1,14 +1,16 @@
+import { SaveTransaction, TransactionDetail } from 'ynab';
 import * as ynab from './ynab';
+import ClearedEnum = SaveTransaction.ClearedEnum;
 
 describe('ynab', () => {
   describe('isSameTransaction', () => {
     test('Two transactions with different payee names should be considered the same if one of them is a transfer transaction', () => {
-      const transferTransactionFromYnab = {
+      const transferTransactionFromYnab: TransactionDetail = {
         id: '579ae642-d161-4bbe-9d54-ae3322c93cf7',
         date: '2019-06-27',
         amount: -1000000,
         memo: null,
-        cleared: 'cleared',
+        cleared: SaveTransaction.ClearedEnum.Cleared,
         approved: true,
         flag_color: null,
         account_id: 'SOME_ACCOUNT_ID',
@@ -24,17 +26,15 @@ describe('ynab', () => {
         deleted: false,
         subtransactions: []
       };
-      const transactionFromFinancialAccount = {
+      const transactionFromFinancialAccount: SaveTransaction = {
         account_id: 'SOME_ACCOUNT_ID',
         date: '2019-06-27',
         amount: -1000000,
         payee_name: 'כספומט י',
         category_id: '4e0ttc69-b4f6-420b-8d07-986c8225a3d4',
-        cleared: 'cleared'
+        cleared: ClearedEnum.Cleared
       };
 
-      expect(ynab.isSameTransaction(transferTransactionFromYnab, transactionFromFinancialAccount)).toBeTruthy();
-      // Verify order of parameters doesn't matter
       expect(ynab.isSameTransaction(transactionFromFinancialAccount, transferTransactionFromYnab)).toBeTruthy();
     });
   });

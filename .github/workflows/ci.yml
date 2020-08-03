@@ -18,9 +18,11 @@ jobs:
         run: |
           yarn
           yarn lint
-        
-  test:
+      - name: Type check
+        run: |
+          yarn typeCheck
 
+  test:
     runs-on: ${{ matrix.os }}
     env:
       DISPLAY: :99.0
