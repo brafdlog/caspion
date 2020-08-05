@@ -1,7 +1,7 @@
 <template>
-<v-container>
-  <v-row justify="center" align="center">
-          <v-btn
+  <div class="container">
+    <div class="d-flex justify-center align-center">
+      <v-btn
         x-large
         :loading="scraping"
         :color="btnColor"
@@ -9,17 +9,16 @@
       >
         Run
       </v-btn>
-  </v-row>
-  <v-row justify="conter" align="center">
-      <pre class="text-no-wrap">
-      {{ results }}
-    </pre>
-  </v-row>
-</v-container>
+    </div>
+    <div>
+      <log-lines :entries="results" />
+    </div>
+  </div>
 </template>
 
 <script>
 import { scrapeAndUpdateOutputVendors } from '@/originalBudgetTrackingApp';
+import LogLines from '@/components/shared/LogLines';
 
 const colors = {
   true: 'green',
@@ -29,10 +28,13 @@ const colors = {
 
 export default {
   name: 'MainContent',
+  components: {
+    LogLines
+  },
   data() {
     return {
       scraping: false,
-      results: null,
+      results: '',
       succeeded: null,
     };
   },
@@ -49,7 +51,7 @@ export default {
           this.results = results;
         })
         .catch((error) => {
-          this.results = error;
+          this.results = error.message;
         })
         .finally(() => {
           console.log(this.results);
@@ -60,5 +62,18 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+.container > div {
+  flex: 1 1 0;
+}
+
 </style>
