@@ -49,9 +49,11 @@ export default {
       scrapeAndUpdateOutputVendors()
         .then((results) => {
           this.results = results;
+          this.succeeded = true;
         })
         .catch((error) => {
           this.results = error.message;
+          this.succeeded = false;
         })
         .finally(() => {
           console.log(this.results);
