@@ -1,5 +1,7 @@
 import { randomHex } from '@/modules/encryption/crypto';
-// import defaultConfig from '@/originalBudgetTrackingApp/configManager/defaultConfig';
+import { Config } from '@/originalBudgetTrackingApp/configManager/configManager';
+import defaultConfig from '@/originalBudgetTrackingApp/configManager/defaultConfig';
+import { ActionTree, GetterTree, MutationTree } from 'vuex';
 
 export const ADD_IMPORTER_ACTION = 'ADD_IMPORTER_ACTION';
 export const ADD_EXPORTER_ACTION = 'ADD_EXPORTER_ACTION';
@@ -7,22 +9,22 @@ export const REMOVE_IMPORTER_ACTION = 'REMOVE_IMPORTER_ACTION';
 export const GET_IMPORTERS_GETTER = 'GET_IMPORTERS_GETTER';
 export const GET_EXPORTER_GETTER = 'GET_EXPORTER_GETTER';
 
-const state = {};
+const state: Config = defaultConfig;
 
-const mutations = {
-  addImporter: (state, importer) => state.scraping.accountsToScrape.push(importer),
-  removeImporter: (state, importerId) => {
+const mutations = <MutationTree<Config>>{
+  addImporter: (state: Config, importer) => state.scraping.accountsToScrape.push(importer),
+  removeImporter: (state: Config, importerId) => {
     state.scraping.accountsToScrape = state.scraping.accountsToScrape.filter((importer) => importer.id !== importerId);
   },
-  addExporter: (state, { name, ...values }) => {
+  addExporter: (state: Config, { name, ...values }) => {
     state.outputVendors[name] = values;
   },
 };
 
-const getters = {
+const getters = <GetterTree<Config, any>>{
   [GET_IMPORTERS_GETTER]: (state) => {
     const importers = state.scraping.accountsToScrape.map((importer) => {
-      const status = importer.status ? importer.status : {};
+      const status = {};
       return { ...importer, status };
     });
     return importers;
@@ -30,7 +32,7 @@ const getters = {
   [GET_EXPORTER_GETTER]: (state) => (name) => state.outputVendors[name]
 };
 
-const actions = {
+const actions = <ActionTree<Config, any>>{
   [ADD_IMPORTER_ACTION]: ({ commit }, importer) => {
     importer.id = randomHex();
     commit('addImporter', importer);
