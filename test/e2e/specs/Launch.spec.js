@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 import { testWithSpectron } from 'vue-cli-plugin-electron-builder';
-import scrapers from '../../../src/modules/importers';
 import Interactions from '../utils/interactions';
 
 const screenshotsDir = './screenshots';
@@ -48,11 +47,6 @@ const skip = true;
     expect(height).toBeGreaterThan(0);
     // App is loaded properly
     expect(await client.getHTML('#app')).toMatch(/Israeli Bank Scrapers Desktop/);
-  });
-
-  test('should be AddScraper per scraper', async () => {
-    const addScrapers = await interactions.getAddScrapers();
-    expect(addScrapers.length).toEqual(scrapers.length);
   });
 
   test('Hide AddScraper components by default', async () => {

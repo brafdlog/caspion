@@ -11,17 +11,20 @@
         Showing the last 10 rows
       </v-card-subtitle>
       <v-card-text style="height: 30vh;">
-        <pre>
-{{ textToShow }}
-        </pre>
+        <log-lines :entries="textToShow" />
       </v-card-text>
     </v-card>
   </v-bottom-sheet>
 </template>
 
 <script>
+import LogLines from './LogLines';
+
 export default {
   name: 'LogSheet',
+  components: {
+    LogLines
+  },
   props: {
     value: {
       type: Boolean,

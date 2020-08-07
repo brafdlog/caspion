@@ -2,12 +2,10 @@
   <v-app>
     <v-app-bar
       app
+      clipped-left
+      clipped-right
       color="primary"
     >
-      <v-app-bar-nav-icon
-        data-test="drawerLeftToggle"
-        @click.stop="drawerLeft = !drawerLeft"
-      />
       <div class="d-flex align-center">
         <span class="shrink mr-2 headline">Israeli Bank Scrapers Desktop</span>
       </div>
@@ -22,19 +20,23 @@
         <span class="mr-2">Report a problem</span>
         <v-icon>mdi-chat-alert-outline</v-icon>
       </v-btn>
-
-      <v-app-bar-nav-icon @click.stop="drawerRight = !drawerRight" />
     </v-app-bar>
 
     <v-navigation-drawer
-      v-model="drawerLeft"
+      stateless
+      clipped
+      value="true"
+      disable-resize-watcher
       app
       left
     >
       <Importers />
     </v-navigation-drawer>
     <v-navigation-drawer
-      v-model="drawerRight"
+      stateless
+      clipped
+      value="true"
+      disable-resize-watcher
       app
       right
     >
@@ -61,29 +63,27 @@
     </v-footer>
     <!-- The content come after all the 'app' components,
     to render when the $vuetify.application is ready -->
-    <v-content>
-      <DataTable />
-    </v-content>
+    <v-main>
+      <main-content />
+    </v-main>
   </v-app>
 </template>
 
 <script>
 import { shell } from 'electron';
-import Importers from '@/components/MainPage/Importers';
-import DataTable from '@/components/MainPage/DataTable';
-import Exporters from '@/components/MainPage/Exporters';
-import ProfileChip from '@/components/MainPage/ProfileChip';
-import ReportProblemDialog from './MainPage/ReportProblemDialog';
+import Importers from '@/components/App/Importers';
+import Exporters from '@/components/App/Exporters';
+import ProfileChip from '@/components/shared/ProfileChip';
+import ReportProblemDialog from './App/ReportProblemDialog';
+import MainContent from './App/MainContent';
 
 export default {
-  name: 'MainPage',
+  name: 'App',
   components: {
-    Importers, DataTable, Exporters, ProfileChip, ReportProblemDialog,
+    Importers, MainContent, Exporters, ProfileChip, ReportProblemDialog,
   },
   data() {
     return {
-      drawerLeft: null,
-      drawerRight: null,
       reportProblemDialog: false,
       profiles: [
         {
