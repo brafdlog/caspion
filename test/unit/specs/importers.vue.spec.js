@@ -4,7 +4,7 @@ import Vuex from 'vuex';
 import fakeStore from '../helpers/baseStore';
 import Importers from '../../../src/components/App/Importers';
 import AddImporter from '../../../src/components/App/Importers/AddImporter';
-import scrapers from '../../../src/modules/importers';
+import { inputVendors } from '../../../src/originalBudgetTrackingApp';
 
 const localVue = createLocalVue();
 
@@ -20,6 +20,6 @@ describe('Importers', () => {
   });
 
   it('Should contain an AddScraper component for each scraper', () => {
-    expect(wrapper.findAll(AddImporter).length).toBe(scrapers.length);
+    expect(wrapper.findAllComponents(AddImporter).length).toBe(inputVendors.length);
   });
 });
