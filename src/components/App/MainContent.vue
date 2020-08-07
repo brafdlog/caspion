@@ -56,7 +56,6 @@ export default {
           this.succeeded = false;
         })
         .finally(() => {
-          console.log(this.results);
           this.scraping = false;
         });
     }
