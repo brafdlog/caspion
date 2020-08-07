@@ -1,5 +1,5 @@
 import { randomHex } from '@/modules/encryption/crypto';
-import { Config } from '@/originalBudgetTrackingApp/configManager/configManager';
+import { Config, AccountToScrapeConfig } from '@/originalBudgetTrackingApp/configManager/configManager';
 import defaultConfig from '@/originalBudgetTrackingApp/configManager/defaultConfig';
 import { ActionTree, GetterTree, MutationTree } from 'vuex';
 
@@ -12,8 +12,8 @@ export const GET_EXPORTER_GETTER = 'GET_EXPORTER_GETTER';
 const state: Config = defaultConfig;
 
 const mutations = <MutationTree<Config>>{
-  addImporter: (state: Config, importer) => state.scraping.accountsToScrape.push(importer),
-  removeImporter: (state: Config, importerId) => {
+  addImporter: (state: Config, importer: AccountToScrapeConfig) => state.scraping.accountsToScrape.push(importer),
+  removeImporter: (state: Config, importerId: string) => {
     state.scraping.accountsToScrape = state.scraping.accountsToScrape.filter((importer) => importer.id !== importerId);
   },
   addExporter: (state: Config, { name, ...values }) => {
