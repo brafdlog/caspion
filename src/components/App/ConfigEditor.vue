@@ -7,11 +7,11 @@
       <v-row justify="center">
         <v-col class="py-0">
           <v-text-field
+            v-model="globalConfig.numDaysBack"
             type="number"
             label="Days back from today to take"
             :rules="[required, positive]"
-            :value="storeGlobalConfig.numDaysBack"
-            @input="updateConfig($event, 'numDaysBack')"
+            @change="changed = true"
           />
         </v-col>
         <v-col
@@ -19,9 +19,9 @@
           class="py-0"
         >
           <v-checkbox
+            v-model="globalConfig.showBrowser"
             label="Show browser"
-            :value="storeGlobalConfig.showBrowser"
-            @change="updateConfig($event, 'showBrowser')"
+            @change="changed = true"
           />
         </v-col>
       </v-row>
@@ -63,21 +63,23 @@ export default Vue.extend({
       return this.$refs.form as VForm;
     },
   },
+  created() {
+    this.reset();
+  },
   methods: {
     required: (value) => !!value || 'Required.',
     positive: (value: number) => value > 0 || 'Must be grater than 0',
     ...mapActions({
       updateGlobalConfig: UPDATE_GLOBAL_CONFIG_ACTION
     }),
-    updateConfig(value, field): void {
-      this.changed = true;
-      this.globalConfig[field] = value;
+    reset() {
+      this.globalConfig = JSON.parse(JSON.stringify(this.storeGlobalConfig));
+      this.changed = false;
     },
     submitForm() {
       if (this.form.validate()) {
-        // TODO the arguments should be simple
-        this.updateGlobalConfig({ ...this.storeGlobalConfig, ...this.globalConfig })
-          .then(() => { this.changed = false; });
+        this.updateGlobalConfig(this.globalConfig)
+          .then(this.reset);
       }
     }
   }
