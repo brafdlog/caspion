@@ -13,12 +13,16 @@
     <div>
       <log-lines :entries="results" />
     </div>
+    <div>
+      <config-editor />
+    </div>
   </div>
 </template>
 
 <script>
 import { scrapeAndUpdateOutputVendors } from '@/originalBudgetTrackingApp';
 import LogLines from '@/components/shared/LogLines';
+import ConfigEditor from './ConfigEditor';
 
 const colors = {
   true: 'green',
@@ -29,7 +33,7 @@ const colors = {
 export default {
   name: 'MainContent',
   components: {
-    LogLines
+    LogLines, ConfigEditor
   },
   data() {
     return {
