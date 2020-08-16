@@ -53,7 +53,7 @@ async function scrapeFinancialAccountsAndFetchTransactions(config: Config, start
     const companyId = accountToScrape.key;
     try {
       console.log(`=================== Start fetching transactions for ${accountToScrape.name} ===================`);
-      const scrapeResult = await fetchTransactions(companyId, accountToScrape.credentials, startDate, config);
+      const scrapeResult = await fetchTransactions(companyId, accountToScrape.loginFields, startDate, config);
       const transactions = await postProcessTransactions(accountToScrape, scrapeResult);
       companyIdToTransactions[companyId] = transactions;
       console.log(`=================== Finished fetching transactions for ${accountToScrape.name} ===================`);
@@ -65,7 +65,7 @@ async function scrapeFinancialAccountsAndFetchTransactions(config: Config, start
   return companyIdToTransactions;
 }
 
-async function fetchTransactions(companyId: AccountToScrapeConfig['key'], credentials: AccountToScrapeConfig['credentials'], startDate: Date, config: Config) {
+async function fetchTransactions(companyId: AccountToScrapeConfig['key'], credentials: AccountToScrapeConfig['loginFields'], startDate: Date, config: Config) {
   console.log(`Start scraping ${companyId} from date: ${moment(startDate).format(DATE_FORMAT)}`);
   const scrapeResult = await bankScraper.scrape({
     companyId,
