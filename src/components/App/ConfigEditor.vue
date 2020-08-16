@@ -1,5 +1,8 @@
 <template>
-  <v-form ref="form" v-model="validated">
+  <v-form
+    ref="form"
+    v-model="validated"
+  >
     <v-container>
       <v-row justify="center">
         <v-col class="py-0">
@@ -11,7 +14,10 @@
             @input="updateConfig($event, 'numDaysBack')"
           />
         </v-col>
-        <v-col cols="auto" class="py-0">
+        <v-col
+          cols="auto"
+          class="py-0"
+        >
           <v-checkbox
             label="Show browser"
             :value="storeGlobalConfig.showBrowser"
@@ -21,7 +27,13 @@
       </v-row>
     </v-container>
 
-    <v-btn color="primary" :disabled="!readyToSave" @click="submitForm()">Save</v-btn>
+    <v-btn
+      color="primary"
+      :disabled="!readyToSave"
+      @click="submitForm()"
+    >
+      Save
+    </v-btn>
   </v-form>
 </template>
 
@@ -65,7 +77,7 @@ export default Vue.extend({
       if (this.form.validate()) {
         // TODO the arguments should be simple
         this.updateGlobalConfig({ ...this.storeGlobalConfig, ...this.globalConfig })
-          .then(() => { this.changed = false });
+          .then(() => { this.changed = false; });
       }
     }
   }

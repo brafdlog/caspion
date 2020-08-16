@@ -22,7 +22,7 @@ const mutations = <MutationTree<Config>>{
     state.outputVendors[name] = values;
   },
   updateGlobalConfig: (state: Config, updatedConfig) => {
-    state.globalConfig = updatedConfig
+    state.globalConfig = updatedConfig;
   }
 };
 
@@ -50,7 +50,7 @@ const actions = <ActionTree<Config, any>>{
     commit('addExporter', { name, ...values });
   },
   [UPDATE_GLOBAL_CONFIG_ACTION]: ({ commit }, globalConfig) => {
-    commit('updateGlobalConfig', globalConfig)
+    commit('updateGlobalConfig', globalConfig);
   }
 };
 
