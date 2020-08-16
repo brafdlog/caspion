@@ -53,7 +53,7 @@ export interface AccountToScrapeConfig {
   id: string;
   key: CompanyTypes;
   name: string;
-  credentials: Record<string, string>;
+  loginFields: Record<string, string>;
   active?: boolean;
 }
 
