@@ -13,7 +13,7 @@ export const inputVendors = Object.keys(SCRAPERS)
 
 interface ScrapeParameters {
   companyId: AccountToScrapeConfig['key'];
-  credentials: AccountToScrapeConfig['credentials'];
+  credentials: AccountToScrapeConfig['loginFields'];
   startDate: Date;
   showBrowser?: boolean
 }
