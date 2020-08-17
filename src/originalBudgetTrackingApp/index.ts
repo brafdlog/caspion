@@ -2,13 +2,14 @@ import _ from 'lodash';
 import moment from 'moment';
 import * as bankScraper from './bankScraper';
 import { ScaperScrapingResult, Transaction } from './bankScraper';
-import * as ynab from './outputVendors/ynab/ynab';
-import { EnrichedTransaction } from './commonTypes';
-import * as googleSheets from './outputVendors/googleSheets/googleSheets';
 import * as categoryCalculation from './categoryCalculationScript';
+import { EnrichedTransaction, ScrapingEventEmitter } from './commonTypes';
 import * as configManager from './configManager/configManager';
-import outputVendors from './outputVendors';
 import { Config } from './configManager/configManager';
+import EmptyEventEmitterAdapter from './eventEmitters/emptyEventEmitterAdapter';
+import outputVendors from './outputVendors';
+import * as googleSheets from './outputVendors/googleSheets/googleSheets';
+import * as ynab from './outputVendors/ynab/ynab';
 
 export { outputVendors };
 export { configManager };
@@ -21,7 +22,8 @@ const DATE_FORMAT = 'DD/MM/YYYY';
 
 export const { getYnabAccountDetails } = ynab;
 
-export async function scrapeAndUpdateOutputVendors() {
+export async function scrapeAndUpdateOutputVendors(optionalEventEmitter?: ScrapingEventEmitter) {
+  const eventEmitter = new EmptyEventEmitterAdapter(optionalEventEmitter);
   const config = await configManager.getConfig();
 
   const startDate = moment()
@@ -29,9 +31,11 @@ export async function scrapeAndUpdateOutputVendors() {
     .startOf('day')
     .toDate();
 
-  const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config, startDate);
+  eventEmitter.emit('status', `Starting to scrape from ${startDate} to today`);
+
+  const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config, startDate, eventEmitter);
   try {
-    const executionResult = await createTransactionsInExternalVendors(config, companyIdToTransactions, startDate);
+    const executionResult = await createTransactionsInExternalVendors(config, companyIdToTransactions, startDate, eventEmitter);
     const resultToLog = `
     Results of job:
     ${JSON.stringify(executionResult, null, 2)}
@@ -45,27 +49,33 @@ export async function scrapeAndUpdateOutputVendors() {
   }
 }
 
-async function scrapeFinancialAccountsAndFetchTransactions(config: Config, startDate: Date) {
+async function scrapeFinancialAccountsAndFetchTransactions(config: Config, startDate: Date, eventEmitter: ScrapingEventEmitter) {
   const companyIdToTransactions: Record<string, EnrichedTransaction[]> = {};
   const accountsToScrape = config.scraping.accountsToScrape.filter((accountToScrape) => accountToScrape.active !== false);
   for (let i = 0; i < accountsToScrape.length; i++) {
     const accountToScrape = accountsToScrape[i];
     const companyId = accountToScrape.key;
     try {
-      console.log(`=================== Start fetching transactions for ${accountToScrape.name} ===================`);
-      const scrapeResult = await fetchTransactions(companyId, accountToScrape.loginFields, startDate, config);
+      eventEmitter.emit('status', 'Start fetching transactions', { name: accountToScrape.name, date: moment(startDate).format(DATE_FORMAT) });
+      const scrapeResult = await fetchTransactions(companyId, accountToScrape.loginFields, startDate, config, eventEmitter);
       const transactions = await postProcessTransactions(accountToScrape, scrapeResult);
       companyIdToTransactions[companyId] = transactions;
-      console.log(`=================== Finished fetching transactions for ${accountToScrape.name} ===================`);
-    } catch (e) {
-      console.error(`Error fetching transactions for ${companyId}. Error: `, e);
-      throw e;
+      eventEmitter.emit('finish', { companyId, accountId: accountToScrape.id });
+    } catch (error) {
+      eventEmitter.emit('error', error.message, { companyId, error });
+      throw error;
     }
   }
   return companyIdToTransactions;
 }
 
-async function fetchTransactions(companyId: AccountToScrapeConfig['key'], credentials: AccountToScrapeConfig['loginFields'], startDate: Date, config: Config) {
+async function fetchTransactions(
+  companyId: AccountToScrapeConfig['key'],
+  credentials: AccountToScrapeConfig['loginFields'],
+  startDate: Date,
+  config: Config,
+  eventEmitter: ScrapingEventEmitter
+) {
   console.log(`Start scraping ${companyId} from date: ${moment(startDate).format(DATE_FORMAT)}`);
   const scrapeResult = await bankScraper.scrape({
     companyId,
@@ -74,11 +84,10 @@ async function fetchTransactions(companyId: AccountToScrapeConfig['key'], creden
     showBrowser: config.scraping.showBrowser,
   });
   if (!scrapeResult.success) {
-    console.error('Failed scraping ', companyId);
-    console.error(scrapeResult.errorMessage);
+    eventEmitter.emit('error', scrapeResult.errorMessage || 'Failed scraping', { companyId });
     throw new Error(scrapeResult.errorMessage);
   }
-  console.log('Finished scraping successfully');
+  eventEmitter.emit('finish', { companyId });
   return scrapeResult;
 }
 
@@ -103,7 +112,9 @@ export function calculateTransactionHash({
   return `${date}_${chargedAmount}_${description}_${memo}_${companyId}_${accountNumber}`;
 }
 
-async function createTransactionsInExternalVendors(config: Config, companyIdToTransactions: Record<string, EnrichedTransaction[]>, startDate: Date) {
+async function createTransactionsInExternalVendors(
+  config: Config, companyIdToTransactions: Record<string, EnrichedTransaction[]>, startDate: Date, eventEmitter: ScrapingEventEmitter
+) {
   await ynab.init(config);
   const activeVendors: any = [];
   if (config.outputVendors.ynab?.active) {
@@ -124,31 +135,34 @@ async function createTransactionsInExternalVendors(config: Config, companyIdToTr
   const allTransactions = _.flatten(Object.values(companyIdToTransactions));
 
   if (!activeVendors.length) {
-    throw new Error('You need to set at least one output vendor to be active');
+    const error = new Error('You need to set at least one output vendor to be active');
+    eventEmitter.emit('error', error.message, { error });
+    throw error;
   }
 
   for (let j = 0; j < activeVendors.length; j++) {
     const vendor = activeVendors[j];
     const vendorConfig = config.outputVendors[vendor.name];
     if (vendorConfig && vendorConfig.active) {
-      const vendorResult = await createTransactionsInVedor(vendor, allTransactions, startDate);
+      const vendorResult = await createTransactionsInVedor(vendor, allTransactions, startDate, eventEmitter);
       executionResult[vendor.name] = vendorResult;
     }
   }
   return executionResult;
 }
 
-async function createTransactionsInVedor(vendor, transactions: EnrichedTransaction[], startDate: Date) {
-  console.log(`Start creating transactions in ${vendor.name}`);
+async function createTransactionsInVedor(vendor, transactions: EnrichedTransaction[], startDate: Date, eventEmitter: ScrapingEventEmitter) {
+  eventEmitter.emit('status', 'Start creating transactions', { name: vendor.name });
   const vendorResult = await vendor.createTransactionFunction(transactions, startDate, vendor.options);
   if (vendorResult) {
-    console.log(`${vendor.name} result: `, vendorResult);
+    eventEmitter.emit('status', 'results', { name: vendor.name });
   }
-  console.log(`Finished creating transactions in ${vendor.name}`);
+  eventEmitter.emit('finish', { name: vendor.name });
   return vendorResult;
 }
 
-export async function getFinancialAccountNumbers() {
+export async function getFinancialAccountNumbers(optionalEventEmitter?: ScrapingEventEmitter) {
+  const eventEmitter = new EmptyEventEmitterAdapter(optionalEventEmitter);
   const config = await configManager.getConfig();
 
   const startDate = moment()
@@ -157,7 +171,7 @@ export async function getFinancialAccountNumbers() {
     .toDate();
 
   console.log('Fetching data from financial institutions to determine the account numbers');
-  const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config, startDate);
+  const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config, startDate, eventEmitter);
   const companyIdToAccountNumbers: Record<string, string[]> = {};
   Object.keys(companyIdToTransactions).forEach((companyId) => {
     let accountNumbers = companyIdToTransactions[companyId].map((transaction) => transaction.accountNumber);
