@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <div>
     <v-checkbox
       v-model="showBrowser"
       label="Show browser"
@@ -45,7 +45,7 @@
     <div v-show="importing">
       {{ step }}
     </div>
-  </v-card>
+  </div>
 </template>
 
 <script>
