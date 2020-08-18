@@ -36,15 +36,9 @@ export async function scrapeAndUpdateOutputVendors(optionalEventEmitter?: Scrapi
   const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config, startDate, eventEmitter);
   try {
     const executionResult = await createTransactionsInExternalVendors(config, companyIdToTransactions, startDate, eventEmitter);
-    const resultToLog = `
-    Results of job:
-    ${JSON.stringify(executionResult, null, 2)}
-  `;
-    console.log(resultToLog);
-
     return executionResult;
   } catch (e) {
-    console.error(e);
+    eventEmitter.emit('error', e.message, e);
     throw e;
   }
 }
@@ -82,7 +76,7 @@ async function fetchTransactions(
     credentials,
     startDate,
     showBrowser: config.scraping.showBrowser,
-  });
+  }, eventEmitter);
   if (!scrapeResult.success) {
     eventEmitter.emit('error', scrapeResult.errorMessage || 'Failed scraping', { companyId });
     throw new Error(scrapeResult.errorMessage);

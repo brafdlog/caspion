@@ -1,9 +1,10 @@
 import { createScraper, SCRAPERS } from '@brafdlog/israeli-bank-scrapers-core';
-import { AccountToScrapeConfig } from './configManager/configManager';
 import getChrome from '../modules/downloadChromium';
+import { ScrapingEventEmitter } from './commonTypes';
+import { AccountToScrapeConfig } from './configManager/configManager';
 
-export { Transaction } from '@brafdlog/israeli-bank-scrapers-core/lib/transactions';
 export { ScaperScrapingResult } from '@brafdlog/israeli-bank-scrapers-core/lib/scrapers/base-scraper';
+export { Transaction } from '@brafdlog/israeli-bank-scrapers-core/lib/transactions';
 
 export const inputVendors = Object.keys(SCRAPERS)
   .map((key) => ({
@@ -20,7 +21,7 @@ interface ScrapeParameters {
 
 export async function scrape({
   companyId, credentials, startDate, showBrowser = false
-}: ScrapeParameters) {
+}: ScrapeParameters, eventEmitter: ScrapingEventEmitter) {
   if (!credentials || (!credentials.username && !credentials.num && !credentials.id) || !credentials.password) {
     throw new Error(`Missing credentials for scraper. CompanyId: ${companyId}. Credentials: ${credentials && JSON.stringify(credentials)}`);
   }
@@ -36,6 +37,7 @@ export async function scrape({
     executablePath: chromePath
   };
   const scraper = createScraper(options);
+  eventEmitter.listenTo(scraper);
   const scrapeResult = await scraper.scrape(credentials);
 
   if (!scrapeResult.success) {
