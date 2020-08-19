@@ -3,6 +3,7 @@ import moment from 'moment';
 import * as bankScraper from './bankScraper';
 import { ScaperScrapingResult, Transaction } from './bankScraper';
 import * as ynab from './outputVendors/ynab/ynab';
+import * as json from './outputVendors/json/index';
 import { EnrichedTransaction } from './commonTypes';
 import * as googleSheets from './outputVendors/googleSheets/googleSheets';
 import * as categoryCalculation from './categoryCalculationScript';
@@ -106,6 +107,13 @@ export function calculateTransactionHash({
 async function createTransactionsInExternalVendors(config: Config, companyIdToTransactions: Record<string, EnrichedTransaction[]>, startDate: Date) {
   await ynab.init(config);
   const activeVendors: any = [];
+  if (config.outputVendors.json?.active) {
+    activeVendors.push({
+      name: 'json',
+      createTransactionFunction: json.createTransactions,
+      options: config.outputVendors.json.options,
+    });
+  }
   if (config.outputVendors.ynab?.active) {
     activeVendors.push({
       name: 'ynab',

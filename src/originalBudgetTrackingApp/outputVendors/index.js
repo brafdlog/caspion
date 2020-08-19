@@ -8,6 +8,11 @@
 //   acc[name] = { name, ...vendor };
 //   return acc;
 // }, {});
-export default {
+import * as json from './json/index';
 
+export default {
+  json: {
+    name: 'json',
+    ...json
+  },
 };

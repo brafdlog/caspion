@@ -63,11 +63,13 @@ export default {
     submitForm() {
       if (this.$refs.form.validate()) {
         // TODO the arguments should be simple
+        console.log('{ name: this.vendor.name, ...this.loadedExporter, ...this.exporter } :>> ',
+          { name: this.vendor.name, ...this.loadedExporter, ...this.exporter });
         this.$store.dispatch(ADD_EXPORTER_ACTION, { name: this.vendor.name, ...this.loadedExporter, ...this.exporter })
           .then(() => { this.changed = false; });
       }
     },
-  },
+  }
 };
 </script>
 

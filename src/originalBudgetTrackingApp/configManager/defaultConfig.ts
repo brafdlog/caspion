@@ -3,11 +3,18 @@ import { Config } from './configManager';
 const DEFAULT_CONFIG: Config = {
   scraping: {
     numDaysBack: 40,
-    showBrowser: false,
+    showBrowser: true,
     accountsToScrape: [
     ]
   },
   outputVendors: {
+    json: {
+      active: true,
+      options: {
+        path: '',
+        fileName: '../transaction.json'
+      }
+    },
     ynab: {
       active: false,
       options: {

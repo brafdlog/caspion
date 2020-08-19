@@ -15,6 +15,7 @@ export interface Config {
   outputVendors: {
     googleSheets?: GoogleSheetsConfig;
     ynab?: YnabConfig;
+    json?: JsonConfig;
   };
   scraping: {
     'numDaysBack': number;
@@ -30,6 +31,13 @@ export interface Config {
   };
 }
 
+export interface JsonConfig {
+  active: boolean;
+  options: {
+    fileName: string;
+    path:string;
+  }
+}
 export interface GoogleSheetsConfig {
   active: boolean;
   options: {
