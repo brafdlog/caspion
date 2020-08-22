@@ -4,7 +4,6 @@ import * as bankScraper from './bankScraper';
 import { ScaperScrapingResult, Transaction } from './bankScraper';
 import * as ynab from './outputVendors/ynab/ynab';
 import { EnrichedTransaction } from './commonTypes';
-import * as googleSheets from './outputVendors/googleSheets/googleSheets';
 import * as categoryCalculation from './categoryCalculationScript';
 import * as configManager from './configManager/configManager';
 import outputVendors from './outputVendors';
@@ -104,48 +103,25 @@ export function calculateTransactionHash({
 }
 
 async function createTransactionsInExternalVendors(config: Config, companyIdToTransactions: Record<string, EnrichedTransaction[]>, startDate: Date) {
-  await ynab.init(config);
-  const activeVendors: any = [];
-  if (config.outputVendors.ynab?.active) {
-    activeVendors.push({
-      name: 'ynab',
-      createTransactionFunction: ynab.createTransactions,
-      options: config.outputVendors.ynab.options,
-    });
-  }
-  if (config.outputVendors.googleSheets?.active) {
-    activeVendors.push({
-      name: 'googleSheets',
-      createTransactionFunction: googleSheets.createTransactionsInGoogleSheets,
-      options: config.outputVendors.googleSheets.options,
-    });
-  }
   const executionResult = {};
   const allTransactions = _.flatten(Object.values(companyIdToTransactions));
 
-  if (!activeVendors.length) {
-    throw new Error('You need to set at least one output vendor to be active');
-  }
-
-  for (let j = 0; j < activeVendors.length; j++) {
-    const vendor = activeVendors[j];
-    const vendorConfig = config.outputVendors[vendor.name];
-    if (vendorConfig && vendorConfig.active) {
-      const vendorResult = await createTransactionsInVedor(vendor, allTransactions, startDate);
-      executionResult[vendor.name] = vendorResult;
+  for (let j = 0; j < outputVendors.length; j++) {
+    const outputVendor = outputVendors[j];
+    if (outputVendor.isActive(config)) {
+      if (outputVendor.init) {
+        await outputVendor.init(config);
+      }
+      console.log(`Start creating transactions in ${outputVendor.name}`);
+      const vendorResult = await outputVendor.exportTransactions(allTransactions, startDate, config);
+      console.log(`Finished creating transactions in ${outputVendor.name}`);
+      executionResult[outputVendor.name] = vendorResult;
     }
   }
-  return executionResult;
-}
-
-async function createTransactionsInVedor(vendor, transactions: EnrichedTransaction[], startDate: Date) {
-  console.log(`Start creating transactions in ${vendor.name}`);
-  const vendorResult = await vendor.createTransactionFunction(transactions, startDate, vendor.options);
-  if (vendorResult) {
-    console.log(`${vendor.name} result: `, vendorResult);
+  if (!Object.keys(executionResult).length) {
+    throw new Error('You need to set at least one output vendor to be active');
   }
-  console.log(`Finished creating transactions in ${vendor.name}`);
-  return vendorResult;
+  return executionResult;
 }
 
 export async function getFinancialAccountNumbers() {

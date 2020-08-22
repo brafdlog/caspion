@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import * as ynab from 'ynab';
 import moment from 'moment/moment';
-import { EnrichedTransaction } from '@/originalBudgetTrackingApp/commonTypes';
+import { EnrichedTransaction, OutputVendor } from '@/originalBudgetTrackingApp/commonTypes';
 import { getConfig, Config, YnabConfig } from '../../configManager/configManager';
 
 const INITIAL_YNAB_ACCESS_TOKEN = 'AABB';
@@ -22,6 +22,13 @@ const transactionsFromYnab: Map<Date, ynab.TransactionDetail[]> = new Map();
 let ynabConfig: YnabConfig | undefined;
 let ynabAPI: ynab.API | undefined;
 let ynabAccountDetails: YnabAccountDetails | undefined;
+
+export const ynabOutputVendor: OutputVendor = {
+  name: 'ynab',
+  init,
+  exportTransactions: createTransactions,
+  isActive: (config) => !!config.outputVendors.ynab?.active
+};
 
 export async function init(config?: Config) {
   if (ynabConfig && ynabAPI) {
