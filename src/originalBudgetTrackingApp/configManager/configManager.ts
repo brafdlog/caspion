@@ -30,8 +30,11 @@ export interface Config {
   };
 }
 
-export interface GoogleSheetsConfig {
+export interface OutputVendorConfig {
   active: boolean;
+}
+
+export interface GoogleSheetsConfig extends OutputVendorConfig {
   options: {
     credentialsFilePath: string;
     sheetName: string;
@@ -39,8 +42,7 @@ export interface GoogleSheetsConfig {
   }
 }
 
-export interface YnabConfig {
-  active: boolean;
+export interface YnabConfig extends OutputVendorConfig {
   options: {
     accessToken: string;
     accountNumbersToYnabAccountIds: { [key: string]: string };

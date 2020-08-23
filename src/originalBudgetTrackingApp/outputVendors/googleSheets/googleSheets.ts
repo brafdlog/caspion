@@ -1,14 +1,13 @@
 import moment from 'moment/moment';
-import { EnrichedTransaction, OutputVendor } from '@/originalBudgetTrackingApp/commonTypes';
+import { EnrichedTransaction, OutputVendor, OutputVendorName } from '@/originalBudgetTrackingApp/commonTypes';
 import { Config } from '../../configManager/configManager';
 import * as googleSheets from './googleSheetsInternalAPI';
 
 const GOOGLE_SHEETS_DATE_FORMAT = 'DD/MM/YYYY';
 
 export const googleSheetsOutputVendor: OutputVendor = {
-  name: 'googleSheets',
+  name: OutputVendorName.GOOGLE_SHEETS,
   exportTransactions: createTransactionsInGoogleSheets,
-  isActive: (config) => !!config.outputVendors.googleSheets?.active
 };
 
 export async function createTransactionsInGoogleSheets(transactions: EnrichedTransaction[], startDate: Date, config: Config) {
