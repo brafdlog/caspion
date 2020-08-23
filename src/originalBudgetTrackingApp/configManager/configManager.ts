@@ -20,7 +20,7 @@ export interface Config {
     numDaysBack: number;
     showBrowser: boolean;
     accountsToScrape: AccountToScrapeConfig[];
-  }
+  };
   monitoring?: {
     email: {
       sendReport: boolean;
