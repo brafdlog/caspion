@@ -25,7 +25,7 @@ export async function scrapeAndUpdateOutputVendors() {
   const config = await configManager.getConfig();
 
   const startDate = moment()
-    .subtract(config.globalConfig.numDaysBack, 'days')
+    .subtract(config.scraping.numDaysBack, 'days')
     .startOf('day')
     .toDate();
 
@@ -47,7 +47,7 @@ export async function scrapeAndUpdateOutputVendors() {
 
 async function scrapeFinancialAccountsAndFetchTransactions(config: Config, startDate: Date) {
   const companyIdToTransactions: Record<string, EnrichedTransaction[]> = {};
-  const accountsToScrape = config.accountsToScrape.filter((accountToScrape) => accountToScrape.active !== false);
+  const accountsToScrape = config.scraping.accountsToScrape.filter((accountToScrape) => accountToScrape.active !== false);
   for (let i = 0; i < accountsToScrape.length; i++) {
     const accountToScrape = accountsToScrape[i];
     const companyId = accountToScrape.key;
@@ -71,7 +71,7 @@ async function fetchTransactions(companyId: AccountToScrapeConfig['key'], creden
     companyId,
     credentials,
     startDate,
-    showBrowser: config.globalConfig.showBrowser,
+    showBrowser: config.scraping.showBrowser,
   });
   if (!scrapeResult.success) {
     console.error('Failed scraping ', companyId);

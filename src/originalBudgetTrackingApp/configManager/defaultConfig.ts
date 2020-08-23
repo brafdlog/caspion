@@ -1,12 +1,11 @@
 import { Config } from './configManager';
 
 const DEFAULT_CONFIG: Config = {
-  globalConfig: {
+  scraping: {
     numDaysBack: 40,
-    showBrowser: false
+    showBrowser: false,
+    accountsToScrape: [],
   },
-  accountsToScrape: [
-  ],
   outputVendors: {
     ynab: {
       active: false,

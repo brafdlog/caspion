@@ -16,11 +16,11 @@ export interface Config {
     googleSheets?: GoogleSheetsConfig;
     ynab?: YnabConfig;
   };
-  accountsToScrape: AccountToScrapeConfig[];
-  globalConfig: {
+  scraping: {
     numDaysBack: number;
     showBrowser: boolean;
-  };
+    accountsToScrape: AccountToScrapeConfig[];
+  }
   monitoring?: {
     email: {
       sendReport: boolean;
