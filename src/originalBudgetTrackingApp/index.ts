@@ -109,9 +109,7 @@ async function createTransactionsInExternalVendors(config: Config, companyIdToTr
   for (let j = 0; j < outputVendors.length; j++) {
     const outputVendor = outputVendors[j];
     if (outputVendor.isActive(config)) {
-      if (outputVendor.init) {
-        await outputVendor.init(config);
-      }
+      await outputVendor.init?.(config);
       console.log(`Start creating transactions in ${outputVendor.name}`);
       const vendorResult = await outputVendor.exportTransactions(allTransactions, startDate, config);
       console.log(`Finished creating transactions in ${outputVendor.name}`);
