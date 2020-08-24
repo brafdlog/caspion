@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <div>
     <div
       v-for="(value, credentialFieldName) in importer.loginFields"
       :key="credentialFieldName"
@@ -20,7 +20,7 @@
       v-model="deleteDialog"
       @confirm="DeleteImporter"
     />
-  </v-card>
+  </div>
 </template>
 
 <script>
