@@ -23,7 +23,7 @@ export async function scrape({
   companyId, credentials, startDate, showBrowser = false
 }: ScrapeParameters, eventEmitter: ScrapingEventEmitter) {
   if (!credentials || (!credentials.username && !credentials.num && !credentials.id) || !credentials.password) {
-    throw new Error(`Missing credentials for scraper. CompanyId: ${companyId}. Credentials: ${credentials && JSON.stringify(credentials)}`);
+    throw new Error(`Missing credentials for scraper. CompanyId: ${companyId}`);
   }
 
   const chromePath = await getChrome(undefined, console.log);

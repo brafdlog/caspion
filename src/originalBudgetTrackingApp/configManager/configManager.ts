@@ -17,9 +17,9 @@ export interface Config {
     ynab?: YnabConfig;
   };
   scraping: {
-    'numDaysBack': number;
-    'showBrowser': boolean;
-    'accountsToScrape': AccountToScrapeConfig[];
+    numDaysBack: number;
+    showBrowser: boolean;
+    accountsToScrape: AccountToScrapeConfig[];
   };
   monitoring?: {
     email: {
