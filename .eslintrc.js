@@ -75,12 +75,6 @@ module.exports = {
       env: {
         jest: true,
       },
-    },
-    {
-      files: ['src/originalBudgetTrackingApp/**/*'],
-      rules: {
-        'no-console': 'off'
-      }
     }
   ],
 };
