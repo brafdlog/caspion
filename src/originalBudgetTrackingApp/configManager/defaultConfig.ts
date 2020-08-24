@@ -4,8 +4,7 @@ const DEFAULT_CONFIG: Config = {
   scraping: {
     numDaysBack: 40,
     showBrowser: false,
-    accountsToScrape: [
-    ]
+    accountsToScrape: [],
   },
   outputVendors: {
     ynab: {
