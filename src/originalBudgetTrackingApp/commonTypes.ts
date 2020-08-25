@@ -1,5 +1,6 @@
-import { Transaction } from '@/originalBudgetTrackingApp/bankScraper';
 import { CompanyTypes } from '@brafdlog/israeli-bank-scrapers-core';
+import { Transaction } from './bankScraper';
+import { Config } from './configManager/configManager';
 
 export interface ProgressEmitter {
   onProgress(func: (...args: any[]) => void): void
@@ -9,6 +10,17 @@ export interface EnrichedTransaction extends Transaction {
   accountNumber: string;
   category?: string;
   hash: string;
+}
+
+export enum OutputVendorName {
+  YNAB = 'ynab',
+  GOOGLE_SHEETS = 'googleSheets'
+}
+
+export interface OutputVendor {
+  name: OutputVendorName;
+  init?: (config: Config) => Promise<void>;
+  exportTransactions: (transactionsToCreate: EnrichedTransaction[], startDate: Date, config: Config) => Promise<any>;
 }
 
 export interface ScrapingEvents {

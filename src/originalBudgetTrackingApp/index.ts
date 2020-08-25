@@ -8,7 +8,6 @@ import * as configManager from './configManager/configManager';
 import { Config } from './configManager/configManager';
 import EmptyEventEmitterAdapter from './eventEmitters/emptyEventEmitterAdapter';
 import outputVendors from './outputVendors';
-import * as googleSheets from './outputVendors/googleSheets/googleSheets';
 import * as ynab from './outputVendors/ynab/ynab';
 
 export { outputVendors };
@@ -109,50 +108,25 @@ export function calculateTransactionHash({
 async function createTransactionsInExternalVendors(
   config: Config, companyIdToTransactions: Record<string, EnrichedTransaction[]>, startDate: Date, eventEmitter: ScrapingEventEmitter
 ) {
-  await ynab.init(config);
-  const activeVendors: any = [];
-  if (config.outputVendors.ynab?.active) {
-    activeVendors.push({
-      name: 'ynab',
-      createTransactionFunction: ynab.createTransactions,
-      options: config.outputVendors.ynab.options,
-    });
-  }
-  if (config.outputVendors.googleSheets?.active) {
-    activeVendors.push({
-      name: 'googleSheets',
-      createTransactionFunction: googleSheets.createTransactionsInGoogleSheets,
-      options: config.outputVendors.googleSheets.options,
-    });
-  }
   const executionResult = {};
   const allTransactions = _.flatten(Object.values(companyIdToTransactions));
 
-  if (!activeVendors.length) {
+  for (let j = 0; j < outputVendors.length; j++) {
+    const outputVendor = outputVendors[j];
+    if (config.outputVendors[outputVendor.name]?.active) {
+      await outputVendor.init?.(config);
+      console.log(`Start creating transactions in ${outputVendor.name}`);
+      const vendorResult = await outputVendor.exportTransactions(allTransactions, startDate, config);
+      console.log(`Finished creating transactions in ${outputVendor.name}`);
+      executionResult[outputVendor.name] = vendorResult;
+    }
+  }
+  if (!Object.keys(executionResult).length) {
     const error = new Error('You need to set at least one output vendor to be active');
     eventEmitter.emit('error', error.message, { error });
     throw error;
   }
-
-  for (let j = 0; j < activeVendors.length; j++) {
-    const vendor = activeVendors[j];
-    const vendorConfig = config.outputVendors[vendor.name];
-    if (vendorConfig && vendorConfig.active) {
-      const vendorResult = await createTransactionsInVedor(vendor, allTransactions, startDate, eventEmitter);
-      executionResult[vendor.name] = vendorResult;
-    }
-  }
   return executionResult;
-}
-
-async function createTransactionsInVedor(vendor, transactions: EnrichedTransaction[], startDate: Date, eventEmitter: ScrapingEventEmitter) {
-  eventEmitter.emit('status', 'Start creating transactions', { name: vendor.name });
-  const vendorResult = await vendor.createTransactionFunction(transactions, startDate, vendor.options);
-  if (vendorResult) {
-    eventEmitter.emit('status', 'results', { name: vendor.name });
-  }
-  eventEmitter.emit('finish', { name: vendor.name });
-  return vendorResult;
 }
 
 export async function getFinancialAccountNumbers(optionalEventEmitter?: ScrapingEventEmitter) {
