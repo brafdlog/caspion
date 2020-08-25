@@ -28,8 +28,6 @@ const TRANSACTION_2: Transaction = {
   status: TransactionStatuses.Completed
 };
 
-jest.mock('./outputVendors', () => []);
-
 describe('Main flow tests', () => {
   describe('Transaction post processing', () => {
     test('Transaction hash', () => {
