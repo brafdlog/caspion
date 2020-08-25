@@ -79,3 +79,11 @@ const skip = true;
 
   afterAll(async () => stopServe());
 });
+
+declare global {
+  namespace NodeJS {
+    interface Global {
+      lastTest: any;
+    }
+  }
+}
