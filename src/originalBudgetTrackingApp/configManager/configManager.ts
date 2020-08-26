@@ -18,9 +18,9 @@ export interface Config {
     json?: JsonConfig;
   };
   scraping: {
-    'numDaysBack': number;
-    'showBrowser': boolean;
-    'accountsToScrape': AccountToScrapeConfig[];
+    numDaysBack: number;
+    showBrowser: boolean;
+    accountsToScrape: AccountToScrapeConfig[];
   };
   monitoring?: {
     email: {
@@ -38,8 +38,11 @@ export interface JsonConfig {
     path:string;
   }
 }
-export interface GoogleSheetsConfig {
+export interface OutputVendorConfig {
   active: boolean;
+}
+
+export interface GoogleSheetsConfig extends OutputVendorConfig {
   options: {
     credentialsFilePath: string;
     sheetName: string;
@@ -47,8 +50,7 @@ export interface GoogleSheetsConfig {
   }
 }
 
-export interface YnabConfig {
-  active: boolean;
+export interface YnabConfig extends OutputVendorConfig {
   options: {
     accessToken: string;
     accountNumbersToYnabAccountIds: { [key: string]: string };

@@ -63,6 +63,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': ['error', { args: 'after-used', argsIgnorePattern: '^_|h' }],
     'arrow-body-style': 'off',
     'object-curly-newline': 'warn',
+    'semi': productionError,
   },
 
   overrides: [

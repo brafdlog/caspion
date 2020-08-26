@@ -1,9 +1,17 @@
 import moment from 'moment/moment';
+import { EnrichedTransaction, OutputVendor, OutputVendorName } from '@/originalBudgetTrackingApp/commonTypes';
+import { Config } from '../../configManager/configManager';
 import * as googleSheets from './googleSheetsInternalAPI';
 
 const GOOGLE_SHEETS_DATE_FORMAT = 'DD/MM/YYYY';
 
-export async function createTransactionsInGoogleSheets(transactions, startDate, { spreadsheetId, sheetName, credentialsFilePath }) {
+export const googleSheetsOutputVendor: OutputVendor = {
+  name: OutputVendorName.GOOGLE_SHEETS,
+  exportTransactions: createTransactionsInGoogleSheets,
+};
+
+export async function createTransactionsInGoogleSheets(transactions: EnrichedTransaction[], startDate: Date, config: Config) {
+  const { spreadsheetId, sheetName, credentialsFilePath } = config.outputVendors.googleSheets!.options;
   console.log(`Got ${transactions.length} transactions to create in google sheets`);
   const hashesAlreadyExistingInGoogleSheets = await googleSheets.getExistingHashes({ spreadsheetId, sheetName, credentialsFilePath });
   const transactionsToCreate = transactions.filter((transaction) => !hashesAlreadyExistingInGoogleSheets.includes(transaction.hash));
@@ -22,7 +30,6 @@ export async function createTransactionsInGoogleSheets(transactions, startDate, 
     transaction.description,
     transaction.memo,
     transaction.category,
-    transaction.companyId,
     transaction.accountNumber,
     transaction.hash
   ]);

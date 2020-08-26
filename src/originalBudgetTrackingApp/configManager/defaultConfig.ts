@@ -3,9 +3,8 @@ import { Config } from './configManager';
 const DEFAULT_CONFIG: Config = {
   scraping: {
     numDaysBack: 40,
-    showBrowser: true,
-    accountsToScrape: [
-    ]
+    showBrowser: false,
+    accountsToScrape: [],
   },
   outputVendors: {
     json: {
