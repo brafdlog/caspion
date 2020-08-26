@@ -3,7 +3,6 @@ import moment from 'moment';
 import * as bankScraper from './bankScraper';
 import { ScaperScrapingResult, Transaction } from './bankScraper';
 import * as ynab from './outputVendors/ynab/ynab';
-import * as json from './outputVendors/json/index';
 import { EnrichedTransaction } from './commonTypes';
 import * as categoryCalculation from './categoryCalculationScript';
 import * as configManager from './configManager/configManager';
