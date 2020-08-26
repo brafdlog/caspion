@@ -1,8 +1,8 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
 
-import Importers from '../../../src/components/App/Importers.vue';
-import AddImporter from '../../../src/components/App/Importers/AddImporter.vue';
+import Importers from '../../../src/components/App/Importers';
+import AddImporter from '../../../src/components/App/Importers/AddImporter';
 import { inputVendors } from '../../../src/originalBudgetTrackingApp';
 
 const localVue = createLocalVue();
