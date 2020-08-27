@@ -1,13 +1,13 @@
 import _ from 'lodash';
 import moment from 'moment';
 import * as bankScraper from './bankScraper';
-import { ScaperScrapingResult, Transaction } from './bankScraper';
-import * as ynab from './outputVendors/ynab/ynab';
+import { ScaperScrapingResult } from './bankScraper';
 import { EnrichedTransaction } from './commonTypes';
-import * as categoryCalculation from './categoryCalculationScript';
 import * as configManager from './configManager/configManager';
-import outputVendors from './outputVendors';
 import { Config } from './configManager/configManager';
+import outputVendors from './outputVendors';
+import * as ynab from './outputVendors/ynab/ynab';
+import { enrichTransaction, transactionsDateComparator } from './transactions';
 
 export { outputVendors };
 export { configManager };
@@ -96,12 +96,6 @@ async function postProcessTransactions(accountToScrape: configManager.AccountToS
   return [];
 }
 
-export function calculateTransactionHash({
-  date, chargedAmount, description, memo
-}: Transaction, companyId: string, accountNumber: string) {
-  return `${date}_${chargedAmount}_${description}_${memo}_${companyId}_${accountNumber}`;
-}
-
 async function createTransactionsInExternalVendors(config: Config, companyIdToTransactions: Record<string, EnrichedTransaction[]>, startDate: Date) {
   const executionResult = {};
   const allTransactions = _.flatten(Object.values(companyIdToTransactions));
@@ -139,28 +133,4 @@ export async function getFinancialAccountNumbers() {
     companyIdToAccountNumbers[companyId] = accountNumbers;
   });
   return companyIdToAccountNumbers;
-}
-
-function enrichTransaction(transaction: Transaction, companyId: string, accountNumber: string): EnrichedTransaction {
-  const hash = calculateTransactionHash(transaction, companyId, accountNumber);
-  const category = categoryCalculation.getCategoryNameByTransactionDescription(transaction.description);
-  const enrichedTransaction: EnrichedTransaction = {
-    ...transaction,
-    accountNumber,
-    category,
-    hash
-  };
-  return enrichedTransaction;
-}
-
-function transactionsDateComparator(t1: Transaction, t2: Transaction) {
-  const date1 = moment(t1.date);
-  const date2 = moment(t2.date);
-  if (date1.isAfter(date2)) {
-    return 1;
-  }
-  if (date1.isBefore(date2)) {
-    return -1;
-  }
-  return 1;
 }
