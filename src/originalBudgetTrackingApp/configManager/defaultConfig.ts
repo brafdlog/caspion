@@ -1,4 +1,4 @@
-import { Config } from './configManager';
+import { Config } from './configTypes';
 
 const DEFAULT_CONFIG: Config = {
   scraping: {

@@ -1,6 +1,5 @@
 import { randomHex } from '@/modules/encryption/crypto';
-import { Config, AccountToScrapeConfig } from '@/originalBudgetTrackingApp/configManager/configManager';
-import defaultConfig from '@/originalBudgetTrackingApp/configManager/defaultConfig';
+import { AccountToScrapeConfig, Config, defaultConfig } from '@/originalBudgetTrackingApp';
 import { ActionTree, GetterTree, MutationTree } from 'vuex';
 
 type GlobalConfig = {

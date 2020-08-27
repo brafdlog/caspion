@@ -1,7 +1,7 @@
 import moment from 'moment';
-import { Transaction } from './bankScraper';
 import { getCategoryNameByTransactionDescription } from './categoryCalculationScript';
 import { EnrichedTransaction } from './commonTypes';
+import { Transaction } from './flow/scrape';
 
 export function enrichTransaction(transaction: Transaction, companyId: string, accountNumber: string): EnrichedTransaction {
   const hash = calculateTransactionHash(transaction, companyId, accountNumber);

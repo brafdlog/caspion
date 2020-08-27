@@ -1,5 +1,5 @@
+import { getFinancialAccountNumbers } from '@/originalBudgetTrackingApp/flow/scrape';
 import { getYnabAccountDetails } from './ynab';
-import { getFinancialAccountNumbers } from '../../index';
 
 async function printYnabAccountData() {
   const ynabAccountData = await getYnabAccountDetails();

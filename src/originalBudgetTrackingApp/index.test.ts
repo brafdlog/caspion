@@ -1,5 +1,5 @@
 import { TransactionStatuses, TransactionTypes } from '@brafdlog/israeli-bank-scrapers-core/lib/transactions';
-import { Transaction } from './bankScraper';
+import { Transaction } from './flow/scrape';
 import { calculateTransactionHash } from './transactions';
 
 const TRANSACTION_1: Transaction = {

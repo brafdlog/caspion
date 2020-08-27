@@ -1,8 +1,7 @@
-import { promisify } from 'util';
+import { decrypt, encrypt } from '@/modules/encryption/crypto';
 import fs from 'fs';
-import { CompanyTypes } from '@brafdlog/israeli-bank-scrapers-core';
-import { encrypt, decrypt } from '@/modules/encryption/crypto';
-
+import { promisify } from 'util';
+import { Config } from './configTypes';
 import configExample from './defaultConfig';
 
 const readFile = promisify(fs.readFile);
@@ -10,54 +9,6 @@ const writeFile = promisify(fs.writeFile);
 
 const CONFIG_FILE_NAME = 'config.encrypted';
 const LOCAL_CONFIG_FILE_PATH = CONFIG_FILE_NAME;
-
-export interface Config {
-  outputVendors: {
-    googleSheets?: GoogleSheetsConfig;
-    ynab?: YnabConfig;
-  };
-  scraping: {
-    numDaysBack: number;
-    showBrowser: boolean;
-    accountsToScrape: AccountToScrapeConfig[];
-  };
-  monitoring?: {
-    email: {
-      sendReport: boolean;
-      toEmailAddress?: string;
-      sendgridApiKey?: string;
-    }
-  };
-}
-
-export interface OutputVendorConfig {
-  active: boolean;
-}
-
-export interface GoogleSheetsConfig extends OutputVendorConfig {
-  options: {
-    credentialsFilePath: string;
-    sheetName: string;
-    spreadsheetId: string;
-  }
-}
-
-export interface YnabConfig extends OutputVendorConfig {
-  options: {
-    accessToken: string;
-    accountNumbersToYnabAccountIds: { [key: string]: string };
-    budgetId: string;
-    maxPayeeNameLength?: number;
-  };
-}
-
-export interface AccountToScrapeConfig {
-  id: string;
-  key: CompanyTypes;
-  name: string;
-  loginFields: Record<string, string>;
-  active?: boolean;
-}
 
 export async function getConfig(): Promise<Config> {
   let parsedConfig: Config;

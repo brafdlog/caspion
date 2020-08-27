@@ -1,8 +1,9 @@
-import _ from 'lodash';
-import * as ynab from 'ynab';
-import moment from 'moment/moment';
 import { EnrichedTransaction, OutputVendor, OutputVendorName } from '@/originalBudgetTrackingApp/commonTypes';
-import { Config, getConfig, YnabConfig } from '../../configManager/configManager';
+import { getConfig } from '@/originalBudgetTrackingApp/configManager/configManager';
+import { Config, YnabConfig } from '@/originalBudgetTrackingApp/configManager/configTypes';
+import _ from 'lodash';
+import moment from 'moment/moment';
+import * as ynab from 'ynab';
 
 const INITIAL_YNAB_ACCESS_TOKEN = 'AABB';
 const YNAB_DATE_FORMAT = 'YYYY-MM-DD';
