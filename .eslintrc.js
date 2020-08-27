@@ -69,12 +69,15 @@ module.exports = {
   overrides: [
     {
       files: [
-        '**/test/**/*.spec.{j,t}s?(x)',
-        '**/*.test.{j,t}s?(x)'
+        '**/test/**/*.spec.{j,t}s',
+        '**/*.test.{j,t}s'
       ],
       env: {
         jest: true,
       },
+      rules: {
+        'import/extensions': ['error', { js: 'never', vue: 'always', json: 'always' }]
+      }
     },
     {
       files: ['src/originalBudgetTrackingApp/**/*'],

@@ -1,4 +1,4 @@
-import { encryptObject, decryptObject } from 'modules/encryption/credentials.js';
+import { encryptObject, decryptObject } from '../../../src/modules/encryption/credentials';
 
 function isNotNullOrEmptyOrUndefined(value) {
   return value && value !== null && value !== '';
@@ -59,7 +59,7 @@ test('Should encrypt a complex object values', async () => {
     },
     strKey: 'strval',
   };
-  const encrypted = await encryptObject(original);
+  const encrypted: any = await encryptObject(original);
 
   // values - arrKey
   expect(isNotNullOrEmptyOrUndefined(encrypted.arrKey)).toBe(true);
@@ -82,7 +82,7 @@ test('Should encrypt a complex object values', async () => {
   // values - arrComplex[2] (Array)
   expect(isNotNullOrEmptyOrUndefined(encrypted.arrComplex[2])).toBe(true);
   expect(Array.isArray(encrypted.arrComplex[2])).toBe(true);
-  expect(encrypted.arrComplex[2]).toHaveLength(original.arrComplex[2].length);
+  expect(encrypted.arrComplex[2]).toHaveLength((original.arrComplex[2] as string[]).length);
   expect(encrypted.arrComplex[2]).not.toStrictEqual(original.arrComplex[2]);
 
   // values - objKey
