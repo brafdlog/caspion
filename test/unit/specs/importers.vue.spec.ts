@@ -1,8 +1,7 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils';
-import Vuex from 'vuex';
-
-import Importers from '../../../src/components/App/Importers';
-import AddImporter from '../../../src/components/App/Importers/AddImporter';
+import { createLocalVue, shallowMount, Wrapper } from '@vue/test-utils';
+import Vuex, { Store } from 'vuex';
+import Importers from '../../../src/components/App/Importers.vue';
+import AddImporter from '../../../src/components/App/Importers/AddImporter.vue';
 import { inputVendors } from '../../../src/originalBudgetTrackingApp';
 
 const localVue = createLocalVue();
@@ -10,8 +9,8 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 
 describe('Importers', () => {
-  let wrapper;
-  let store;
+  let wrapper: Wrapper<Vue>;
+  let store: Store<unknown>;
 
   beforeEach(() => {
     store = new Vuex.Store({

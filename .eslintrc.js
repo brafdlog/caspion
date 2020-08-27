@@ -75,6 +75,9 @@ module.exports = {
       env: {
         jest: true,
       },
+      rules: {
+        'import/extensions': ['error', { js: 'never', vue: 'always', json: 'always' }]
+      }
     },
     {
       files: ['src/originalBudgetTrackingApp/**/*'],

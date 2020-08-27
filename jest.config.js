@@ -15,7 +15,7 @@ module.exports = {
     '^keytar$': '<rootDir>/test/unit/mock/keytar.ts',
   },
   transform: {
-    '.*\\.(vue)$': 'vue-jest',
+    '^.*\\.vue$': 'vue-jest',
     '^.+\\.js$': 'babel-jest',
     '^.+\\.ts$': 'ts-jest',
   },
