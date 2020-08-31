@@ -48,7 +48,7 @@ module.exports = {
     // 'no-param-reassign': ['error', { ignorePropertyModificationsFor: ['state'] }],
     'no-param-reassign': 'off',
     'no-shadow': ['error', { allow: ['state'] }],
-    'import/extensions': ['error', { js: 'never', vue: 'never', json: 'always' }],
+    'import/extensions': ['off'],
     'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
     // allow debugger during development
     'no-debugger': productionError,
