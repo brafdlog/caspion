@@ -1,6 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import { testWithSpectron } from 'vue-cli-plugin-electron-builder';
+import {
+  Application, SpectronClient, SpectronWindow, StopServe
+} from '../type';
 import Interactions from '../utils/interactions';
 
 const screenshotsDir = './screenshots';
@@ -12,14 +15,14 @@ jest.setTimeout(100000);
 const skip = true;
 
 (skip ? describe.skip : describe)('Launch', () => {
-  let app;
-  let stopServe;
-  let browserWindow;
-  let client;
-  let interactions;
+  let app: Application;
+  let stopServe: StopServe;
+  let browserWindow: SpectronWindow;
+  let client: SpectronClient;
+  let interactions: Interactions;
 
   beforeAll(async () => {
-    let stdout;
+    let stdout: string;
     ({ app, stopServe, stdout } = await testWithSpectron());
 
     // eslint-disable-next-line no-console
@@ -73,9 +76,17 @@ const skip = true;
 
       const screenshotFile = path.join(screenshotsDir, `${global.lastTest.test.name.replace(/\s/g, '')}.png`);
       const imgBuffer = await browserWindow.capturePage();
-      fs.writeFileSync(screenshotFile, imgBuffer);
+      fs.writeFileSync(screenshotFile, imgBuffer.toBitmap());
     }
   });
 
   afterAll(async () => stopServe());
 });
+
+declare global {
+  namespace NodeJS {
+    interface Global {
+      lastTest: any;
+    }
+  }
+}
