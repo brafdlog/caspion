@@ -1,40 +1,22 @@
 <template>
   <div>
     <v-toolbar>
-      <v-toolbar-title>
-        Exporters
-      </v-toolbar-title>
+      <v-toolbar-title>Exporters</v-toolbar-title>
     </v-toolbar>
-    <component
-      :is="vendor.name"
-      v-for="vendor in vendors"
-      :key="vendor.name"
-      :vendor="vendor"
-    />
-    <!-- <exporter
-      v-for="vendor in vendors"
-      :key="vendor.name"
-      :vendor="vendor"
-    /> -->
+    <expansion-panel title="Json">
+      <json-exporter />
+    </expansion-panel>
   </div>
 </template>
 
-<script>
-import { outputVendors } from '@/originalBudgetTrackingApp';
-import json from './Exporters/JsonExporter';
+<script lang="ts">
+import Vue from 'vue';
+import JsonExporter from './Exporters/JsonExporter.vue';
+import ExpansionPanel from './Exporters/ExpansionPanel.vue';
 
-export default {
-  components: { json },
-  data() {
-    return {
-      accordionActiveItem: '',
-      statuses: {},
-    };
-  },
-  computed: {
-    vendors: () => outputVendors,
-  },
-};
+export default Vue.extend({
+  components: { ExpansionPanel, JsonExporter },
+});
 </script>
 
 <style scoped>

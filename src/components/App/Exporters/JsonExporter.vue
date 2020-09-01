@@ -1,76 +1,31 @@
 <template>
-  <v-expansion-panels>
-    <v-expansion-panel>
-      <v-expansion-panel-header disable-icon-rotate>
-        {{ vendor.displayName }}
-      </v-expansion-panel-header>
-      <v-expansion-panel-content>
-        <v-form
-          ref="form"
-          v-model="validated"
-        >
-          <form-field
-            v-for="(fieldProps, fieldName) in vendor.fields"
-            :key="fieldName"
-            v-bind="fieldProps"
-            :value="loadedExporter[fieldName]"
-            @input="updateExporter($event, fieldName)"
-          />
-          <v-btn
-            color="primary"
-            :disabled="disableSave"
-            @click="submitForm()"
-          >
-            Save
-          </v-btn>
-        </v-form>
-      </v-expansion-panel-content>
-    </v-expansion-panel>
-  </v-expansion-panels>
+  <v-form
+    ref="form"
+    v-model="validated"
+  >
+    <v-btn
+      color="primary"
+      :disabled="!readyToSave"
+      @click="submitForm()"
+    >
+      Save
+    </v-btn>
+  </v-form>
 </template>
 
-<script>
-import { GET_EXPORTER_GETTER, ADD_EXPORTER_ACTION } from '@/store/modules/Config';
+<script lang="ts">
+import Vue from 'vue';
+import { computed, ref } from '@vue/composition-api';
 
-export default {
+export default Vue.extend({
   name: 'JsonExporter',
-  props: {
-    vendor: {
-      type: Object,
-      required: true,
-    }
-  },
-  data() {
-    return {
-      exporter: {},
-      validated: true,
-      changed: false,
-    };
-  },
-  computed: {
-    loadedExporter() {
-      return this.$store.getters[GET_EXPORTER_GETTER](this.vendor.name);
-    },
-    disableSave() {
-      return !this.validated || !this.changed;
-    }
-  },
-  methods: {
-    updateExporter(value, fieldName) {
-      this.changed = true;
-      this.exporter[fieldName] = value;
-    },
-    submitForm() {
-      if (this.$refs.form.validate()) {
-        // TODO the arguments should be simple
-        console.log('{ name: this.vendor.name, ...this.loadedExporter, ...this.exporter } :>> ',
-          { name: this.vendor.name, ...this.loadedExporter, ...this.exporter });
-        this.$store.dispatch(ADD_EXPORTER_ACTION, { name: this.vendor.name, ...this.loadedExporter, ...this.exporter })
-          .then(() => { this.changed = false; });
-      }
-    },
+  
+  setup(_, { root }) {
+    const validated = ref(true)
+    const changed = ref(false)
+    const readyToSave = computed(() => validated && changed)
   }
-};
+});
 </script>
 
 <style scoped>
