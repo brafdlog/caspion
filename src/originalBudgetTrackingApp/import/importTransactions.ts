@@ -1,4 +1,5 @@
 import moment from 'moment';
+import _ from 'lodash';
 import { Config } from '@/originalBudgetTrackingApp/configManager/configManager';
 import { EnrichedTransaction } from '@/originalBudgetTrackingApp/commonTypes';
 import * as bankScraper from '@/originalBudgetTrackingApp/import/bankScraper';
@@ -29,6 +30,25 @@ export async function scrapeFinancialAccountsAndFetchTransactions(config: Config
     }
   }
   return companyIdToTransactions;
+}
+
+export async function getFinancialAccountNumbers() {
+  const config = await configManager.getConfig();
+
+  const startDate = moment()
+    .subtract(30, 'days')
+    .startOf('day')
+    .toDate();
+
+  console.log('Fetching data from financial institutions to determine the account numbers');
+  const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config, startDate);
+  const companyIdToAccountNumbers: Record<string, string[]> = {};
+  Object.keys(companyIdToTransactions).forEach((companyId) => {
+    let accountNumbers = companyIdToTransactions[companyId].map((transaction) => transaction.accountNumber);
+    accountNumbers = _.uniq(accountNumbers);
+    companyIdToAccountNumbers[companyId] = accountNumbers;
+  });
+  return companyIdToAccountNumbers;
 }
 
 async function fetchTransactions(companyId: AccountToScrapeConfig['key'], credentials: AccountToScrapeConfig['loginFields'], startDate: Date, config: Config) {
