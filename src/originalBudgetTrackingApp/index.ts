@@ -2,10 +2,10 @@ import _ from 'lodash';
 import moment from 'moment';
 import { scrapeFinancialAccountsAndFetchTransactions } from '@/originalBudgetTrackingApp/import/importTransactions';
 import * as bankScraper from './import/bankScraper';
-import * as ynab from './outputVendors/ynab/ynab';
+import * as ynab from './export/outputVendors/ynab/ynab';
 import { EnrichedTransaction } from './commonTypes';
 import * as configManager from './configManager/configManager';
-import outputVendors from './outputVendors';
+import outputVendors from './export/outputVendors';
 import { Config } from './configManager/configManager';
 
 export { outputVendors };

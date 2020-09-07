@@ -1,5 +1,5 @@
 import { getYnabAccountDetails } from './ynab';
-import { getFinancialAccountNumbers } from '../../index';
+import { getFinancialAccountNumbers } from '../../../index';
 
 async function printYnabAccountData() {
   const ynabAccountData = await getYnabAccountDetails();

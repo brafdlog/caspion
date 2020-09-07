@@ -1,6 +1,6 @@
 import moment from 'moment/moment';
 import { EnrichedTransaction, OutputVendor, OutputVendorName } from '@/originalBudgetTrackingApp/commonTypes';
-import { Config } from '../../configManager/configManager';
+import { Config } from '../../../configManager/configManager';
 import * as googleSheets from './googleSheetsInternalAPI';
 
 const GOOGLE_SHEETS_DATE_FORMAT = 'DD/MM/YYYY';
