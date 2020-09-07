@@ -2,7 +2,7 @@ import _ from 'lodash';
 import * as ynab from 'ynab';
 import moment from 'moment/moment';
 import { EnrichedTransaction, OutputVendor, OutputVendorName } from '@/originalBudgetTrackingApp/commonTypes';
-import { Config, getConfig, YnabConfig } from '../../../configManager/configManager';
+import { Config, YnabConfig } from '../../../configManager/configManager';
 
 const INITIAL_YNAB_ACCESS_TOKEN = 'AABB';
 const YNAB_DATE_FORMAT = 'YYYY-MM-DD';
@@ -29,15 +29,12 @@ export const ynabOutputVendor: OutputVendor = {
   exportTransactions: createTransactions
 };
 
-export async function init(outputVendorsConfig?: Config['outputVendors']) {
+export async function init(outputVendorsConfig: Config['outputVendors']) {
   if (ynabConfig && ynabAPI) {
     console.log('Ynab already initialized, skipping');
     return;
   }
 
-  if (!outputVendorsConfig) {
-    outputVendorsConfig = (await getConfig()).outputVendors;
-  }
   ynabConfig = outputVendorsConfig.ynab;
 
   if (!ynabConfig?.active) {
@@ -184,9 +181,9 @@ function verifyYnabAccessTokenWasDefined() {
   }
 }
 
-export async function getYnabAccountDetails(): Promise<YnabAccountDetails> {
+export async function getYnabAccountDetails(outputVendorsConfig: Config['outputVendors']): Promise<YnabAccountDetails> {
   if (!ynabAccountDetails) {
-    await init();
+    await init(outputVendorsConfig);
     const { budgets, accounts } = await getBudgetsAndAccountsData();
     const categoryNames = await getYnabCategories();
     ynabAccountDetails = {
