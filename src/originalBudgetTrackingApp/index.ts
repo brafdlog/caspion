@@ -21,7 +21,7 @@ export async function scrapeAndUpdateOutputVendors() {
 
   const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config.scraping, startDate);
   try {
-    const executionResult = await createTransactionsInExternalVendors(config, companyIdToTransactions, startDate);
+    const executionResult = await createTransactionsInExternalVendors(config.outputVendors, companyIdToTransactions, startDate);
     const resultToLog = `
     Results of job:
     ${JSON.stringify(executionResult, null, 2)}

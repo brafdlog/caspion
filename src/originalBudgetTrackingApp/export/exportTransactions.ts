@@ -3,16 +3,17 @@ import { EnrichedTransaction } from '@/originalBudgetTrackingApp/commonTypes';
 import _ from 'lodash';
 import outputVendors from '@/originalBudgetTrackingApp/export/outputVendors';
 
-export async function createTransactionsInExternalVendors(config: Config, companyIdToTransactions: Record<string, EnrichedTransaction[]>, startDate: Date) {
+// eslint-disable-next-line max-len
+export async function createTransactionsInExternalVendors(outputVendorsConfig: Config['outputVendors'], companyIdToTransactions: Record<string, EnrichedTransaction[]>, startDate: Date) {
   const executionResult = {};
   const allTransactions = _.flatten(Object.values(companyIdToTransactions));
 
   for (let j = 0; j < outputVendors.length; j++) {
     const outputVendor = outputVendors[j];
-    if (config.outputVendors[outputVendor.name]?.active) {
-      await outputVendor.init?.(config);
+    if (outputVendorsConfig[outputVendor.name]?.active) {
+      await outputVendor.init?.(outputVendorsConfig);
       console.log(`Start creating transactions in ${outputVendor.name}`);
-      const vendorResult = await outputVendor.exportTransactions(allTransactions, startDate, config);
+      const vendorResult = await outputVendor.exportTransactions(allTransactions, startDate, outputVendorsConfig);
       console.log(`Finished creating transactions in ${outputVendor.name}`);
       executionResult[outputVendor.name] = vendorResult;
     }

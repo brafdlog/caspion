@@ -29,16 +29,16 @@ export const ynabOutputVendor: OutputVendor = {
   exportTransactions: createTransactions
 };
 
-export async function init(config?: Config) {
+export async function init(outputVendorsConfig?: Config['outputVendors']) {
   if (ynabConfig && ynabAPI) {
     console.log('Ynab already initialized, skipping');
     return;
   }
 
-  if (!config) {
-    config = await getConfig();
+  if (!outputVendorsConfig) {
+    outputVendorsConfig = (await getConfig()).outputVendors;
   }
-  ynabConfig = config.outputVendors.ynab;
+  ynabConfig = outputVendorsConfig.ynab;
 
   if (!ynabConfig?.active) {
     console.log('Ynab not enabled, skipping');
