@@ -1,5 +1,5 @@
 import { Config } from './configManager/configManager';
-import { Transaction } from './bankScraper';
+import { Transaction } from './import/bankScraper';
 
 export interface EnrichedTransaction extends Transaction {
   accountNumber: string;

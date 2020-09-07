@@ -1,10 +1,10 @@
 import moment from 'moment';
 import { Config } from '@/originalBudgetTrackingApp/configManager/configManager';
 import { EnrichedTransaction } from '@/originalBudgetTrackingApp/commonTypes';
-import * as bankScraper from '@/originalBudgetTrackingApp/bankScraper';
+import * as bankScraper from '@/originalBudgetTrackingApp/import/bankScraper';
 import * as configManager from '@/originalBudgetTrackingApp/configManager/configManager';
-import { ScaperScrapingResult, Transaction } from '@/originalBudgetTrackingApp/bankScraper';
-import * as categoryCalculation from '@/originalBudgetTrackingApp/categoryCalculationScript';
+import { ScaperScrapingResult, Transaction } from '@/originalBudgetTrackingApp/import/bankScraper';
+import * as categoryCalculation from '@/originalBudgetTrackingApp/import/categoryCalculationScript';
 
 type AccountToScrapeConfig = configManager.AccountToScrapeConfig;
 
