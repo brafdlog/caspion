@@ -19,7 +19,7 @@ export async function scrapeAndUpdateOutputVendors() {
     .startOf('day')
     .toDate();
 
-  const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config, startDate);
+  const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config.scraping, startDate);
   try {
     const executionResult = await createTransactionsInExternalVendors(config, companyIdToTransactions, startDate);
     const resultToLog = `

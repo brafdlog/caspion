@@ -8,19 +8,20 @@ import { ScaperScrapingResult, Transaction } from '@/originalBudgetTrackingApp/i
 import * as categoryCalculation from '@/originalBudgetTrackingApp/import/categoryCalculationScript';
 
 type AccountToScrapeConfig = configManager.AccountToScrapeConfig;
+type ScrapingConfig = Config['scraping'];
 
 const TRANSACTION_STATUS_COMPLETED = 'completed';
 const DATE_FORMAT = 'DD/MM/YYYY';
 
-export async function scrapeFinancialAccountsAndFetchTransactions(config: Config, startDate: Date) {
+export async function scrapeFinancialAccountsAndFetchTransactions(scrapingConfig: ScrapingConfig, startDate: Date) {
   const companyIdToTransactions: Record<string, EnrichedTransaction[]> = {};
-  const accountsToScrape = config.scraping.accountsToScrape.filter((accountToScrape) => accountToScrape.active !== false);
+  const accountsToScrape = scrapingConfig.accountsToScrape.filter((accountToScrape) => accountToScrape.active !== false);
   for (let i = 0; i < accountsToScrape.length; i++) {
     const accountToScrape = accountsToScrape[i];
     const companyId = accountToScrape.key;
     try {
       console.log(`=================== Start fetching transactions for ${accountToScrape.name} ===================`);
-      const scrapeResult = await fetchTransactions(companyId, accountToScrape.loginFields, startDate, config);
+      const scrapeResult = await fetchTransactions(companyId, accountToScrape.loginFields, startDate, scrapingConfig);
       const transactions = await postProcessTransactions(accountToScrape, scrapeResult);
       companyIdToTransactions[companyId] = transactions;
       console.log(`=================== Finished fetching transactions for ${accountToScrape.name} ===================`);
@@ -51,13 +52,14 @@ export async function getFinancialAccountNumbers() {
   return companyIdToAccountNumbers;
 }
 
+// eslint-disable-next-line max-len
 async function fetchTransactions(companyId: AccountToScrapeConfig['key'], credentials: AccountToScrapeConfig['loginFields'], startDate: Date, config: Config) {
   console.log(`Start scraping ${companyId} from date: ${moment(startDate).format(DATE_FORMAT)}`);
   const scrapeResult = await bankScraper.scrape({
     companyId,
     credentials,
     startDate,
-    showBrowser: config.scraping.showBrowser,
+    showBrowser: scrapingConfig.showBrowser,
   });
   if (!scrapeResult.success) {
     console.error('Failed scraping ', companyId);
