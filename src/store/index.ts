@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import Config from './modules/Config';
+import Config from './modules/config';
 import configPersistPlugin from './plugins/persisted-config';
 
 Vue.use(Vuex);

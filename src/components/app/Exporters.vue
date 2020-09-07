@@ -15,7 +15,7 @@
 
 <script>
 import { outputVendors } from '@/originalBudgetTrackingApp';
-import Exporter from './Exporters/Exporter';
+import Exporter from './exporters/Exporter';
 
 export default {
   components: { Exporter },
