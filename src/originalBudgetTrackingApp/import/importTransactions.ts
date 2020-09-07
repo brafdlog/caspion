@@ -42,7 +42,7 @@ export async function getFinancialAccountNumbers() {
     .toDate();
 
   console.log('Fetching data from financial institutions to determine the account numbers');
-  const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config, startDate);
+  const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config.scraping, startDate);
   const companyIdToAccountNumbers: Record<string, string[]> = {};
   Object.keys(companyIdToTransactions).forEach((companyId) => {
     let accountNumbers = companyIdToTransactions[companyId].map((transaction) => transaction.accountNumber);
@@ -53,7 +53,7 @@ export async function getFinancialAccountNumbers() {
 }
 
 // eslint-disable-next-line max-len
-async function fetchTransactions(companyId: AccountToScrapeConfig['key'], credentials: AccountToScrapeConfig['loginFields'], startDate: Date, config: Config) {
+async function fetchTransactions(companyId: AccountToScrapeConfig['key'], credentials: AccountToScrapeConfig['loginFields'], startDate: Date, scrapingConfig: Config['scraping']) {
   console.log(`Start scraping ${companyId} from date: ${moment(startDate).format(DATE_FORMAT)}`);
   const scrapeResult = await bankScraper.scrape({
     companyId,
