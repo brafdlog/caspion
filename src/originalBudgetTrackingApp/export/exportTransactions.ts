@@ -3,8 +3,11 @@ import { EnrichedTransaction } from '@/originalBudgetTrackingApp/commonTypes';
 import _ from 'lodash';
 import outputVendors from '@/originalBudgetTrackingApp/export/outputVendors';
 
-// eslint-disable-next-line max-len
-export async function createTransactionsInExternalVendors(outputVendorsConfig: Config['outputVendors'], companyIdToTransactions: Record<string, EnrichedTransaction[]>, startDate: Date) {
+export async function createTransactionsInExternalVendors(
+  outputVendorsConfig: Config['outputVendors'],
+  companyIdToTransactions: Record<string, EnrichedTransaction[]>,
+  startDate: Date
+) {
   const executionResult = {};
   const allTransactions = _.flatten(Object.values(companyIdToTransactions));
 

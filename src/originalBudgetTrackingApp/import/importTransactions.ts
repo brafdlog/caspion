@@ -52,8 +52,11 @@ export async function getFinancialAccountNumbers() {
   return companyIdToAccountNumbers;
 }
 
-// eslint-disable-next-line max-len
-async function fetchTransactions(companyId: AccountToScrapeConfig['key'], credentials: AccountToScrapeConfig['loginFields'], startDate: Date, scrapingConfig: Config['scraping']) {
+async function fetchTransactions(
+  companyId: AccountToScrapeConfig['key'],
+  credentials: AccountToScrapeConfig['loginFields'],
+  startDate: Date, scrapingConfig: Config['scraping']
+) {
   console.log(`Start scraping ${companyId} from date: ${moment(startDate).format(DATE_FORMAT)}`);
   const scrapeResult = await bankScraper.scrape({
     companyId,
