@@ -1,8 +1,10 @@
+import { getConfig } from '@/originalBudgetTrackingApp/configManager/configManager';
 import { getYnabAccountDetails } from '@/originalBudgetTrackingApp/export/outputVendors/ynab/ynab';
 import { getFinancialAccountNumbers } from '@/originalBudgetTrackingApp/import/importTransactions';
 
 export async function printYnabAccountData() {
-  const ynabAccountData = await getYnabAccountDetails();
+  const config = await getConfig();
+  const ynabAccountData = await getYnabAccountDetails(config.outputVendors);
   const companyIdToAccountNumbers = await getFinancialAccountNumbers();
   console.log();
   console.log();

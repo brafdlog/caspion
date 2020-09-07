@@ -14,6 +14,6 @@ export enum OutputVendorName {
 
 export interface OutputVendor {
   name: OutputVendorName;
-  init?: (config: Config) => Promise<void>;
-  exportTransactions: (transactionsToCreate: EnrichedTransaction[], startDate: Date, config: Config) => Promise<any>;
+  init?: (outputVendorsConfig: Config['outputVendors']) => Promise<void>;
+  exportTransactions: (transactionsToCreate: EnrichedTransaction[], startDate: Date, outputVendorConfig: Config['outputVendors']) => Promise<any>;
 }
