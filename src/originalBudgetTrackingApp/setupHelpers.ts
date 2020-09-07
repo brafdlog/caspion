@@ -1,7 +1,7 @@
-import { getYnabAccountDetails } from './ynab';
-import { getFinancialAccountNumbers } from '../../index';
+import { getYnabAccountDetails } from '@/originalBudgetTrackingApp/export/outputVendors/ynab/ynab';
+import { getFinancialAccountNumbers } from '@/originalBudgetTrackingApp/import/importTransactions';
 
-async function printYnabAccountData() {
+export async function printYnabAccountData() {
   const ynabAccountData = await getYnabAccountDetails();
   const companyIdToAccountNumbers = await getFinancialAccountNumbers();
   console.log();
@@ -16,5 +16,3 @@ async function printYnabAccountData() {
   console.log(companyIdToAccountNumbers);
   console.log();
 }
-
-printYnabAccountData();

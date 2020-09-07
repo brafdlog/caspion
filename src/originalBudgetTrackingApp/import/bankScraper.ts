@@ -1,6 +1,6 @@
 import { createScraper, SCRAPERS } from '@brafdlog/israeli-bank-scrapers-core';
-import { AccountToScrapeConfig } from './configManager/configManager';
-import getChrome from '../modules/downloadChromium';
+import { AccountToScrapeConfig } from '../configManager/configManager';
+import getChrome from '../../modules/downloadChromium';
 
 export { Transaction } from '@brafdlog/israeli-bank-scrapers-core/lib/transactions';
 export { ScaperScrapingResult } from '@brafdlog/israeli-bank-scrapers-core/lib/scrapers/base-scraper';
