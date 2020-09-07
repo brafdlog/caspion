@@ -1,12 +1,11 @@
 import _ from 'lodash';
 import moment from 'moment';
 import { scrapeFinancialAccountsAndFetchTransactions } from '@/originalBudgetTrackingApp/import/importTransactions';
+import { createTransactionsInExternalVendors } from '@/originalBudgetTrackingApp/export/exportTransactions';
 import * as bankScraper from './import/bankScraper';
 import * as ynab from './export/outputVendors/ynab/ynab';
-import { EnrichedTransaction } from './commonTypes';
 import * as configManager from './configManager/configManager';
 import outputVendors from './export/outputVendors';
-import { Config } from './configManager/configManager';
 
 export { outputVendors };
 export { configManager };
@@ -36,26 +35,6 @@ export async function scrapeAndUpdateOutputVendors() {
     console.error(e);
     throw e;
   }
-}
-
-async function createTransactionsInExternalVendors(config: Config, companyIdToTransactions: Record<string, EnrichedTransaction[]>, startDate: Date) {
-  const executionResult = {};
-  const allTransactions = _.flatten(Object.values(companyIdToTransactions));
-
-  for (let j = 0; j < outputVendors.length; j++) {
-    const outputVendor = outputVendors[j];
-    if (config.outputVendors[outputVendor.name]?.active) {
-      await outputVendor.init?.(config);
-      console.log(`Start creating transactions in ${outputVendor.name}`);
-      const vendorResult = await outputVendor.exportTransactions(allTransactions, startDate, config);
-      console.log(`Finished creating transactions in ${outputVendor.name}`);
-      executionResult[outputVendor.name] = vendorResult;
-    }
-  }
-  if (!Object.keys(executionResult).length) {
-    throw new Error('You need to set at least one output vendor to be active');
-  }
-  return executionResult;
 }
 
 export async function getFinancialAccountNumbers() {
