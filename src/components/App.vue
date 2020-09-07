@@ -71,11 +71,11 @@
 
 <script>
 import { shell } from 'electron';
-import Importers from '@/components/App/Importers';
-import Exporters from '@/components/App/Exporters';
+import Importers from '@/components/app/Importers';
+import Exporters from '@/components/app/Exporters';
 import ProfileChip from '@/components/shared/ProfileChip';
-import ReportProblemDialog from './App/ReportProblemDialog';
-import MainContent from './App/MainContent';
+import ReportProblemDialog from './app/ReportProblemDialog';
+import MainContent from './app/MainContent';
 
 export default {
   name: 'App',
