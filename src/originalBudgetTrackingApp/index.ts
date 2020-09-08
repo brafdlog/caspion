@@ -1,17 +1,20 @@
-import moment from 'moment';
-import { scrapeFinancialAccountsAndFetchTransactions } from '@/originalBudgetTrackingApp/import/importTransactions';
 import { createTransactionsInExternalVendors } from '@/originalBudgetTrackingApp/export/exportTransactions';
-import * as bankScraper from './import/bankScraper';
+import { scrapeFinancialAccountsAndFetchTransactions } from '@/originalBudgetTrackingApp/import/importTransactions';
+import moment from 'moment';
+import { ScrapingEventEmitter } from './commonTypes';
 import * as configManager from './configManager/configManager';
+import EmptyEventEmitterAdapter from './eventEmitters/emptyEventEmitterAdapter';
 import outputVendors from './export/outputVendors';
+import * as bankScraper from './import/bankScraper';
 
 export { printYnabAccountData } from './setupHelpers';
-
 export { outputVendors };
 export { configManager };
+
 export const { inputVendors } = bankScraper;
 
-export async function scrapeAndUpdateOutputVendors() {
+export async function scrapeAndUpdateOutputVendors(optionalEventEmitter?: ScrapingEventEmitter) {
+  const eventEmitter = new EmptyEventEmitterAdapter(optionalEventEmitter);
   const config = await configManager.getConfig();
 
   const startDate = moment()
@@ -19,14 +22,11 @@ export async function scrapeAndUpdateOutputVendors() {
     .startOf('day')
     .toDate();
 
-  const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config.scraping, startDate);
+  eventEmitter.emit('status', `Starting to scrape from ${startDate} to today`);
+
+  const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config.scraping, startDate, eventEmitter);
   try {
-    const executionResult = await createTransactionsInExternalVendors(config.outputVendors, companyIdToTransactions, startDate);
-    const resultToLog = `
-    Results of job:
-    ${JSON.stringify(executionResult, null, 2)}
-  `;
-    console.log(resultToLog);
+    const executionResult = await createTransactionsInExternalVendors(config.outputVendors, companyIdToTransactions, startDate, eventEmitter);
 
     return executionResult;
   } catch (e) {

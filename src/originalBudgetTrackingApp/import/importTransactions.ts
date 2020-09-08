@@ -1,11 +1,12 @@
 import moment from 'moment';
 import _ from 'lodash';
 import { Config } from '@/originalBudgetTrackingApp/configManager/configManager';
-import { EnrichedTransaction } from '@/originalBudgetTrackingApp/commonTypes';
+import { EnrichedTransaction, ScrapingEventEmitter } from '@/originalBudgetTrackingApp/commonTypes';
 import * as bankScraper from '@/originalBudgetTrackingApp/import/bankScraper';
 import * as configManager from '@/originalBudgetTrackingApp/configManager/configManager';
 import { ScaperScrapingResult, Transaction } from '@/originalBudgetTrackingApp/import/bankScraper';
 import * as categoryCalculation from '@/originalBudgetTrackingApp/import/categoryCalculationScript';
+import EmptyEventEmitterAdapter from '../eventEmitters/emptyEventEmitterAdapter';
 
 type AccountToScrapeConfig = configManager.AccountToScrapeConfig;
 type ScrapingConfig = Config['scraping'];
@@ -13,27 +14,28 @@ type ScrapingConfig = Config['scraping'];
 const TRANSACTION_STATUS_COMPLETED = 'completed';
 const DATE_FORMAT = 'DD/MM/YYYY';
 
-export async function scrapeFinancialAccountsAndFetchTransactions(scrapingConfig: ScrapingConfig, startDate: Date) {
+export async function scrapeFinancialAccountsAndFetchTransactions(scrapingConfig: ScrapingConfig, startDate: Date, eventEmitter: ScrapingEventEmitter) {
   const companyIdToTransactions: Record<string, EnrichedTransaction[]> = {};
   const accountsToScrape = scrapingConfig.accountsToScrape.filter((accountToScrape) => accountToScrape.active !== false);
   for (let i = 0; i < accountsToScrape.length; i++) {
     const accountToScrape = accountsToScrape[i];
     const companyId = accountToScrape.key;
     try {
-      console.log(`=================== Start fetching transactions for ${accountToScrape.name} ===================`);
-      const scrapeResult = await fetchTransactions(companyId, accountToScrape.loginFields, startDate, scrapingConfig);
+      eventEmitter.emit('status', 'Start fetching transactions', { name: accountToScrape.name, date: moment(startDate).format(DATE_FORMAT) });
+      const scrapeResult = await fetchTransactions(companyId, accountToScrape.loginFields, startDate, scrapingConfig, eventEmitter);
       const transactions = await postProcessTransactions(accountToScrape, scrapeResult);
       companyIdToTransactions[companyId] = transactions;
-      console.log(`=================== Finished fetching transactions for ${accountToScrape.name} ===================`);
-    } catch (e) {
-      console.error(`Error fetching transactions for ${companyId}. Error: `, e);
-      throw e;
+      eventEmitter.emit('finish', { companyId, accountId: accountToScrape.id });
+    } catch (error) {
+      eventEmitter.emit('error', error.message, { companyId, error });
+      throw error;
     }
   }
   return companyIdToTransactions;
 }
 
-export async function getFinancialAccountNumbers() {
+export async function getFinancialAccountNumbers(optionalEventEmitter?: ScrapingEventEmitter) {
+  const eventEmitter = new EmptyEventEmitterAdapter(optionalEventEmitter);
   const config = await configManager.getConfig();
 
   const startDate = moment()
@@ -42,7 +44,7 @@ export async function getFinancialAccountNumbers() {
     .toDate();
 
   console.log('Fetching data from financial institutions to determine the account numbers');
-  const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config.scraping, startDate);
+  const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config.scraping, startDate, eventEmitter);
   const companyIdToAccountNumbers: Record<string, string[]> = {};
   Object.keys(companyIdToTransactions).forEach((companyId) => {
     let accountNumbers = companyIdToTransactions[companyId].map((transaction) => transaction.accountNumber);
@@ -55,7 +57,8 @@ export async function getFinancialAccountNumbers() {
 async function fetchTransactions(
   companyId: AccountToScrapeConfig['key'],
   credentials: AccountToScrapeConfig['loginFields'],
-  startDate: Date, scrapingConfig: Config['scraping']
+  startDate: Date, scrapingConfig: Config['scraping'],
+  eventEmitter: ScrapingEventEmitter
 ) {
   console.log(`Start scraping ${companyId} from date: ${moment(startDate).format(DATE_FORMAT)}`);
   const scrapeResult = await bankScraper.scrape({
@@ -63,13 +66,12 @@ async function fetchTransactions(
     credentials,
     startDate,
     showBrowser: scrapingConfig.showBrowser,
-  });
+  }, eventEmitter);
   if (!scrapeResult.success) {
-    console.error('Failed scraping ', companyId);
-    console.error(scrapeResult.errorMessage);
+    eventEmitter.emit('error', scrapeResult.errorMessage || 'Failed scraping', { companyId });
     throw new Error(scrapeResult.errorMessage);
   }
-  console.log('Finished scraping successfully');
+  eventEmitter.emit('finish', { companyId });
   return scrapeResult;
 }
 
