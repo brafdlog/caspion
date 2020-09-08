@@ -29,7 +29,7 @@ Vue.component('form-field', FormField);
 
 new Vue({
   router,
-  store,
+  store: store.original,
   vuetify,
 
   name: 'IsraeliBankScrapersDesktop',

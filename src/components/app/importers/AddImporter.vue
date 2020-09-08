@@ -47,8 +47,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { ADD_IMPORTER_ACTION } from '@/store/modules/config';
+import store from '@/store';
 
 function initData(importerProp) {
   const importerToAdd = { ...importerProp, loginFields: {} };
@@ -86,9 +85,7 @@ export default {
     resetForm() {
       Object.assign(this.$data, initData(this.importer));
     },
-    ...mapActions({
-      addImporter: ADD_IMPORTER_ACTION
-    })
+    addImporter: store.dispatch.Config.addImporter
   },
 };
 </script>
