@@ -25,7 +25,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { REMOVE_IMPORTER_ACTION } from '@/store/modules/Config';
+import { REMOVE_IMPORTER_ACTION } from '@/store/modules/config';
 import DeleteImporterDialog from './DeleteImporterDialog';
 
 export default {

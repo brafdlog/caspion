@@ -1,6 +1,4 @@
-const fakeKeytarValut = {
-  crypto: 'AAAAAA',
-};
+const fakeKeytarValut = {};
 export default {
   getPassword(_serviceName, accountName) {
     return Promise.resolve(fakeKeytarValut[accountName]);

@@ -70,6 +70,7 @@ jobs:
         GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
         GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NODE_OPTIONS: --max-old-space-size=4096
       run: |
         yarn
         yarn build --publish $PUBLISH_PARAM

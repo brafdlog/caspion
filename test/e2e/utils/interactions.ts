@@ -1,3 +1,4 @@
+import { SpectronClient } from '../type';
 import Element from './element';
 
 const CollapseAddImporter = 'aside[data-test="ToggleAddImporter"]';
@@ -5,15 +6,17 @@ const CollapseAddImporterButton = 'button[data-test="CollapseAddImporter"]';
 const AddScrapers = `${CollapseAddImporter} div:nth-of-type(1) [data-test]`;
 const DrawerLeftToggle = 'button[data-test="drawerLeftToggle"]';
 
-const wait = async (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const wait = async (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export default class Interactions {
-  constructor(client) {
+  client: SpectronClient
+
+  constructor(client: SpectronClient) {
     this.client = client;
   }
 
-  async click(json) {
-    const element = json.ELEMENT || json.value.ELEMENT;
+  async click(elem: WebdriverIO.Element) {
+    const element = elem.ELEMENT;
     return this.client.elementIdClick(element);
   }
 
@@ -23,11 +26,11 @@ export default class Interactions {
   }
 
   async getAddScrapers() {
-    return (await this.client.$$(AddScrapers))
-      .map((element) => new Element(this.client, element));
+    return Promise.all(this.client.$$(AddScrapers))
+      .then((elements) => elements.map(({ value }) => new Element(this.client, value)));
   }
 
-  async waitForAddScrapersVisible() {
+  waitForAddScrapersVisible() {
     return this.client.waitForVisible(AddScrapers, 1000);
   }
 
@@ -37,7 +40,7 @@ export default class Interactions {
   }
 
   async clickCollapseAddImporter() {
-    await this.client.$(CollapseAddImporterButton).then((json) => this.click(json));
+    await this.client.$(CollapseAddImporterButton).then((json) => this.click(json.value));
     return this.client.waitForVisible(`${AddScrapers}`, 1000);
   }
 }

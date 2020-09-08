@@ -40,7 +40,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapGetters, mapActions } from 'vuex';
-import { GLOBAL_CONFIG_GETTER, UPDATE_GLOBAL_CONFIG_ACTION } from '@/store/modules/Config';
+import { GLOBAL_CONFIG_GETTER, UPDATE_GLOBAL_CONFIG_ACTION } from '@/store/modules/config';
 import { VForm } from '@/types/vuetify';
 
 export default Vue.extend({

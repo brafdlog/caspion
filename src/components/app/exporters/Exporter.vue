@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { GET_EXPORTER_GETTER, ADD_EXPORTER_ACTION } from '@/store/modules/Config';
+import { GET_EXPORTER_GETTER, ADD_EXPORTER_ACTION } from '@/store/modules/config';
 
 export default {
   name: 'JsonExporter',
