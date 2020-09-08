@@ -11,8 +11,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import JsonExporter from './Exporters/JsonExporter.vue';
-import ExpansionPanel from './Exporters/ExpansionPanel.vue';
+import JsonExporter from './exporters/JsonExporter.vue';
+import ExpansionPanel from './exporters/ExpansionPanel.vue';
 
 export default Vue.extend({
   components: { ExpansionPanel, JsonExporter },

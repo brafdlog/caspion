@@ -80,11 +80,11 @@
 </template>
 
 <script>
-import { GET_IMPORTERS_GETTER } from '@/store/modules/Config';
+import { GET_IMPORTERS_GETTER } from '@/store/modules/config';
 import { mapGetters } from 'vuex';
 import { inputVendors } from '@/originalBudgetTrackingApp';
-import AddImporter from './Importers/AddImporter';
-import Importer from './Importers/Importer';
+import AddImporter from './importers/AddImporter';
+import Importer from './importers/Importer';
 
 export default {
   components: { AddImporter, Importer },
