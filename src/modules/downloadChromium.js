@@ -1,5 +1,5 @@
 import download from 'download-chromium';
-import { getPuppeteerConfig } from '@brafdlog/israeli-bank-scrapers-core';
+import { getPuppeteerConfig } from 'israeli-bank-scrapers-core';
 
 const revision = getPuppeteerConfig().chromiumRevision;
 

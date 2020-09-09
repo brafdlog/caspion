@@ -1,9 +1,9 @@
-import { createScraper, SCRAPERS } from '@brafdlog/israeli-bank-scrapers-core';
+import { createScraper, SCRAPERS } from 'israeli-bank-scrapers-core';
 import { AccountToScrapeConfig } from '../configManager/configManager';
 import getChrome from '../../modules/downloadChromium';
 
-export { Transaction } from '@brafdlog/israeli-bank-scrapers-core/lib/transactions';
-export { ScaperScrapingResult } from '@brafdlog/israeli-bank-scrapers-core/lib/scrapers/base-scraper';
+export { Transaction } from 'israeli-bank-scrapers-core/lib/transactions';
+export { ScaperScrapingResult } from 'israeli-bank-scrapers-core/lib/scrapers/base-scraper';
 
 export const inputVendors = Object.keys(SCRAPERS)
   .map((key) => ({
@@ -33,7 +33,9 @@ export async function scrape({
     combineInstallments: false, // if set to true, all installment transactions will be combine into the first one
     showBrowser, // shows the browser while scraping, good for debugging (default false)
     verbose: false, // include more debug info about in the output
-    executablePath: chromePath
+    executablePath: chromePath,
+    prepareBrowser: async (_browser) => {},
+    preparePage: async (_page) => {}
   };
   const scraper = createScraper(options);
   const scrapeResult = await scraper.scrape(credentials);

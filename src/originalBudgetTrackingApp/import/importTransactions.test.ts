@@ -1,4 +1,4 @@
-import { TransactionStatuses, TransactionTypes } from '@brafdlog/israeli-bank-scrapers-core/lib/transactions';
+import { TransactionStatuses, TransactionTypes } from 'israeli-bank-scrapers-core/lib/transactions';
 import { calculateTransactionHash } from './importTransactions';
 import { Transaction } from './bankScraper';
 

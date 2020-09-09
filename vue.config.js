@@ -28,8 +28,7 @@ module.exports = {
       // List native deps here if they don't work
       externals: [
         'keytar',
-        'israeli-bank-scrapers-core',
-        '@brafdlog/israeli-bank-scrapers-core'
+        'israeli-bank-scrapers-core'
       ],
       builderOptions: {
         productName: 'israeli-bank-scrapers-desktop',

@@ -1,6 +1,6 @@
 import { promisify } from 'util';
 import fs from 'fs';
-import { CompanyTypes } from '@brafdlog/israeli-bank-scrapers-core';
+import { CompanyTypes } from 'israeli-bank-scrapers-core';
 import { encrypt, decrypt } from '@/modules/encryption/crypto';
 
 import configExample from './defaultConfig';
