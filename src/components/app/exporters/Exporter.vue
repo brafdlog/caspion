@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { GET_EXPORTER_GETTER, ADD_EXPORTER_ACTION } from '@/store/modules/config';
+import store from '@/store';
 
 export default {
   name: 'JsonExporter',
@@ -49,7 +49,7 @@ export default {
   },
   computed: {
     loadedExporter() {
-      return this.$store.getters[GET_EXPORTER_GETTER](this.vendor.name);
+      return store.getters.Config.getExporter(this.vendor.name);
     },
     disableSave() {
       return !this.validated || !this.changed;
@@ -63,7 +63,7 @@ export default {
     submitForm() {
       if (this.$refs.form.validate()) {
         // TODO the arguments should be simple
-        this.$store.dispatch(ADD_EXPORTER_ACTION, { name: this.vendor.name, ...this.loadedExporter, ...this.exporter })
+        store.dispatch.Config.addExporter({ name: this.vendor.name, ...this.loadedExporter, ...this.exporter })
           .then(() => { this.changed = false; });
       }
     },

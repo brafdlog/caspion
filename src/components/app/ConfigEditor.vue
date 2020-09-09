@@ -39,9 +39,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapGetters, mapActions } from 'vuex';
-import { GLOBAL_CONFIG_GETTER, UPDATE_GLOBAL_CONFIG_ACTION } from '@/store/modules/config';
 import { VForm } from '@/types/vuetify';
+import store from '@/store';
 
 export default Vue.extend({
   name: 'ConfigEditor',
@@ -53,9 +52,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapGetters({
-      storeGlobalConfig: GLOBAL_CONFIG_GETTER
-    }),
+    storeGlobalConfig: () => store.getters.Config.globalConfig,
     readyToSave(): boolean {
       return this.validated && this.changed;
     },
@@ -69,16 +66,15 @@ export default Vue.extend({
   methods: {
     required: (value) => !!value || 'Required.',
     positive: (value: number) => value > 0 || 'Must be grater than 0',
-    ...mapActions({
-      updateGlobalConfig: UPDATE_GLOBAL_CONFIG_ACTION
-    }),
+    updateGlobalConfig: store.dispatch.Config.updateGlobalConfig,
     reset() {
       this.globalConfig = JSON.parse(JSON.stringify(this.storeGlobalConfig));
       this.changed = false;
     },
     submitForm() {
       if (this.form.validate()) {
-        this.updateGlobalConfig(this.globalConfig)
+        // TODO fix type in the next PR
+        this.updateGlobalConfig(this.globalConfig as any)
           .then(this.reset);
       }
     }

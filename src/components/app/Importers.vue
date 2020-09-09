@@ -80,9 +80,8 @@
 </template>
 
 <script>
-import { GET_IMPORTERS_GETTER } from '@/store/modules/config';
-import { mapGetters } from 'vuex';
 import { inputVendors } from '@/originalBudgetTrackingApp';
+import store from '@/store';
 import AddImporter from './importers/AddImporter';
 import Importer from './importers/Importer';
 
@@ -98,9 +97,7 @@ export default {
     importersToAdd() {
       return inputVendors;
     },
-    ...mapGetters({
-      getImporters: GET_IMPORTERS_GETTER
-    }),
+    getImporters: () => store.getters.Config.importersWithStatus
   },
   methods: {
     iconClass(success) {
