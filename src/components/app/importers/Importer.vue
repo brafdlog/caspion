@@ -24,8 +24,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { REMOVE_IMPORTER_ACTION } from '@/store/modules/config';
+import store from '@/store';
 import DeleteImporterDialog from './DeleteImporterDialog';
 
 export default {
@@ -47,12 +46,8 @@ export default {
   methods: {
     DeleteImporter() {
       this.deleteDialog = false;
-      this[REMOVE_IMPORTER_ACTION](this.importer.id);
+      store.dispatch.Config.removeImporter(this.importer.id);
     },
-    ...mapActions([
-      REMOVE_IMPORTER_ACTION,
-      'updateImporterStatus',
-    ]),
   },
 };
 </script>
