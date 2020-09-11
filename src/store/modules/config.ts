@@ -1,5 +1,5 @@
 import { randomHex } from '@/modules/encryption/crypto';
-import { AccountToScrapeConfig, Config } from '@/originalBudgetTrackingApp/configManager/configManager';
+import { AccountToScrapeConfig, Config, OutputVendorConfig } from '@/originalBudgetTrackingApp/configManager/configManager';
 import defaultConfig from '@/originalBudgetTrackingApp/configManager/defaultConfig';
 import { defineModule } from 'direct-vuex';
 
@@ -32,7 +32,7 @@ export default defineModule({
       });
       return importers;
     },
-    getExporter: (state) => (name: string) => state.outputVendors[name],
+    getExporter: (state) => (name: string): OutputVendorConfig => state.outputVendors[name],
     globalConfig: ({ scraping }): GlobalConfig => {
       const { numDaysBack, showBrowser } = scraping;
       return { numDaysBack, showBrowser };
