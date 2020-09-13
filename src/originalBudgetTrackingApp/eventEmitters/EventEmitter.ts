@@ -19,6 +19,10 @@ export enum EventNames {
   LOG = 'LOG'
 }
 
+interface ErrorEvent {
+  error: Error
+}
+
 interface BudgetTrackingEvent {
   message?: string;
 }
@@ -29,10 +33,6 @@ interface ImporterEvent extends BudgetTrackingEvent {
   companyKey: AccountToScrapeConfig['key']
 }
 
-interface ErrorEvent {
-  error: Error
-}
-
 interface ImporterErrorEvent extends ImporterEvent, ErrorEvent {
 }
 
@@ -40,23 +40,36 @@ interface ImporterEndEvent extends ImporterEvent {
  transactions: EnrichedTransaction[]
 }
 
+interface ExporterEvent extends BudgetTrackingEvent {
+  name: string
+  allTransactions: EnrichedTransaction[]
+}
+
+interface ExporterErrorEvent extends ExporterEvent, ErrorEvent {
+
+}
+
+interface ImportProcessStartEvent extends BudgetTrackingEvent {
+  startDate: Date
+}
+
 type EventDataMap = {
-  [EventNames.IMPORT_PROCESS_START]: { startDate: Date, message: string }
+  [EventNames.IMPORT_PROCESS_START]: ImportProcessStartEvent
   [EventNames.IMPORTER_START]: ImporterEvent
   [EventNames.IMPORTER_PROGRESS]: ImporterEvent
   [EventNames.IMPORTER_ERROR]: ImporterErrorEvent
   [EventNames.IMPORTER_END]: ImporterEndEvent
-  [EventNames.IMPORT_PROCESS_END]: { message: string }
-  [EventNames.EXPORT_PROCESS_START]: { message: string }
-  [EventNames.EXPORTER_START]: { message: string }
-  [EventNames.EXPORTER_PROGRESS]: { message: string }
-  [EventNames.EXPORTER_ERROR]: { message: string }
-  [EventNames.EXPORTER_END]: { message: string }
+  [EventNames.IMPORT_PROCESS_END]: { }
+  [EventNames.EXPORT_PROCESS_START]: { }
+  [EventNames.EXPORTER_START]: ExporterEvent
+  [EventNames.EXPORTER_PROGRESS]: ExporterEvent
+  [EventNames.EXPORTER_ERROR]: ExporterErrorEvent
+  [EventNames.EXPORTER_END]: ExporterEvent
   [EventNames.GENERAL_ERROR]: ErrorEvent
-  [EventNames.LOG]: { message: string }
+  [EventNames.LOG]: BudgetTrackingEvent
 };
 
-type EmptyEvents = EventNames.IMPORT_PROCESS_START | EventNames.IMPORT_PROCESS_END;
+type EmptyEvents = EventNames.IMPORT_PROCESS_START | EventNames.IMPORT_PROCESS_END | EventNames.EXPORT_PROCESS_START | EventNames.EXPORT_PROCESS_END;
 
 export class BudgetTrackingEventEmitter extends Emittery.Typed<EventDataMap, EmptyEvents> {
 
