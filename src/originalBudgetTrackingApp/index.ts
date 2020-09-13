@@ -1,9 +1,8 @@
 import { createTransactionsInExternalVendors } from '@/originalBudgetTrackingApp/export/exportTransactions';
 import { scrapeFinancialAccountsAndFetchTransactions } from '@/originalBudgetTrackingApp/import/importTransactions';
 import moment from 'moment';
-import { ScrapingEventEmitter } from './commonTypes';
 import * as configManager from './configManager/configManager';
-import EmptyEventEmitterAdapter from './eventEmitters/emptyEventEmitterAdapter';
+import { BudgetTrackingEventEmitter, EventNames } from './eventEmitters/EventEmitter';
 import outputVendors from './export/outputVendors';
 import * as bankScraper from './import/bankScraper';
 
@@ -13,8 +12,8 @@ export { configManager };
 
 export const { inputVendors } = bankScraper;
 
-export async function scrapeAndUpdateOutputVendors(optionalEventEmitter?: ScrapingEventEmitter) {
-  const eventEmitter = new EmptyEventEmitterAdapter(optionalEventEmitter);
+export async function scrapeAndUpdateOutputVendors(optionalEventEmitter?: BudgetTrackingEventEmitter) {
+  const eventEmitter = optionalEventEmitter || new BudgetTrackingEventEmitter();
   const config = await configManager.getConfig();
 
   const startDate = moment()
@@ -22,7 +21,7 @@ export async function scrapeAndUpdateOutputVendors(optionalEventEmitter?: Scrapi
     .startOf('day')
     .toDate();
 
-  eventEmitter.emit('status', `Starting to scrape from ${startDate} to today`);
+  await eventEmitter.emit(EventNames.IMPORT_PROCESS_START, { startDate, message: `Starting to scrape from ${startDate} to today` });
 
   const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config.scraping, startDate, eventEmitter);
   try {
@@ -30,7 +29,7 @@ export async function scrapeAndUpdateOutputVendors(optionalEventEmitter?: Scrapi
 
     return executionResult;
   } catch (e) {
-    eventEmitter.emit('error', e.message, e);
+    await eventEmitter.emit(EventNames.GENERAL_ERROR, { error: e });
     throw e;
   }
 }
