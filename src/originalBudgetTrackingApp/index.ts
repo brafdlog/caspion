@@ -3,6 +3,7 @@ import { scrapeFinancialAccountsAndFetchTransactions } from '@/originalBudgetTra
 import moment from 'moment';
 import * as configManager from './configManager/configManager';
 import { BudgetTrackingEventEmitter, EventNames } from './eventEmitters/EventEmitter';
+import { buildConsoleEmitter } from './eventEmitters/consoleEmitter';
 import outputVendors from './export/outputVendors';
 import * as bankScraper from './import/bankScraper';
 
@@ -13,7 +14,7 @@ export { configManager };
 export const { inputVendors } = bankScraper;
 
 export async function scrapeAndUpdateOutputVendors(optionalEventEmitter?: BudgetTrackingEventEmitter) {
-  const eventEmitter = optionalEventEmitter || new BudgetTrackingEventEmitter();
+  const eventEmitter = optionalEventEmitter || buildConsoleEmitter();
   const config = await configManager.getConfig();
 
   const startDate = moment()
