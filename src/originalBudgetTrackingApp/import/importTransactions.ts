@@ -51,7 +51,6 @@ export async function getFinancialAccountNumbers() {
     .startOf('day')
     .toDate();
 
-  console.log('Fetching data from financial institutions to determine the account numbers');
   const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config.scraping, startDate, eventEmitter);
   const companyIdToAccountNumbers: Record<string, string[]> = {};
   Object.keys(companyIdToTransactions).forEach((companyId) => {
