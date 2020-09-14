@@ -67,7 +67,7 @@ async function fetchTransactions(
   startDate: Date, scrapingConfig: Config['scraping'],
   eventEmitter: BudgetTrackingEventEmitter
 ) {
-  const emitImporterProgressEvent = async (message: string) => {
+  const emitImporterProgressEvent = async (eventCompanyId: string, message: string) => {
     await eventEmitter.emit(EventNames.IMPORTER_PROGRESS, buildImporterEvent(accountToScrapeConfig, { message }));
   };
 

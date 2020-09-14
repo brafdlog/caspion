@@ -18,9 +18,11 @@ interface ScrapeParameters {
   showBrowser?: boolean
 }
 
+type EmitProgressEventFunction = (eventCompanyId: string, message: string) => Promise<void>;
+
 export async function scrape({
   companyId, credentials, startDate, showBrowser = false
-}: ScrapeParameters, emitProgressEvent: (message: string) => Promise<void>) {
+}: ScrapeParameters, emitProgressEvent: EmitProgressEventFunction) {
   if (!credentials || (!credentials.username && !credentials.num && !credentials.id) || !credentials.password) {
     throw new Error(`Missing credentials for scraper. CompanyId: ${companyId}`);
   }
@@ -36,7 +38,9 @@ export async function scrape({
     executablePath: chromePath
   };
   const scraper = createScraper(options);
-  scraper.onProgress(emitProgressEvent);
+  scraper.onProgress((eventCompanyId: string, payload: { type: string }) => {
+    emitProgressEvent(companyId, payload.type);
+  });
   const scrapeResult = await scraper.scrape(credentials);
   return scrapeResult;
 }
