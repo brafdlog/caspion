@@ -1,7 +1,10 @@
 import _ from 'lodash';
 import * as ynab from 'ynab';
 import moment from 'moment/moment';
-import { EnrichedTransaction, OutputVendor, OutputVendorName } from '@/originalBudgetTrackingApp/commonTypes';
+import {
+  EnrichedTransaction, OutputVendor, OutputVendorName, ExportTransactionsFunction
+} from '@/originalBudgetTrackingApp/commonTypes';
+import { EventPublisher, EventNames } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
 import { Config, YnabConfig } from '../../../configManager/configManager';
 
 const INITIAL_YNAB_ACCESS_TOKEN = 'AABB';
@@ -23,29 +26,21 @@ let ynabConfig: YnabConfig | undefined;
 let ynabAPI: ynab.API | undefined;
 let ynabAccountDetails: YnabAccountDetails | undefined;
 
-export const ynabOutputVendor: OutputVendor = {
-  name: OutputVendorName.YNAB,
-  init,
-  exportTransactions: createTransactions
-};
-
 export async function init(outputVendorsConfig: Config['outputVendors']) {
   if (ynabConfig && ynabAPI) {
-    console.log('Ynab already initialized, skipping');
     return;
   }
 
   ynabConfig = outputVendorsConfig.ynab;
 
   if (!ynabConfig?.active) {
-    console.log('Ynab not enabled, skipping');
     return;
   }
   verifyYnabAccessTokenWasDefined();
   ynabAPI = new ynab.API(ynabConfig.options.accessToken);
 }
 
-export async function createTransactions(transactionsToCreate: EnrichedTransaction[], startDate: Date) {
+const createTransactions: ExportTransactionsFunction = async ({ transactionsToCreate, startDate }, eventPublisher) => {
   if (!ynabConfig) {
     throw new Error('Must call init before using ynab functions');
   }
@@ -57,20 +52,20 @@ export async function createTransactions(transactionsToCreate: EnrichedTransacti
   // Filter out transactions that are in the future
   transactionsThatDontExistInYnab = transactionsThatDontExistInYnab.filter((transaction) => moment(transaction.date, YNAB_DATE_FORMAT).isBefore(NOW));
   if (!transactionsThatDontExistInYnab.length) {
-    console.log('All transactions already exist in ynab. Doing nothing.');
+    await emitProgressEvent(eventPublisher, transactionsToCreate, 'All transactions already exist in ynab. Doing nothing.');
     return null;
   }
-  console.log('Creating the following transactions in ynab: ', transactionsThatDontExistInYnab);
+  await emitProgressEvent(eventPublisher, transactionsToCreate, `Creating ${transactionsThatDontExistInYnab.length} transactions in ynab`);
   try {
     const transactionCreationResult = await ynabAPI!.transactions.createTransactions(ynabConfig.options.budgetId, {
       transactions: transactionsThatDontExistInYnab
     });
     return transactionCreationResult;
   } catch (e) {
-    console.error(e);
+    await eventPublisher.emit(EventNames.EXPORTER_ERROR, { name: ynabOutputVendor.name, allTransactions: transactionsToCreate, error: e });
     throw e;
   }
-}
+};
 
 function getTransactions(startDate: Date): Promise<ynab.TransactionsResponse> {
   return ynabAPI!.transactions.getTransactions(ynabConfig!.options.budgetId, moment(startDate).format(YNAB_DATE_FORMAT));
@@ -114,7 +109,6 @@ function getYnabCategoryIdFromCategoryName(categoryName?: string) {
   const categoryToReturn = categoriesMap.get(categoryName);
   if (!categoryToReturn) {
     const errorMessage = `No category for name ${categoryName}`;
-    console.error(errorMessage);
     throw new Error(errorMessage);
   }
   return categoryToReturn && categoryToReturn.id;
@@ -221,3 +215,13 @@ async function getYnabCategories() {
   const categoryNames = categories.map((category) => category.name);
   return categoryNames;
 }
+
+async function emitProgressEvent(eventPublisher: EventPublisher, allTransactions: EnrichedTransaction[], message: string) {
+  await eventPublisher.emit(EventNames.EXPORTER_PROGRESS, { name: ynabOutputVendor.name, allTransactions, message });
+}
+
+export const ynabOutputVendor: OutputVendor = {
+  name: OutputVendorName.YNAB,
+  init,
+  exportTransactions: createTransactions
+};

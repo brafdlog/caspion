@@ -86,7 +86,7 @@ thumbs.db
 client_secret.json
 
 src/originalBudgetTrackingApp/mockData
-src/originalBudgetTrackingApp/import/categoryCalculationScript.ts
+categoryCalculationScript.ts
 config.encrypted
 googleApiToken.json
 *.map
