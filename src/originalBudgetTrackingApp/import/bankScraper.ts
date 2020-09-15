@@ -27,7 +27,7 @@ export async function scrape({
     throw new Error(`Missing credentials for scraper. CompanyId: ${companyId}`);
   }
 
-  const chromePath = await getChrome(undefined, console.log);
+  const chromePath = await getChrome(undefined);
 
   const options = {
     companyId, // mandatory; one of 'hapoalim', 'discount', 'otsarHahayal', 'leumiCard', 'isracard', 'amex'
