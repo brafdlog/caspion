@@ -2,7 +2,7 @@ import _ from 'lodash';
 import * as ynab from 'ynab';
 import moment from 'moment/moment';
 import {
-  EnrichedTransaction, OutputVendor, OutputVendorName, ExportTransactionsParams
+  EnrichedTransaction, OutputVendor, OutputVendorName, ExportTransactionsFunction
 } from '@/originalBudgetTrackingApp/commonTypes';
 import { BudgetTrackingEventEmitter, EventNames } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
 import { Config, YnabConfig } from '../../../configManager/configManager';
@@ -26,12 +26,6 @@ let ynabConfig: YnabConfig | undefined;
 let ynabAPI: ynab.API | undefined;
 let ynabAccountDetails: YnabAccountDetails | undefined;
 
-export const ynabOutputVendor: OutputVendor = {
-  name: OutputVendorName.YNAB,
-  init,
-  exportTransactions: createTransactions
-};
-
 export async function init(outputVendorsConfig: Config['outputVendors']) {
   if (ynabConfig && ynabAPI) {
     return;
@@ -46,7 +40,7 @@ export async function init(outputVendorsConfig: Config['outputVendors']) {
   ynabAPI = new ynab.API(ynabConfig.options.accessToken);
 }
 
-export async function createTransactions({ transactionsToCreate, startDate, eventEmitter }: ExportTransactionsParams) {
+const createTransactions: ExportTransactionsFunction = async ({ transactionsToCreate, startDate }, eventEmitter) => {
   if (!ynabConfig) {
     throw new Error('Must call init before using ynab functions');
   }
@@ -71,7 +65,7 @@ export async function createTransactions({ transactionsToCreate, startDate, even
     await eventEmitter.emit(EventNames.EXPORTER_ERROR, { name: ynabOutputVendor.name, allTransactions: transactionsToCreate, error: e });
     throw e;
   }
-}
+};
 
 function getTransactions(startDate: Date): Promise<ynab.TransactionsResponse> {
   return ynabAPI!.transactions.getTransactions(ynabConfig!.options.budgetId, moment(startDate).format(YNAB_DATE_FORMAT));
@@ -225,3 +219,9 @@ async function getYnabCategories() {
 async function emitProgressEvent(eventEmitter: BudgetTrackingEventEmitter, allTransactions: EnrichedTransaction[], message: string) {
   await eventEmitter.emit(EventNames.EXPORTER_PROGRESS, { name: ynabOutputVendor.name, allTransactions, message });
 }
+
+export const ynabOutputVendor: OutputVendor = {
+  name: OutputVendorName.YNAB,
+  init,
+  exportTransactions: createTransactions
+};

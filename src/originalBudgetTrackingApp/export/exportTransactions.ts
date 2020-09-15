@@ -22,8 +22,8 @@ export async function createTransactionsInExternalVendors(
       await eventEmitter.emit(EventNames.EXPORTER_START, baseExporterEventData);
       try {
         const vendorResult = await outputVendor.exportTransactions({
-          transactionsToCreate: allTransactions, startDate, outputVendorsConfig, eventEmitter
-        });
+          transactionsToCreate: allTransactions, startDate, outputVendorsConfig
+        }, eventEmitter);
         await eventEmitter.emit(EventNames.EXPORTER_END, baseExporterEventData);
         executionResult[outputVendor.name] = vendorResult;
       } catch (e) {

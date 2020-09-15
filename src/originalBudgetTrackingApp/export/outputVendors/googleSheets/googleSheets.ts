@@ -1,18 +1,16 @@
 import moment from 'moment/moment';
 import {
-  EnrichedTransaction, ExportTransactionsParams, OutputVendor, OutputVendorName
+  EnrichedTransaction, OutputVendor, OutputVendorName, ExportTransactionsFunction
 } from '@/originalBudgetTrackingApp/commonTypes';
 import { BudgetTrackingEventEmitter, EventNames } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
 import * as googleSheets from './googleSheetsInternalAPI';
 
 const GOOGLE_SHEETS_DATE_FORMAT = 'DD/MM/YYYY';
 
-export const googleSheetsOutputVendor: OutputVendor = {
-  name: OutputVendorName.GOOGLE_SHEETS,
-  exportTransactions: createTransactionsInGoogleSheets,
-};
-
-export async function createTransactionsInGoogleSheets({ transactionsToCreate: transactions, outputVendorsConfig, eventEmitter }: ExportTransactionsParams) {
+const createTransactionsInGoogleSheets: ExportTransactionsFunction = async (
+  { transactionsToCreate: transactions, outputVendorsConfig },
+  eventEmitter
+) => {
   const { spreadsheetId, sheetName, credentialsFilePath } = outputVendorsConfig.googleSheets!.options;
   const hashesAlreadyExistingInGoogleSheets = await googleSheets.getExistingHashes({ spreadsheetId, sheetName, credentialsFilePath });
   const transactionsToCreate = transactions.filter((transaction) => !hashesAlreadyExistingInGoogleSheets.includes(transaction.hash));
@@ -39,8 +37,13 @@ export async function createTransactionsInGoogleSheets({ transactionsToCreate: t
     credentialsFilePath
   });
   return spreadsheetAppendResult.data;
-}
+};
 
 async function emitProgressEvent(eventEmitter: BudgetTrackingEventEmitter, allTransactions: EnrichedTransaction[], message: string) {
   await eventEmitter.emit(EventNames.EXPORTER_PROGRESS, { name: googleSheetsOutputVendor.name, allTransactions, message });
 }
+
+export const googleSheetsOutputVendor: OutputVendor = {
+  name: OutputVendorName.GOOGLE_SHEETS,
+  exportTransactions: createTransactionsInGoogleSheets,
+};

@@ -17,13 +17,15 @@ export type ExportTransactionsParams = {
   transactionsToCreate: EnrichedTransaction[];
   startDate: Date;
   outputVendorsConfig: Config['outputVendors'];
-  eventEmitter: BudgetTrackingEventEmitter
 }
+
+export type ExportTransactionsFunction = (
+  exportTransactionsParams: ExportTransactionsParams,
+  eventEmitter: BudgetTrackingEventEmitter
+) => Promise<any>;
 
 export interface OutputVendor {
   name: OutputVendorName;
   init?: (outputVendorsConfig: Config['outputVendors']) => Promise<void>;
-  exportTransactions: ({
-    transactionsToCreate, startDate, outputVendorsConfig, eventEmitter
-  }: ExportTransactionsParams) => Promise<any>;
+  exportTransactions: ExportTransactionsFunction;
 }
