@@ -10,8 +10,7 @@ const DEFAULT_CONFIG: Config = {
     json: {
       active: true,
       options: {
-        path: '',
-        fileName: '../transaction.json'
+        filePath: '../transaction.json'
       }
     },
     ynab: {

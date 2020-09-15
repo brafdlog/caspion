@@ -6,13 +6,12 @@
     <v-checkbox
       v-model="exporter.active"
       label="Active"
+      hide-details="auto"
       @change="changed = true"
     />
-    <v-file-input
-      v-model="exportFile"
-      label="File"
-      hint="Select *.json file"
-      accept=".json"
+    <v-text-field
+      v-model="exporter.options.filePath"
+      hint="JSON filr path to save"
       @change="changed = true"
     />
     <v-btn
@@ -31,7 +30,6 @@ import { computed, ref, reactive } from '@vue/composition-api';
 import store from '@/store';
 import { JsonConfig } from '@/originalBudgetTrackingApp/configManager/configManager';
 import { VForm } from '@/types/vuetify';
-import { filenameToFile } from '@/composite/refs';
 
 export default Vue.extend({
   name: 'JsonExporter',
@@ -40,20 +38,19 @@ export default Vue.extend({
     const vForm = ref<VForm>();
 
     const exporter = reactive(JSON.parse(JSON.stringify(store.getters.Config.getExporter('json'))) as JsonConfig);
-    const exportFile = filenameToFile(exporter.options.fileName);
 
     const validated = ref(true);
     const changed = ref(false);
     const readyToSave = computed(() => validated && changed);
     const submit = () => {
       if (vForm.value?.validate()) {
-        store.dispatch.Config.addExporter(exporter)
+        store.dispatch.Config.updateExporter({ name: 'json', exporter })
           .then(() => { changed.value = false; });
       }
     };
 
     return {
-      validated, changed, readyToSave, submit, exporter, exportFile, vForm
+      validated, changed, readyToSave, submit, exporter, vForm
     };
   }
 });

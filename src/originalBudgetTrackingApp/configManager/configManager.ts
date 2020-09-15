@@ -31,18 +31,21 @@ export interface Config {
   };
 }
 
-export interface JsonConfig {
-  active: boolean;
-  options: {
-    fileName: string;
-    path:string;
-  }
-}
-export interface OutputVendorConfig {
+export type OutputVendorsNames = keyof Config['outputVendors']
+export type OutputVendorsConfigs = Exclude<Config['outputVendors'][OutputVendorsNames], undefined>
+export type OutputVendorsConfig<T extends OutputVendorsNames> = Config['outputVendors'][T]
+
+interface OutputVendorConfigBase {
   active: boolean;
 }
 
-export interface GoogleSheetsConfig extends OutputVendorConfig {
+export interface JsonConfig extends OutputVendorConfigBase {
+  options: {
+    filePath: string;
+  }
+}
+
+export interface GoogleSheetsConfig extends OutputVendorConfigBase {
   options: {
     credentialsFilePath: string;
     sheetName: string;
@@ -50,7 +53,7 @@ export interface GoogleSheetsConfig extends OutputVendorConfig {
   }
 }
 
-export interface YnabConfig extends OutputVendorConfig {
+export interface YnabConfig extends OutputVendorConfigBase {
   options: {
     accessToken: string;
     accountNumbersToYnabAccountIds: { [key: string]: string };
