@@ -1,5 +1,8 @@
 # Automated budget tracking
 
+![Build/Release](https://github.com/brafdlog/budget-tracking/workflows/Build/Release/badge.svg?branch=master&event=push)
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/brafdlog/budget-tracking.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/brafdlog/budget-tracking/context:javascript)
+
 Many people track their expenses with spreadsheets or with budgeting apps (like [YNAB](https://ynab.com/referral/?ref=Z5wPbP0cYTWjdTQj&utm_source=customer_referral)).
 
 The most annoying part of this process is transferring the data from the banks or credit cards to the budgeting tool you use. It usually requires you to go to the website of each one of your banks and credit cards, and manually copy the data to your budgeting tool.
@@ -12,9 +15,7 @@ Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israel
 
 
 >
-> We have decided to merge the [israeli-bank-scrapers-desktop](https://github.com/baruchiro/israeli-bank-scrapers-desktop) project into this repository, and work together on the same project. 
->
-> The merge is in progress in the `unifyRepos` branch in this [PR](https://github.com/brafdlog/budget-tracking/pull/50)
+> We have decided to merge the [israeli-bank-scrapers-desktop](https://github.com/brafdlog/budget-tracking) project into this repository, and work together on the same project. 
 >  
 
 ### What is currently supported:
@@ -23,8 +24,7 @@ Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israel
 - A configuration for automatically classifying transactions to categories according to predefined patterns
 - Creating transactions in YNAB automatically using YNAB's api
 - Initial implementation of creating transactions in a google spreadsheet of your choice
-- A very basic UI for configuration
-- Most of the configuration is currently in an encrypted JSON file and options that are not available in the ui can be changed by updating the JSON manually.
+- A basic UI for configuration
 
 ## Initial setup
 
