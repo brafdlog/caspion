@@ -55,7 +55,7 @@
       <v-btn
         text
         small
-        @click="() => openExternal('https://github.com/baruchiro/israeli-bank-scrapers-desktop')"
+        @click="() => openExternal('https://github.com/brafdlog/budget-tracking')"
       >
         <span class="mr-2">Open in Github</span>
         <v-icon>mdi-open-in-new</v-icon>

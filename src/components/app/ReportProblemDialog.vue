@@ -107,7 +107,7 @@ ${detailes}` : '';
 ${log}
 \`\`\`` : '';
 
-  return 'https://github.com/baruchiro/israeli-bank-scrapers-desktop/issues/new?'
+  return 'https://github.com/brafdlog/budget-tracking/issues/new?'
           + `title=${encodeURIComponent(title)}`
           + `&body=${encodeURIComponent(formattedDetailes)}${encodeURIComponent(formattedLog)}`;
 };

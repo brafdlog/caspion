@@ -32,8 +32,8 @@ module.exports = {
         '@brafdlog/israeli-bank-scrapers-core'
       ],
       builderOptions: {
-        productName: 'israeli-bank-scrapers-desktop',
-        appId: 'com.electron.israeli-bank-scrapers-desktop',
+        productName: 'budget-tracking',
+        appId: 'com.electron.budget-tracking',
         dmg: {
           contents: [
             {

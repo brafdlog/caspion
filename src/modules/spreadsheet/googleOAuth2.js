@@ -3,7 +3,7 @@ import { saveIntoAccount, getFromAccount } from '@/modules/encryption/keytar';
 import ElectronGoogleOAuth2 from '@getstation/electron-google-oauth2';
 
 const keytarAccount = 'googleOauth2Token';
-const successRedirectURL = 'https://github.com/baruchiro/israeli-bank-scrapers-desktop';
+const successRedirectURL = 'https://github.com/brafdlog/budget-tracking';
 
 // eslint-disable-next-line camelcase
 async function saveToken({ refresh_token }) {

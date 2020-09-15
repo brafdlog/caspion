@@ -1,6 +1,6 @@
 import keytar from 'keytar';
 
-const serviceName = 'israeli-bank-scrapers-desktop';
+const serviceName = 'budget-tracking';
 const accountName = 'crypto';
 
 export async function loadSALT() {

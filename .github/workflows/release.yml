@@ -34,8 +34,8 @@ jobs:
         # debug: true
         script: |
           const releases = await github.repos.listReleases({
-            owner: 'baruchiro',
-            repo: 'israeli-bank-scrapers-desktop'
+            owner: 'brafdlog',
+            repo: 'budget-tracking'
           })
           // console.log(releases)
           const published_release_tags = releases.data.filter(release => !release.draft).map(release => release.tag_name)
