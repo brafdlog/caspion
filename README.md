@@ -26,17 +26,28 @@ Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israel
 - Initial implementation of creating transactions in a google spreadsheet of your choice
 - A basic UI for configuration
 
-## Initial setup
-
+### Running in a development environment
 - Run `yarn` to install the dependencies
 - Copy `categoryCalculationScript-example.js` to `categoryCalculationScript.js`
   - This file contains the patterns for classifying transactions to categories automatically.
   - Edit this file to add any mapping from function description to category that fits your needs.
   - If using YNAB, the categories you return must match category names in YNAB
-- Run `yarn start` to start the app
-- Go to `הגדרות` and add the financial institutions you want and remove the default ones
+- Run `yarn serve` to start the app
 - Setup YNAB and/or Google spreadsheet integrations (see instructions below). Make sure to disable integration that you aren't using (set active field to false)
-- Run by clicking on the `תראה לי ת׳כסף` button in the app
+- Run by clicking on the `Run` button in the app
+
+### Building for production
+- Run `yarn build`
+
+#### Linux
+
+Currently, this project depends on `libsecret`, so you may need to install it before running `yarn`.
+
+Depending on your distribution, you will need to run the following command:
+
+* Debian/Ubuntu: `sudo apt-get install libsecret-1-dev`
+* Red Hat-based: `sudo yum install libsecret-devel`
+* Arch Linux: `sudo pacman -S libsecret`
 
 ## YNAB integration setup (optional)
 
