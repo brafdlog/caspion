@@ -29,7 +29,6 @@ export async function appendToSpreadsheet({
     valueInputOption: 'USER_ENTERED',
     requestBody
   });
-  console.log('Updates: ', result.data.updates);
   return result;
 }
 

@@ -16,6 +16,7 @@ export const fields = {
 };
 
 export const output = async (transactions, config) => {
+  // eslint-disable-next-line no-console
   console.log(transactions, config);
 };
 

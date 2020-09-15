@@ -78,12 +78,6 @@ module.exports = {
       rules: {
         'import/extensions': ['error', { js: 'never', vue: 'always', json: 'always' }]
       }
-    },
-    {
-      files: ['src/originalBudgetTrackingApp/**/*'],
-      rules: {
-        'no-console': 'off'
-      }
     }
   ],
 };
