@@ -5,7 +5,7 @@ import { EnrichedTransaction } from '@/originalBudgetTrackingApp/commonTypes';
 import * as bankScraper from '@/originalBudgetTrackingApp/import/bankScraper';
 import { ScaperScrapingResult, Transaction } from '@/originalBudgetTrackingApp/import/bankScraper';
 import * as categoryCalculation from '@/originalBudgetTrackingApp/import/categoryCalculationScript';
-import { BudgetTrackingEventEmitter, EventNames } from '../eventEmitters/EventEmitter';
+import { EventPublisher, EventNames, BudgetTrackingEventEmitter } from '../eventEmitters/EventEmitter';
 
 type AccountToScrapeConfig = configManager.AccountToScrapeConfig;
 type Config = configManager.Config;
@@ -13,20 +13,20 @@ type ScrapingConfig = Config['scraping'];
 
 const TRANSACTION_STATUS_COMPLETED = 'completed';
 
-export async function scrapeFinancialAccountsAndFetchTransactions(scrapingConfig: ScrapingConfig, startDate: Date, eventEmitter: BudgetTrackingEventEmitter) {
+export async function scrapeFinancialAccountsAndFetchTransactions(scrapingConfig: ScrapingConfig, startDate: Date, eventPublisher: EventPublisher) {
   const companyIdToTransactions: Record<string, EnrichedTransaction[]> = {};
   const accountsToScrape = scrapingConfig.accountsToScrape.filter((accountToScrape) => accountToScrape.active !== false);
   for (let i = 0; i < accountsToScrape.length; i++) {
     const accountToScrape = accountsToScrape[i];
     const companyId = accountToScrape.key;
     try {
-      await eventEmitter.emit(EventNames.IMPORTER_START, buildImporterEvent(accountToScrape));
-      const scrapeResult = await fetchTransactions(accountToScrape, startDate, scrapingConfig, eventEmitter);
+      await eventPublisher.emit(EventNames.IMPORTER_START, buildImporterEvent(accountToScrape));
+      const scrapeResult = await fetchTransactions(accountToScrape, startDate, scrapingConfig, eventPublisher);
       const transactions = await postProcessTransactions(accountToScrape, scrapeResult);
       companyIdToTransactions[companyId] = transactions;
-      await eventEmitter.emit(EventNames.IMPORTER_END, buildImporterEvent(accountToScrape));
+      await eventPublisher.emit(EventNames.IMPORTER_END, buildImporterEvent(accountToScrape));
     } catch (error) {
-      await eventEmitter.emit(EventNames.IMPORTER_ERROR, buildImporterEvent(accountToScrape, { error }));
+      await eventPublisher.emit(EventNames.IMPORTER_ERROR, buildImporterEvent(accountToScrape, { error }));
       throw error;
     }
   }
@@ -64,10 +64,10 @@ export async function getFinancialAccountNumbers() {
 async function fetchTransactions(
   accountToScrapeConfig: AccountToScrapeConfig,
   startDate: Date, scrapingConfig: Config['scraping'],
-  eventEmitter: BudgetTrackingEventEmitter
+  eventPublisher: EventPublisher
 ) {
   const emitImporterProgressEvent = async (eventCompanyId: string, message: string) => {
-    await eventEmitter.emit(EventNames.IMPORTER_PROGRESS, buildImporterEvent(accountToScrapeConfig, { message }));
+    await eventPublisher.emit(EventNames.IMPORTER_PROGRESS, buildImporterEvent(accountToScrapeConfig, { message }));
   };
 
   const scrapeResult = await bankScraper.scrape({

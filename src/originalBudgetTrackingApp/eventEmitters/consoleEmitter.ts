@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
-import { BudgetTrackingEventEmitter } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
+import { BudgetTrackingEventEmitter, EventPublisher } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
 
-export function buildConsoleEmitter(): BudgetTrackingEventEmitter {
+export function buildConsoleEmitter(): EventPublisher {
   const consoleEmitter = new BudgetTrackingEventEmitter();
   consoleEmitter.onAny((eventName, eventData) => {
     // eslint-disable-next-line no-console

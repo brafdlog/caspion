@@ -1,4 +1,4 @@
-import { BudgetTrackingEventEmitter } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
+import { EventPublisher } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
 import { Transaction } from './import/bankScraper';
 import { Config } from './configManager/configManager';
 
@@ -21,7 +21,7 @@ export type ExportTransactionsParams = {
 
 export type ExportTransactionsFunction = (
   exportTransactionsParams: ExportTransactionsParams,
-  eventEmitter: BudgetTrackingEventEmitter
+  eventPublisher: EventPublisher
 ) => Promise<any>;
 
 export interface OutputVendor {

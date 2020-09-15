@@ -1,5 +1,5 @@
 import { Config } from '@/originalBudgetTrackingApp/configManager/configManager';
-import { BudgetTrackingEventEmitter, EventNames } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
+import { EventPublisher, EventNames } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
 import { EnrichedTransaction } from '@/originalBudgetTrackingApp/commonTypes';
 import _ from 'lodash';
 import outputVendors from '@/originalBudgetTrackingApp/export/outputVendors';
@@ -7,9 +7,9 @@ import outputVendors from '@/originalBudgetTrackingApp/export/outputVendors';
 export async function createTransactionsInExternalVendors(
   outputVendorsConfig: Config['outputVendors'],
   companyIdToTransactions: Record<string, EnrichedTransaction[]>,
-  startDate: Date, eventEmitter: BudgetTrackingEventEmitter
+  startDate: Date, eventPublisher: EventPublisher
 ) {
-  await eventEmitter.emit(EventNames.EXPORT_PROCESS_START);
+  await eventPublisher.emit(EventNames.EXPORT_PROCESS_START);
   const executionResult = {};
   const allTransactions = _.flatten(Object.values(companyIdToTransactions));
 
@@ -19,15 +19,15 @@ export async function createTransactionsInExternalVendors(
       const baseExporterEventData = { name: outputVendor.name.toString(), allTransactions };
 
       await outputVendor.init?.(outputVendorsConfig);
-      await eventEmitter.emit(EventNames.EXPORTER_START, baseExporterEventData);
+      await eventPublisher.emit(EventNames.EXPORTER_START, baseExporterEventData);
       try {
         const vendorResult = await outputVendor.exportTransactions({
           transactionsToCreate: allTransactions, startDate, outputVendorsConfig
-        }, eventEmitter);
-        await eventEmitter.emit(EventNames.EXPORTER_END, baseExporterEventData);
+        }, eventPublisher);
+        await eventPublisher.emit(EventNames.EXPORTER_END, baseExporterEventData);
         executionResult[outputVendor.name] = vendorResult;
       } catch (e) {
-        await eventEmitter.emit(EventNames.EXPORTER_ERROR, { ...baseExporterEventData, error: e });
+        await eventPublisher.emit(EventNames.EXPORTER_ERROR, { ...baseExporterEventData, error: e });
         throw e;
       }
     }
@@ -37,6 +37,6 @@ export async function createTransactionsInExternalVendors(
     throw error;
   }
 
-  await eventEmitter.emit(EventNames.EXPORT_PROCESS_END);
+  await eventPublisher.emit(EventNames.EXPORT_PROCESS_END);
   return executionResult;
 }

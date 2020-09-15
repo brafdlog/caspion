@@ -4,7 +4,7 @@ import moment from 'moment/moment';
 import {
   EnrichedTransaction, OutputVendor, OutputVendorName, ExportTransactionsFunction
 } from '@/originalBudgetTrackingApp/commonTypes';
-import { BudgetTrackingEventEmitter, EventNames } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
+import { EventPublisher, EventNames } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
 import { Config, YnabConfig } from '../../../configManager/configManager';
 
 const INITIAL_YNAB_ACCESS_TOKEN = 'AABB';
@@ -40,7 +40,7 @@ export async function init(outputVendorsConfig: Config['outputVendors']) {
   ynabAPI = new ynab.API(ynabConfig.options.accessToken);
 }
 
-const createTransactions: ExportTransactionsFunction = async ({ transactionsToCreate, startDate }, eventEmitter) => {
+const createTransactions: ExportTransactionsFunction = async ({ transactionsToCreate, startDate }, eventPublisher) => {
   if (!ynabConfig) {
     throw new Error('Must call init before using ynab functions');
   }
@@ -52,17 +52,17 @@ const createTransactions: ExportTransactionsFunction = async ({ transactionsToCr
   // Filter out transactions that are in the future
   transactionsThatDontExistInYnab = transactionsThatDontExistInYnab.filter((transaction) => moment(transaction.date, YNAB_DATE_FORMAT).isBefore(NOW));
   if (!transactionsThatDontExistInYnab.length) {
-    await emitProgressEvent(eventEmitter, transactionsToCreate, 'All transactions already exist in ynab. Doing nothing.');
+    await emitProgressEvent(eventPublisher, transactionsToCreate, 'All transactions already exist in ynab. Doing nothing.');
     return null;
   }
-  await emitProgressEvent(eventEmitter, transactionsToCreate, `Creating ${transactionsThatDontExistInYnab.length} transactions in ynab`);
+  await emitProgressEvent(eventPublisher, transactionsToCreate, `Creating ${transactionsThatDontExistInYnab.length} transactions in ynab`);
   try {
     const transactionCreationResult = await ynabAPI!.transactions.createTransactions(ynabConfig.options.budgetId, {
       transactions: transactionsThatDontExistInYnab
     });
     return transactionCreationResult;
   } catch (e) {
-    await eventEmitter.emit(EventNames.EXPORTER_ERROR, { name: ynabOutputVendor.name, allTransactions: transactionsToCreate, error: e });
+    await eventPublisher.emit(EventNames.EXPORTER_ERROR, { name: ynabOutputVendor.name, allTransactions: transactionsToCreate, error: e });
     throw e;
   }
 };
@@ -216,8 +216,8 @@ async function getYnabCategories() {
   return categoryNames;
 }
 
-async function emitProgressEvent(eventEmitter: BudgetTrackingEventEmitter, allTransactions: EnrichedTransaction[], message: string) {
-  await eventEmitter.emit(EventNames.EXPORTER_PROGRESS, { name: ynabOutputVendor.name, allTransactions, message });
+async function emitProgressEvent(eventPublisher: EventPublisher, allTransactions: EnrichedTransaction[], message: string) {
+  await eventPublisher.emit(EventNames.EXPORTER_PROGRESS, { name: ynabOutputVendor.name, allTransactions, message });
 }
 
 export const ynabOutputVendor: OutputVendor = {
