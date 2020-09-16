@@ -15,6 +15,11 @@
       label="Access Token"
       outlined
     />
+    <v-text-field
+      v-model="exporter.options.budgetId"
+      label="Budget id"
+      outlined
+    />
     <v-btn
       color="primary"
       :disabled="!readyToSave.value"
