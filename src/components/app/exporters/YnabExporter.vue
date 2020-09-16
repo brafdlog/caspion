@@ -6,13 +6,14 @@
     <v-checkbox
       v-model="exporter.active"
       label="Active"
+      hide-details="auto"
       @change="changed = true"
     />
     <v-text-field
-      v-model="exporter.options.filePath"
-      label="JSON file"
+      v-model="exporter.options.accessToken"
+      type="password"
+      label="Access Token"
       outlined
-      @change="changed = true"
     />
     <v-btn
       color="primary"
@@ -28,23 +29,25 @@
 import Vue from 'vue';
 import { computed, ref, reactive } from '@vue/composition-api';
 import store from '@/store';
-import { JsonConfig } from '@/originalBudgetTrackingApp/configManager/configManager';
+import { OutputVendorsConfig } from '@/originalBudgetTrackingApp/configManager/configManager';
 import { VForm } from '@/types/vuetify';
 
+const exporterName = 'ynab';
+
 export default Vue.extend({
-  name: 'JsonExporter',
+  name: 'YnabExporter',
 
   setup() {
     const vForm = ref<VForm>();
 
-    const exporter = reactive(JSON.parse(JSON.stringify(store.getters.Config.getExporter('json'))) as JsonConfig);
+    const exporter = reactive(JSON.parse(JSON.stringify(store.getters.Config.getExporter(exporterName))) as OutputVendorsConfig<typeof exporterName>);
 
     const validated = ref(true);
     const changed = ref(false);
     const readyToSave = computed(() => validated && changed);
     const submit = () => {
       if (vForm.value?.validate()) {
-        store.dispatch.Config.updateExporter({ name: 'json', exporter })
+        store.dispatch.Config.updateExporter({ name: exporterName, exporter })
           .then(() => { changed.value = false; });
       }
     };

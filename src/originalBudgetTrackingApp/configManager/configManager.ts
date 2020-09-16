@@ -33,7 +33,7 @@ export interface Config {
 
 export type OutputVendorsNames = keyof Config['outputVendors']
 export type OutputVendorsConfigs = Exclude<Config['outputVendors'][OutputVendorsNames], undefined>
-export type OutputVendorsConfig<T extends OutputVendorsNames> = Config['outputVendors'][T]
+export type OutputVendorsConfig<T extends OutputVendorsNames> = Exclude<Config['outputVendors'][T], undefined>
 
 interface OutputVendorConfigBase {
   active: boolean;
