@@ -37,7 +37,7 @@ const configModule = defineModule({
       });
       return importers;
     },
-    getExporter: (state) => (name: OutputVendorsNames) => state.outputVendors[name],
+    getExporter: <T extends OutputVendorsNames>(state) => (name: T): OutputVendorsConfig<T> => state.outputVendors[name],
     globalConfig: ({ scraping }): GlobalConfig => {
       const { numDaysBack, showBrowser } = scraping;
       return { numDaysBack, showBrowser };

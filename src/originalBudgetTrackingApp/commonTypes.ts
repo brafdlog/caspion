@@ -10,7 +10,8 @@ export interface EnrichedTransaction extends Transaction {
 
 export enum OutputVendorName {
   YNAB = 'ynab',
-  GOOGLE_SHEETS = 'googleSheets'
+  GOOGLE_SHEETS = 'googleSheets',
+  JSON = 'json'
 }
 
 export type ExportTransactionsParams = {

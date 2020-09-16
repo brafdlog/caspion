@@ -26,31 +26,15 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { computed, ref, reactive } from '@vue/composition-api';
-import store from '@/store';
-import { JsonConfig } from '@/originalBudgetTrackingApp/configManager/configManager';
-import { VForm } from '@/types/vuetify';
+import { setupExporterConfigForm } from '@/components/app/exporters/exportersCommon';
+import { OutputVendorName } from '@/originalBudgetTrackingApp/commonTypes';
 
 export default Vue.extend({
   name: 'JsonExporter',
 
   setup() {
-    const vForm = ref<VForm>();
-
-    const exporter = reactive(JSON.parse(JSON.stringify(store.getters.Config.getExporter('json'))) as JsonConfig);
-
-    const validated = ref(true);
-    const changed = ref(false);
-    const readyToSave = computed(() => validated && changed);
-    const submit = () => {
-      if (vForm.value?.validate()) {
-        store.dispatch.Config.updateExporter({ name: 'json', exporter })
-          .then(() => { changed.value = false; });
-      }
-    };
-
     return {
-      validated, changed, readyToSave, submit, exporter, vForm
+      ...setupExporterConfigForm(OutputVendorName.JSON)
     };
   }
 });

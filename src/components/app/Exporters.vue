@@ -23,7 +23,9 @@ import YnabExporter from './exporters/YnabExporter.vue';
 import ExpansionPanel from './exporters/ExpansionPanel.vue';
 
 export default Vue.extend({
-  components: { ExpansionPanel, JsonExporter, GoogleSheetsExporter, YnabExporter },
+  components: {
+    ExpansionPanel, JsonExporter, GoogleSheetsExporter, YnabExporter
+  },
 });
 </script>
 
