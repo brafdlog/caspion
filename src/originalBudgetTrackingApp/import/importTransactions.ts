@@ -5,7 +5,8 @@ import { EnrichedTransaction } from '@/originalBudgetTrackingApp/commonTypes';
 import * as bankScraper from '@/originalBudgetTrackingApp/import/bankScraper';
 import { ScaperScrapingResult, Transaction } from '@/originalBudgetTrackingApp/import/bankScraper';
 import * as categoryCalculation from '@/originalBudgetTrackingApp/import/categoryCalculationScript';
-import { EventPublisher, EventNames, BudgetTrackingEventEmitter } from '../eventEmitters/EventEmitter';
+import Emittery from 'emittery';
+import { EventPublisher, EventNames } from '../eventEmitters/EventEmitter';
 
 type AccountToScrapeConfig = configManager.AccountToScrapeConfig;
 type Config = configManager.Config;
@@ -43,7 +44,7 @@ function buildImporterEvent(accountConfig: AccountToScrapeConfig, additionalPara
 }
 
 export async function getFinancialAccountNumbers() {
-  const eventEmitter = new BudgetTrackingEventEmitter();
+  const eventEmitter = new Emittery();
   const config = await configManager.getConfig();
 
   const startDate = moment()

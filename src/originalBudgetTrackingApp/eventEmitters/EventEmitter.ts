@@ -71,10 +71,4 @@ type EventDataMap = {
 
 type EmptyEvents = EventNames.IMPORT_PROCESS_START | EventNames.IMPORT_PROCESS_END | EventNames.EXPORT_PROCESS_START | EventNames.EXPORT_PROCESS_END;
 
-export class BudgetTrackingEventEmitter extends Emittery.Typed<EventDataMap, EmptyEvents> {
-
-}
-
-export type EventPublisher = Pick<BudgetTrackingEventEmitter, 'emit' | 'emitSerial'>
-
-export type EventSubscriber = Pick<BudgetTrackingEventEmitter, 'on' | 'once' | 'off' | 'onAny' | 'anyEvent' | 'offAny'>;
+export type EventPublisher = Pick<Emittery.Typed<EventDataMap, EmptyEvents>, 'emit'>

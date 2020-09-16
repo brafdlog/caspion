@@ -1,11 +1,9 @@
 /* eslint-disable class-methods-use-this */
-import { BudgetTrackingEventEmitter, EventPublisher } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
+import { EventNames, EventPublisher } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
 
-export function buildConsoleEmitter(): EventPublisher {
-  const consoleEmitter = new BudgetTrackingEventEmitter();
-  consoleEmitter.onAny((eventName, eventData) => {
+export default class ConsoleEmitter implements EventPublisher {
+  async emit(eventName: EventNames, eventData?: any) {
     // eslint-disable-next-line no-console
     console.log(`${eventName}:`, eventData);
-  });
-  return consoleEmitter;
+  }
 }

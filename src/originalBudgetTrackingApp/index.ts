@@ -3,7 +3,7 @@ import { scrapeFinancialAccountsAndFetchTransactions } from '@/originalBudgetTra
 import moment from 'moment';
 import * as configManager from './configManager/configManager';
 import { EventPublisher, EventNames } from './eventEmitters/EventEmitter';
-import { buildConsoleEmitter } from './eventEmitters/consoleEmitter';
+import ConsoleEmitter from './eventEmitters/consoleEmitter';
 import outputVendors from './export/outputVendors';
 import * as bankScraper from './import/bankScraper';
 
@@ -14,7 +14,7 @@ export { configManager };
 export const { inputVendors } = bankScraper;
 
 export async function scrapeAndUpdateOutputVendors(optionalEventPublisher?: EventPublisher) {
-  const eventPublisher = optionalEventPublisher || buildConsoleEmitter();
+  const eventPublisher = optionalEventPublisher || new ConsoleEmitter();
   const config = await configManager.getConfig();
 
   const startDate = moment()
