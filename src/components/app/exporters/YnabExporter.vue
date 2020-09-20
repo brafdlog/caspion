@@ -65,24 +65,32 @@
         </tbody>
       </template>
     </v-simple-table>
-    <v-btn
-      color="primary"
-      :disabled="!readyToSave.value"
-      @click="submit()"
-    >
-      Save
-    </v-btn>
-    <v-btn
-      color="blue"
-      fab
-      dark
-      small
-      @click="addAccountMapping()"
-    >
-      <v-icon dark>
-        mdi-plus
-      </v-icon>
-    </v-btn>
+    <v-container>
+      <v-row>
+        <v-col cols="10">
+          <v-btn
+            color="primary"
+            :disabled="!readyToSave.value"
+            @click="submit()"
+          >
+            Save
+          </v-btn>
+        </v-col>
+        <v-col cols="2">
+          <v-btn
+            color="blue"
+            fab
+            dark
+            small
+            @click="addAccountMapping()"
+          >
+            <v-icon dark>
+              mdi-plus
+            </v-icon>
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-container>
   </v-form>
 </template>
 
