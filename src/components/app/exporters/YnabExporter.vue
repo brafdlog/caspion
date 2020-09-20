@@ -14,11 +14,13 @@
       type="password"
       label="Access Token"
       outlined
+      @change="changed = true"
     />
     <v-text-field
       v-model="exporter.options.budgetId"
       label="Budget id"
       outlined
+      @change="changed = true"
     />
     <v-btn
       color="primary"
