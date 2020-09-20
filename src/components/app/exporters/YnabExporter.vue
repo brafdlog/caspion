@@ -22,51 +22,12 @@
       outlined
       @change="changed = true"
     />
-    <v-simple-table dense>
-      <template v-slot:default>
-        <thead>
-          <tr>
-            <th>Account number</th>
-            <th>Ynab account id</th>
-            <th>Delete</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="accountNumberAndId in accountNumbersToYnabAccountIdsArray"
-            :key="accountNumberAndId.accountNumber"
-          >
-            <td>
-              <v-text-field
-                v-model="accountNumberAndId.accountNumber"
-                full-width
-                dense
-                :rules="[rules.required]"
-                @change="changed = true"
-              />
-            </td>
-            <td>
-              <v-text-field
-                v-model="accountNumberAndId.ynabAccountId"
-                full-width
-                dense
-                :rules="[rules.required]"
-                @change="changed = true"
-              />
-            </td>
-            <td>
-              <v-btn
-                icon
-                color="red"
-                @click="deleteAccountMapping(accountNumberAndId.accountNumber)"
-              >
-                <v-icon>mdi-delete</v-icon>
-              </v-btn>
-            </td>
-          </tr>
-        </tbody>
-      </template>
-    </v-simple-table>
+    <ynab-account-mapping-table
+      :account-numbers-to-ynab-account-ids="accountNumbersToYnabAccountIdsArray"
+      @mappingChanged="markChanged()"
+      @addAccountMapping="addAccountMapping()"
+      @deleteAccountMapping="deleteAccountMapping($event)"
+    />
     <v-container>
       <v-row>
         <v-col cols="10">
@@ -98,30 +59,29 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import omit from 'lodash/omit';
 import { setupExporterConfigForm } from '@/components/app/exporters/exportersCommon';
 import { OutputVendorName } from '@/originalBudgetTrackingApp/commonTypes';
 import { computed } from '@vue/composition-api';
+import YnabAccountMappingTable from '@/components/app/exporters/YnabAccountMappingTable.vue';
 import { YnabConfig } from '@/originalBudgetTrackingApp/configManager/configManager';
-import { required } from '@/components/shared/formValidations';
 
 export default Vue.extend({
   name: 'YnabExporter',
+
+  components: { YnabAccountMappingTable },
 
   setup() {
     const dataToReturn = setupExporterConfigForm(OutputVendorName.YNAB);
     const ynabConfig = dataToReturn.exporter as YnabConfig;
     const accountNumbersToYnabAccountIdsArray = computed(() => {
-      const { accountNumbersToYnabAccountIds } = ynabConfig.options;
-      return Object.keys(accountNumbersToYnabAccountIds).map((accountNumber) => ({
+      return Object.keys(ynabConfig.options.accountNumbersToYnabAccountIds).map((accountNumber) => ({
         accountNumber,
-        ynabAccountId: accountNumbersToYnabAccountIds[accountNumber]
+        ynabAccountId: ynabConfig.options.accountNumbersToYnabAccountIds[accountNumber]
       }));
     });
 
     return {
       ...dataToReturn,
-      ynabConfig,
       accountNumbersToYnabAccountIdsArray,
       submit: () => {
         const updatedAccountNumbersToYnabAccountIds = {};
@@ -133,14 +93,14 @@ export default Vue.extend({
         dataToReturn.submit();
       },
       deleteAccountMapping: (accountNumber) => {
-        ynabConfig.options.accountNumbersToYnabAccountIds = omit(ynabConfig.options.accountNumbersToYnabAccountIds, accountNumber);
+        Vue.delete(ynabConfig.options.accountNumbersToYnabAccountIds, accountNumber);
         dataToReturn.changed.value = true;
       },
       addAccountMapping: () => {
-        ynabConfig.options.accountNumbersToYnabAccountIds = { ...ynabConfig.options.accountNumbersToYnabAccountIds, '###': '###' };
+        Vue.set(ynabConfig.options.accountNumbersToYnabAccountIds, '###', '###');
       },
-      rules: {
-        required
+      markChanged: () => {
+        dataToReturn.changed.value = true;
       }
     };
   }
