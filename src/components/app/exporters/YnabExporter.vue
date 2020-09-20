@@ -41,6 +41,7 @@
                 v-model="accountNumberAndId.accountNumber"
                 full-width
                 dense
+                :rules="[rules.required]"
                 @change="changed = true"
               />
             </td>
@@ -49,6 +50,7 @@
                 v-model="accountNumberAndId.ynabAccountId"
                 full-width
                 dense
+                :rules="[rules.required]"
                 @change="changed = true"
               />
             </td>
@@ -101,6 +103,7 @@ import { setupExporterConfigForm } from '@/components/app/exporters/exportersCom
 import { OutputVendorName } from '@/originalBudgetTrackingApp/commonTypes';
 import { computed } from '@vue/composition-api';
 import { YnabConfig } from '@/originalBudgetTrackingApp/configManager/configManager';
+import { required } from '@/components/shared/formValidations';
 
 export default Vue.extend({
   name: 'YnabExporter',
@@ -135,6 +138,9 @@ export default Vue.extend({
       },
       addAccountMapping: () => {
         ynabConfig.options.accountNumbersToYnabAccountIds = { ...ynabConfig.options.accountNumbersToYnabAccountIds, '###': '###' };
+      },
+      rules: {
+        required
       }
     };
   }

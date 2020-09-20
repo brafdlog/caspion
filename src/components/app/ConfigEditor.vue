@@ -40,6 +40,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { VForm } from '@/types/vuetify';
+import { required, positive } from '@/components/shared/formValidations';
 import store from '@/store';
 
 export default Vue.extend({
@@ -64,8 +65,8 @@ export default Vue.extend({
     this.reset();
   },
   methods: {
-    required: (value) => !!value || 'Required.',
-    positive: (value: number) => value > 0 || 'Must be grater than 0',
+    required,
+    positive,
     updateGlobalConfig: store.dispatch.Config.updateGlobalConfig,
     reset() {
       this.globalConfig = JSON.parse(JSON.stringify(this.storeGlobalConfig));
