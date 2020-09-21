@@ -2,7 +2,6 @@ import { randomHex } from '@/modules/encryption/crypto';
 import {
   AccountToScrapeConfig, Config, OutputVendorsConfig, OutputVendorsNames
 } from '@/originalBudgetTrackingApp/configManager/configManager';
-import defaultConfig from '@/originalBudgetTrackingApp/configManager/defaultConfig';
 import { defineModule } from 'direct-vuex';
 import { moduleActionContext } from '..';
 
@@ -15,7 +14,6 @@ type ExporterPayload<T extends OutputVendorsNames> = { name: T, exporter: Output
 
 const configModule = defineModule({
   namespaced: true as true,
-  state: defaultConfig,
   mutations: {
     addImporter: (state: Config, importer: AccountToScrapeConfig) => state.scraping.accountsToScrape.push(importer),
     removeImporter: (state: Config, importerId: string) => {
