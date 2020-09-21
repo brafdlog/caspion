@@ -1,6 +1,6 @@
 import { randomHex } from '@/modules/encryption/crypto';
 import {
-  AccountToScrapeConfig, Config, OutputVendorsConfig, OutputVendorName
+  AccountToScrapeConfig, Config, OutputVendorConfig, OutputVendorName
 } from '@/originalBudgetTrackingApp/configManager/configManager';
 import { defineModule } from 'direct-vuex';
 import { moduleActionContext } from '..';
@@ -10,7 +10,7 @@ type GlobalConfig = {
   showBrowser: boolean
 }
 
-type ExporterPayload<T extends OutputVendorName> = { name: T, exporter: OutputVendorsConfig<T> }
+type ExporterPayload<T extends OutputVendorName> = { name: T, exporter: OutputVendorConfig<T> }
 
 const configModule = defineModule({
   namespaced: true as true,
@@ -35,7 +35,7 @@ const configModule = defineModule({
       });
       return importers;
     },
-    getExporter: <T extends OutputVendorName>(state) => (name: T): OutputVendorsConfig<T> => state.outputVendors[name],
+    getExporter: <T extends OutputVendorName>(state) => (name: T): OutputVendorConfig<T> => state.outputVendors[name],
     globalConfig: ({ scraping }): GlobalConfig => {
       const { numDaysBack, showBrowser } = scraping;
       return { numDaysBack, showBrowser };

@@ -37,8 +37,8 @@ export enum OutputVendorName {
   JSON = 'json'
 }
 
-export type OutputVendorsConfigs = Exclude<Config['outputVendors'][OutputVendorName], undefined>
-export type OutputVendorsConfig<T extends OutputVendorName> = Exclude<Config['outputVendors'][T], undefined>
+export type OutputVendorConfigs = Exclude<Config['outputVendors'][OutputVendorName], undefined>
+export type OutputVendorConfig<T extends OutputVendorName> = Exclude<Config['outputVendors'][T], undefined>
 
 interface OutputVendorConfigBase {
   active: boolean;
