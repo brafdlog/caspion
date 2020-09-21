@@ -13,9 +13,9 @@ const LOCAL_CONFIG_FILE_PATH = CONFIG_FILE_NAME;
 
 export interface Config {
   outputVendors: {
-    googleSheets?: GoogleSheetsConfig;
-    ynab?: YnabConfig;
-    json?: JsonConfig;
+    [OutputVendorName.GOOGLE_SHEETS]?: GoogleSheetsConfig;
+    [OutputVendorName.YNAB]?: YnabConfig;
+    [OutputVendorName.JSON]?: JsonConfig;
   };
   scraping: {
     numDaysBack: number;
@@ -31,9 +31,14 @@ export interface Config {
   };
 }
 
-export type OutputVendorsNames = keyof Config['outputVendors']
-export type OutputVendorsConfigs = Exclude<Config['outputVendors'][OutputVendorsNames], undefined>
-export type OutputVendorsConfig<T extends OutputVendorsNames> = Exclude<Config['outputVendors'][T], undefined>
+export enum OutputVendorName {
+  YNAB = 'ynab',
+  GOOGLE_SHEETS = 'googleSheets',
+  JSON = 'json'
+}
+
+export type OutputVendorsConfigs = Exclude<Config['outputVendors'][OutputVendorName], undefined>
+export type OutputVendorsConfig<T extends OutputVendorName> = Exclude<Config['outputVendors'][T], undefined>
 
 interface OutputVendorConfigBase {
   active: boolean;
