@@ -3,7 +3,7 @@
     <div class="d-flex justify-center align-center">
       <v-btn
         x-large
-        :loading="scraping"
+        :loading="inProgress"
         :color="btnColor"
         @click="scrape"
       >
@@ -11,7 +11,7 @@
       </v-btn>
     </div>
     <div>
-      <log-lines :entries="results" />
+      <log-lines :entries="entries" />
     </div>
     <div>
       <config-editor />
@@ -19,52 +19,43 @@
   </div>
 </template>
 
-<script>
-import { scrapeAndUpdateOutputVendors } from '@/originalBudgetTrackingApp';
-import LogLines from '@/components/shared/LogLines';
-import ConfigEditor from './ConfigEditor';
+<script lang="ts">
+import { EOL } from 'os';
+import LogLines from '@/components/shared/LogLines.vue';
+import Vue from 'vue';
+import { ref, computed } from '@vue/composition-api';
+import { scrapeAndUpdateOutputVendors, EventEmitter } from '@/originalBudgetTrackingApp';
+import ConfigEditor from './ConfigEditor.vue';
 
 const colors = {
-  true: 'green',
-  false: 'red',
-  null: null
+  success: 'green',
+  failed: 'red',
+  unknown: null
 };
 
-export default {
-  name: 'MainContent',
+export default Vue.extend({
   components: {
     LogLines, ConfigEditor
   },
-  data() {
-    return {
-      scraping: false,
-      results: '',
-      succeeded: null,
+  setup() {
+    const inProgress = ref(false);
+    const succeeded = ref('unknown' as keyof typeof colors);
+    const btnColor = computed(() => colors[succeeded.value]);
+    const logs = ref([] as string[]);
+    const entries = computed(() => logs.value.join(EOL))
+
+    const eventPublisher = new EventEmitter.BudgetTrackingEventEmitter();
+    eventPublisher.onAny((eventName, data) => {
+      logs.value.push(data?.message || eventName);
+    });
+
+    const scrape = () => {
+      scrapeAndUpdateOutputVendors(eventPublisher);
     };
+
+    return { inProgress, btnColor, scrape, entries };
   },
-  computed: {
-    btnColor() {
-      return colors[this.succeeded];
-    }
-  },
-  methods: {
-    async scrape() {
-      this.scraping = true;
-      scrapeAndUpdateOutputVendors()
-        .then((results) => {
-          this.results = results;
-          this.succeeded = true;
-        })
-        .catch((error) => {
-          this.results = error.message;
-          this.succeeded = false;
-        })
-        .finally(() => {
-          this.scraping = false;
-        });
-    }
-  }
-};
+});
 </script>
 
 <style scoped>

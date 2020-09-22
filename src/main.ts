@@ -1,5 +1,6 @@
 // @ts-nocheck
 // eslint-disable-next-line import/no-extraneous-dependencies
+import VueCompositionAPI from '@vue/composition-api';
 import electron from 'electron';
 import Vue from 'vue';
 import App from './components/App';
@@ -21,6 +22,8 @@ process.on('unhandledRejection', (error) => {
 const logger = electron.remote.getGlobal('logger');
 logger.info('The renderer process got the logger');
 Vue.use(LoggerPlugin, { logger });
+
+Vue.use(VueCompositionAPI);
 
 Vue.config.productionTip = process.env.NODE_ENV !== 'production';
 

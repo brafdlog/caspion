@@ -2,7 +2,7 @@ import { createTransactionsInExternalVendors } from '@/originalBudgetTrackingApp
 import { scrapeFinancialAccountsAndFetchTransactions } from '@/originalBudgetTrackingApp/import/importTransactions';
 import moment from 'moment';
 import * as configManager from './configManager/configManager';
-import { EventPublisher, EventNames } from './eventEmitters/EventEmitter';
+import { EventPublisher, EventNames, BudgetTrackingEventEmitter } from './eventEmitters/EventEmitter';
 import { buildConsoleEmitter } from './eventEmitters/consoleEmitter';
 import outputVendors from './export/outputVendors';
 import * as bankScraper from './import/bankScraper';
@@ -10,6 +10,9 @@ import * as bankScraper from './import/bankScraper';
 export { printYnabAccountData } from './setupHelpers';
 export { outputVendors };
 export { configManager };
+export const EventEmitter = {
+  EventNames, BudgetTrackingEventEmitter
+};
 
 export const { inputVendors } = bankScraper;
 

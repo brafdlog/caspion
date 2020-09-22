@@ -19,12 +19,13 @@ export enum EventNames {
   LOG = 'LOG'
 }
 
-interface ErrorEvent {
-  error: Error
-}
-
 interface BudgetTrackingEvent {
   message?: string;
+}
+
+// TODO: Maybe extend Error?
+interface ErrorEvent extends BudgetTrackingEvent {
+  error: Error
 }
 
 interface ImporterEvent extends BudgetTrackingEvent {
@@ -59,8 +60,8 @@ type EventDataMap = {
   [EventNames.IMPORTER_PROGRESS]: ImporterEvent
   [EventNames.IMPORTER_ERROR]: ImporterErrorEvent
   [EventNames.IMPORTER_END]: ImporterEndEvent
-  [EventNames.IMPORT_PROCESS_END]: { }
-  [EventNames.EXPORT_PROCESS_START]: { }
+  [EventNames.IMPORT_PROCESS_END]: BudgetTrackingEvent
+  [EventNames.EXPORT_PROCESS_START]: BudgetTrackingEvent
   [EventNames.EXPORTER_START]: ExporterEvent
   [EventNames.EXPORTER_PROGRESS]: ExporterEvent
   [EventNames.EXPORTER_ERROR]: ExporterErrorEvent
