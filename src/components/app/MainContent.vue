@@ -11,7 +11,7 @@
       </v-btn>
     </div>
     <div>
-      <log-lines :entries="entries" />
+      <log-viewer :entries="entries" />
     </div>
     <div>
       <config-editor />
@@ -20,12 +20,12 @@
 </template>
 
 <script lang="ts">
-import { EOL } from 'os';
-import LogLines from '@/components/shared/LogLines.vue';
+import LogViewer from '@/components/shared/log/LogViewer.vue';
 import Vue from 'vue';
 import { ref, computed } from '@vue/composition-api';
 import { scrapeAndUpdateOutputVendors, EventEmitter } from '@/originalBudgetTrackingApp';
 import ConfigEditor from './ConfigEditor.vue';
+import { LogEntry, Levels } from '../shared/log/types';
 
 const colors = {
   success: 'green',
@@ -35,25 +35,27 @@ const colors = {
 
 export default Vue.extend({
   components: {
-    LogLines, ConfigEditor
+    LogViewer, ConfigEditor
   },
   setup() {
     const inProgress = ref(false);
     const succeeded = ref('unknown' as keyof typeof colors);
     const btnColor = computed(() => colors[succeeded.value]);
-    const logs = ref([] as string[]);
-    const entries = computed(() => logs.value.join(EOL))
+    const entries = ref([] as LogEntry[]);
 
     const eventPublisher = new EventEmitter.BudgetTrackingEventEmitter();
     eventPublisher.onAny((eventName, data) => {
-      logs.value.push(data?.message || eventName);
+      entries.value.push({ message: data?.message || eventName, level: Levels.Info });
     });
 
     const scrape = () => {
-      scrapeAndUpdateOutputVendors(eventPublisher);
+      inProgress.value = true;
+      scrapeAndUpdateOutputVendors(eventPublisher).finally(() => { inProgress.value = false; });
     };
 
-    return { inProgress, btnColor, scrape, entries };
+    return {
+      inProgress, btnColor, scrape, entries
+    };
   },
 });
 </script>
