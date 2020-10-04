@@ -24,7 +24,7 @@ interface BudgetTrackingEvent {
 }
 
 // TODO: Maybe extend Error?
-interface ErrorEvent extends BudgetTrackingEvent {
+export interface ErrorEvent extends BudgetTrackingEvent {
   error: Error
 }
 
@@ -54,7 +54,7 @@ interface ImportProcessStartEvent extends BudgetTrackingEvent {
   startDate: Date
 }
 
-type EventDataMap = {
+export type EventDataMap = {
   [EventNames.IMPORT_PROCESS_START]: ImportProcessStartEvent
   [EventNames.IMPORTER_START]: ImporterEvent
   [EventNames.IMPORTER_PROGRESS]: ImporterEvent
@@ -76,6 +76,6 @@ export class BudgetTrackingEventEmitter extends Emittery.Typed<EventDataMap, Emp
 
 }
 
-export type EventPublisher = Pick<BudgetTrackingEventEmitter, 'emit' | 'emitSerial'>
+export type EventPublisher = Pick<BudgetTrackingEventEmitter, 'emit'>
 
 export type EventSubscriber = Pick<BudgetTrackingEventEmitter, 'on' | 'once' | 'off' | 'onAny' | 'anyEvent' | 'offAny'>;

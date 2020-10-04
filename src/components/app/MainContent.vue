@@ -23,9 +23,10 @@
 import LogViewer from '@/components/shared/log/LogViewer.vue';
 import Vue from 'vue';
 import { ref, computed } from '@vue/composition-api';
-import { scrapeAndUpdateOutputVendors, EventEmitter } from '@/originalBudgetTrackingApp';
+import { scrapeAndUpdateOutputVendors } from '@/originalBudgetTrackingApp';
 import ConfigEditor from './ConfigEditor.vue';
-import { LogEntry, Levels } from '../shared/log/types';
+import { LogEntry } from '../shared/log/types';
+import LogsEventEmitter from './LogsEventEmitter';
 
 const colors = {
   success: 'green',
@@ -43,10 +44,7 @@ export default Vue.extend({
     const btnColor = computed(() => colors[succeeded.value]);
     const entries = ref([] as LogEntry[]);
 
-    const eventPublisher = new EventEmitter.BudgetTrackingEventEmitter();
-    eventPublisher.onAny((eventName, data) => {
-      entries.value.push({ message: data?.message || eventName, level: Levels.Info });
-    });
+    const eventPublisher = LogsEventEmitter((entry) => entries.value.push(entry));
 
     const scrape = () => {
       inProgress.value = true;

@@ -3,6 +3,7 @@
     <p
       v-for="(entry, i) in entries"
       :key="i"
+      :class="getClass(entry.level)"
     >
       {{ entry.message }}
     </p>
@@ -11,7 +12,13 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { LogEntry } from './types';
+import { LogEntry, Levels } from './types';
+
+const levelToClass = {
+  [Levels.Error]: 'error-line',
+  [Levels.Warn]: 'warn-line',
+  [Levels.Info]: 'info-line'
+};
 
 export default Vue.extend({
   props: {
@@ -20,6 +27,11 @@ export default Vue.extend({
       required: true
     },
   },
+  setup() {
+    const getClass = (level: Levels) => levelToClass[level];
+
+    return { getClass };
+  }
 });
 </script>
 
@@ -29,9 +41,22 @@ export default Vue.extend({
   word-wrap: break-word;
   white-space: pre-line;
   color: rgba(0, 0, 0, 0.6);
+font-family: Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
 }
 
 .logs-container > p {
   margin-bottom: 0px;
+}
+
+.logs-container .error-line {
+  color: rgb(240, 0, 0)
+}
+
+.logs-container .warn-line {
+  color: rgb(225,125,50)
+}
+
+.logs-container .info-line {
+  color: rgb(0,125,60)
 }
 </style>
