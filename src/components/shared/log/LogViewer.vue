@@ -41,8 +41,8 @@ export default Vue.extend({
   word-wrap: break-word;
   white-space: pre-line;
   color: rgba(0, 0, 0, 0.6);
-font-family: Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
-font-size: 14px;
+  font-family: Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  font-size: 14px;
   line-height: 25px;
   padding-left: 5px;
 }
@@ -53,14 +53,14 @@ font-size: 14px;
 }
 
 .logs-container .error-line {
-  color: rgb(240, 0, 0)
+  color: rgb(240, 0, 0);
 }
 
 .logs-container .warn-line {
-  color: rgb(225,125,50)
+  color: rgb(225, 125, 50);
 }
 
 .logs-container .info-line {
-  color: rgb(0,125,60)
+  color: rgb(0, 125, 60);
 }
 </style>
