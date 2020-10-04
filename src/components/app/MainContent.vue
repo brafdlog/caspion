@@ -10,7 +10,7 @@
         Run
       </v-btn>
     </div>
-    <div>
+    <div class="keep-bottom">
       <log-viewer :entries="entries" />
     </div>
     <div>
@@ -70,6 +70,12 @@ export default Vue.extend({
 
 .container > div {
   flex: 1 1 0;
+  overflow: auto;
+}
+
+.container > .keep-bottom {
+  display: flex;
+  flex-direction: column-reverse;
 }
 
 </style>
