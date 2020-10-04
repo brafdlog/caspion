@@ -42,10 +42,14 @@ export default Vue.extend({
   white-space: pre-line;
   color: rgba(0, 0, 0, 0.6);
 font-family: Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+font-size: 14px;
+  line-height: 25px;
+  padding-left: 5px;
 }
 
 .logs-container > p {
   margin-bottom: 0px;
+  border-bottom: solid 1px #80808038;
 }
 
 .logs-container .error-line {
