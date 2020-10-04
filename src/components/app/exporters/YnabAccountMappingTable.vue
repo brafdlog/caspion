@@ -58,15 +58,13 @@ export default Vue.extend({
       required: true
     }
   },
-  setup(_props) {
+  setup(_, { emit }) {
     return {
       deleteAccountMapping(accountNumberToDelete) {
-        // @ts-ignore
-        this.$emit('deleteAccountMapping', accountNumberToDelete);
+        emit('deleteAccountMapping', accountNumberToDelete);
       },
       addAccountMapping() {
-        // @ts-ignore
-        this.$emit('addAccountMapping');
+        emit('addAccountMapping');
       },
       rules: {
         required
