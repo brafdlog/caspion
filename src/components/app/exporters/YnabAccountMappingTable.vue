@@ -19,7 +19,7 @@
               full-width
               dense
               :rules="[rules.required]"
-              @keydown="mappingChanged"
+              @change="change"
             />
           </td>
           <td>
@@ -28,7 +28,7 @@
               full-width
               dense
               :rules="[rules.required]"
-              @keydown="mappingChanged"
+              @change="change"
             />
           </td>
           <td>
@@ -66,8 +66,8 @@ export default Vue.extend({
       addAccountMapping() {
         emit('addAccountMapping');
       },
-      mappingChanged() {
-        emit('mappingChanged');
+      change() {
+        emit('change');
       },
       rules: {
         required

@@ -23,7 +23,7 @@
     />
     <ynab-account-mapping-table
       :account-numbers-to-ynab-account-ids="accountNumbersToYnabAccountIdsArray"
-      @mappingChanged="markChanged()"
+      @change="changed = true"
       @addAccountMapping="addAccountMapping()"
       @deleteAccountMapping="deleteAccountMapping($event)"
     />
