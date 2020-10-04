@@ -6,7 +6,6 @@
     <v-checkbox
       v-model="exporter.active"
       label="Active"
-      hide-details="auto"
       @change="changed = true"
     />
     <v-text-field
@@ -97,7 +96,7 @@ export default Vue.extend({
         dataToReturn.changed.value = true;
       },
       addAccountMapping: () => {
-        Vue.set(ynabConfig.options.accountNumbersToYnabAccountIds, '###', '###');
+        Vue.set(ynabConfig.options.accountNumbersToYnabAccountIds, '', '');
       },
       markChanged: () => {
         dataToReturn.changed.value = true;
