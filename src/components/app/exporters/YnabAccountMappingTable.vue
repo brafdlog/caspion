@@ -19,7 +19,7 @@
               full-width
               dense
               :rules="[rules.required]"
-              @change="input"
+              @input="input"
             />
           </td>
           <td>
@@ -28,7 +28,7 @@
               full-width
               dense
               :rules="[rules.required]"
-              @change="input"
+              @input="input"
             />
           </td>
           <td>
