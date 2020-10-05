@@ -52,6 +52,10 @@ import { required } from '@/components/shared/formValidations';
 import { ref } from '@vue/composition-api';
 import { cloneDeep } from 'lodash';
 
+export type MappingTable = {
+  addItem: () => void
+}
+
 const objToArrayOfKeyValueArray = (obj: Record<string, string>) => Object.keys(obj).map((key) => ({ key, value: obj[key] }));
 type ConvertedType = ReturnType<typeof objToArrayOfKeyValueArray>
 type ConvertedTypeElement = ConvertedType[number]

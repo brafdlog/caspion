@@ -25,7 +25,6 @@
       ref="mappingTable"
       v-model="exporter.options.accountNumbersToYnabAccountIds"
       @change="changed = true"
-      @deleteAccountMapping="deleteAccountMapping($event)"
     />
     <v-container>
       <v-row>
@@ -60,8 +59,7 @@
 import Vue from 'vue';
 import { setupExporterConfigForm } from '@/components/app/exporters/exportersCommon';
 import { OutputVendorName } from '@/originalBudgetTrackingApp/commonTypes';
-import YnabAccountMappingTable from '@/components/app/exporters/YnabAccountMappingTable.vue';
-import { YnabConfig } from '@/originalBudgetTrackingApp/configManager/configManager';
+import YnabAccountMappingTable, { MappingTable } from '@/components/app/exporters/YnabAccountMappingTable.vue';
 import { ref } from '@vue/composition-api';
 
 export default Vue.extend({
@@ -70,21 +68,13 @@ export default Vue.extend({
   components: { YnabAccountMappingTable },
 
   setup() {
-    const mappingTable = ref(null as any);
+    const mappingTable = ref(null as unknown as MappingTable);
     const dataToReturn = setupExporterConfigForm(OutputVendorName.YNAB);
-    const ynabConfig = dataToReturn.exporter as YnabConfig;
 
     return {
       mappingTable,
       ...dataToReturn,
-      deleteAccountMapping: (accountNumber) => {
-        Vue.delete(ynabConfig.options.accountNumbersToYnabAccountIds, accountNumber);
-        dataToReturn.changed.value = true;
-      },
       addAccountMapping: () => mappingTable.value.addItem(),
-      markChanged: () => {
-        dataToReturn.changed.value = true;
-      }
     };
   }
 });
