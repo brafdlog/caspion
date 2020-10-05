@@ -22,9 +22,9 @@
       @change="changed = true"
     />
     <ynab-account-mapping-table
-      :account-numbers-to-ynab-account-ids="accountNumbersToYnabAccountIdsArray"
+      ref="mappingTable"
+      v-model="exporter.options.accountNumbersToYnabAccountIds"
       @change="changed = true"
-      @addAccountMapping="addAccountMapping()"
       @deleteAccountMapping="deleteAccountMapping($event)"
     />
     <v-container>
@@ -44,7 +44,7 @@
             fab
             dark
             small
-            @click="addAccountMapping()"
+            @click="addAccountMapping"
           >
             <v-icon dark>
               mdi-plus
@@ -60,9 +60,9 @@
 import Vue from 'vue';
 import { setupExporterConfigForm } from '@/components/app/exporters/exportersCommon';
 import { OutputVendorName } from '@/originalBudgetTrackingApp/commonTypes';
-import { computed } from '@vue/composition-api';
 import YnabAccountMappingTable from '@/components/app/exporters/YnabAccountMappingTable.vue';
 import { YnabConfig } from '@/originalBudgetTrackingApp/configManager/configManager';
+import { ref } from '@vue/composition-api';
 
 export default Vue.extend({
   name: 'YnabExporter',
@@ -70,34 +70,18 @@ export default Vue.extend({
   components: { YnabAccountMappingTable },
 
   setup() {
+    const mappingTable = ref(null as any);
     const dataToReturn = setupExporterConfigForm(OutputVendorName.YNAB);
     const ynabConfig = dataToReturn.exporter as YnabConfig;
-    const accountNumbersToYnabAccountIdsArray = computed(() => {
-      return Object.keys(ynabConfig.options.accountNumbersToYnabAccountIds).map((accountNumber) => ({
-        accountNumber,
-        ynabAccountId: ynabConfig.options.accountNumbersToYnabAccountIds[accountNumber]
-      }));
-    });
 
     return {
+      mappingTable,
       ...dataToReturn,
-      accountNumbersToYnabAccountIdsArray,
-      submit: () => {
-        const updatedAccountNumbersToYnabAccountIds = {};
-        accountNumbersToYnabAccountIdsArray.value.forEach(({ accountNumber, ynabAccountId }) => {
-          updatedAccountNumbersToYnabAccountIds[accountNumber] = ynabAccountId;
-        });
-        ynabConfig.options.accountNumbersToYnabAccountIds = updatedAccountNumbersToYnabAccountIds;
-
-        dataToReturn.submit();
-      },
       deleteAccountMapping: (accountNumber) => {
         Vue.delete(ynabConfig.options.accountNumbersToYnabAccountIds, accountNumber);
         dataToReturn.changed.value = true;
       },
-      addAccountMapping: () => {
-        Vue.set(ynabConfig.options.accountNumbersToYnabAccountIds, '', '');
-      },
+      addAccountMapping: () => mappingTable.value.addItem(),
       markChanged: () => {
         dataToReturn.changed.value = true;
       }
