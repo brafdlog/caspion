@@ -7,11 +7,11 @@ import * as googleSheets from './googleSheetsInternalAPI';
 
 const GOOGLE_SHEETS_DATE_FORMAT = 'DD/MM/YYYY';
 
-const createTransactionsInGoogleSheets: ExportTransactionsFunction = async (
+const createTransactionsInGoogleSheets: ExportTransactionsFunction<OutputVendorName.GOOGLE_SHEETS> = async (
   { transactionsToCreate: transactions, outputVendorsConfig },
   eventPublisher
 ) => {
-  const { spreadsheetId, sheetName, credentialsFilePath } = outputVendorsConfig.googleSheets!.options;
+  const { spreadsheetId, sheetName, credentialsFilePath } = outputVendorsConfig.options;
   const hashesAlreadyExistingInGoogleSheets = await googleSheets.getExistingHashes({ spreadsheetId, sheetName, credentialsFilePath });
   const transactionsToCreate = transactions.filter((transaction) => !hashesAlreadyExistingInGoogleSheets.includes(transaction.hash));
   if (transactionsToCreate.length === 0) {
@@ -43,7 +43,7 @@ async function emitProgressEvent(eventPublisher: EventPublisher, allTransactions
   await eventPublisher.emit(EventNames.EXPORTER_PROGRESS, { name: googleSheetsOutputVendor.name, allTransactions, message });
 }
 
-export const googleSheetsOutputVendor: OutputVendor = {
+export const googleSheetsOutputVendor: OutputVendor<OutputVendorName.GOOGLE_SHEETS> = {
   name: OutputVendorName.GOOGLE_SHEETS,
   exportTransactions: createTransactionsInGoogleSheets,
 };

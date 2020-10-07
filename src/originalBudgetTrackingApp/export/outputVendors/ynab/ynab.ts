@@ -40,7 +40,7 @@ export async function init(outputVendorsConfig: Config['outputVendors']) {
   ynabAPI = new ynab.API(ynabConfig.options.accessToken);
 }
 
-const createTransactions: ExportTransactionsFunction = async ({ transactionsToCreate, startDate }, eventPublisher) => {
+const createTransactions: ExportTransactionsFunction<OutputVendorName.YNAB> = async ({ transactionsToCreate, startDate }, eventPublisher) => {
   if (!ynabConfig) {
     throw new Error('Must call init before using ynab functions');
   }
@@ -220,7 +220,7 @@ async function emitProgressEvent(eventPublisher: EventPublisher, allTransactions
   await eventPublisher.emit(EventNames.EXPORTER_PROGRESS, { name: ynabOutputVendor.name, allTransactions, message });
 }
 
-export const ynabOutputVendor: OutputVendor = {
+export const ynabOutputVendor: OutputVendor<OutputVendorName.YNAB> = {
   name: OutputVendorName.YNAB,
   init,
   exportTransactions: createTransactions

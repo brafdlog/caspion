@@ -46,7 +46,7 @@ export async function getExistingHashes({
   return existingHashes;
 }
 
-async function loadCredentialsAndAuthorize(credentialsFilePath) {
+async function loadCredentialsAndAuthorize(credentialsFilePath: string) {
   const credentialsStr = await readFile(credentialsFilePath, 'utf8');
   const credentials = JSON.parse(credentialsStr);
   const jwtClient = new google.auth.JWT(credentials.client_email, undefined, credentials.private_key, SCOPES);
