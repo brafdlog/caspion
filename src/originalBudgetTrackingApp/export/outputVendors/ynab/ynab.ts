@@ -1,10 +1,10 @@
-import _ from 'lodash';
-import * as ynab from 'ynab';
-import moment from 'moment/moment';
 import {
-  EnrichedTransaction, OutputVendor, OutputVendorName, ExportTransactionsFunction
+  EnrichedTransaction, ExportTransactionsFunction, OutputVendor, OutputVendorName
 } from '@/originalBudgetTrackingApp/commonTypes';
-import { EventPublisher, EventNames } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
+import { EventNames, EventPublisher } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
+import _ from 'lodash';
+import moment from 'moment/moment';
+import * as ynab from 'ynab';
 import { Config, YnabConfig } from '../../../configManager/configManager';
 
 const INITIAL_YNAB_ACCESS_TOKEN = 'AABB';
@@ -40,7 +40,7 @@ export async function init(outputVendorsConfig: Config['outputVendors']) {
   ynabAPI = new ynab.API(ynabConfig.options.accessToken);
 }
 
-const createTransactions: ExportTransactionsFunction<OutputVendorName.YNAB> = async ({ transactionsToCreate, startDate }, eventPublisher) => {
+const createTransactions: ExportTransactionsFunction = async ({ transactionsToCreate, startDate }, eventPublisher) => {
   if (!ynabConfig) {
     throw new Error('Must call init before using ynab functions');
   }
@@ -220,7 +220,7 @@ async function emitProgressEvent(eventPublisher: EventPublisher, allTransactions
   await eventPublisher.emit(EventNames.EXPORTER_PROGRESS, { name: ynabOutputVendor.name, allTransactions, message });
 }
 
-export const ynabOutputVendor: OutputVendor<OutputVendorName.YNAB> = {
+export const ynabOutputVendor: OutputVendor = {
   name: OutputVendorName.YNAB,
   init,
   exportTransactions: createTransactions

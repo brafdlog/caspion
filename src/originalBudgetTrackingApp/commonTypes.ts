@@ -1,5 +1,5 @@
 import { EventPublisher } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
-import { Config, OutputVendorConfig, OutputVendorName } from './configManager/configManager';
+import { Config, OutputVendorName } from './configManager/configManager';
 import { Transaction } from './import/bankScraper';
 
 export { OutputVendorName };
@@ -10,19 +10,19 @@ export interface EnrichedTransaction extends Transaction {
   hash: string;
 }
 
-export type ExportTransactionsParams<T extends OutputVendorName> = {
+export type ExportTransactionsParams = {
   transactionsToCreate: EnrichedTransaction[];
   startDate: Date;
-  outputVendorsConfig: OutputVendorConfig<T>;
+  outputVendorsConfig: Config['outputVendors'];
 }
 
-export type ExportTransactionsFunction<T extends OutputVendorName> = (
-  exportTransactionsParams: ExportTransactionsParams<T>,
+export type ExportTransactionsFunction = (
+  exportTransactionsParams: ExportTransactionsParams,
   eventPublisher: EventPublisher
 ) => Promise<any>;
 
-export interface OutputVendor<T extends OutputVendorName> {
-  name: T;
+export interface OutputVendor {
+  name: OutputVendorName;
   init?: (outputVendorsConfig: Config['outputVendors']) => Promise<void>;
-  exportTransactions: ExportTransactionsFunction<T>;
+  exportTransactions: ExportTransactionsFunction;
 }
