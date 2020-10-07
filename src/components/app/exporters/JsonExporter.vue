@@ -12,6 +12,7 @@
       v-model="exporter.options.filePath"
       label="JSON file"
       outlined
+      :rules="[rules.legalPath]"
       @change="changed = true"
     />
     <v-btn
@@ -28,13 +29,17 @@
 import Vue from 'vue';
 import { setupExporterConfigForm } from '@/components/app/exporters/exportersCommon';
 import { OutputVendorName } from '@/originalBudgetTrackingApp/commonTypes';
+import { legalPath } from '@/components/shared/formValidations';
 
 export default Vue.extend({
   name: 'JsonExporter',
 
   setup() {
     return {
-      ...setupExporterConfigForm(OutputVendorName.JSON)
+      ...setupExporterConfigForm(OutputVendorName.JSON),
+      rules: {
+        legalPath
+      }
     };
   }
 });
