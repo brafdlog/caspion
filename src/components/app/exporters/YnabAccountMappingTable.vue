@@ -19,7 +19,7 @@
               full-width
               dense
               :rules="[rules.required]"
-              @input="input"
+              @input="onInput"
             />
           </td>
           <td>
@@ -28,7 +28,7 @@
               full-width
               dense
               :rules="[rules.required]"
-              @input="input"
+              @input="onInput"
             />
           </td>
           <td>
@@ -56,13 +56,15 @@ export type MappingTable = {
   addItem: () => void
 }
 
-const objToArrayOfKeyValueArray = (obj: Record<string, string>) => Object.keys(obj).map((key) => ({ key, value: obj[key] }));
-type ConvertedType = ReturnType<typeof objToArrayOfKeyValueArray>
-type ConvertedTypeElement = ConvertedType[number]
-const arrayOfKeyValueArrayToObj = (arr: ConvertedType) => arr.reduce((obj, { key, value }) => ({
-  ...obj,
-  [key]: value
+const mappingToArrayOfMappingObjects = (accountToYnab: Record<string, string>) => Object.keys(accountToYnab)
+  .map((account) => ({ account, ynab: accountToYnab[account] }));
+const arrayOfMappingObjectsToMapping = (mappingObjects: ConvertedType) => mappingObjects.reduce((mapping, { account, ynab }) => ({
+  ...mapping,
+  [account]: ynab
 }), {} as Record<string, string>);
+
+type ConvertedType = ReturnType<typeof mappingToArrayOfMappingObjects>
+type ConvertedTypeElement = ConvertedType[number]
 
 export default Vue.extend({
   name: 'YnabAccountMappingTable',
@@ -73,24 +75,24 @@ export default Vue.extend({
     }
   },
   setup(props, { emit }) {
-    const accountToYnabArray = ref(objToArrayOfKeyValueArray(cloneDeep(props.value as Record<string, string>)));
+    const accountToYnabArray = ref(mappingToArrayOfMappingObjects(cloneDeep(props.value as Record<string, string>)));
 
-    const input = () => {
+    const onInput = () => {
       emit('change');
-      emit('input', arrayOfKeyValueArrayToObj(accountToYnabArray.value));
+      emit('input', arrayOfMappingObjectsToMapping(accountToYnabArray.value));
     };
     const deleteAccountMapping = (index: number) => {
       accountToYnabArray.value.splice(index, 1);
-      input();
+      onInput();
     };
     const addItem = () => {
-      accountToYnabArray.value.push({ key: '', value: '' });
-      input();
+      accountToYnabArray.value.push({ account: '', ynab: '' });
+      onInput();
     };
 
     return {
       accountToYnabArray,
-      input,
+      onInput,
       deleteAccountMapping,
       addItem,
       rules: {
