@@ -1,4 +1,4 @@
-import { EnrichedTransaction, EnrichedTransactionsObject } from '../commonTypes';
+import { EnrichedTransaction } from '../commonTypes';
 import { Transaction } from '../import/bankScraper';
 
 /*
@@ -88,7 +88,7 @@ import { Transaction } from '../import/bankScraper';
 const transactionArrayToObject = (transactions: EnrichedTransaction[]) => transactions.reduce((acc, enrichedTransaction) => {
   acc[enrichedTransaction.hash] = enrichedTransaction;
   return acc;
-}, {} as EnrichedTransactionsObject);
+}, {} as Record<string, EnrichedTransaction>);
 
 export const calculateTransactionHash = ({
   date, chargedAmount, description, memo
