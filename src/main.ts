@@ -1,10 +1,9 @@
-// @ts-nocheck
-// eslint-disable-next-line import/no-extraneous-dependencies
+import VueCompositionAPI, { h, ref } from '@vue/composition-api';
 import electron from 'electron';
 import Vue from 'vue';
-import App from './components/App';
+import App from './components/App.vue';
 import FormField from './components/shared/FormField';
-import SplashScreen from './components/SplashScreen';
+import SplashScreen from './components/SplashScreen.vue';
 import { initializeReporter } from './modules/reporting';
 import LoggerPlugin from './plugins/logger';
 import vuetify from './plugins/vuetify';
@@ -22,6 +21,8 @@ const logger = electron.remote.getGlobal('logger');
 logger.info('The renderer process got the logger');
 Vue.use(LoggerPlugin, { logger });
 
+Vue.use(VueCompositionAPI);
+
 Vue.config.productionTip = process.env.NODE_ENV !== 'production';
 
 Vue.component('form-field', FormField);
@@ -33,18 +34,12 @@ new Vue({
 
   name: 'IsraeliBankScrapersDesktop',
 
-  data() {
-    return {
-      loaded: false,
-    };
-  },
-  created() {
-    logger.info('Vue registered');
-    this.$store.restored.then(() => {
-      this.loaded = true;
+  setup(_, { root }) {
+    const loaded = ref(false);
+    root.$store.restored.then(() => {
+      loaded.value = true;
     });
-  },
-  render(h) {
-    return this.loaded ? h(App) : h(SplashScreen);
-  },
+
+    return () => (loaded.value ? h(App) : h(SplashScreen));
+  }
 }).$mount('#app');

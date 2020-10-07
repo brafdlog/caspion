@@ -1,16 +1,13 @@
 import { EventPublisher } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
 import { Transaction } from './import/bankScraper';
-import { Config } from './configManager/configManager';
+import { Config, OutputVendorName } from './configManager/configManager';
+
+export { OutputVendorName };
 
 export interface EnrichedTransaction extends Transaction {
   accountNumber: string;
   category?: string;
   hash: string;
-}
-
-export enum OutputVendorName {
-  YNAB = 'ynab',
-  GOOGLE_SHEETS = 'googleSheets'
 }
 
 export type ExportTransactionsParams = {

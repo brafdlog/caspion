@@ -98,6 +98,9 @@ export function getHash(transaction) {
   const hashProps = properties.filter((p) => p.hash);
   const key = hashProps.reduce((prev, prop) => {
     const value = transaction[prop.name];
+    if (!value) {
+      return '';
+    }
     if (typeof prop.hash === 'function') {
       return prev + prop.hash(value).toString();
     }

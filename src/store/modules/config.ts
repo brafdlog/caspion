@@ -1,23 +1,26 @@
 import { randomHex } from '@/modules/encryption/crypto';
-import { AccountToScrapeConfig, Config } from '@/originalBudgetTrackingApp/configManager/configManager';
-import defaultConfig from '@/originalBudgetTrackingApp/configManager/defaultConfig';
+import {
+  AccountToScrapeConfig, Config, OutputVendorConfig, OutputVendorName
+} from '@/originalBudgetTrackingApp/configManager/configManager';
 import { defineModule } from 'direct-vuex';
+import { moduleActionContext } from '..';
 
 type GlobalConfig = {
   numDaysBack: number,
   showBrowser: boolean
 }
 
-export default defineModule({
+type ExporterPayload<T extends OutputVendorName> = { name: T, exporter: OutputVendorConfig<T> }
+
+const configModule = defineModule({
   namespaced: true as true,
-  state: defaultConfig,
   mutations: {
     addImporter: (state: Config, importer: AccountToScrapeConfig) => state.scraping.accountsToScrape.push(importer),
     removeImporter: (state: Config, importerId: string) => {
       state.scraping.accountsToScrape = state.scraping.accountsToScrape.filter((importer) => importer.id !== importerId);
     },
-    addExporter: (state: Config, { name, ...values }) => {
-      state.outputVendors[name] = values;
+    updateExporter: <T extends OutputVendorName>(state: Config, payload: ExporterPayload<T>) => {
+      state.outputVendors[payload.name] = payload.exporter;
     },
     updateGlobalConfig: (state: Config, updatedConfig: GlobalConfig) => {
       state.scraping.numDaysBack = updatedConfig.numDaysBack;
@@ -32,7 +35,7 @@ export default defineModule({
       });
       return importers;
     },
-    getExporter: (state) => (name: string) => state.outputVendors[name],
+    getExporter: <T extends OutputVendorName>(state) => (name: T): OutputVendorConfig<T> => state.outputVendors[name],
     globalConfig: ({ scraping }): GlobalConfig => {
       const { numDaysBack, showBrowser } = scraping;
       return { numDaysBack, showBrowser };
@@ -46,11 +49,15 @@ export default defineModule({
     removeImporter: ({ commit }, importerId) => {
       commit('removeImporter', importerId);
     },
-    addExporter: ({ commit }, { name, ...values }) => {
-      commit('addExporter', { name, ...values });
+    updateExporter: <T extends OutputVendorName>(context, payload: ExporterPayload<T>) => {
+      configModuleActionContext(context).commit.updateExporter(payload);
     },
     updateGlobalConfig: ({ commit }, globalConfig: GlobalConfig) => {
       commit('updateGlobalConfig', globalConfig);
     }
   },
 });
+
+export default configModule;
+
+const configModuleActionContext = (context: any) => moduleActionContext(context, configModule);
