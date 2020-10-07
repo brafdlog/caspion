@@ -99,7 +99,7 @@ async function postProcessTransactions(accountToScrape: configManager.AccountToS
 }
 
 function enrichTransaction(transaction: Transaction, companyId: string, accountNumber: string): EnrichedTransaction {
-  const hash = calculateTransactionHash(transaction, companyId, accountNumber);
+  const hash = calculateTransactionHash(transaction);
   const category = categoryCalculation.getCategoryNameByTransactionDescription(transaction.description);
   const enrichedTransaction: EnrichedTransaction = {
     ...transaction,
