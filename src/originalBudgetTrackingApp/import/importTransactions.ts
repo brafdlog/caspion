@@ -120,9 +120,3 @@ function transactionsDateComparator(t1: Transaction, t2: Transaction) {
   }
   return 1;
 }
-
-export function calculateTransactionHash({
-  date, chargedAmount, description, memo
-}: Transaction, companyId: string, accountNumber: string) {
-  return `${date}_${chargedAmount}_${description}_${memo}_${companyId}_${accountNumber}`;
-}
