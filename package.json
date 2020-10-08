@@ -6,6 +6,8 @@
   "license": "MIT",
   "main": "background.js",
   "private": true,
+  "repository": "github:brafdlog/budget-tracking",
+  "homepage": "https://github.com/brafdlog/budget-tracking",
   "scripts": {
     "serve": "vue-cli-service electron:serve",
     "build": "vue-cli-service electron:build",
