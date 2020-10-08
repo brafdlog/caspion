@@ -1,9 +1,9 @@
 import { createScraper, SCRAPERS } from 'israeli-bank-scrapers-core';
-import { AccountToScrapeConfig } from '../configManager/configManager';
 import getChrome from '../../modules/downloadChromium';
+import { AccountToScrapeConfig } from '../configManager/configManager';
 
-export { Transaction } from 'israeli-bank-scrapers-core/lib/transactions';
 export { ScaperScrapingResult } from 'israeli-bank-scrapers-core/lib/scrapers/base-scraper';
+export { Transaction } from 'israeli-bank-scrapers-core/lib/transactions';
 
 export const inputVendors = Object.keys(SCRAPERS)
   .map((key) => ({
@@ -18,14 +18,16 @@ interface ScrapeParameters {
   showBrowser?: boolean
 }
 
+type EmitProgressEventFunction = (eventCompanyId: string, message: string) => Promise<void>;
+
 export async function scrape({
   companyId, credentials, startDate, showBrowser = false
-}: ScrapeParameters) {
+}: ScrapeParameters, emitProgressEvent: EmitProgressEventFunction) {
   if (!credentials || (!credentials.username && !credentials.num && !credentials.id) || !credentials.password) {
     throw new Error(`Missing credentials for scraper. CompanyId: ${companyId}`);
   }
 
-  const chromePath = await getChrome(undefined, console.log);
+  const chromePath = await getChrome(undefined);
 
   const options = {
     companyId, // mandatory; one of 'hapoalim', 'discount', 'otsarHahayal', 'leumiCard', 'isracard', 'amex'
@@ -34,14 +36,13 @@ export async function scrape({
     showBrowser, // shows the browser while scraping, good for debugging (default false)
     verbose: false, // include more debug info about in the output
     executablePath: chromePath,
-    prepareBrowser: async (_browser) => {},
-    preparePage: async (_page) => {}
+    prepareBrowser: async (_browser) => { },
+    preparePage: async (_page) => { }
   };
   const scraper = createScraper(options);
+  scraper.onProgress((eventCompanyId: string, payload: { type: string }) => {
+    emitProgressEvent(companyId, payload.type);
+  });
   const scrapeResult = await scraper.scrape(credentials);
-
-  if (!scrapeResult.success) {
-    console.error(`scraping failed for the following reason: ${scrapeResult.errorType}`);
-  }
   return scrapeResult;
 }

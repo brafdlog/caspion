@@ -1,17 +1,20 @@
-import moment from 'moment';
-import { scrapeFinancialAccountsAndFetchTransactions } from '@/originalBudgetTrackingApp/import/importTransactions';
 import { createTransactionsInExternalVendors } from '@/originalBudgetTrackingApp/export/exportTransactions';
-import * as bankScraper from './import/bankScraper';
+import { scrapeFinancialAccountsAndFetchTransactions } from '@/originalBudgetTrackingApp/import/importTransactions';
+import moment from 'moment';
 import * as configManager from './configManager/configManager';
+import { EventPublisher, EventNames } from './eventEmitters/EventEmitter';
+import { buildConsoleEmitter } from './eventEmitters/consoleEmitter';
 import outputVendors from './export/outputVendors';
+import * as bankScraper from './import/bankScraper';
 
 export { printYnabAccountData } from './setupHelpers';
-
 export { outputVendors };
 export { configManager };
+
 export const { inputVendors } = bankScraper;
 
-export async function scrapeAndUpdateOutputVendors() {
+export async function scrapeAndUpdateOutputVendors(optionalEventPublisher?: EventPublisher) {
+  const eventPublisher = optionalEventPublisher || buildConsoleEmitter();
   const config = await configManager.getConfig();
 
   const startDate = moment()
@@ -19,18 +22,15 @@ export async function scrapeAndUpdateOutputVendors() {
     .startOf('day')
     .toDate();
 
-  const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config.scraping, startDate);
+  await eventPublisher.emit(EventNames.IMPORT_PROCESS_START, { startDate, message: `Starting to scrape from ${startDate} to today` });
+
+  const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config.scraping, startDate, eventPublisher);
   try {
-    const executionResult = await createTransactionsInExternalVendors(config.outputVendors, companyIdToTransactions, startDate);
-    const resultToLog = `
-    Results of job:
-    ${JSON.stringify(executionResult, null, 2)}
-  `;
-    console.log(resultToLog);
+    const executionResult = await createTransactionsInExternalVendors(config.outputVendors, companyIdToTransactions, startDate, eventPublisher);
 
     return executionResult;
   } catch (e) {
-    console.error(e);
+    await eventPublisher.emit(EventNames.GENERAL_ERROR, { error: e });
     throw e;
   }
 }

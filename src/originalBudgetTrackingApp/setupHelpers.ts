@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { getConfig } from '@/originalBudgetTrackingApp/configManager/configManager';
 import { getYnabAccountDetails } from '@/originalBudgetTrackingApp/export/outputVendors/ynab/ynab';
 import { getFinancialAccountNumbers } from '@/originalBudgetTrackingApp/import/importTransactions';
