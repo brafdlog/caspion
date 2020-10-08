@@ -1,34 +1,32 @@
 <template>
   <div>
     <v-toolbar>
-      <v-toolbar-title>
-        Exporters
-      </v-toolbar-title>
+      <v-toolbar-title>Exporters</v-toolbar-title>
     </v-toolbar>
-    <exporter
-      v-for="vendor in vendors"
-      :key="vendor.name"
-      :vendor="vendor"
-    />
+    <expansion-panel title="Json">
+      <json-exporter />
+    </expansion-panel>
+    <expansion-panel title="Ynab">
+      <ynab-exporter />
+    </expansion-panel>
+    <expansion-panel title="Google Sheets">
+      <google-sheets-exporter />
+    </expansion-panel>
   </div>
 </template>
 
-<script>
-import { outputVendors } from '@/originalBudgetTrackingApp';
-import Exporter from './exporters/Exporter';
+<script lang="ts">
+import Vue from 'vue';
+import JsonExporter from './exporters/JsonExporter.vue';
+import GoogleSheetsExporter from './exporters/GoogleSheetsExporter.vue';
+import YnabExporter from './exporters/YnabExporter.vue';
+import ExpansionPanel from './exporters/ExpansionPanel.vue';
 
-export default {
-  components: { Exporter },
-  data() {
-    return {
-      accordionActiveItem: '',
-      statuses: {},
-    };
+export default Vue.extend({
+  components: {
+    ExpansionPanel, JsonExporter, GoogleSheetsExporter, YnabExporter
   },
-  computed: {
-    vendors: () => outputVendors,
-  },
-};
+});
 </script>
 
 <style scoped>

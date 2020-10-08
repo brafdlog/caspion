@@ -7,6 +7,12 @@ const DEFAULT_CONFIG: Config = {
     accountsToScrape: [],
   },
   outputVendors: {
+    json: {
+      active: true,
+      options: {
+        filePath: '../transaction.json'
+      }
+    },
     ynab: {
       active: false,
       options: {
