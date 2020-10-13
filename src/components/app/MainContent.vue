@@ -48,7 +48,11 @@ export default Vue.extend({
 
     const scrape = () => {
       inProgress.value = true;
-      scrapeAndUpdateOutputVendors(eventPublisher).finally(() => { inProgress.value = false; });
+      succeeded.value = 'unknown';
+      scrapeAndUpdateOutputVendors(eventPublisher)
+        .then(() => succeeded.value = 'success')
+        .catch(() => succeeded.value = 'failed')
+        .finally(() => { inProgress.value = false; });
     };
 
     return {
