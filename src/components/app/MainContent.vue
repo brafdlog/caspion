@@ -28,10 +28,11 @@ import ConfigEditor from './ConfigEditor.vue';
 import { LogEntry } from '../shared/log/types';
 import LogsEventEmitter from './LogsEventEmitter';
 
-const colors = {
-  success: 'green',
-  failed: 'red',
-  unknown: null
+const statusToColor = {
+  NOT_STARTED: null,
+  IN_PROGRESS: null,
+  SUCCESS: 'green',
+  FAILURE: 'red'
 };
 
 export default Vue.extend({
@@ -39,20 +40,18 @@ export default Vue.extend({
     LogViewer, ConfigEditor
   },
   setup() {
-    const inProgress = ref(false);
-    const succeeded = ref('unknown' as keyof typeof colors);
-    const btnColor = computed(() => colors[succeeded.value]);
+    const scrapingStatus = ref('NOT_STARTED' as keyof typeof statusToColor);
+    const inProgress = computed(() => scrapingStatus.value === 'IN_PROGRESS');
+    const btnColor = computed(() => statusToColor[scrapingStatus.value]);
     const entries = ref([] as LogEntry[]);
 
     const eventPublisher = LogsEventEmitter((entry) => entries.value.push(entry));
 
     const scrape = () => {
-      inProgress.value = true;
-      succeeded.value = 'unknown';
+      scrapingStatus.value = 'IN_PROGRESS';
       scrapeAndUpdateOutputVendors(eventPublisher)
-        .then(() => succeeded.value = 'success')
-        .catch(() => succeeded.value = 'failed')
-        .finally(() => { inProgress.value = false; });
+        .then(() => scrapingStatus.value = 'SUCCESS')
+        .catch(() => scrapingStatus.value = 'FAILURE');
     };
 
     return {
