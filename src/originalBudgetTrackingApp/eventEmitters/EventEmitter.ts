@@ -23,7 +23,6 @@ interface BudgetTrackingEvent {
   message?: string;
 }
 
-// TODO: Maybe extend Error?
 export interface ErrorEvent extends BudgetTrackingEvent {
   error: Error
 }
