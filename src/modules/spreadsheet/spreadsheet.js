@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { google } from 'googleapis';
 import { properties as transactionProperties, transactionArrayToObject } from '../transactions';
 

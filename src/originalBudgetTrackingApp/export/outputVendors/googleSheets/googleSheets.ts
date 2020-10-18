@@ -1,8 +1,8 @@
-import moment from 'moment/moment';
 import {
-  EnrichedTransaction, OutputVendor, OutputVendorName, ExportTransactionsFunction
+  EnrichedTransaction, ExportTransactionsFunction, OutputVendor, OutputVendorName
 } from '@/originalBudgetTrackingApp/commonTypes';
-import { EventPublisher, EventNames } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
+import { EventNames, EventPublisher } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
+import moment from 'moment/moment';
 import * as googleSheets from './googleSheetsInternalAPI';
 
 const GOOGLE_SHEETS_DATE_FORMAT = 'DD/MM/YYYY';

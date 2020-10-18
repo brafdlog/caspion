@@ -1,11 +1,12 @@
-import moment from 'moment';
-import _ from 'lodash';
-import * as configManager from '@/originalBudgetTrackingApp/configManager/configManager';
 import { EnrichedTransaction } from '@/originalBudgetTrackingApp/commonTypes';
+import * as configManager from '@/originalBudgetTrackingApp/configManager/configManager';
 import * as bankScraper from '@/originalBudgetTrackingApp/import/bankScraper';
 import { ScaperScrapingResult, Transaction } from '@/originalBudgetTrackingApp/import/bankScraper';
 import * as categoryCalculation from '@/originalBudgetTrackingApp/import/categoryCalculationScript';
-import { EventPublisher, EventNames, BudgetTrackingEventEmitter } from '../eventEmitters/EventEmitter';
+import _ from 'lodash';
+import moment from 'moment';
+import { BudgetTrackingEventEmitter, EventNames, EventPublisher } from '../eventEmitters/EventEmitter';
+import { calculateTransactionHash } from '../transactions/transactions';
 
 type AccountToScrapeConfig = configManager.AccountToScrapeConfig;
 type Config = configManager.Config;
@@ -119,10 +120,4 @@ function transactionsDateComparator(t1: Transaction, t2: Transaction) {
     return -1;
   }
   return 1;
-}
-
-export function calculateTransactionHash({
-  date, chargedAmount, description, memo
-}: Transaction, companyId: string, accountNumber: string) {
-  return `${date}_${chargedAmount}_${description}_${memo}_${companyId}_${accountNumber}`;
 }

@@ -1,10 +1,10 @@
-import _ from 'lodash';
-import * as ynab from 'ynab';
-import moment from 'moment/moment';
 import {
-  EnrichedTransaction, OutputVendor, OutputVendorName, ExportTransactionsFunction
+  EnrichedTransaction, ExportTransactionsFunction, OutputVendor, OutputVendorName
 } from '@/originalBudgetTrackingApp/commonTypes';
-import { EventPublisher, EventNames } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
+import { EventNames, EventPublisher } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
+import _ from 'lodash';
+import moment from 'moment/moment';
+import * as ynab from 'ynab';
 import { Config, YnabConfig } from '../../../configManager/configManager';
 
 const INITIAL_YNAB_ACCESS_TOKEN = 'AABB';
