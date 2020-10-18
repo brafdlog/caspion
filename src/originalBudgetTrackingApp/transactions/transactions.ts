@@ -8,11 +8,10 @@ const transactionArrayToObject = (transactions: EnrichedTransaction[]) => transa
   return acc;
 }, {} as Record<string, EnrichedTransaction>);
 
-// TODO removed company and account, need attention
 export const calculateTransactionHash = ({
   date, chargedAmount, description, memo
-}: Transaction) => {
-  return `${date}_${chargedAmount}_${description}_${memo}`;
+}: Transaction, companyId: string, accountNumber: string) => {
+  return `${date}_${chargedAmount}_${description}_${memo}_${companyId}_${accountNumber}`;
 };
 
 export const mergeTransactions = (a: EnrichedTransaction[], b: EnrichedTransaction[]) => {
