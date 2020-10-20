@@ -1,7 +1,7 @@
 <template>
   <v-form>
     <div
-      v-if="isLogin"
+      v-if="isTokenValid"
     >
       <v-autocomplete
         v-if="!createNewSheet"
@@ -52,138 +52,170 @@
   </v-form>
 </template>
 
-<script>
-import { mapState, mapActions } from 'vuex';
-import { isConnected, CreateClient } from '@/modules/spreadsheet/googleOAuth2';
-import { listAllSpreadsheets, createNewSpreadsheet, saveTransactionsToGoogleSheets } from '@/modules/spreadsheet/spreadsheet';
+<script lang="ts">
+import Vue from 'vue';
+import { OutputVendorName } from '@/originalBudgetTrackingApp/commonTypes';
+import { GoogleSheetsConfig } from '@/originalBudgetTrackingApp/configManager/configManager';
+import { setupExporterConfigForm } from '@/components/app/exporters/exportersCommon';
+import { ref, onMounted } from '@vue/composition-api';
+import { validateToken } from '@/originalBudgetTrackingApp/export/outputVendors/googleSheets/googleAuth';
+import ElectronLogin from './ElectronGoogleOAuth2Connector';
 
 const name = 'SpreadsheetExporter';
-const title = 'Export to Google Spreadsheet';
 
-export default {
+export default Vue.extend({
   name,
-  title,
-  data() {
-    return {
-      properties: {
-        spreadsheets: [],
-        spreadsheetId: null,
-      },
-      oauth2Client: null,
-      loading: false,
-      isLoadingSheets: false,
-      search: null,
-      createNewSheet: false,
-    };
-  },
-  computed: {
-    isLogin() {
-      return this.oauth2Client !== null;
-    },
-    isNewSpreadsheet() {
-      return this.properties.spreadsheetId
-      && !this.properties.spreadsheets.map((spreadsheet) => spreadsheet.id)
-        .includes(this.properties.spreadsheetId);
-    },
-    ...mapState({
-      storeProperties: (state) => state.Exporters[name],
-      transactions: (state) => state.Transactions.transactions,
-    }),
-  },
-  watch: {
-    search() {
-      // Items have already been loaded
-      if (this.properties.spreadsheets.length > 0) return;
 
-      this.isLoadingSheets = true;
+  setup() {
+    const dataToReturn = setupExporterConfigForm(OutputVendorName.GOOGLE_SHEETS);
 
-      // Lazily load input items
-      listAllSpreadsheets(this.oauth2Client)
-        .then((res) => {
-          this.properties.spreadsheets = res;
-        })
-        .catch((e) => {
-          this.$logger.error(e.message);
-        })
-        .finally(() => { this.isLoadingSheets = false; });
-    },
-  },
-  created() {
-    this.properties = { ...this.properties, ...this.storeProperties };
-    isConnected().then((connected) => {
-      if (connected) {
-        this.login();
-      }
+    const exporter = ref(dataToReturn.exporter as GoogleSheetsConfig);
+    const isTokenValid = ref(false);
+    onMounted(() => {
+      validateToken(exporter.value.options.credentials).then((valid) => { isTokenValid.value = valid; });
     });
-  },
-  methods: {
-    ...mapActions(['saveExporterProperties']),
-    emitStatus(success, message) {
-      this.$emit('update:success', success);
-      this.$emit('update:message', message);
-    },
-    async submitForm() {
-      this.loading = true;
-      try {
-        if (this.isNewSpreadsheet) {
-          await this.createNewSpreadsheet();
-        }
 
-        const result = await saveTransactionsToGoogleSheets(
-          this.oauth2Client,
-          this.properties.spreadsheetId,
-          this.transactions,
-        );
+    const login = () => ElectronLogin()
+      .then((credentials) => {
+        exporter.value.options.credentials = credentials;
+        return dataToReturn.submit();
+      })
+      .then(() => { isTokenValid.value = true; });
 
-        const statusMessage = result.status === 200
-          ? `There were ${result.existTransactions} transactions in the sheet. `
-            + `We were asked to add ${Object.keys(this.transactions).length} transactions, `
-            + `and now there are ${result.updatedTransactions}.`
-          : result.statusText || 'Unknown error';
+    return {
+      ...dataToReturn,
+      isTokenValid,
+      login
+    };
+  }
+});
 
-        this.emitStatus(
-          result.status === 200,
-          statusMessage,
-        );
+// const title = 'Export to Google Spreadsheet';
 
-        this.saveExporterProperties({ name, properties: this.properties });
-      } catch (error) {
-        this.$logger.error(error.message);
-        if (error.stack) this.$logger.verbose(error.stack);
-        this.emitStatus(false, error.message);
-      } finally {
-        this.loading = false;
-      }
-    },
-    async login() {
-      try {
-        this.oauth2Client = await CreateClient();
-      } catch (e) {
-        this.$logger.error(e.message);
-        if (e.stack) this.$logger.verbose(e.stack);
-      }
-    },
-    async createNewSpreadsheet() {
-      this.$logger.info(`Creating new spreadsheet: '${this.properties.spreadsheetId}'`);
-      const spreadsheet = await createNewSpreadsheet(
-        this.oauth2Client,
-        this.properties.spreadsheetId,
-      );
-      const spreadsheetStructured = {
-        id: spreadsheet.spreadsheetId,
-        name: spreadsheet.properties.title,
-      };
-      this.$logger.info(`Created new spreadsheet: '${JSON.stringify(spreadsheetStructured)}'`);
-      this.properties.spreadsheets.push(spreadsheetStructured);
-      this.properties.spreadsheetId = spreadsheetStructured.id;
-      this.createNewSheet = false;
-    },
-    resetSheet() {
-      this.properties.spreadsheetId = '';
-      this.createNewSheet = !this.createNewSheet;
-    },
-  },
-};
+// const comp = {
+//   name,
+//   title,
+//   data() {
+//     return {
+//       properties: {
+//         spreadsheets: [],
+//         spreadsheetId: null,
+//       },
+//       oauth2Client: null,
+//       loading: false,
+//       isLoadingSheets: false,
+//       search: null,
+//       createNewSheet: false,
+//     };
+//   },
+//   computed: {
+//     isLogin() {
+//       return this.oauth2Client !== null;
+//     },
+//     isNewSpreadsheet() {
+//       return this.properties.spreadsheetId
+//       && !this.properties.spreadsheets.map((spreadsheet) => spreadsheet.id)
+//         .includes(this.properties.spreadsheetId);
+//     },
+//     ...mapState({
+//       storeProperties: (state) => state.Exporters[name],
+//       transactions: (state) => state.Transactions.transactions,
+//     }),
+//   },
+//   watch: {
+//     search() {
+//       // Items have already been loaded
+//       if (this.properties.spreadsheets.length > 0) return;
+
+//       this.isLoadingSheets = true;
+
+//       // Lazily load input items
+//       listAllSpreadsheets(this.oauth2Client)
+//         .then((res) => {
+//           this.properties.spreadsheets = res;
+//         })
+//         .catch((e) => {
+//           this.$logger.error(e.message);
+//         })
+//         .finally(() => { this.isLoadingSheets = false; });
+//     },
+//   },
+//   created() {
+//     this.properties = { ...this.properties, ...this.storeProperties };
+//     isConnected().then((connected) => {
+//       if (connected) {
+//         this.login();
+//       }
+//     });
+//   },
+//   methods: {
+//     ...mapActions(['saveExporterProperties']),
+//     emitStatus(success, message) {
+//       this.$emit('update:success', success);
+//       this.$emit('update:message', message);
+//     },
+//     async submitForm() {
+//       this.loading = true;
+//       try {
+//         if (this.isNewSpreadsheet) {
+//           await this.createNewSpreadsheet();
+//         }
+
+//         const result = await saveTransactionsToGoogleSheets(
+//           this.oauth2Client,
+//           this.properties.spreadsheetId,
+//           this.transactions,
+//         );
+
+//         const statusMessage = result.status === 200
+//           ? `There were ${result.existTransactions} transactions in the sheet. `
+//             + `We were asked to add ${Object.keys(this.transactions).length} transactions, `
+//             + `and now there are ${result.updatedTransactions}.`
+//           : result.statusText || 'Unknown error';
+
+//         this.emitStatus(
+//           result.status === 200,
+//           statusMessage,
+//         );
+
+//         this.saveExporterProperties({ name, properties: this.properties });
+//       } catch (error) {
+//         this.$logger.error(error.message);
+//         if (error.stack) this.$logger.verbose(error.stack);
+//         this.emitStatus(false, error.message);
+//       } finally {
+//         this.loading = false;
+//       }
+//     },
+//     async login() {
+//       try {
+//         this.oauth2Client = await CreateClient();
+//       } catch (e) {
+//         this.$logger.error(e.message);
+//         if (e.stack) this.$logger.verbose(e.stack);
+//       }
+//     },
+//     async createNewSpreadsheet() {
+//       this.$logger.info(`Creating new spreadsheet: '${this.properties.spreadsheetId}'`);
+//       const spreadsheet = await createNewSpreadsheet(
+//         this.oauth2Client,
+//         this.properties.spreadsheetId,
+//       );
+//       const spreadsheetStructured = {
+//         id: spreadsheet.spreadsheetId,
+//         name: spreadsheet.properties.title,
+//       };
+//       this.$logger.info(`Created new spreadsheet: '${JSON.stringify(spreadsheetStructured)}'`);
+//       this.properties.spreadsheets.push(spreadsheetStructured);
+//       this.properties.spreadsheetId = spreadsheetStructured.id;
+//       this.createNewSheet = false;
+//     },
+//     resetSheet() {
+//       this.properties.spreadsheetId = '';
+//       this.createNewSheet = !this.createNewSheet;
+//     },
+//   },
+// };
 </script>
 
 <style></style>

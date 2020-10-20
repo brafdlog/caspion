@@ -3,6 +3,7 @@ import {
 } from '@/originalBudgetTrackingApp/commonTypes';
 import { EventNames, EventPublisher } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
 import moment from 'moment/moment';
+import { createClient } from './googleAuth';
 import * as googleSheets from './googleSheetsInternalAPI';
 
 const GOOGLE_SHEETS_DATE_FORMAT = 'DD/MM/YYYY';
@@ -11,13 +12,17 @@ const createTransactionsInGoogleSheets: ExportTransactionsFunction = async (
   { transactionsToCreate: transactions, outputVendorsConfig },
   eventPublisher
 ) => {
-  const { spreadsheetId, sheetName, credentialsFilePath } = outputVendorsConfig.googleSheets!.options;
-  const hashesAlreadyExistingInGoogleSheets = await googleSheets.getExistingHashes({ spreadsheetId, sheetName, credentialsFilePath });
+  const { spreadsheetId, sheetName, credentials } = outputVendorsConfig.googleSheets!.options;
+  if (!credentials) throw new Error('You must set the \'credentials\'');
+  const oAuthClient = createClient(credentials);
+  const hashesAlreadyExistingInGoogleSheets = await googleSheets.getExistingHashes(spreadsheetId, sheetName, oAuthClient);
   const transactionsToCreate = transactions.filter((transaction) => !hashesAlreadyExistingInGoogleSheets.includes(transaction.hash));
+
   if (transactionsToCreate.length === 0) {
     await emitProgressEvent(eventPublisher, transactions, 'All transactions already exist in google sheets');
     return null;
   }
+
   await emitProgressEvent(eventPublisher, transactions, `Creating ${transactionsToCreate.length} transactions in google sheets`);
 
   const transactionsInSheetsFormat = transactionsToCreate.map((transaction) => [
@@ -30,12 +35,9 @@ const createTransactionsInGoogleSheets: ExportTransactionsFunction = async (
     transaction.hash
   ]);
 
-  const spreadsheetAppendResult = await googleSheets.appendToSpreadsheet({
-    spreadsheetId,
-    range: `${sheetName}!A:A`,
-    values: transactionsInSheetsFormat,
-    credentialsFilePath
-  });
+  const spreadsheetAppendResult = await googleSheets.appendToSpreadsheet(
+    spreadsheetId, `${sheetName}!A:A`, transactionsInSheetsFormat, oAuthClient
+  );
   return spreadsheetAppendResult.data;
 };
 

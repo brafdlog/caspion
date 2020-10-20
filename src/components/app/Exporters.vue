@@ -12,19 +12,23 @@
     <expansion-panel title="Google Sheets">
       <google-sheets-exporter />
     </expansion-panel>
+    <expansion-panel title="Google Sheets 2">
+      <spreadsheet-exporter />
+    </expansion-panel>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import JsonExporter from './exporters/JsonExporter.vue';
-import GoogleSheetsExporter from './exporters/GoogleSheetsExporter.vue';
+import GoogleSheetsExporter from './exporters/googleSheets/GoogleSheetsExporter.vue';
 import YnabExporter from './exporters/YnabExporter.vue';
 import ExpansionPanel from './exporters/ExpansionPanel.vue';
+import SpreadsheetExporter from './exporters/googleSheets/SpreadsheetExporter.vue';
 
 export default Vue.extend({
   components: {
-    ExpansionPanel, JsonExporter, GoogleSheetsExporter, YnabExporter
+    ExpansionPanel, JsonExporter, GoogleSheetsExporter, YnabExporter, SpreadsheetExporter
   },
 });
 </script>

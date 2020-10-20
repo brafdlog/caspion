@@ -1,12 +1,8 @@
-import { promisify } from 'util';
-import fs from 'fs';
+import { decrypt, encrypt } from '@/modules/encryption/crypto';
 import { CompanyTypes } from '@brafdlog/israeli-bank-scrapers-core';
-import { encrypt, decrypt } from '@/modules/encryption/crypto';
-
+import { promises as fs, existsSync } from 'fs';
+import { Credentials } from '../export/outputVendors/googleSheets/googleAuth';
 import configExample from './defaultConfig';
-
-const readFile = promisify(fs.readFile);
-const writeFile = promisify(fs.writeFile);
 
 const CONFIG_FILE_NAME = 'config.encrypted';
 const LOCAL_CONFIG_FILE_PATH = CONFIG_FILE_NAME;
@@ -52,7 +48,7 @@ export interface JsonConfig extends OutputVendorConfigBase {
 
 export interface GoogleSheetsConfig extends OutputVendorConfigBase {
   options: {
-    credentialsFilePath: string;
+    credentials: Credentials;
     sheetName: string;
     spreadsheetId: string;
   }
@@ -92,12 +88,12 @@ export async function getConfig(): Promise<Config> {
 export async function updateConfig(configToUpdate: Config): Promise<void> {
   const stringifiedConfig = JSON.stringify(configToUpdate, null, 2);
   const encryptedConfigStr = await encrypt(stringifiedConfig);
-  await writeFile(LOCAL_CONFIG_FILE_PATH, encryptedConfigStr);
+  await fs.writeFile(LOCAL_CONFIG_FILE_PATH, encryptedConfigStr);
 }
 
 async function getConfigFromFile(configFilePath: string) {
-  if (fs.existsSync(configFilePath)) {
-    return readFile(configFilePath, {
+  if (existsSync(configFilePath)) {
+    return fs.readFile(configFilePath, {
       encoding: 'utf8'
     });
   }
