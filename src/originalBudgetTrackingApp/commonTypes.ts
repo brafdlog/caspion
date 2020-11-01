@@ -1,6 +1,6 @@
 import { EventPublisher } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
-import { Transaction } from './import/bankScraper';
 import { Config, OutputVendorName } from './configManager/configManager';
+import { Transaction } from './import/bankScraper';
 
 export { OutputVendorName };
 

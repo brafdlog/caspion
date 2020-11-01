@@ -3,15 +3,15 @@
     <div class="d-flex justify-center align-center">
       <v-btn
         x-large
-        :loading="scraping"
+        :loading="inProgress"
         :color="btnColor"
         @click="scrape"
       >
         Run
       </v-btn>
     </div>
-    <div>
-      <log-lines :entries="results" />
+    <div class="keep-bottom">
+      <log-viewer :entries="entries" />
     </div>
     <div>
       <config-editor />
@@ -19,52 +19,46 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import LogViewer from '@/components/shared/log/LogViewer.vue';
+import Vue from 'vue';
+import { ref, computed } from '@vue/composition-api';
 import { scrapeAndUpdateOutputVendors } from '@/originalBudgetTrackingApp';
-import LogLines from '@/components/shared/LogLines';
-import ConfigEditor from './ConfigEditor';
+import ConfigEditor from './ConfigEditor.vue';
+import { LogEntry } from '../shared/log/types';
+import LogsEventEmitter from './LogsEventEmitter';
 
-const colors = {
-  true: 'green',
-  false: 'red',
-  null: null
+const statusToColor = {
+  NOT_STARTED: null,
+  IN_PROGRESS: null,
+  SUCCESS: 'green',
+  FAILURE: 'red'
 };
 
-export default {
-  name: 'MainContent',
+export default Vue.extend({
   components: {
-    LogLines, ConfigEditor
+    LogViewer, ConfigEditor
   },
-  data() {
+  setup() {
+    const scrapingStatus = ref('NOT_STARTED' as keyof typeof statusToColor);
+    const inProgress = computed(() => scrapingStatus.value === 'IN_PROGRESS');
+    const btnColor = computed(() => statusToColor[scrapingStatus.value]);
+    const entries = ref([] as LogEntry[]);
+
+    const eventPublisher = LogsEventEmitter((entry) => entries.value.push(entry));
+
+    const scrape = () => {
+      scrapingStatus.value = 'IN_PROGRESS';
+      scrapeAndUpdateOutputVendors(eventPublisher)
+        .then(() => scrapingStatus.value = 'SUCCESS')
+        .catch(() => scrapingStatus.value = 'FAILURE');
+    };
+
     return {
-      scraping: false,
-      results: '',
-      succeeded: null,
+      inProgress, btnColor, scrape, entries
     };
   },
-  computed: {
-    btnColor() {
-      return colors[this.succeeded];
-    }
-  },
-  methods: {
-    async scrape() {
-      this.scraping = true;
-      scrapeAndUpdateOutputVendors()
-        .then((results) => {
-          this.results = results;
-          this.succeeded = true;
-        })
-        .catch((error) => {
-          this.results = error.message;
-          this.succeeded = false;
-        })
-        .finally(() => {
-          this.scraping = false;
-        });
-    }
-  }
-};
+});
 </script>
 
 <style scoped>
@@ -79,6 +73,12 @@ export default {
 
 .container > div {
   flex: 1 1 0;
+  overflow: auto;
+}
+
+.container > .keep-bottom {
+  display: flex;
+  flex-direction: column-reverse;
 }
 
 </style>
