@@ -46,11 +46,6 @@
       app
       color="primary"
     >
-      <profile-chip
-        v-for="profile in profiles"
-        :key="profile.email"
-        :profile="profile"
-      />
       <v-spacer />
       <v-btn
         text
@@ -73,39 +68,17 @@
 import { shell } from 'electron';
 import Importers from '@/components/app/Importers';
 import Exporters from '@/components/app/Exporters';
-import ProfileChip from '@/components/shared/ProfileChip';
 import ReportProblemDialog from './app/ReportProblemDialog';
 import MainContent from './app/MainContent';
 
 export default {
   name: 'App',
   components: {
-    Importers, MainContent, Exporters, ProfileChip, ReportProblemDialog,
+    Importers, MainContent, Exporters, ReportProblemDialog,
   },
   data() {
     return {
-      reportProblemDialog: false,
-      profiles: [
-        {
-          avatar: 'https://avatars3.githubusercontent.com/u/17686879',
-          name: 'Baruch Odem',
-          email: 'baruchiro@gmail.com',
-          networks: [
-            'https://github.com/baruchiro',
-            'https://www.linkedin.com/in/baruch-rothkoff/',
-          ],
-        },
-        {
-          // eslint-disable-next-line max-len
-          avatar: 'https://media-exp1.licdn.com/dms/image/C5603AQHBVlsYLgmvNw/profile-displayphoto-shrink_800_800/0?e=1587600000&v=beta&t=iRvw54ZS2K6k3PKi4jgtpe-noj9XTzyUf3IMJvaWShQ',
-          name: 'Ariel Gordon',
-          email: 'arielgordon123@gmail.com',
-          networks: [
-            'https://github.com/Arielgordon123',
-            'https://www.linkedin.com/in/ariel-gordon-462b14156/',
-          ],
-        },
-      ],
+      reportProblemDialog: false
     };
   },
   methods: {
