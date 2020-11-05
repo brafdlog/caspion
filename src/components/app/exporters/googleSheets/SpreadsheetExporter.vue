@@ -54,27 +54,13 @@ import { setupExporterConfigForm } from '@/components/app/exporters/exportersCom
 import {
   ref, onMounted, watch, computed
 } from '@vue/composition-api';
-import { validateToken, OAuth2Client, createClient } from '@/originalBudgetTrackingApp/export/outputVendors/googleSheets/googleAuth';
-import { google, drive_v3 as driveV3 } from 'googleapis';
+import { validateToken, createClient } from '@/originalBudgetTrackingApp/export/outputVendors/googleSheets/googleAuth';
 import { required } from '@/components/shared/formValidations';
+import { getAllSpreadsheets, Spreadsheet } from '@/originalBudgetTrackingApp/export/outputVendors/googleSheets/googleSheetsInternalAPI';
 import ElectronLogin from './ElectronGoogleOAuth2Connector';
 
-const listAllSpreadsheets = async (auth:OAuth2Client) => {
-  const drive = google.drive({ version: 'v3', auth });
-
-  const response = await drive.files.list({
-    q: 'mimeType="application/vnd.google-apps.spreadsheet"',
-  });
-
-  return response.data.files || [];
-};
-
-type Spreadsheet = Pick<driveV3.Schema$File, 'id'| 'name'>
-
-const name = 'SpreadsheetExporter';
-
 export default Vue.extend({
-  name,
+  name: 'SpreadsheetExporter',
 
   setup() {
     const dataToReturn = setupExporterConfigForm(OutputVendorName.GOOGLE_SHEETS);
@@ -82,11 +68,11 @@ export default Vue.extend({
     const exporter = ref(dataToReturn.exporter as GoogleSheetsConfig);
     const isTokenValid = ref(false);
     const userSpreadsheets = ref([] as Spreadsheet[]);
-    const isNewSpreadsheet = computed(() => !userSpreadsheets.value.find(({ id }) => id === exporter.value.options.spreadsheetId));
     const selectedSpreadsheet = computed({
       get: () => {
         if (!exporter.value.options.spreadsheetId) return null;
         return userSpreadsheets.value.find(({ id }) => id === exporter.value.options.spreadsheetId) || {
+          // TODO: Try to return onli exporter.value.options.spreadsheetId
           id: exporter.value.options.spreadsheetId,
           name: exporter.value.options.spreadsheetId
         };
@@ -95,11 +81,14 @@ export default Vue.extend({
         exporter.value.options.spreadsheetId = spreadsheet?.id || spreadsheet as string;
       }
     });
+    const isNewSpreadsheet = computed(() => selectedSpreadsheet.value
+        && selectedSpreadsheet.value.id
+        && selectedSpreadsheet.value.id === selectedSpreadsheet.value.name);
 
     watch(isTokenValid, async (valid) => {
       if (valid) {
         const authClient = await createClient(exporter.value.options.credentials);
-        userSpreadsheets.value = await listAllSpreadsheets(authClient);
+        userSpreadsheets.value = (await getAllSpreadsheets(authClient)) || [];
       }
     });
 
@@ -115,7 +104,6 @@ export default Vue.extend({
       .then(() => {
         isTokenValid.value = true;
       });
-
 
     return {
       ...dataToReturn,

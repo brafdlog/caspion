@@ -1,8 +1,9 @@
+import { drive_v3 as driveV3, google } from 'googleapis';
 import _ from 'lodash';
-import { google } from 'googleapis';
 import { OAuth2Client } from './googleAuth';
 
 const sheets = google.sheets({ version: 'v4' });
+const drive = google.drive({ version: 'v3' });
 
 /**
  * Prints the names and majors of students in a sample spreadsheet:
@@ -33,3 +34,13 @@ export async function getExistingHashes(spreadsheetId: string, sheetName: string
   const existingHashes = _.flatten(result.data.values);
   return existingHashes;
 }
+
+export type Spreadsheet = Pick<driveV3.Schema$File, 'id'| 'name'>
+export const getAllSpreadsheets = async (auth: OAuth2Client) => {
+  const response = await drive.files.list({
+    q: 'mimeType="application/vnd.google-apps.spreadsheet"',
+    auth
+  });
+
+  return response.data.files as Spreadsheet[];
+};
