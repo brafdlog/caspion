@@ -1,30 +1,24 @@
 <template>
-  <v-form>
-    <div
-      v-if="isTokenValid"
-    >
-      <v-autocomplete
-        v-if="!createNewSheet"
-        v-model="properties.spreadsheetId"
-        :loading="isLoadingSheets"
-        :items="properties.spreadsheets"
-        :search-input.sync="search"
+  <v-form
+    ref="vForm"
+    v-model="validated"
+  >
+    <div v-if="isTokenValid">
+      <v-checkbox
+        v-model="exporter.active"
+        class="ma-0"
+        label="Active"
+        @change="changed = true"
+      />
+      <v-combobox
+        v-model="selectedSpreadsheet"
+        :items="userSpreadsheets"
         clearable
-        hide-details
-        hide-selected
+        label="Choose Spreadsheet"
         item-text="name"
         item-value="id"
-        label="Choose Spreadsheet"
-      />
-      <v-text-field
-        v-else
-        v-model="properties.spreadsheetId"
-        label="Name"
-        outlined
-      />
-      <v-switch
-        label="Create new sheet"
-        @change="resetSheet"
+        :rules="[rules.required]"
+        @change="changed = true"
       />
       <v-alert
         v-show="isNewSpreadsheet"
@@ -33,14 +27,14 @@
         Will create a new spreadsheet
       </v-alert>
       <v-btn
-        :disabled="!properties.spreadsheetId"
+        :disabled="!readyToSave.value"
         color="primary"
-        :loading="loading"
-        @click="submitForm()"
+        @click="submit()"
       >
-        Export
+        Save
       </v-btn>
     </div>
+
     <div v-else>
       <v-btn
         color="primary"
@@ -57,9 +51,25 @@ import Vue from 'vue';
 import { OutputVendorName } from '@/originalBudgetTrackingApp/commonTypes';
 import { GoogleSheetsConfig } from '@/originalBudgetTrackingApp/configManager/configManager';
 import { setupExporterConfigForm } from '@/components/app/exporters/exportersCommon';
-import { ref, onMounted } from '@vue/composition-api';
-import { validateToken } from '@/originalBudgetTrackingApp/export/outputVendors/googleSheets/googleAuth';
+import {
+  ref, onMounted, watch, computed
+} from '@vue/composition-api';
+import { validateToken, OAuth2Client, createClient } from '@/originalBudgetTrackingApp/export/outputVendors/googleSheets/googleAuth';
+import { google, drive_v3 as driveV3 } from 'googleapis';
+import { required } from '@/components/shared/formValidations';
 import ElectronLogin from './ElectronGoogleOAuth2Connector';
+
+const listAllSpreadsheets = async (auth:OAuth2Client) => {
+  const drive = google.drive({ version: 'v3', auth });
+
+  const response = await drive.files.list({
+    q: 'mimeType="application/vnd.google-apps.spreadsheet"',
+  });
+
+  return response.data.files || [];
+};
+
+type Spreadsheet = Pick<driveV3.Schema$File, 'id'| 'name'>
 
 const name = 'SpreadsheetExporter';
 
@@ -71,8 +81,30 @@ export default Vue.extend({
 
     const exporter = ref(dataToReturn.exporter as GoogleSheetsConfig);
     const isTokenValid = ref(false);
-    onMounted(() => {
-      validateToken(exporter.value.options.credentials).then((valid) => { isTokenValid.value = valid; });
+    const userSpreadsheets = ref([] as Spreadsheet[]);
+    const isNewSpreadsheet = computed(() => !userSpreadsheets.value.find(({ id }) => id === exporter.value.options.spreadsheetId));
+    const selectedSpreadsheet = computed({
+      get: () => {
+        if (!exporter.value.options.spreadsheetId) return null;
+        return userSpreadsheets.value.find(({ id }) => id === exporter.value.options.spreadsheetId) || {
+          id: exporter.value.options.spreadsheetId,
+          name: exporter.value.options.spreadsheetId
+        };
+      },
+      set: (spreadsheet) => {
+        exporter.value.options.spreadsheetId = spreadsheet?.id || spreadsheet as string;
+      }
+    });
+
+    watch(isTokenValid, async (valid) => {
+      if (valid) {
+        const authClient = await createClient(exporter.value.options.credentials);
+        userSpreadsheets.value = await listAllSpreadsheets(authClient);
+      }
+    });
+
+    onMounted(async () => {
+      isTokenValid.value = await validateToken(exporter.value.options.credentials);
     });
 
     const login = () => ElectronLogin()
@@ -80,12 +112,23 @@ export default Vue.extend({
         exporter.value.options.credentials = credentials;
         return dataToReturn.submit();
       })
-      .then(() => { isTokenValid.value = true; });
+      .then(() => {
+        isTokenValid.value = true;
+      });
+
+    watch(() => exporter.value.options.spreadsheetId, (x) => console.log('spreadsheetId', x));
+    watch(userSpreadsheets, (x) => console.log(x));
 
     return {
       ...dataToReturn,
       isTokenValid,
-      login
+      login,
+      userSpreadsheets,
+      isNewSpreadsheet,
+      selectedSpreadsheet,
+      rules: {
+        required
+      }
     };
   }
 });

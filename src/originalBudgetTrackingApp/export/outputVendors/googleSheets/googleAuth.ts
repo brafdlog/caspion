@@ -19,6 +19,8 @@ export const createClient = (credentials: Auth.Credentials) => {
 };
 
 export const validateToken = async (credentials: Auth.Credentials) => {
+  if (!credentials) return false;
+
   try {
     const client = createClient(credentials);
     const refreshedToken = await client.getAccessToken();
