@@ -66,6 +66,7 @@ module.exports = {
     'arrow-body-style': 'off',
     'object-curly-newline': 'warn',
     'semi': productionError,
+    'no-return-assign': 'off'
   },
 
   overrides: [

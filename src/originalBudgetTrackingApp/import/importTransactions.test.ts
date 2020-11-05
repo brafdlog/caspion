@@ -31,8 +31,10 @@ const TRANSACTION_2: Transaction = {
 describe('Main flow tests', () => {
   describe('Transaction post processing', () => {
     test('Transaction hash', () => {
-      expect(calculateTransactionHash(TRANSACTION_1)).toEqual('2020-03-24T22:00:00.000Z_-54.72_Puppies_');
-      expect(calculateTransactionHash(TRANSACTION_2)).toEqual('2020-03-27T21:00:00.000Z_-200_מי גבעתיים בעמ_some memo');
+      const companyId = 'visaCal';
+      const accountNumber = '2222';
+      expect(calculateTransactionHash(TRANSACTION_1, companyId, accountNumber)).toEqual('2020-03-24T22:00:00.000Z_-54.72_Puppies__visaCal_2222');
+      expect(calculateTransactionHash(TRANSACTION_2, companyId, accountNumber)).toEqual('2020-03-27T21:00:00.000Z_-200_מי גבעתיים בעמ_some memo_visaCal_2222');
     });
   });
 });

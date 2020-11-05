@@ -19,12 +19,12 @@ export enum EventNames {
   LOG = 'LOG'
 }
 
-interface ErrorEvent {
-  error: Error
-}
-
 interface BudgetTrackingEvent {
   message?: string;
+}
+
+export interface ErrorEvent extends BudgetTrackingEvent {
+  error: Error
 }
 
 interface ImporterEvent extends BudgetTrackingEvent {
@@ -53,14 +53,14 @@ interface ImportProcessStartEvent extends BudgetTrackingEvent {
   startDate: Date
 }
 
-type EventDataMap = {
+export type EventDataMap = {
   [EventNames.IMPORT_PROCESS_START]: ImportProcessStartEvent
   [EventNames.IMPORTER_START]: ImporterEvent
   [EventNames.IMPORTER_PROGRESS]: ImporterEvent
   [EventNames.IMPORTER_ERROR]: ImporterErrorEvent
   [EventNames.IMPORTER_END]: ImporterEndEvent
-  [EventNames.IMPORT_PROCESS_END]: { }
-  [EventNames.EXPORT_PROCESS_START]: { }
+  [EventNames.IMPORT_PROCESS_END]: BudgetTrackingEvent
+  [EventNames.EXPORT_PROCESS_START]: BudgetTrackingEvent
   [EventNames.EXPORTER_START]: ExporterEvent
   [EventNames.EXPORTER_PROGRESS]: ExporterEvent
   [EventNames.EXPORTER_ERROR]: ExporterErrorEvent
@@ -75,6 +75,6 @@ export class BudgetTrackingEventEmitter extends Emittery.Typed<EventDataMap, Emp
 
 }
 
-export type EventPublisher = Pick<BudgetTrackingEventEmitter, 'emit' | 'emitSerial'>
+export type EventPublisher = Pick<BudgetTrackingEventEmitter, 'emit'>
 
 export type EventSubscriber = Pick<BudgetTrackingEventEmitter, 'on' | 'once' | 'off' | 'onAny' | 'anyEvent' | 'offAny'>;
