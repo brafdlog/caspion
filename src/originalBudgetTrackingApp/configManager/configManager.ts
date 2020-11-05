@@ -48,6 +48,7 @@ export interface JsonConfig extends OutputVendorConfigBase {
 
 export interface GoogleSheetsConfig extends OutputVendorConfigBase {
   options: {
+    // TODO: Remove irrelevant from here or from default
     credentials: Credentials;
     sheetName: string;
     spreadsheetId: string;
