@@ -15,7 +15,7 @@
         >
           <td>
             <v-text-field
-              v-model="keyVal.key"
+              v-model="keyVal.account"
               full-width
               dense
               :rules="[rules.required]"
@@ -24,7 +24,7 @@
           </td>
           <td>
             <v-text-field
-              v-model="keyVal.value"
+              v-model="keyVal.ynab"
               full-width
               dense
               :rules="[rules.required]"
