@@ -29,8 +29,7 @@ const DEFAULT_CONFIG: Config = {
       active: false,
       options: {
         credentials: {},
-        spreadsheetId: '############################################',
-        sheetName: '###############'
+        spreadsheetId: ''
       }
     }
   },

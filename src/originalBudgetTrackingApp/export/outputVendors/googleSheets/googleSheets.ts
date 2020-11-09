@@ -7,12 +7,13 @@ import { createClient } from './googleAuth';
 import * as googleSheets from './googleSheetsInternalAPI';
 
 const GOOGLE_SHEETS_DATE_FORMAT = 'DD/MM/YYYY';
+const sheetName = '_badget-tracking';
 
 const createTransactionsInGoogleSheets: ExportTransactionsFunction = async (
   { transactionsToCreate: transactions, outputVendorsConfig },
   eventPublisher
 ) => {
-  const { spreadsheetId, sheetName, credentials } = outputVendorsConfig.googleSheets!.options;
+  const { spreadsheetId, credentials } = outputVendorsConfig.googleSheets!.options;
   if (!credentials) throw new Error('You must set the \'credentials\'');
   const oAuthClient = createClient(credentials);
   const hashesAlreadyExistingInGoogleSheets = await googleSheets.getExistingHashes(spreadsheetId, sheetName, oAuthClient);
