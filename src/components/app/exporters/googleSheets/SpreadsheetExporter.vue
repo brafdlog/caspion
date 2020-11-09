@@ -10,7 +10,7 @@
         label="Active"
         @change="changed = true"
       />
-      <spreasheet-form
+      <sheets-combobox
         v-model="exporter.options.spreadsheetId"
         :credentials="exporter.options.credentials"
         @change="changed = true"
@@ -43,11 +43,11 @@ import { setupExporterConfigForm } from '@/components/app/exporters/exportersCom
 import { ref, onMounted } from '@vue/composition-api';
 import { validateToken } from '@/originalBudgetTrackingApp/export/outputVendors/googleSheets/googleAuth';
 import ElectronLogin from './ElectronGoogleOAuth2Connector';
-import SpreasheetForm from './SpreadsheetForm.vue';
+import SheetsCombobox from './SheetsCombobox.vue';
 
 export default Vue.extend({
   name: 'SpreadsheetExporter',
-  components: { SpreasheetForm },
+  components: { SheetsCombobox },
 
   setup() {
     const dataToReturn = setupExporterConfigForm(OutputVendorName.GOOGLE_SHEETS);

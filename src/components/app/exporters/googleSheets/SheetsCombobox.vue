@@ -21,7 +21,6 @@
 </template>
 
 <script lang="ts">
-// TODO: Rename to dropbox or something
 import {
   computed, ref, onMounted, defineComponent, PropType
 } from '@vue/composition-api';
