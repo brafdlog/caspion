@@ -8,8 +8,8 @@
       item-text="name"
       item-value="id"
       :rules="[rules.required]"
-      @input="input"
-      @change="emit('change')"
+      :return-object="false"
+      v-on="listeners"
     />
     <v-alert
       v-show="isNewSpreadsheet"
@@ -39,7 +39,7 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props, { emit }) {
+  setup(props, { emit, listeners }) {
     const userSpreadsheets = ref([] as Spreadsheet[]);
     onMounted(async () => {
       const authClient = await createClient(props.credentials);
@@ -61,21 +61,15 @@ export default defineComponent({
         && spreadsheetObj.value?.id
         && spreadsheetObj.value.id === spreadsheetObj.value.name);
 
-    const input = (value) => {
-      const retVal = (value && value.id) || value;
-      // TODO: try :return-object="false"
-      emit('input', retVal);
-    };
-
     return {
       spreadsheetObj,
       userSpreadsheets,
       isNewSpreadsheet,
       emit,
-      input,
       rules: {
         required
-      }
+      },
+      listeners
     };
   }
 
