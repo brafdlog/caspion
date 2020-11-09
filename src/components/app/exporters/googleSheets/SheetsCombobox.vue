@@ -46,20 +46,9 @@ export default defineComponent({
       userSpreadsheets.value = await getAllSpreadsheets(authClient);
     });
 
-    const spreadsheetObj = computed(() => {
-      if (!props.value) return null;
-      const exists = userSpreadsheets.value.find(({ id }) => id === props.value);
-      return exists || {
-        // TODO: Try to return onli exporter.value.options.spreadsheetId
-        // TODO: backend need handle not-existed spreadsheet
-        id: props.value,
-        name: props.value
-      };
-    });
-
-    const isNewSpreadsheet = computed(() => props.value
-        && spreadsheetObj.value?.id
-        && spreadsheetObj.value.id === spreadsheetObj.value.name);
+    const existedSpreadsheet = computed(() => userSpreadsheets.value.find(({ id }) => id === props.value));
+    const spreadsheetObj = computed(() => existedSpreadsheet.value || props.value);
+    const isNewSpreadsheet = computed(() => props.value && !existedSpreadsheet.value);
 
     return {
       spreadsheetObj,
