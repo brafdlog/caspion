@@ -42,7 +42,7 @@ import { GoogleSheetsConfig } from '@/originalBudgetTrackingApp/configManager/co
 import { setupExporterConfigForm } from '@/components/app/exporters/exportersCommon';
 import { ref, onMounted } from '@vue/composition-api';
 import { validateToken } from '@/originalBudgetTrackingApp/export/outputVendors/googleSheets/googleAuth';
-import ElectronLogin from './ElectronGoogleOAuth2Connector';
+import ElectronLogin from './electronGoogleOAuth2Connector';
 import SheetsCombobox from './SheetsCombobox.vue';
 
 export default Vue.extend({
