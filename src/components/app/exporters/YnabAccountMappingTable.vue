@@ -10,12 +10,12 @@
       </thead>
       <tbody>
         <tr
-          v-for="(keyVal, index) in accountToYnabArray"
+          v-for="(accountYnabPair, index) in accountToYnabArray"
           :key="index"
         >
           <td>
             <v-text-field
-              v-model="keyVal.key"
+              v-model="accountYnabPair.account"
               full-width
               dense
               :rules="[rules.required]"
@@ -24,7 +24,7 @@
           </td>
           <td>
             <v-text-field
-              v-model="keyVal.value"
+              v-model="accountYnabPair.ynab"
               full-width
               dense
               :rules="[rules.required]"
