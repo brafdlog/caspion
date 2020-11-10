@@ -21,8 +21,7 @@
 
 <script lang="ts">
 import LogViewer from '@/components/shared/log/LogViewer.vue';
-import Vue from 'vue';
-import { ref, computed } from '@vue/composition-api';
+import { ref, computed, defineComponent } from '@vue/composition-api';
 import { scrapeAndUpdateOutputVendors } from '@/originalBudgetTrackingApp';
 import ConfigEditor from './ConfigEditor.vue';
 import { LogEntry } from '../shared/log/types';
@@ -35,7 +34,7 @@ const statusToColor = {
   FAILURE: 'red'
 };
 
-export default Vue.extend({
+export default defineComponent({
   components: {
     LogViewer, ConfigEditor
   },

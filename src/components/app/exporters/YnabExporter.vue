@@ -56,25 +56,22 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
 import { setupExporterConfigForm } from '@/components/app/exporters/exportersCommon';
 import { OutputVendorName } from '@/originalBudgetTrackingApp/commonTypes';
 import YnabAccountMappingTable, { MappingTable } from '@/components/app/exporters/YnabAccountMappingTable.vue';
-import { ref } from '@vue/composition-api';
+import { ref, defineComponent } from '@vue/composition-api';
 
-export default Vue.extend({
-  name: 'YnabExporter',
-
+export default defineComponent({
   components: { YnabAccountMappingTable },
 
   setup() {
-    const mappingTable = ref(null as unknown as MappingTable);
+    const mappingTable = ref<MappingTable>();
     const dataToReturn = setupExporterConfigForm(OutputVendorName.YNAB);
 
     return {
       mappingTable,
       ...dataToReturn,
-      addAccountMapping: () => mappingTable.value.addItem(),
+      addAccountMapping: () => mappingTable.value?.addItem(),
     };
   }
 });

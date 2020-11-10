@@ -47,9 +47,8 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
 import { required } from '@/components/shared/formValidations';
-import { ref } from '@vue/composition-api';
+import { ref, defineComponent, PropType } from '@vue/composition-api';
 import { cloneDeep } from 'lodash';
 
 export type MappingTable = {
@@ -66,7 +65,7 @@ const arrayOfMappingObjectsToMapping = (mappingObjects: ConvertedType) => mappin
 type ConvertedType = ReturnType<typeof mappingToArrayOfMappingObjects>
 type ConvertedTypeElement = ConvertedType[number]
 
-export default Vue.extend({
+export default defineComponent({
   name: 'YnabAccountMappingTable',
   props: {
     value: {
@@ -75,7 +74,7 @@ export default Vue.extend({
     }
   },
   setup(props, { emit }) {
-    const accountToYnabArray = ref(mappingToArrayOfMappingObjects(cloneDeep(props.value as Record<string, string>)));
+    const accountToYnabArray = ref(mappingToArrayOfMappingObjects(cloneDeep(props.value)));
 
     const onInput = () => {
       emit('change');
