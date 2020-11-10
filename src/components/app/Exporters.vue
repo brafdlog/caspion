@@ -3,6 +3,9 @@
     <v-toolbar>
       <v-toolbar-title>Exporters</v-toolbar-title>
     </v-toolbar>
+    <expansion-panel title="Csv">
+      <csv-exporter />
+    </expansion-panel>
     <expansion-panel title="Json">
       <json-exporter />
     </expansion-panel>
@@ -17,6 +20,7 @@
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api';
+import CsvExporter from './exporters/CsvExporter.vue';
 import JsonExporter from './exporters/JsonExporter.vue';
 import YnabExporter from './exporters/YnabExporter.vue';
 import ExpansionPanel from './exporters/ExpansionPanel.vue';
@@ -24,7 +28,7 @@ import SpreadsheetExporter from './exporters/googleSheets/SpreadsheetExporter.vu
 
 export default defineComponent({
   components: {
-    ExpansionPanel, JsonExporter, YnabExporter, SpreadsheetExporter
+    ExpansionPanel, CsvExporter, JsonExporter, YnabExporter, SpreadsheetExporter
   },
 });
 </script>
