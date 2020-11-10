@@ -5,6 +5,7 @@
   >
     <v-checkbox
       v-model="exporter.active"
+      class="ma-0"
       label="Active"
       @change="changed = true"
     />
