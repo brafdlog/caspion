@@ -5,7 +5,7 @@ import {
 import { defineModule } from 'direct-vuex';
 import { moduleActionContext } from '..';
 
-type GlobalConfig = {
+export type GlobalConfig = {
   numDaysBack: number,
   showBrowser: boolean
 }
