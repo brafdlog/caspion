@@ -50,7 +50,7 @@ jobs:
     - name: Install Node.js, NPM and Yarn
       uses: actions/setup-node@v1
       with:
-        node-version: 10
+        node-version: 12.x
     - name: Install Snapcraft
       uses: samuelmeuli/action-snapcraft@7510647f38ad93cd87e6d8f043bbcce816d7f3bf
       # Only install Snapcraft  on Ubuntu
