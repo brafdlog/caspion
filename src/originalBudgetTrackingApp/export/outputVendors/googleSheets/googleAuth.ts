@@ -25,14 +25,12 @@ export const validateToken = async (credentials: Auth.Credentials) => {
     const client = createClient(credentials);
     const refreshedToken = await client.getAccessToken();
     if (!refreshedToken.token) {
-      console.log('refreshedToken', refreshedToken);
       return false;
     }
 
     await client.getTokenInfo(refreshedToken.token);
     return true;
-  } catch (e) {
-    console.log(e);
+  } catch {
     return false;
   }
 };

@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-combobox
-      :value="spreadsheetObj"
+      :value="spreadsheet"
       :items="userSpreadsheets"
       clearable
       label="Choose Spreadsheet"
@@ -40,18 +40,18 @@ export default defineComponent({
     }
   },
   setup(props, { emit, listeners }) {
-    const userSpreadsheets = ref([] as Spreadsheet[]);
+    const userSpreadsheets = ref<Spreadsheet[]>([]);
+
     onMounted(async () => {
-      const authClient = await createClient(props.credentials);
-      userSpreadsheets.value = await getAllSpreadsheets(authClient);
+      userSpreadsheets.value = await getAllSpreadsheets(createClient(props.credentials));
     });
 
     const existedSpreadsheet = computed(() => userSpreadsheets.value.find(({ id }) => id === props.value));
-    const spreadsheetObj = computed(() => existedSpreadsheet.value || props.value);
+    const spreadsheet = computed(() => existedSpreadsheet.value || props.value);
     const isNewSpreadsheet = computed(() => props.value && !existedSpreadsheet.value);
 
     return {
-      spreadsheetObj,
+      spreadsheet,
       userSpreadsheets,
       isNewSpreadsheet,
       emit,
