@@ -1,6 +1,6 @@
 <template>
   <v-form
-    ref="form"
+    ref="vForm"
     v-model="validated"
   >
     <v-container>
@@ -10,7 +10,7 @@
             v-model="globalConfig.numDaysBack"
             type="number"
             label="Days back from today to take"
-            :rules="[required, positive]"
+            :rules="[rules.required, rules.positive]"
             @change="changed = true"
           />
         </v-col>
@@ -38,48 +38,43 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
 import { VForm } from '@/types/vuetify';
 import { required, positive } from '@/components/shared/formValidations';
 import store from '@/store';
+import { defineComponent, ref, computed } from '@vue/composition-api';
+import { GlobalConfig } from '@/store/modules/config';
 
-export default Vue.extend({
-  name: 'ConfigEditor',
-  data() {
+export default defineComponent({
+  setup() {
+    const globalConfig = ref<GlobalConfig>(JSON.parse(JSON.stringify(store.getters.Config.globalConfig)));
+    const validated = ref(true);
+    const changed = ref(false);
+    const vForm = ref<VForm>();
+
+    const readyToSave = computed(() => validated.value && changed.value);
+
+    const submitForm = () => {
+      if (vForm.value?.validate()) {
+        store.dispatch.Config.updateGlobalConfig(globalConfig.value)
+          .then(() => {
+            globalConfig.value = JSON.parse(JSON.stringify(store.getters.Config.globalConfig));
+            changed.value = false;
+          });
+      }
+    };
+
     return {
-      globalConfig: {},
-      validated: true,
-      changed: false,
+      vForm,
+      validated,
+      changed,
+      globalConfig,
+      readyToSave,
+      submitForm,
+      rules: {
+        required, positive
+      }
     };
   },
-  computed: {
-    storeGlobalConfig: () => store.getters.Config.globalConfig,
-    readyToSave(): boolean {
-      return this.validated && this.changed;
-    },
-    form(): VForm {
-      return this.$refs.form as VForm;
-    },
-  },
-  created() {
-    this.reset();
-  },
-  methods: {
-    required,
-    positive,
-    updateGlobalConfig: store.dispatch.Config.updateGlobalConfig,
-    reset() {
-      this.globalConfig = JSON.parse(JSON.stringify(this.storeGlobalConfig));
-      this.changed = false;
-    },
-    submitForm() {
-      if (this.form.validate()) {
-        // TODO fix type in the next PR
-        this.updateGlobalConfig(this.globalConfig as any)
-          .then(this.reset);
-      }
-    }
-  }
 });
 </script>
 

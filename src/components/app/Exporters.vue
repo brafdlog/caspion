@@ -16,13 +16,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from '@vue/composition-api';
 import JsonExporter from './exporters/JsonExporter.vue';
 import GoogleSheetsExporter from './exporters/GoogleSheetsExporter.vue';
 import YnabExporter from './exporters/YnabExporter.vue';
 import ExpansionPanel from './exporters/ExpansionPanel.vue';
 
-export default Vue.extend({
+export default defineComponent({
   components: {
     ExpansionPanel, JsonExporter, GoogleSheetsExporter, YnabExporter
   },
