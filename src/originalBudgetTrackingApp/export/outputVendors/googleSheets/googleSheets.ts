@@ -7,7 +7,7 @@ import { createClient } from './googleAuth';
 import * as googleSheets from './googleSheetsInternalAPI';
 
 const GOOGLE_SHEETS_DATE_FORMAT = 'DD/MM/YYYY';
-const sheetName = '_badget-tracking';
+const sheetName = '_budget-tracking';
 
 const createTransactionsInGoogleSheets: ExportTransactionsFunction = async (
   { transactionsToCreate: transactions, outputVendorsConfig },
