@@ -1,5 +1,10 @@
 const globals = require('./globals');
 
+const readonlyGlobals = Object.keys(globals).reduce((acc, key) => {
+  acc[key] = 'readonly';
+  return acc;
+}, {});
+
 const productionError = process.env.NODE_ENV === 'production' ? 'error' : 'warn';
 
 module.exports = {
@@ -20,10 +25,7 @@ module.exports = {
 
   globals: {
     __static: 'writable',
-    ...globals.reduce((prev, curr) => {
-      prev[curr] = 'readonly';
-      return prev;
-    }, {}),
+    ...readonlyGlobals,
   },
 
   plugins: [

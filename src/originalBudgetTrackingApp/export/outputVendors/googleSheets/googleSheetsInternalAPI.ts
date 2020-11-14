@@ -1,29 +1,22 @@
+import { drive_v3 as driveV3, google } from 'googleapis';
 import _ from 'lodash';
-import fs from 'fs';
-import { promisify } from 'util';
-import { google } from 'googleapis';
+import { OAuth2Client } from './googleAuth';
 
-const readFile = promisify(fs.readFile);
 const sheets = google.sheets({ version: 'v4' });
-
-const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
+const drive = google.drive({ version: 'v3' });
 
 /**
  * Prints the names and majors of students in a sample spreadsheet:
  * @see https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
  * @param {google.auth.OAuth2} auth The authenticated Google OAuth client.
  */
-export async function appendToSpreadsheet({
-  spreadsheetId, range, values, credentialsFilePath
-}) {
-  const jwtClient = await loadCredentialsAndAuthorize(credentialsFilePath);
-
+export async function appendToSpreadsheet(spreadsheetId: string, range: string, values: unknown[][], auth: OAuth2Client) {
   const requestBody = {
     values
   };
 
   const result = await sheets.spreadsheets.values.append({
-    auth: jwtClient,
+    auth,
     spreadsheetId,
     range,
     valueInputOption: 'USER_ENTERED',
@@ -32,13 +25,9 @@ export async function appendToSpreadsheet({
   return result;
 }
 
-export async function getExistingHashes({
-  spreadsheetId, credentialsFilePath, sheetName, hashColumn = 'H'
-}) {
-  const jwtClient = await loadCredentialsAndAuthorize(credentialsFilePath);
-
+export async function getExistingHashes(spreadsheetId: string, sheetName: string, auth: OAuth2Client, hashColumn = 'H') {
   const result = await sheets.spreadsheets.values.get({
-    auth: jwtClient,
+    auth,
     spreadsheetId,
     range: `${sheetName}!${hashColumn}:${hashColumn}`
   });
@@ -46,12 +35,12 @@ export async function getExistingHashes({
   return existingHashes;
 }
 
-async function loadCredentialsAndAuthorize(credentialsFilePath) {
-  const credentialsStr = await readFile(credentialsFilePath, 'utf8');
-  const credentials = JSON.parse(credentialsStr);
-  const jwtClient = new google.auth.JWT(credentials.client_email, undefined, credentials.private_key, SCOPES);
+export type Spreadsheet = Pick<driveV3.Schema$File, 'id'| 'name'>
+export const getAllSpreadsheets = async (auth: OAuth2Client) => {
+  const response = await drive.files.list({
+    q: 'mimeType="application/vnd.google-apps.spreadsheet"',
+    auth
+  });
 
-  await jwtClient.authorize();
-
-  return jwtClient;
-}
+  return response.data.files as Spreadsheet[];
+};

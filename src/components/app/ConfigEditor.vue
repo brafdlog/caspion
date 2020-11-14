@@ -8,6 +8,7 @@
         <v-col class="py-0">
           <v-text-field
             v-model="globalConfig.numDaysBack"
+            class="input-element"
             type="number"
             label="Days back from today to take"
             :rules="[rules.required, rules.positive]"
@@ -20,6 +21,7 @@
         >
           <v-checkbox
             v-model="globalConfig.showBrowser"
+            class="input-element"
             label="Show browser"
             @change="changed = true"
           />
@@ -78,5 +80,8 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
+.input-element {
+  min-width: 200px;
+}
 </style>
