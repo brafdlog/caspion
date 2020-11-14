@@ -54,9 +54,7 @@ export default defineComponent({
     const readyToSave = computed(() => validated.value && changed.value);
 
     const submitForm = () => {
-      debugger;
       if (vForm.value?.validate()) {
-        debugger;
         store.dispatch.Config.updateGlobalConfig(globalConfig.value)
           .then(() => {
             globalConfig.value = JSON.parse(JSON.stringify(store.getters.Config.globalConfig));
