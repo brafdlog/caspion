@@ -62,9 +62,10 @@ jobs:
     - name: Set 'publish' parameter
       shell: python
       run: |
+        import os
         param = 'always' if '${{ steps.check_release.outputs.result }}' == 'true' else 'never'
         print("Will {} (for this run) publish files to draft release".format(param))
-        print("::set-env name=PUBLISH_PARAM::{}".format(param))
+        with open(os.getenv('GITHUB_ENV'), 'a') as envFile: envFile.write('PUBLISH_PARAM=' + param)
     - name: Build & release Electron app
       shell: bash
       env:
