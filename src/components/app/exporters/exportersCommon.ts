@@ -11,7 +11,7 @@ export function setupExporterConfigForm<T extends OutputVendorName>(exporterName
 
   const validated = ref(true);
   const changed = ref(false);
-  const readyToSave = computed(() => validated && changed);
+  const readyToSave = computed(() => validated.value && changed.value);
   const submit = async () => {
     if (vForm.value?.validate()) {
       await store.dispatch.Config.updateExporter({ name: exporterName, exporter });

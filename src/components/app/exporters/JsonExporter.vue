@@ -18,7 +18,7 @@
     />
     <v-btn
       color="primary"
-      :disabled="!readyToSave.value"
+      :disabled="!readyToSave"
       @click="submit()"
     >
       Save
