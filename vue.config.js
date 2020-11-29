@@ -2,11 +2,7 @@ const globals = require('./globals');
 
 const defineGlobals = (config) => {
   config.plugin('define').tap((args) => {
-    const defined = globals.reduce((prev, curr) => {
-      prev[curr] = JSON.stringify(process.env[curr]);
-      return prev;
-    }, {});
-    args[0] = defined;
+    args[0] = globals;
     return args;
   });
   config.module

@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
+import { defineComponent, PropType } from '@vue/composition-api';
 import { LogEntry, Levels } from './types';
 
 const levelToClass = {
@@ -20,7 +20,7 @@ const levelToClass = {
   [Levels.Info]: 'info-line'
 };
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     entries: {
       type: Array as PropType<LogEntry[]>,

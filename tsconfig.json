@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
+    "target": "ES2019",
+    "module": "commonjs",
     "outDir": "dist",
     "strict": true,
     "jsx": "preserve",
@@ -13,6 +13,7 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "allowJs": true,
+    "resolveJsonModule": true,
     "baseUrl": ".",
     "types": [
       "webpack-env",
@@ -25,7 +26,7 @@
       ]
     },
     "lib": [
-      "esnext",
+      "ES2019",
       "dom",
       "dom.iterable",
       "scripthost"

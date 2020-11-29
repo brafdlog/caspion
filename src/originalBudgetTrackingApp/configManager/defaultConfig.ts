@@ -28,9 +28,8 @@ const DEFAULT_CONFIG: Config = {
     googleSheets: {
       active: false,
       options: {
-        spreadsheetId: '############################################',
-        sheetName: '###############',
-        credentialsFilePath: '/###########/google_api_credentials.json'
+        credentials: {},
+        spreadsheetId: ''
       }
     }
   },

@@ -24,8 +24,9 @@ jobs:
     - name: Set version in Env
       shell: bash
       run: |
-        echo ::set-env name=package_version::`awk -F ':' '/version/ {print $2}' package.json | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g'`
-        echo "Version is `awk -F ':' '/version/ {print $2}' package.json | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g'`"
+        package_version=`awk -F ':' '/version/ {print $2}' package.json | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g'`
+        echo "package_version=$package_version" >> $GITHUB_ENV
+        echo "Version is $package_version"
     - uses: actions/github-script@0.3.0
       name: Check if current version is a published release (by release tag)
       id: check_release
@@ -50,9 +51,9 @@ jobs:
     - name: Install Node.js, NPM and Yarn
       uses: actions/setup-node@v1
       with:
-        node-version: 10
+        node-version: 12.x
     - name: Install Snapcraft
-      uses: samuelmeuli/action-snapcraft@7510647f38ad93cd87e6d8f043bbcce816d7f3bf
+      uses: samuelmeuli/action-snapcraft@06f69b882c878790b568f0247d623eaa49de2f3d
       # Only install Snapcraft  on Ubuntu
       if: startsWith(matrix.os, 'ubuntu')
       with:
@@ -61,9 +62,10 @@ jobs:
     - name: Set 'publish' parameter
       shell: python
       run: |
+        import os
         param = 'always' if '${{ steps.check_release.outputs.result }}' == 'true' else 'never'
         print("Will {} (for this run) publish files to draft release".format(param))
-        print("::set-env name=PUBLISH_PARAM::{}".format(param))
+        with open(os.getenv('GITHUB_ENV'), 'a') as envFile: envFile.write('PUBLISH_PARAM=' + param)
     - name: Build & release Electron app
       shell: bash
       env:
