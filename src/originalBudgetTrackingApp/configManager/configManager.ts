@@ -1,5 +1,5 @@
 import { decrypt, encrypt } from '@/modules/encryption/crypto';
-import { CompanyTypes } from '@brafdlog/israeli-bank-scrapers-core';
+import { CompanyTypes } from 'israeli-bank-scrapers-core';
 import { promises as fs, existsSync } from 'fs';
 import { Credentials } from '../export/outputVendors/googleSheets/googleAuth';
 import configExample from './defaultConfig';
