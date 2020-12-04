@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CSV exporter Serialize and parse transactions Basic test case 1`] = `
+"date,description,chargedAmount,memo,category,accountNumber,installments,originalAmount,originalCurrency,processedDate,identifier,hash,status,type
+2018-11-07T22:00:00.000Z,Ikea,78,hello,Misc,abcd,2 / 7,-50,ILS,2018-11-10T22:00:00.000Z,3982580,111,completed,normal
+2018-11-07T22:00:00.000Z,Samuel,1000,amazing memo,Finance,8375982KJHDS2,,932,ILS,2018-11-10T22:00:00.000Z,,11KJFLDKJ22__3231,pending,installments
+"
+`;
+
+exports[`CSV exporter Serialize and parse transactions Basic test case 2`] = `
+Array [
+  Object {
+    "accountNumber": "abcd",
+    "category": "Misc",
+    "chargedAmount": 78,
+    "date": "2018-11-07T22:00:00.000Z",
+    "description": "Ikea",
+    "hash": "111",
+    "identifier": 3982580,
+    "installments": Object {
+      "number": 2,
+      "total": 7,
+    },
+    "memo": "hello",
+    "originalAmount": -50,
+    "originalCurrency": "ILS",
+    "processedDate": "2018-11-10T22:00:00.000Z",
+    "status": "completed",
+    "type": "normal",
+  },
+  Object {
+    "accountNumber": "8375982KJHDS2",
+    "category": "Finance",
+    "chargedAmount": 1000,
+    "date": "2018-11-07T22:00:00.000Z",
+    "description": "Samuel",
+    "hash": "11KJFLDKJ22__3231",
+    "identifier": undefined,
+    "installments": undefined,
+    "memo": "amazing memo",
+    "originalAmount": 932,
+    "originalCurrency": "ILS",
+    "processedDate": "2018-11-10T22:00:00.000Z",
+    "status": "pending",
+    "type": "installments",
+  },
+]
+`;

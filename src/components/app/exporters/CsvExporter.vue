@@ -5,6 +5,7 @@
   >
     <v-checkbox
       v-model="exporter.active"
+      class="ma-0"
       label="Active"
       @change="changed = true"
     />
@@ -26,12 +27,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
 import { setupExporterConfigForm } from '@/components/app/exporters/exportersCommon';
 import { OutputVendorName } from '@/originalBudgetTrackingApp/commonTypes';
 import { legalPath } from '@/components/shared/formValidations';
+import { defineComponent } from '@vue/composition-api';
 
-export default Vue.extend({
+export default defineComponent({
   name: 'CsvExporter',
 
   setup() {

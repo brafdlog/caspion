@@ -3,7 +3,7 @@
     <v-toolbar>
       <v-toolbar-title>Exporters</v-toolbar-title>
     </v-toolbar>
-    <expansion-panel title="Csv">
+    <expansion-panel title="Csv (Excel)">
       <csv-exporter />
     </expansion-panel>
     <expansion-panel title="Json">
