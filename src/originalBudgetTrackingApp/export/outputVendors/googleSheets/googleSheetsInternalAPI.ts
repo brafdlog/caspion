@@ -25,7 +25,7 @@ export async function appendToSpreadsheet(spreadsheetId: string, range: string, 
   return result;
 }
 
-export async function getExistingHashes(spreadsheetId: string, sheetName: string, auth: OAuth2Client, hashColumn = 'H') {
+export async function getExistingHashes(spreadsheetId: string, sheetName: string, auth: OAuth2Client, hashColumn = 'G') {
   const result = await sheets.spreadsheets.values.get({
     auth,
     spreadsheetId,
