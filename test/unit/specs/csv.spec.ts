@@ -2,7 +2,6 @@ import { TransactionStatuses, TransactionTypes } from 'israeli-bank-scrapers-cor
 import { EnrichedTransaction } from '@/originalBudgetTrackingApp/commonTypes';
 import { serializeTransactions, parseTransactions } from '@/originalBudgetTrackingApp/export/outputVendors/csv/csv';
 
-
 const transactions: EnrichedTransaction[] = [
   {
     identifier: 3982580,
@@ -37,7 +36,6 @@ const transactions: EnrichedTransaction[] = [
     type: TransactionTypes.Installments
   }
 ];
-
 
 describe('CSV exporter', () => {
   describe('Serialize and parse transactions', () => {
