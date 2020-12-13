@@ -16,6 +16,12 @@ const createTransactionsInGoogleSheets: ExportTransactionsFunction = async (
   const { spreadsheetId, credentials } = outputVendorsConfig.googleSheets!.options;
   if (!credentials) throw new Error('You must set the \'credentials\'');
   const oAuthClient = createClient(credentials);
+
+  const sheet = await googleSheets.getSheet(spreadsheetId, sheetName, oAuthClient);
+  if (!sheet) {
+    throw new Error(`There is no sheet called ${sheetName} in the spreadsheet`);
+  }
+
   const hashesAlreadyExistingInGoogleSheets = await googleSheets.getExistingHashes(spreadsheetId, sheetName, oAuthClient);
   const transactionsToCreate = transactions.filter((transaction) => !hashesAlreadyExistingInGoogleSheets.includes(transaction.hash));
 
