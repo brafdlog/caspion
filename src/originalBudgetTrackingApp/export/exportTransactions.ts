@@ -1,6 +1,6 @@
 import { Config } from '@/originalBudgetTrackingApp/configManager/configManager';
 import {
-  EventPublisher, EventNames, ExporterEvent, ExporterErrorEvent
+  AccountStatus, EventNames, EventPublisher, ExporterErrorEvent, ExporterEvent
 } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
 import { EnrichedTransaction } from '@/originalBudgetTrackingApp/commonTypes';
 import _ from 'lodash';
@@ -29,7 +29,7 @@ export async function createTransactionsInExternalVendors(
         const vendorResult = await outputVendor.exportTransactions({
           transactionsToCreate: allTransactions, startDate, outputVendorsConfig
         }, eventPublisher);
-        await eventPublisher.emit(EventNames.EXPORTER_END, new ExporterEvent({ message: 'Finished', ...baseEvent }));
+        await eventPublisher.emit(EventNames.EXPORTER_END, new ExporterEvent({ message: 'Finished', ...baseEvent, status: AccountStatus.DONE }));
         executionResult[outputVendor.name] = vendorResult;
       } catch (e) {
         await eventPublisher.emit(EventNames.EXPORTER_ERROR, new ExporterErrorEvent(e, baseEvent.exporterName, allTransactions));

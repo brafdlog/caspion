@@ -6,7 +6,7 @@ import * as categoryCalculation from '@/originalBudgetTrackingApp/import/categor
 import _ from 'lodash';
 import moment from 'moment';
 import {
-  BudgetTrackingEventEmitter, EventNames, EventPublisher, ImporterEvent
+  AccountStatus, BudgetTrackingEventEmitter, EventNames, EventPublisher, ImporterEvent
 } from '../eventEmitters/EventEmitter';
 import { calculateTransactionHash } from '../transactions/transactions';
 
@@ -27,21 +27,24 @@ export async function scrapeFinancialAccountsAndFetchTransactions(scrapingConfig
       const scrapeResult = await fetchTransactions(accountToScrape, startDate, scrapingConfig, eventPublisher);
       const transactions = await postProcessTransactions(accountToScrape, scrapeResult);
       companyIdToTransactions[companyId] = transactions;
-      await eventPublisher.emit(EventNames.IMPORTER_END, buildImporterEvent(accountToScrape, { message: 'Importer end' }));
+      await eventPublisher.emit(EventNames.IMPORTER_END, buildImporterEvent(accountToScrape, { message: 'Importer end', status: AccountStatus.DONE }));
     } catch (error) {
-      await eventPublisher.emit(EventNames.IMPORTER_ERROR, buildImporterEvent(accountToScrape, { message: 'Importer error', error }));
+      await eventPublisher.emit(EventNames.IMPORTER_ERROR, buildImporterEvent(accountToScrape, {
+        message: 'Importer error', error, status: AccountStatus.ERROR
+      }));
       throw error;
     }
   }
   return companyIdToTransactions;
 }
 
-function buildImporterEvent(accountConfig: AccountToScrapeConfig, additionalParams: { message: string, error?: Error }) {
+function buildImporterEvent(accountConfig: AccountToScrapeConfig, additionalParams: { message: string, error?: Error, status?: AccountStatus }) {
   return new ImporterEvent({
     message: additionalParams.message,
     importerName: accountConfig.name,
     importerKey: accountConfig.key,
-    error: additionalParams.error
+    error: additionalParams.error,
+    status: additionalParams.status
   });
 }
 

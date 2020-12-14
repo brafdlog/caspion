@@ -54,7 +54,7 @@ export default defineComponent({
     eventEmitter.onAny((eventName, eventData) => {
       const message = eventData?.message || eventName;
       const logLevel = eventData?.error ? Levels.Error : Levels.Info;
-      return handleEvent({ ...eventData, message, logLevel }, accountsState);
+      return handleEvent({ ...eventData, message, level: logLevel }, accountsState);
     });
 
     const scrape = () => {

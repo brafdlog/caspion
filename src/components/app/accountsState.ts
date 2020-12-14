@@ -2,11 +2,7 @@
 import { BudgetTrackingEvent } from '@/originalBudgetTrackingApp';
 import { Levels } from '@/components/shared/log/types';
 import { UnwrapRef } from '@vue/composition-api';
-import { AccountType } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
-
-export enum AccountStatus {
-  IDLE, PENDING, IN_PROGRESS, DONE, ERROR
-}
+import { AccountStatus, AccountType } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
 
 export class AccountState {
   id: string;
@@ -63,11 +59,17 @@ export class AccountsState {
 }
 
 export function handleEvent(event: BudgetTrackingEvent & { level: Levels }, accountsState: UnwrapRef<AccountsState>) {
+  let accountState: AccountState | undefined;
   if (event.accountType === AccountType.IMPORTER) {
-    const importerState = accountsState.importers.find(({ name }) => name === event.vendorName);
-    importerState?.events.push(event);
+    accountState = accountsState.importers.find(({ name }) => name === event.vendorName);
   } else if (event.accountType === AccountType.EXPORTER) {
-    const exporterState = accountsState.exporters.find(({ name }) => name === event.vendorName);
-    exporterState?.events.push(event);
+    accountState = accountsState.exporters.find(({ name }) => name === event.vendorName);
+  }
+
+  if (accountState) {
+    accountState.events.push(event);
+    if (event.accountStatus) {
+      accountState.status = event.accountStatus;
+    }
   }
 }

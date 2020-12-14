@@ -24,33 +24,41 @@ export enum AccountType {
   IMPORTER, EXPORTER
 }
 
+export enum AccountStatus {
+  IDLE, PENDING, IN_PROGRESS, DONE, ERROR
+}
+
 type BudgetTrackingEventParam = {
   message: string;
   vendorId?: string;
   vendorName?: string;
   error?: Error;
   accountType?: AccountType;
+  accountStatus?: AccountStatus;
 }
 
 export class BudgetTrackingEvent {
   message: string;
 
-  vendorId?: string
+  vendorId?: string;
 
-  vendorName?: string
+  vendorName?: string;
+
+  accountStatus?: BudgetTrackingEventParam['accountStatus'];
 
   error?: Error;
 
   accountType?: BudgetTrackingEventParam['accountType'];
 
   constructor({
-    message, vendorId, vendorName, error, accountType
+    message, vendorId, vendorName, error, accountType, accountStatus = AccountStatus.IN_PROGRESS
   }: BudgetTrackingEventParam) {
     this.message = message;
     this.vendorId = vendorId;
     this.vendorName = vendorName;
     this.error = error;
     this.accountType = accountType;
+    this.accountStatus = accountStatus;
   }
 }
 
@@ -62,23 +70,27 @@ export class ErrorEvent extends BudgetTrackingEvent {
 
 export class ImporterEvent extends BudgetTrackingEvent {
   constructor({
-    message, importerName, importerKey, error
-  }: { message: string, importerName: string, importerKey: CompanyTypes, error?: Error }) {
+    message, importerName, importerKey, error, status
+  }: { message: string, importerName: string, importerKey: CompanyTypes, error?: Error, status?: AccountStatus }) {
     super({
-      message, vendorId: importerKey, vendorName: importerName, error, accountType: AccountType.IMPORTER
+      message, vendorId: importerKey, vendorName: importerName, error, accountType: AccountType.IMPORTER, accountStatus: status
     });
   }
 }
 
 export type ExporterEventParams = {
-  message: string, exporterName: string, allTransactions: EnrichedTransaction[]
+  message: string, exporterName: string, allTransactions: EnrichedTransaction[], status?: AccountStatus
 }
 
 export class ExporterEvent extends BudgetTrackingEvent {
   allTransactions: EnrichedTransaction[];
 
-  constructor({ message, exporterName, allTransactions }: ExporterEventParams) {
-    super({ message, vendorName: exporterName, accountType: AccountType.EXPORTER });
+  constructor({
+    message, exporterName, allTransactions, status
+  }: ExporterEventParams) {
+    super({
+      message, vendorName: exporterName, accountType: AccountType.EXPORTER, accountStatus: status
+    });
     this.allTransactions = allTransactions;
   }
 }
@@ -87,7 +99,9 @@ export class ExporterErrorEvent extends ExporterEvent implements ErrorEvent {
   error: Error;
 
   constructor(error: Error, exporterName: string, allTransactions: EnrichedTransaction[]) {
-    super({ message: error.message, exporterName, allTransactions });
+    super({
+      message: error.message, exporterName, allTransactions, status: AccountStatus.ERROR
+    });
     this.error = error;
   }
 }
