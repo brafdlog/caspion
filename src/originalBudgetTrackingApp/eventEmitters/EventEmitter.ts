@@ -20,14 +20,17 @@ export enum EventNames {
   LOG = 'LOG'
 }
 
+export enum AccountType {
+  IMPORTER, EXPORTER
+}
+
 type BudgetTrackingEventParam = {
   message: string;
   vendorId?: string;
   vendorName?: string;
-  error?: Error
+  error?: Error;
+  accountType?: AccountType;
 }
-
-// Make BudgetTrackingEvent and ErrorEvent interfaces, and the rest classes that implement them
 
 export class BudgetTrackingEvent {
   message: string;
@@ -38,13 +41,16 @@ export class BudgetTrackingEvent {
 
   error?: Error;
 
+  accountType?: BudgetTrackingEventParam['accountType'];
+
   constructor({
-    message, vendorId, vendorName, error
+    message, vendorId, vendorName, error, accountType
   }: BudgetTrackingEventParam) {
     this.message = message;
     this.vendorId = vendorId;
     this.vendorName = vendorName;
     this.error = error;
+    this.accountType = accountType;
   }
 }
 
@@ -59,7 +65,7 @@ export class ImporterEvent extends BudgetTrackingEvent {
     message, importerName, importerKey, error
   }: { message: string, importerName: string, importerKey: CompanyTypes, error?: Error }) {
     super({
-      message, vendorId: importerKey, vendorName: importerName, error
+      message, vendorId: importerKey, vendorName: importerName, error, accountType: AccountType.IMPORTER
     });
   }
 }
@@ -72,7 +78,7 @@ export class ExporterEvent extends BudgetTrackingEvent {
   allTransactions: EnrichedTransaction[];
 
   constructor({ message, exporterName, allTransactions }: ExporterEventParams) {
-    super({ message, vendorName: exporterName });
+    super({ message, vendorName: exporterName, accountType: AccountType.EXPORTER });
     this.allTransactions = allTransactions;
   }
 }
