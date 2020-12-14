@@ -6,24 +6,16 @@
           <div
             v-for="(importer) in accountsState.importers"
             :key="importer.id"
-            class="card-container"
           >
-            <v-card elevation="4">
-              <v-card-title> {{ importer.name }}</v-card-title>
-              <v-card-subtitle> {{ importer.events.length ? importer.events[importer.events.length - 1].message : '' }}</v-card-subtitle>
-            </v-card>
+            <account-card :account-state="importer" />
           </div>
         </v-col>
         <v-col>
           <div
             v-for="(exporter) in accountsState.exporters"
             :key="exporter.id"
-            class="card-container"
           >
-            <v-card elevation="4">
-              <v-card-title> {{ exporter.name }}</v-card-title>
-              <v-card-subtitle> {{ exporter.events.length ? exporter.events[exporter.events.length - 1].message : '' }}</v-card-subtitle>
-            </v-card>
+            <account-card :account-state="exporter" />
           </div>
         </v-col>
       </v-row>
@@ -34,6 +26,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from '@vue/composition-api';
 import { AccountsState } from '@/components/app/AccountsState';
+import AccountCard from '@/components/shared/log/AccountCard.vue';
 import { Levels } from './types';
 
 const levelToClass = {
@@ -43,6 +36,7 @@ const levelToClass = {
 };
 
 export default defineComponent({
+  components: { AccountCard },
   props: {
     accountsState: {
       type: Object as PropType<AccountsState>,
@@ -83,10 +77,5 @@ export default defineComponent({
 
 .logs-container .info-line {
   color: rgb(0, 125, 60);
-}
-
-.card-container {
-  margin: 20px;
-  max-width: 600px;
 }
 </style>
