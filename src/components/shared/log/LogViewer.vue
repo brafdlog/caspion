@@ -1,18 +1,22 @@
 <template>
   <div class="logs-container">
-    <p
-      v-for="(entry, i) in entries"
+    <div
+      v-for="(accountEntry, i) in accountEntries"
       :key="i"
-      :class="getClass(entry.level)"
+      class="card-container"
     >
-      {{ entry.message }}
-    </p>
+      <v-card elevation="4">
+        <v-card-title> {{ accountEntry.accountName }}</v-card-title>
+        <v-card-subtitle> {{ accountEntry.entries[accountEntry.entries.length - 1].message }}</v-card-subtitle>
+      </v-card>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from '@vue/composition-api';
-import { LogEntry, Levels } from './types';
+import { defineComponent, PropType, computed } from '@vue/composition-api';
+import { BudgetTrackingEvent } from '@/originalBudgetTrackingApp';
+import { Levels } from './types';
 
 const levelToClass = {
   [Levels.Error]: 'error-line',
@@ -23,14 +27,30 @@ const levelToClass = {
 export default defineComponent({
   props: {
     entries: {
-      type: Array as PropType<LogEntry[]>,
+      type: Array as PropType<BudgetTrackingEvent[]>,
       required: true
     },
   },
-  setup() {
+  setup(props) {
     const getClass = (level: Levels) => levelToClass[level];
-
-    return { getClass };
+    const accountEntries = computed<{ accountName: string, entries: BudgetTrackingEvent[] }[]>(() => {
+      const accountToEntriesMap = new Map<string, BudgetTrackingEvent[]>();
+      props.entries.forEach((entry: BudgetTrackingEvent) => {
+        const vendorName = entry.vendorName || 'General';
+        if (!accountToEntriesMap.has(vendorName)) {
+          accountToEntriesMap.set(vendorName, []);
+        }
+        accountToEntriesMap.get(vendorName)!.push(entry);
+      });
+      const accountEntriesArray = Array.from(accountToEntriesMap.keys()).map((accountName) => {
+        return {
+          accountName,
+          entries: accountToEntriesMap.get(accountName) || []
+        };
+      });
+      return accountEntriesArray;
+    });
+    return { getClass, accountEntries };
   }
 });
 </script>
@@ -48,7 +68,7 @@ export default defineComponent({
 }
 
 .logs-container > p {
-  margin-bottom: 0px;
+  margin-bottom: 0;
   border-bottom: solid 1px #80808038;
 }
 
@@ -62,5 +82,10 @@ export default defineComponent({
 
 .logs-container .info-line {
   color: rgb(0, 125, 60);
+}
+
+.card-container {
+  margin: 20px;
+  max-width: 600px;
 }
 </style>
