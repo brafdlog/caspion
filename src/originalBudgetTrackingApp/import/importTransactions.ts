@@ -5,7 +5,9 @@ import { ScaperScrapingResult, Transaction } from '@/originalBudgetTrackingApp/i
 import * as categoryCalculation from '@/originalBudgetTrackingApp/import/categoryCalculationScript';
 import _ from 'lodash';
 import moment from 'moment';
-import { BudgetTrackingEventEmitter, EventNames, EventPublisher } from '../eventEmitters/EventEmitter';
+import {
+  BudgetTrackingEventEmitter, EventNames, EventPublisher, ImporterEvent
+} from '../eventEmitters/EventEmitter';
 import { calculateTransactionHash } from '../transactions/transactions';
 
 type AccountToScrapeConfig = configManager.AccountToScrapeConfig;
@@ -21,26 +23,26 @@ export async function scrapeFinancialAccountsAndFetchTransactions(scrapingConfig
     const accountToScrape = accountsToScrape[i];
     const companyId = accountToScrape.key;
     try {
-      await eventPublisher.emit(EventNames.IMPORTER_START, buildImporterEvent(accountToScrape));
+      await eventPublisher.emit(EventNames.IMPORTER_START, buildImporterEvent(accountToScrape, { message: 'Importer start' }));
       const scrapeResult = await fetchTransactions(accountToScrape, startDate, scrapingConfig, eventPublisher);
       const transactions = await postProcessTransactions(accountToScrape, scrapeResult);
       companyIdToTransactions[companyId] = transactions;
-      await eventPublisher.emit(EventNames.IMPORTER_END, buildImporterEvent(accountToScrape));
+      await eventPublisher.emit(EventNames.IMPORTER_END, buildImporterEvent(accountToScrape, { message: 'Importer end' }));
     } catch (error) {
-      await eventPublisher.emit(EventNames.IMPORTER_ERROR, buildImporterEvent(accountToScrape, { error }));
+      await eventPublisher.emit(EventNames.IMPORTER_ERROR, buildImporterEvent(accountToScrape, { message: 'Importer error', error }));
       throw error;
     }
   }
   return companyIdToTransactions;
 }
 
-function buildImporterEvent(accountConfig: AccountToScrapeConfig, additionalParams?: any) {
-  return {
-    id: accountConfig.id,
-    name: accountConfig.name,
-    companyKey: accountConfig.key,
-    ...additionalParams
-  };
+function buildImporterEvent(accountConfig: AccountToScrapeConfig, additionalParams: { message: string, error?: Error }) {
+  return new ImporterEvent({
+    message: additionalParams.message,
+    importerName: accountConfig.name,
+    importerKey: accountConfig.key,
+    error: additionalParams.error
+  });
 }
 
 export async function getFinancialAccountNumbers() {

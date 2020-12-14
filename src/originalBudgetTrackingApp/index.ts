@@ -2,7 +2,9 @@ import { createTransactionsInExternalVendors } from '@/originalBudgetTrackingApp
 import { scrapeFinancialAccountsAndFetchTransactions } from '@/originalBudgetTrackingApp/import/importTransactions';
 import moment from 'moment';
 import * as configManager from './configManager/configManager';
-import { EventPublisher, EventNames, BudgetTrackingEventEmitter } from './eventEmitters/EventEmitter';
+import {
+  EventPublisher, EventNames, BudgetTrackingEventEmitter, ErrorEvent, BudgetTrackingEvent
+} from './eventEmitters/EventEmitter';
 import { buildCompositeEventPublisher } from './eventEmitters/compositeEventPublisher';
 import { buildConsoleEmitter } from './eventEmitters/consoleEmitter';
 import outputVendors from './export/outputVendors';
@@ -14,6 +16,7 @@ export { configManager };
 export const EventEmitter = {
   EventNames, BudgetTrackingEventEmitter
 };
+export { BudgetTrackingEvent };
 
 export const { inputVendors } = bankScraper;
 
@@ -34,7 +37,7 @@ export async function scrapeAndUpdateOutputVendors(optionalEventPublisher?: Even
 
     return executionResult;
   } catch (e) {
-    await eventPublisher.emit(EventNames.GENERAL_ERROR, { error: e });
+    await eventPublisher.emit(EventNames.GENERAL_ERROR, new ErrorEvent(e));
     throw e;
   }
 }

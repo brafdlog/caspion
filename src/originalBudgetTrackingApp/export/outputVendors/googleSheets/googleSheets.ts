@@ -1,7 +1,7 @@
 import {
   EnrichedTransaction, ExportTransactionsFunction, OutputVendor, OutputVendorName
 } from '@/originalBudgetTrackingApp/commonTypes';
-import { EventNames, EventPublisher } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
+import { EventNames, EventPublisher, ExporterEvent } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
 import moment from 'moment/moment';
 import { createClient } from './googleAuth';
 import * as googleSheets from './googleSheetsInternalAPI';
@@ -49,7 +49,7 @@ const createTransactionsInGoogleSheets: ExportTransactionsFunction = async (
 };
 
 async function emitProgressEvent(eventPublisher: EventPublisher, allTransactions: EnrichedTransaction[], message: string) {
-  await eventPublisher.emit(EventNames.EXPORTER_PROGRESS, { name: googleSheetsOutputVendor.name, allTransactions, message });
+  await eventPublisher.emit(EventNames.EXPORTER_PROGRESS, new ExporterEvent({ message, exporterName: googleSheetsOutputVendor.name, allTransactions }));
 }
 
 export const googleSheetsOutputVendor: OutputVendor = {
