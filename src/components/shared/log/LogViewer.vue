@@ -1,21 +1,39 @@
 <template>
   <div class="logs-container">
-    <div
-      v-for="(accountEntry, i) in accountEntries"
-      :key="i"
-      class="card-container"
-    >
-      <v-card elevation="4">
-        <v-card-title> {{ accountEntry.accountName }}</v-card-title>
-        <v-card-subtitle> {{ accountEntry.entries[accountEntry.entries.length - 1].message }}</v-card-subtitle>
-      </v-card>
-    </div>
+    <v-container>
+      <v-row>
+        <v-col>
+          <div
+            v-for="(importer) in accountsState.importers"
+            :key="importer.id"
+            class="card-container"
+          >
+            <v-card elevation="4">
+              <v-card-title> {{ importer.name }}</v-card-title>
+              <v-card-subtitle> {{ importer.events.length ? importer.events[importer.events.length - 1].message : '' }}</v-card-subtitle>
+            </v-card>
+          </div>
+        </v-col>
+        <v-col>
+          <div
+            v-for="(exporter) in accountsState.exporters"
+            :key="exporter.id"
+            class="card-container"
+          >
+            <v-card elevation="4">
+              <v-card-title> {{ exporter.name }}</v-card-title>
+              <v-card-subtitle> {{ exporter.events.length ? exporter.events[exporter.events.length - 1].message : '' }}</v-card-subtitle>
+            </v-card>
+          </div>
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed } from '@vue/composition-api';
-import { BudgetTrackingEvent } from '@/originalBudgetTrackingApp';
+import { defineComponent, PropType } from '@vue/composition-api';
+import { AccountsState } from '@/components/app/AccountsState';
 import { Levels } from './types';
 
 const levelToClass = {
@@ -26,31 +44,14 @@ const levelToClass = {
 
 export default defineComponent({
   props: {
-    entries: {
-      type: Array as PropType<BudgetTrackingEvent[]>,
+    accountsState: {
+      type: Object as PropType<AccountsState>,
       required: true
     },
   },
-  setup(props) {
+  setup() {
     const getClass = (level: Levels) => levelToClass[level];
-    const accountEntries = computed<{ accountName: string, entries: BudgetTrackingEvent[] }[]>(() => {
-      const accountToEntriesMap = new Map<string, BudgetTrackingEvent[]>();
-      props.entries.forEach((entry: BudgetTrackingEvent) => {
-        const vendorName = entry.vendorName || 'General';
-        if (!accountToEntriesMap.has(vendorName)) {
-          accountToEntriesMap.set(vendorName, []);
-        }
-        accountToEntriesMap.get(vendorName)!.push(entry);
-      });
-      const accountEntriesArray = Array.from(accountToEntriesMap.keys()).map((accountName) => {
-        return {
-          accountName,
-          entries: accountToEntriesMap.get(accountName) || []
-        };
-      });
-      return accountEntriesArray;
-    });
-    return { getClass, accountEntries };
+    return { getClass };
   }
 });
 </script>

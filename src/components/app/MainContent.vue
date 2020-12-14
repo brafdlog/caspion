@@ -11,7 +11,7 @@
       </v-btn>
     </div>
     <div class="keep-bottom">
-      <log-viewer :entries="entries" />
+      <log-viewer :accounts-state="accountsState" />
     </div>
     <div>
       <config-editor />
@@ -21,10 +21,14 @@
 
 <script lang="ts">
 import LogViewer from '@/components/shared/log/LogViewer.vue';
-import { ref, computed, defineComponent } from '@vue/composition-api';
-import { scrapeAndUpdateOutputVendors } from '@/originalBudgetTrackingApp';
+import {
+  computed, defineComponent, reactive, ref
+} from '@vue/composition-api';
+import { BudgetTrackingEvent, scrapeAndUpdateOutputVendors } from '@/originalBudgetTrackingApp';
+import { AccountsState, handleEvent } from '@/components/app/AccountsState';
+import store from '@/store';
 import ConfigEditor from './ConfigEditor.vue';
-import { LogEntry } from '../shared/log/types';
+import { Levels } from '../shared/log/types';
 import LogsEventEmitter from './LogsEventEmitter';
 
 const statusToColor = {
@@ -39,14 +43,16 @@ export default defineComponent({
     LogViewer, ConfigEditor
   },
   setup() {
+    const config = store.getters.Config;
     const scrapingStatus = ref('NOT_STARTED' as keyof typeof statusToColor);
     const inProgress = computed(() => scrapingStatus.value === 'IN_PROGRESS');
     const btnColor = computed(() => statusToColor[scrapingStatus.value]);
-    const entries = ref([] as LogEntry[]);
 
-    const eventPublisher = LogsEventEmitter((entry) => entries.value.push(entry));
+    const accountsState = reactive(new AccountsState(config.getActiveImporters, config.getActiveExporters));
+    const eventPublisher = LogsEventEmitter((event: BudgetTrackingEvent & { level: Levels }) => handleEvent(event, accountsState));
 
     const scrape = () => {
+      accountsState.clear();
       scrapingStatus.value = 'IN_PROGRESS';
       scrapeAndUpdateOutputVendors(eventPublisher)
         .then(() => scrapingStatus.value = 'SUCCESS')
@@ -54,7 +60,7 @@ export default defineComponent({
     };
 
     return {
-      inProgress, btnColor, scrape, entries
+      inProgress, btnColor, scrape, accountsState
     };
   },
 });
