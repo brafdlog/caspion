@@ -24,12 +24,11 @@ import LogViewer from '@/components/shared/log/LogViewer.vue';
 import {
   computed, defineComponent, reactive, ref
 } from '@vue/composition-api';
-import { BudgetTrackingEvent, scrapeAndUpdateOutputVendors } from '@/originalBudgetTrackingApp';
-import { AccountsState, handleEvent } from '@/components/app/AccountsState';
+import { EventEmitter, scrapeAndUpdateOutputVendors } from '@/originalBudgetTrackingApp';
+import { AccountsState, handleEvent } from '@/components/app/accountsState';
 import store from '@/store';
 import ConfigEditor from './ConfigEditor.vue';
 import { Levels } from '../shared/log/types';
-import LogsEventEmitter from './LogsEventEmitter';
 
 const statusToColor = {
   NOT_STARTED: null,
@@ -49,12 +48,19 @@ export default defineComponent({
     const btnColor = computed(() => statusToColor[scrapingStatus.value]);
 
     const accountsState = reactive(new AccountsState(config.getActiveImporters, config.getActiveExporters));
-    const eventPublisher = LogsEventEmitter((event: BudgetTrackingEvent & { level: Levels }) => handleEvent(event, accountsState));
+
+    const eventEmitter = new EventEmitter.BudgetTrackingEventEmitter();
+
+    eventEmitter.onAny((eventName, eventData) => {
+      const message = eventData?.message || eventName;
+      const logLevel = eventData?.error ? Levels.Error : Levels.Info;
+      return handleEvent({ ...eventData, message, logLevel }, accountsState);
+    });
 
     const scrape = () => {
       accountsState.clear();
       scrapingStatus.value = 'IN_PROGRESS';
-      scrapeAndUpdateOutputVendors(eventPublisher)
+      scrapeAndUpdateOutputVendors(eventEmitter)
         .then(() => scrapingStatus.value = 'SUCCESS')
         .catch(() => scrapingStatus.value = 'FAILURE');
     };

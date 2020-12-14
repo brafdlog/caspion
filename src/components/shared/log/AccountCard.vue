@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import { computed, defineComponent } from '@vue/composition-api';
-import { AccountState } from '@/components/app/AccountsState';
+import { AccountState } from '@/components/app/accountsState';
 
 export default defineComponent({
   props: {
