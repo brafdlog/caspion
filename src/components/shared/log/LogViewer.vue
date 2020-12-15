@@ -25,7 +25,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from '@vue/composition-api';
-import { AccountsState } from '@/components/app/AccountsState';
+import { AccountsState } from '@/components/app/accountsState';
 import AccountCard from '@/components/shared/log/AccountCard.vue';
 import { Levels } from './types';
 
