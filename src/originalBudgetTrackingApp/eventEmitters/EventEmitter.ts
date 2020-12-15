@@ -28,31 +28,22 @@ export enum AccountStatus {
   IDLE, PENDING, IN_PROGRESS, DONE, ERROR
 }
 
-type BudgetTrackingEventParam = {
-  message: string;
-  vendorId?: CompanyTypes | OutputVendorName;
-  vendorName?: string;
-  error?: Error;
-  accountType?: AccountType;
-  accountStatus?: AccountStatus;
-}
-
 export class BudgetTrackingEvent {
   message: string;
 
-  vendorId?: string;
+  vendorId?: CompanyTypes | OutputVendorName;
 
   vendorName?: string;
 
-  accountStatus?: BudgetTrackingEventParam['accountStatus'];
+  accountStatus?: AccountStatus;
 
   error?: Error;
 
-  accountType?: BudgetTrackingEventParam['accountType'];
+  accountType?: AccountType;
 
   constructor({
     message, vendorId, vendorName, error, accountType, accountStatus = AccountStatus.IN_PROGRESS
-  }: BudgetTrackingEventParam) {
+  }: BudgetTrackingEvent) {
     this.message = message;
     this.vendorId = vendorId;
     this.vendorName = vendorName;
