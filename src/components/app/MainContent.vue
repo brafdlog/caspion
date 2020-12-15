@@ -32,6 +32,19 @@
         </div>
       </v-col>
     </v-row>
+    <v-dialog
+      :value="generalError"
+      width="500"
+    >
+      <v-card>
+        <v-card-title class="headline red lighten-2">
+          Error
+        </v-card-title>
+        <v-card-text class="general-error-text subtitle-1">
+          {{ generalError }}
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -61,6 +74,7 @@ export default defineComponent({
   setup() {
     const config = store.getters.Config;
     const scrapingStatus = ref('NOT_STARTED' as keyof typeof statusToColor);
+    const generalError = ref<string>('');
     const inProgress = computed(() => scrapingStatus.value === 'IN_PROGRESS');
     const btnColor = computed(() => statusToColor[scrapingStatus.value]);
     const showAccountCards = computed(() => scrapingStatus.value !== 'NOT_STARTED');
@@ -76,16 +90,21 @@ export default defineComponent({
     });
 
     const scrape = () => {
+      generalError.value = '';
       accountsState.clear();
       accountsState.setPendingStatus();
       scrapingStatus.value = 'IN_PROGRESS';
       scrapeAndUpdateOutputVendors(eventEmitter)
         .then(() => scrapingStatus.value = 'SUCCESS')
-        .catch(() => scrapingStatus.value = 'FAILURE');
+        .catch((e) => {
+          accountsState.clear();
+          generalError.value = e.message;
+          return scrapingStatus.value = 'FAILURE';
+        });
     };
 
     return {
-      inProgress, btnColor, scrape, accountsState, showAccountCards
+      inProgress, btnColor, scrape, accountsState, showAccountCards, generalError
     };
   },
 });
@@ -97,5 +116,8 @@ export default defineComponent({
 }
 .container {
   height: 100%;
+}
+.general-error-text {
+  margin-top: 15px;
 }
 </style>
