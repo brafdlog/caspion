@@ -49,7 +49,9 @@ const createTransactionsInGoogleSheets: ExportTransactionsFunction = async (
 };
 
 async function emitProgressEvent(eventPublisher: EventPublisher, allTransactions: EnrichedTransaction[], message: string) {
-  await eventPublisher.emit(EventNames.EXPORTER_PROGRESS, new ExporterEvent({ message, exporterName: googleSheetsOutputVendor.name, allTransactions }));
+  await eventPublisher.emit(EventNames.EXPORTER_PROGRESS, new ExporterEvent({
+    message, exporterName: googleSheetsOutputVendor.name, allTransactions
+  }));
 }
 
 export const googleSheetsOutputVendor: OutputVendor = {

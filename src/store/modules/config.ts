@@ -43,7 +43,7 @@ const configModule = defineModule({
     getActiveImporters: (state) => {
       return state.scraping.accountsToScrape
         .filter((accountToScrape) => accountToScrape.active)
-        .map((accountToScrape) => ({ id: accountToScrape.id, name: accountToScrape.name }));
+        .map((accountToScrape) => ({ id: accountToScrape.key, name: accountToScrape.name }));
     },
     getActiveExporters: (state) => {
       const activeExporters: { id: string, name: string }[] = [];

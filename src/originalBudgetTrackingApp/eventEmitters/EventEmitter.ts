@@ -1,6 +1,6 @@
 // eslint-disable-next-line max-classes-per-file
 import Emittery from 'emittery';
-import { EnrichedTransaction } from '@/originalBudgetTrackingApp/commonTypes';
+import { EnrichedTransaction, OutputVendorName } from '@/originalBudgetTrackingApp/commonTypes';
 import { CompanyTypes } from 'israeli-bank-scrapers-core';
 
 export enum EventNames {
@@ -30,7 +30,7 @@ export enum AccountStatus {
 
 type BudgetTrackingEventParam = {
   message: string;
-  vendorId?: string;
+  vendorId?: CompanyTypes | OutputVendorName;
   vendorName?: string;
   error?: Error;
   accountType?: AccountType;
@@ -79,7 +79,7 @@ export class ImporterEvent extends BudgetTrackingEvent {
 }
 
 export type ExporterEventParams = {
-  message: string, exporterName: string, allTransactions: EnrichedTransaction[], status?: AccountStatus
+  message: string, exporterName: OutputVendorName, allTransactions: EnrichedTransaction[], status?: AccountStatus
 }
 
 export class ExporterEvent extends BudgetTrackingEvent {
@@ -98,7 +98,7 @@ export class ExporterEvent extends BudgetTrackingEvent {
 export class ExporterErrorEvent extends ExporterEvent implements ErrorEvent {
   error: Error;
 
-  constructor(error: Error, exporterName: string, allTransactions: EnrichedTransaction[]) {
+  constructor(error: Error, exporterName: OutputVendorName, allTransactions: EnrichedTransaction[]) {
     super({
       message: error.message, exporterName, allTransactions, status: AccountStatus.ERROR
     });

@@ -19,7 +19,7 @@ export async function createTransactionsInExternalVendors(
     const outputVendor = outputVendors[j];
     if (outputVendorsConfig[outputVendor.name]?.active) {
       const baseEvent = {
-        exporterName: outputVendor.name.toString(),
+        exporterName: outputVendor.name,
         allTransactions
       };
 

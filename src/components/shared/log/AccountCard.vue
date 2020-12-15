@@ -3,8 +3,18 @@
     <v-card elevation="4">
       <v-list>
         <v-list-item>
+          <v-list-item-avatar>
+            <v-img
+              v-if="accountMetadata.logo"
+              :src="accountMetadata.logo"
+            />
+            <v-card-text
+              v-else
+              v-text="accountMetadata.companyName"
+            />
+          </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title v-text="accountState.name" />
+            <v-list-item-title v-text="accountMetadata.companyName" />
             <v-list-item-subtitle v-text="latestEventMessage" />
           </v-list-item-content>
           <v-list-item-icon class="status-indicator-wrapper">
@@ -20,6 +30,7 @@
 import { computed, defineComponent } from '@vue/composition-api';
 import { AccountState } from '@/components/app/accountsState';
 import AccountCardStatusIndicator from '@/components/shared/log/AccountCardStatusIndicator.vue';
+import ACCOUNT_METADATA, { AccountMetadata } from '@/accountsMetadata';
 
 export default defineComponent({
   components: {
@@ -37,8 +48,8 @@ export default defineComponent({
       const latestEvent = events.length ? events[events.length - 1] : null;
       return latestEvent ? latestEvent.message : '';
     });
-
-    return { latestEventMessage };
+    const accountMetadata: AccountMetadata = ACCOUNT_METADATA[props.accountState.id];
+    return { latestEventMessage, accountMetadata };
   }
 });
 </script>
