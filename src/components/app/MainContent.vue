@@ -1,22 +1,38 @@
 <template>
-  <div class="container">
-    <div class="d-flex justify-center align-center">
-      <v-btn
-        x-large
-        :loading="inProgress"
-        :color="btnColor"
-        @click="scrape"
-      >
-        Run
-      </v-btn>
-    </div>
-    <div class="keep-bottom">
-      <log-viewer :accounts-state="accountsState" />
-    </div>
-    <div>
-      <config-editor />
-    </div>
-  </div>
+  <v-container class="container d-flex flex-column">
+    <v-row
+      class="run-button-row"
+      align-content="center"
+    >
+      <v-col align="center">
+        <v-btn
+          x-large
+          :loading="inProgress"
+          :color="btnColor"
+          @click="scrape"
+        >
+          Run
+        </v-btn>
+      </v-col>
+    </v-row>
+    <v-row v-if="showAccountCards">
+      <v-col cols="12">
+        <div>
+          <log-viewer :accounts-state="accountsState" />
+        </div>
+      </v-col>
+    </v-row>
+    <v-row
+      v-else
+      align="end"
+    >
+      <v-col cols="12">
+        <div>
+          <config-editor />
+        </div>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -27,7 +43,7 @@ import {
 import { EventEmitter, scrapeAndUpdateOutputVendors } from '@/originalBudgetTrackingApp';
 import { AccountsState, handleEvent } from '@/components/app/accountsState';
 import store from '@/store';
-import ConfigEditor from './ConfigEditor.vue';
+import ConfigEditor from '@/components/app/ConfigEditor.vue';
 import { Levels } from '../shared/log/types';
 
 const statusToColor = {
@@ -39,13 +55,15 @@ const statusToColor = {
 
 export default defineComponent({
   components: {
-    LogViewer, ConfigEditor
+    ConfigEditor,
+    LogViewer
   },
   setup() {
     const config = store.getters.Config;
     const scrapingStatus = ref('NOT_STARTED' as keyof typeof statusToColor);
     const inProgress = computed(() => scrapingStatus.value === 'IN_PROGRESS');
     const btnColor = computed(() => statusToColor[scrapingStatus.value]);
+    const showAccountCards = computed(() => scrapingStatus.value !== 'NOT_STARTED');
 
     const accountsState = reactive(new AccountsState(config.getActiveImporters, config.getActiveExporters));
 
@@ -66,30 +84,17 @@ export default defineComponent({
     };
 
     return {
-      inProgress, btnColor, scrape, accountsState
+      inProgress, btnColor, scrape, accountsState, showAccountCards
     };
   },
 });
 </script>
 
 <style scoped>
-
+.run-button-row {
+  flex: 0.5;
+}
 .container {
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: stretch;
 }
-
-.container > div {
-  flex: 1 1 0;
-  overflow: auto;
-}
-
-.container > .keep-bottom {
-  display: flex;
-  flex-direction: column-reverse;
-}
-
 </style>
