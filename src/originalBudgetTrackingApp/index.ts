@@ -3,7 +3,7 @@ import { scrapeFinancialAccountsAndFetchTransactions } from '@/originalBudgetTra
 import moment from 'moment';
 import * as configManager from './configManager/configManager';
 import {
-  EventPublisher, EventNames, BudgetTrackingEventEmitter, ErrorEvent, BudgetTrackingEvent
+  EventPublisher, EventNames, BudgetTrackingEventEmitter, BudgetTrackingEvent
 } from './eventEmitters/EventEmitter';
 import { buildCompositeEventPublisher } from './eventEmitters/compositeEventPublisher';
 import { buildConsoleEmitter } from './eventEmitters/consoleEmitter';
@@ -29,7 +29,7 @@ export async function scrapeAndUpdateOutputVendors(optionalEventPublisher?: Even
     .startOf('day')
     .toDate();
 
-  await eventPublisher.emit(EventNames.IMPORT_PROCESS_START, { startDate, message: `Starting to scrape from ${startDate} to today` });
+  await eventPublisher.emit(EventNames.IMPORT_PROCESS_START, { message: `Starting to scrape from ${startDate} to today` });
 
   const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config.scraping, startDate, eventPublisher);
   try {
@@ -37,7 +37,7 @@ export async function scrapeAndUpdateOutputVendors(optionalEventPublisher?: Even
 
     return executionResult;
   } catch (e) {
-    await eventPublisher.emit(EventNames.GENERAL_ERROR, new ErrorEvent(e));
+    await eventPublisher.emit(EventNames.GENERAL_ERROR, new BudgetTrackingEvent({ message: e.message, error: e }));
     throw e;
   }
 }

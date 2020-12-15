@@ -2,7 +2,7 @@ import {
   EnrichedTransaction, ExportTransactionsFunction, OutputVendor, OutputVendorName
 } from '@/originalBudgetTrackingApp/commonTypes';
 import {
-  EventNames, EventPublisher, ExporterErrorEvent, ExporterEvent
+  EventNames, EventPublisher, ExporterEvent
 } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
 import _ from 'lodash';
 import moment from 'moment/moment';
@@ -64,7 +64,9 @@ const createTransactions: ExportTransactionsFunction = async ({ transactionsToCr
     });
     return transactionCreationResult;
   } catch (e) {
-    await eventPublisher.emit(EventNames.EXPORTER_ERROR, new ExporterErrorEvent(e, ynabOutputVendor.name, transactionsToCreate));
+    await eventPublisher.emit(EventNames.EXPORTER_ERROR, new ExporterEvent({
+      message: e.message, error: e, exporterName: ynabOutputVendor.name, allTransactions: transactionsToCreate
+    }));
     throw e;
   }
 };

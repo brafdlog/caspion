@@ -62,12 +62,6 @@ export class BudgetTrackingEvent {
   }
 }
 
-export class ErrorEvent extends BudgetTrackingEvent {
-  constructor(error: Error) {
-    super({ message: error.message, error });
-  }
-}
-
 export class ImporterEvent extends BudgetTrackingEvent {
   constructor({
     message, importerName, importerKey, error, status
@@ -79,39 +73,24 @@ export class ImporterEvent extends BudgetTrackingEvent {
 }
 
 export type ExporterEventParams = {
-  message: string, exporterName: OutputVendorName, allTransactions: EnrichedTransaction[], status?: AccountStatus
+  message: string, exporterName: OutputVendorName, allTransactions: EnrichedTransaction[], status?: AccountStatus, error?: Error
 }
 
 export class ExporterEvent extends BudgetTrackingEvent {
   allTransactions: EnrichedTransaction[];
 
   constructor({
-    message, exporterName, allTransactions, status
+    message, exporterName, allTransactions, status, error
   }: ExporterEventParams) {
     super({
-      message, vendorName: exporterName, accountType: AccountType.EXPORTER, accountStatus: status
+      message, vendorName: exporterName, accountType: AccountType.EXPORTER, accountStatus: status, error
     });
     this.allTransactions = allTransactions;
   }
 }
 
-export class ExporterErrorEvent extends ExporterEvent implements ErrorEvent {
-  error: Error;
-
-  constructor(error: Error, exporterName: OutputVendorName, allTransactions: EnrichedTransaction[]) {
-    super({
-      message: error.message, exporterName, allTransactions, status: AccountStatus.ERROR
-    });
-    this.error = error;
-  }
-}
-
-interface ImportProcessStartEvent extends BudgetTrackingEvent {
-  startDate: Date
-}
-
 export type EventDataMap = {
-  [EventNames.IMPORT_PROCESS_START]: ImportProcessStartEvent
+  [EventNames.IMPORT_PROCESS_START]: BudgetTrackingEvent
   [EventNames.IMPORTER_START]: ImporterEvent
   [EventNames.IMPORTER_PROGRESS]: ImporterEvent
   [EventNames.IMPORTER_ERROR]: ImporterEvent
@@ -120,9 +99,9 @@ export type EventDataMap = {
   [EventNames.EXPORT_PROCESS_START]: BudgetTrackingEvent
   [EventNames.EXPORTER_START]: ExporterEvent
   [EventNames.EXPORTER_PROGRESS]: ExporterEvent
-  [EventNames.EXPORTER_ERROR]: ExporterErrorEvent
+  [EventNames.EXPORTER_ERROR]: ExporterEvent
   [EventNames.EXPORTER_END]: ExporterEvent
-  [EventNames.GENERAL_ERROR]: ErrorEvent
+  [EventNames.GENERAL_ERROR]: BudgetTrackingEvent
   [EventNames.LOG]: BudgetTrackingEvent
 };
 
