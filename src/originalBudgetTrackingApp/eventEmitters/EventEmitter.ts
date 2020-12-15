@@ -53,8 +53,8 @@ export class BudgetTrackingEvent {
 export type ImporterEventParams = {
   message: BudgetTrackingEvent['message'];
   importerKey: CompanyTypes;
-  error: BudgetTrackingEvent['error'];
-  status: BudgetTrackingEvent['accountStatus'];
+  error?: BudgetTrackingEvent['error'];
+  status?: BudgetTrackingEvent['accountStatus'];
 }
 
 export class ImporterEvent extends BudgetTrackingEvent {
