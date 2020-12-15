@@ -53,10 +53,18 @@ export class BudgetTrackingEvent {
   }
 }
 
+export type ImporterEventParams = {
+  message: BudgetTrackingEvent['message'];
+  importerName: BudgetTrackingEvent['vendorName'];
+  importerKey: CompanyTypes;
+  error: BudgetTrackingEvent['error'];
+  status: BudgetTrackingEvent['accountStatus'];
+}
+
 export class ImporterEvent extends BudgetTrackingEvent {
   constructor({
     message, importerName, importerKey, error, status
-  }: { message: string, importerName: string, importerKey: CompanyTypes, error?: Error, status?: AccountStatus }) {
+  }: ImporterEventParams) {
     super({
       message, vendorId: importerKey, vendorName: importerName, error, accountType: AccountType.IMPORTER, accountStatus: status
     });
@@ -64,7 +72,11 @@ export class ImporterEvent extends BudgetTrackingEvent {
 }
 
 export type ExporterEventParams = {
-  message: string, exporterName: OutputVendorName, allTransactions: EnrichedTransaction[], status?: AccountStatus, error?: Error
+  message: string;
+  exporterName: OutputVendorName;
+  allTransactions: EnrichedTransaction[];
+  status?: AccountStatus;
+  error?: Error;
 }
 
 export class ExporterEvent extends BudgetTrackingEvent {
