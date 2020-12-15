@@ -66,9 +66,9 @@ export class AccountsState {
 export function handleEvent(event: BudgetTrackingEvent & { level: Levels }, accountsState: UnwrapRef<AccountsState>) {
   let accountState: AccountState | undefined;
   if (event.accountType === AccountType.IMPORTER) {
-    accountState = accountsState.importers.find(({ name }) => name === event.vendorName);
+    accountState = accountsState.importers.find(({ id }) => id === event.vendorId);
   } else if (event.accountType === AccountType.EXPORTER) {
-    accountState = accountsState.exporters.find(({ name }) => name === event.vendorName);
+    accountState = accountsState.exporters.find(({ id }) => id === event.vendorId);
   }
 
   if (accountState) {

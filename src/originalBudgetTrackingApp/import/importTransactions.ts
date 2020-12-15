@@ -41,7 +41,6 @@ export async function scrapeFinancialAccountsAndFetchTransactions(scrapingConfig
 function buildImporterEvent(accountConfig: AccountToScrapeConfig, additionalParams: { message: string, error?: Error, status?: AccountStatus }) {
   return new ImporterEvent({
     message: additionalParams.message,
-    importerName: accountConfig.name,
     importerKey: accountConfig.key,
     error: additionalParams.error,
     status: additionalParams.status

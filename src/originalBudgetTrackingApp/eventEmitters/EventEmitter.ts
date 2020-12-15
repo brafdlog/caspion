@@ -33,8 +33,6 @@ export class BudgetTrackingEvent {
 
   vendorId?: CompanyTypes | OutputVendorName;
 
-  vendorName?: string;
-
   accountStatus?: AccountStatus;
 
   error?: Error;
@@ -42,11 +40,10 @@ export class BudgetTrackingEvent {
   accountType?: AccountType;
 
   constructor({
-    message, vendorId, vendorName, error, accountType, accountStatus = AccountStatus.IN_PROGRESS
+    message, vendorId, error, accountType, accountStatus = AccountStatus.IN_PROGRESS
   }: BudgetTrackingEvent) {
     this.message = message;
     this.vendorId = vendorId;
-    this.vendorName = vendorName;
     this.error = error;
     this.accountType = accountType;
     this.accountStatus = accountStatus;
@@ -55,7 +52,6 @@ export class BudgetTrackingEvent {
 
 export type ImporterEventParams = {
   message: BudgetTrackingEvent['message'];
-  importerName: BudgetTrackingEvent['vendorName'];
   importerKey: CompanyTypes;
   error: BudgetTrackingEvent['error'];
   status: BudgetTrackingEvent['accountStatus'];
@@ -63,10 +59,10 @@ export type ImporterEventParams = {
 
 export class ImporterEvent extends BudgetTrackingEvent {
   constructor({
-    message, importerName, importerKey, error, status
+    message, importerKey, error, status
   }: ImporterEventParams) {
     super({
-      message, vendorId: importerKey, vendorName: importerName, error, accountType: AccountType.IMPORTER, accountStatus: status
+      message, vendorId: importerKey, error, accountType: AccountType.IMPORTER, accountStatus: status
     });
   }
 }
@@ -83,10 +79,10 @@ export class ExporterEvent extends BudgetTrackingEvent {
   allTransactions: EnrichedTransaction[];
 
   constructor({
-    message, exporterName, allTransactions, status, error
+    message, allTransactions, status, error, exporterName
   }: ExporterEventParams) {
     super({
-      message, vendorName: exporterName, accountType: AccountType.EXPORTER, accountStatus: status, error
+      message, accountType: AccountType.EXPORTER, accountStatus: status, error, vendorId: exporterName
     });
     this.allTransactions = allTransactions;
   }
