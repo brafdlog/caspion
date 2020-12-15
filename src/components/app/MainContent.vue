@@ -77,6 +77,7 @@ export default defineComponent({
 
     const scrape = () => {
       accountsState.clear();
+      accountsState.setPendingStatus();
       scrapingStatus.value = 'IN_PROGRESS';
       scrapeAndUpdateOutputVendors(eventEmitter)
         .then(() => scrapingStatus.value = 'SUCCESS')

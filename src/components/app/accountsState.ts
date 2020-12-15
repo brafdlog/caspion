@@ -56,6 +56,11 @@ export class AccountsState {
     this.importers.forEach((importer) => importer.clear());
     this.exporters.forEach((exporter) => exporter.clear());
   }
+
+  setPendingStatus() {
+    this.importers.forEach((importer) => importer.status = AccountStatus.PENDING);
+    this.exporters.forEach((exporter) => exporter.status = AccountStatus.PENDING);
+  }
 }
 
 export function handleEvent(event: BudgetTrackingEvent & { level: Levels }, accountsState: UnwrapRef<AccountsState>) {
