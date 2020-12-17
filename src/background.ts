@@ -2,7 +2,7 @@ import { app, BrowserWindow } from 'electron';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createProtocol, installVueDevtools } from 'vue-cli-plugin-electron-builder/lib';
 import CreateLogger from './logger';
-import { initializeReporter } from './backend/modules/reporting';
+import { initializeReporter } from './backend/reporting';
 // import './store';
 
 initializeReporter();

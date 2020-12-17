@@ -92,7 +92,7 @@
 
 <script>
 import { shell } from 'electron';
-import { ReportProblem } from '@/backend/modules/reporting';
+import { ReportProblem } from '@/backend/reporting';
 import LogSheet from '@/ui/components/shared/LogSheet';
 
 const createGithubIssueLink = (title, detailes, log) => {
