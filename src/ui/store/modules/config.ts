@@ -1,4 +1,4 @@
-import { randomHex } from '@/backend/modules/encryption/crypto';
+import { randomHex } from '@/backend/configManager/encryption/crypto';
 import {
   AccountToScrapeConfig, Config, OutputVendorConfig, OutputVendorName
 } from '@/backend/configManager/configManager';
