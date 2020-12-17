@@ -1,4 +1,4 @@
-import { scrapeAndUpdateOutputVendors } from '../backend';
+import { scrapeAndUpdateOutputVendors } from '../index';
 
 export async function scrape(
   // installPath,
