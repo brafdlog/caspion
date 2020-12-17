@@ -2,7 +2,7 @@
 Copied from https://github.com/eshaham/israeli-ynab-updater/blob/b207a6b2468fa2904412fe9563b8f65ac1e4cfaa/src/helpers/crypto.js
 */
 
-import crypto from '@/backend/configManager/encryption/crypto';
+import crypto from 'crypto';
 import SALT from './salt';
 
 const ALGORITHM = 'aes-256-ctr';
