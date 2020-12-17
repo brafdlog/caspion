@@ -47,7 +47,7 @@
 </template>
 
 <script lang="ts">
-import { required } from '@/components/shared/formValidations';
+import { required } from '@/ui/components/shared/formValidations';
 import { ref, defineComponent, PropType } from '@vue/composition-api';
 import { cloneDeep } from 'lodash';
 

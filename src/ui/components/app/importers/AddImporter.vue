@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import store from '@/store';
+import store from '@/ui/store';
 
 function initData(importerProp) {
   const importerToAdd = { ...importerProp, loginFields: {} };

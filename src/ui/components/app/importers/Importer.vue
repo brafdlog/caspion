@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import store from '@/store';
+import store from '@/ui/store';
 import DeleteImporterDialog from './DeleteImporterDialog';
 
 export default {

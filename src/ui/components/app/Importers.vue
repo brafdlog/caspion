@@ -81,7 +81,7 @@
 
 <script>
 import { inputVendors } from '@/originalBudgetTrackingApp';
-import store from '@/store';
+import store from '@/ui/store';
 import AddImporter from './importers/AddImporter';
 import Importer from './importers/Importer';
 

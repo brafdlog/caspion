@@ -41,10 +41,10 @@
 
 <script lang="ts">
 import { VForm } from '@/types/vuetify';
-import { required, positive } from '@/components/shared/formValidations';
-import store from '@/store';
+import { required, positive } from '@/ui/components/shared/formValidations';
+import store from '@/ui/store';
 import { defineComponent, ref, computed } from '@vue/composition-api';
-import { GlobalConfig } from '@/store/modules/config';
+import { GlobalConfig } from '@/ui/store/modules/config';
 
 export default defineComponent({
   setup() {

@@ -93,7 +93,7 @@
 <script>
 import { shell } from 'electron';
 import { ReportProblem } from '@/modules/reporting';
-import LogSheet from '@/components/shared/LogSheet';
+import LogSheet from '@/ui/components/shared/LogSheet';
 
 const createGithubIssueLink = (title, detailes, log) => {
   const formattedDetailes = detailes ? `

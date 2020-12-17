@@ -49,14 +49,14 @@
 </template>
 
 <script lang="ts">
-import LogViewer from '@/components/shared/log/LogViewer.vue';
+import LogViewer from '@/ui/components/shared/log/LogViewer.vue';
 import {
   computed, defineComponent, reactive, ref
 } from '@vue/composition-api';
 import { EventEmitter, scrapeAndUpdateOutputVendors } from '@/originalBudgetTrackingApp';
-import { AccountsState, handleEvent } from '@/components/app/accountsState';
-import store from '@/store';
-import ConfigEditor from '@/components/app/ConfigEditor.vue';
+import { AccountsState, handleEvent } from '@/ui/components/app/accountsState';
+import store from '@/ui/store';
+import ConfigEditor from '@/ui/components/app/ConfigEditor.vue';
 import { Levels } from '../shared/log/types';
 
 const statusToColor = {
