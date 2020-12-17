@@ -83,7 +83,7 @@ export async function getConfig(): Promise<Config> {
   let configFromFile = await getConfigFromFile(LOCAL_CONFIG_FILE_PATH);
 
   if (configFromFile) {
-    configFromFile = await decrypt(configFromFile);
+    configFromFile = await decrypt(configFromFile) as string;
     parsedConfig = JSON.parse(configFromFile);
   } else {
     // Fallback to configExample if there is no config file defined at all
