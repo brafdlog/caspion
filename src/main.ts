@@ -4,7 +4,7 @@ import Vue from 'vue';
 import App from './ui/components/App.vue';
 import FormField from './ui/components/shared/FormField';
 import SplashScreen from './ui/components/SplashScreen.vue';
-import { initializeReporter } from './modules/reporting';
+import { initializeReporter } from './backend/modules/reporting';
 import LoggerPlugin from './ui/plugins/logger';
 import vuetify from './ui/plugins/vuetify';
 import router from './ui/router';
