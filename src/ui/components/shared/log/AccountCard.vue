@@ -47,9 +47,9 @@
 
 <script lang="ts">
 import { computed, defineComponent } from '@vue/composition-api';
-import { AccountState } from '@/components/app/accountsState';
+import { AccountState } from '@/ui/components/app/accountsState';
 import { AccountStatus } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
-import AccountCardStatusIndicator from '@/components/shared/log/AccountCardStatusIndicator.vue';
+import AccountCardStatusIndicator from '@/ui/components/shared/log/AccountCardStatusIndicator.vue';
 import ACCOUNT_METADATA, { AccountMetadata } from '@/accountsMetadata';
 
 export default defineComponent({

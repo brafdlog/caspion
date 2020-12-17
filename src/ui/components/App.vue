@@ -66,8 +66,8 @@
 
 <script>
 import { shell } from 'electron';
-import Importers from '@/components/app/Importers';
-import Exporters from '@/components/app/Exporters';
+import Importers from '@/ui/components/app/Importers';
+import Exporters from '@/ui/components/app/Exporters';
 import ReportProblemDialog from './app/ReportProblemDialog';
 import MainContent from './app/MainContent';
 

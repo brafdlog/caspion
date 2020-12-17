@@ -1,5 +1,5 @@
 import { OutputVendorName } from '@/originalBudgetTrackingApp/commonTypes';
-import store from '@/store';
+import store from '@/ui/store';
 import { VForm } from '@/types/vuetify';
 import { computed, reactive, ref } from '@vue/composition-api';
 import { cloneDeep } from 'lodash';

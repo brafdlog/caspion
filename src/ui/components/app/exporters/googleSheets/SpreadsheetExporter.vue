@@ -50,7 +50,7 @@
 <script lang="ts">
 import { OutputVendorName } from '@/originalBudgetTrackingApp/commonTypes';
 import { GoogleSheetsConfig } from '@/originalBudgetTrackingApp/configManager/configManager';
-import { setupExporterConfigForm } from '@/components/app/exporters/exportersCommon';
+import { setupExporterConfigForm } from '@/ui/components/app/exporters/exportersCommon';
 import { ref, onMounted, defineComponent } from '@vue/composition-api';
 import { validateToken } from '@/originalBudgetTrackingApp/export/outputVendors/googleSheets/googleAuth';
 import ElectronLogin from './electronGoogleOAuth2Connector';

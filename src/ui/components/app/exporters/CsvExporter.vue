@@ -11,7 +11,7 @@
     />
     <v-text-field
       v-model="exporter.options.filePath"
-      label="JSON file"
+      label="CSV file"
       outlined
       :rules="[rules.legalPath]"
       @change="changed = true"
@@ -27,23 +27,23 @@
 </template>
 
 <script lang="ts">
-import { setupExporterConfigForm } from '@/components/app/exporters/exportersCommon';
+import { setupExporterConfigForm } from '@/ui/components/app/exporters/exportersCommon';
 import { OutputVendorName } from '@/originalBudgetTrackingApp/commonTypes';
-import { legalPath } from '@/components/shared/formValidations';
+import { legalPath } from '@/ui/components/shared/formValidations';
 import { defineComponent } from '@vue/composition-api';
 
 export default defineComponent({
+  name: 'CsvExporter',
+
   setup() {
     return {
-      ...setupExporterConfigForm(OutputVendorName.JSON),
+      ...setupExporterConfigForm(OutputVendorName.CSV),
       rules: {
         legalPath
       }
     };
   }
 });
+
 </script>
-
-<style scoped>
-
-</style>
+<style scoped/>

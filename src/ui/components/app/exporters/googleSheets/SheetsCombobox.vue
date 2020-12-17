@@ -26,7 +26,7 @@ import {
 } from '@vue/composition-api';
 import { getAllSpreadsheets, Spreadsheet } from '@/originalBudgetTrackingApp/export/outputVendors/googleSheets/googleSheetsInternalAPI';
 import { Credentials, createClient } from '@/originalBudgetTrackingApp/export/outputVendors/googleSheets/googleAuth';
-import { required } from '@/components/shared/formValidations';
+import { required } from '@/ui/components/shared/formValidations';
 
 export default defineComponent({
   props: {

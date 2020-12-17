@@ -3,7 +3,7 @@ import {
   AccountToScrapeConfig, Config, OutputVendorConfig, OutputVendorName
 } from '@/originalBudgetTrackingApp/configManager/configManager';
 import { defineModule } from 'direct-vuex';
-import { moduleActionContext } from '..';
+import { moduleActionContext } from '../index';
 
 export type GlobalConfig = {
   numDaysBack: number,

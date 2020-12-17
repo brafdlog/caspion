@@ -57,9 +57,9 @@
 </template>
 
 <script lang="ts">
-import { setupExporterConfigForm } from '@/components/app/exporters/exportersCommon';
+import { setupExporterConfigForm } from '@/ui/components/app/exporters/exportersCommon';
 import { OutputVendorName } from '@/originalBudgetTrackingApp/commonTypes';
-import YnabAccountMappingTable, { MappingTable } from '@/components/app/exporters/YnabAccountMappingTable.vue';
+import YnabAccountMappingTable, { MappingTable } from '@/ui/components/app/exporters/YnabAccountMappingTable.vue';
 import { ref, defineComponent } from '@vue/composition-api';
 
 export default defineComponent({
