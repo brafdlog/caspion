@@ -1,6 +1,6 @@
 import { TransactionStatuses, TransactionTypes } from 'israeli-bank-scrapers-core/lib/transactions';
-import { EnrichedTransaction } from '@/originalBudgetTrackingApp/commonTypes';
-import { serializeTransactions, parseTransactions } from '@/originalBudgetTrackingApp/export/outputVendors/csv/csv';
+import { EnrichedTransaction } from '@/backend/commonTypes';
+import { serializeTransactions, parseTransactions } from '@/backend/export/outputVendors/csv/csv';
 
 const transactions: EnrichedTransaction[] = [
   {

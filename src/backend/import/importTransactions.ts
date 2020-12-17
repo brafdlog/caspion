@@ -1,8 +1,8 @@
-import { EnrichedTransaction } from '@/originalBudgetTrackingApp/commonTypes';
-import * as configManager from '@/originalBudgetTrackingApp/configManager/configManager';
-import * as bankScraper from '@/originalBudgetTrackingApp/import/bankScraper';
-import { ScaperScrapingResult, Transaction } from '@/originalBudgetTrackingApp/import/bankScraper';
-import * as categoryCalculation from '@/originalBudgetTrackingApp/import/categoryCalculationScript';
+import { EnrichedTransaction } from '@/backend/commonTypes';
+import * as configManager from '@/backend/configManager/configManager';
+import * as bankScraper from '@/backend/import/bankScraper';
+import { ScaperScrapingResult, Transaction } from '@/backend/import/bankScraper';
+import * as categoryCalculation from '@/backend/import/categoryCalculationScript';
 import _ from 'lodash';
 import moment from 'moment';
 import {

@@ -1,5 +1,5 @@
-import { createTransactionsInExternalVendors } from '@/originalBudgetTrackingApp/export/exportTransactions';
-import { scrapeFinancialAccountsAndFetchTransactions } from '@/originalBudgetTrackingApp/import/importTransactions';
+import { createTransactionsInExternalVendors } from '@/backend/export/exportTransactions';
+import { scrapeFinancialAccountsAndFetchTransactions } from '@/backend/import/importTransactions';
 import moment from 'moment';
 import * as configManager from './configManager/configManager';
 import {

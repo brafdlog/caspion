@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { inputVendors } from '@/originalBudgetTrackingApp';
+import { inputVendors } from '@/backend';
 import store from '@/ui/store';
 import AddImporter from './importers/AddImporter';
 import Importer from './importers/Importer';

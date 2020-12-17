@@ -2,7 +2,7 @@ import { createLocalVue, shallowMount, Wrapper } from '@vue/test-utils';
 import Vuex, { Store } from 'vuex';
 import Importers from '../../../src/ui/components/app/Importers.vue';
 import AddImporter from '../../../src/ui/components/app/importers/AddImporter.vue';
-import { inputVendors } from '../../../src/originalBudgetTrackingApp';
+import { inputVendors } from '../../../src/backend';
 
 const localVue = createLocalVue();
 

@@ -1,10 +1,10 @@
-import { Config } from '@/originalBudgetTrackingApp/configManager/configManager';
+import { Config } from '@/backend/configManager/configManager';
 import {
   AccountStatus, EventNames, EventPublisher, ExporterEvent
-} from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
-import { EnrichedTransaction } from '@/originalBudgetTrackingApp/commonTypes';
+} from '@/backend/eventEmitters/EventEmitter';
+import { EnrichedTransaction } from '@/backend/commonTypes';
 import _ from 'lodash';
-import outputVendors from '@/originalBudgetTrackingApp/export/outputVendors';
+import outputVendors from '@/backend/export/outputVendors';
 
 export async function createTransactionsInExternalVendors(
   outputVendorsConfig: Config['outputVendors'],

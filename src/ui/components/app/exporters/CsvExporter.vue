@@ -28,7 +28,7 @@
 
 <script lang="ts">
 import { setupExporterConfigForm } from '@/ui/components/app/exporters/exportersCommon';
-import { OutputVendorName } from '@/originalBudgetTrackingApp/commonTypes';
+import { OutputVendorName } from '@/backend/commonTypes';
 import { legalPath } from '@/ui/components/shared/formValidations';
 import { defineComponent } from '@vue/composition-api';
 

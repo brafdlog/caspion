@@ -1,4 +1,4 @@
-import { configManager } from '@/originalBudgetTrackingApp';
+import { configManager } from '@/backend';
 import VuexPersistence from 'vuex-persist';
 
 export default (configModuleName: string) => new VuexPersistence<any>({

@@ -1,4 +1,4 @@
-import { OutputVendorName } from '@/originalBudgetTrackingApp/configManager/configManager';
+import { OutputVendorName } from '@/backend/configManager/configManager';
 import { CompanyTypes } from 'israeli-bank-scrapers-core';
 
 type AccountKey = CompanyTypes | OutputVendorName;

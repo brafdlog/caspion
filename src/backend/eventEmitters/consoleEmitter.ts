@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import { BudgetTrackingEventEmitter, EventPublisher } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
+import { BudgetTrackingEventEmitter, EventPublisher } from '@/backend/eventEmitters/EventEmitter';
 
 export function buildConsoleEmitter(): EventPublisher {
   const consoleEmitter = new BudgetTrackingEventEmitter();

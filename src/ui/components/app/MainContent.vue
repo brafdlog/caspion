@@ -53,7 +53,7 @@ import LogViewer from '@/ui/components/shared/log/LogViewer.vue';
 import {
   computed, defineComponent, reactive, ref
 } from '@vue/composition-api';
-import { EventEmitter, scrapeAndUpdateOutputVendors } from '@/originalBudgetTrackingApp';
+import { EventEmitter, scrapeAndUpdateOutputVendors } from '@/backend';
 import { AccountsState, handleEvent } from '@/ui/components/app/accountsState';
 import store from '@/ui/store';
 import ConfigEditor from '@/ui/components/app/ConfigEditor.vue';

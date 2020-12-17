@@ -1,6 +1,6 @@
 import {
   clientId, clientSecret, redirectUri, scopes
-} from '@/originalBudgetTrackingApp/export/outputVendors/googleSheets/googleAuth';
+} from '@/backend/export/outputVendors/googleSheets/googleAuth';
 import ElectronGoogleOAuth2 from '@getstation/electron-google-oauth2';
 
 export default () => {
