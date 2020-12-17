@@ -1,5 +1,5 @@
 import { createScraper, SCRAPERS } from 'israeli-bank-scrapers-core';
-import getChrome from '../modules/downloadChromium';
+import getChrome from './downloadChromium';
 import { AccountToScrapeConfig } from '../configManager/configManager';
 
 export { ScaperScrapingResult } from 'israeli-bank-scrapers-core/lib/scrapers/base-scraper';
