@@ -1,7 +1,7 @@
 import {
   EnrichedTransaction, ExportTransactionsFunction, OutputVendor, OutputVendorName
-} from '@/originalBudgetTrackingApp/commonTypes';
-import { mergeTransactions, sortByDate } from '@/originalBudgetTrackingApp/transactions/transactions';
+} from '@/backend/commonTypes';
+import { mergeTransactions, sortByDate } from '@/backend/transactions/transactions';
 import { promises as fs } from 'fs';
 
 const parseTransactionsFile = async (filename: string) => {

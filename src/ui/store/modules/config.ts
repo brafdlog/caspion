@@ -1,7 +1,7 @@
 import { randomHex } from '@/modules/encryption/crypto';
 import {
   AccountToScrapeConfig, Config, OutputVendorConfig, OutputVendorName
-} from '@/originalBudgetTrackingApp/configManager/configManager';
+} from '@/backend/configManager/configManager';
 import { defineModule } from 'direct-vuex';
 import { moduleActionContext } from '../index';
 

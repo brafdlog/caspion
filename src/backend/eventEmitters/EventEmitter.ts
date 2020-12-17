@@ -1,6 +1,6 @@
 // eslint-disable-next-line max-classes-per-file
 import Emittery from 'emittery';
-import { EnrichedTransaction, OutputVendorName } from '@/originalBudgetTrackingApp/commonTypes';
+import { EnrichedTransaction, OutputVendorName } from '@/backend/commonTypes';
 import { CompanyTypes } from 'israeli-bank-scrapers-core';
 
 export enum EventNames {

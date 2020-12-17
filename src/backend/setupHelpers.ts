@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
-import { getConfig } from '@/originalBudgetTrackingApp/configManager/configManager';
-import { getYnabAccountDetails } from '@/originalBudgetTrackingApp/export/outputVendors/ynab/ynab';
-import { getFinancialAccountNumbers } from '@/originalBudgetTrackingApp/import/importTransactions';
+import { getConfig } from '@/backend/configManager/configManager';
+import { getYnabAccountDetails } from '@/backend/export/outputVendors/ynab/ynab';
+import { getFinancialAccountNumbers } from '@/backend/import/importTransactions';
 
 export async function printYnabAccountData() {
   const config = await getConfig();

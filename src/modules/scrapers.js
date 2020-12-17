@@ -1,4 +1,4 @@
-import { scrapeAndUpdateOutputVendors } from '../originalBudgetTrackingApp';
+import { scrapeAndUpdateOutputVendors } from '../backend';
 
 export async function scrape(
   // installPath,

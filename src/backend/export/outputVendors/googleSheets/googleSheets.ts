@@ -1,7 +1,7 @@
 import {
   EnrichedTransaction, ExportTransactionsFunction, OutputVendor, OutputVendorName
-} from '@/originalBudgetTrackingApp/commonTypes';
-import { EventNames, EventPublisher, ExporterEvent } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
+} from '@/backend/commonTypes';
+import { EventNames, EventPublisher, ExporterEvent } from '@/backend/eventEmitters/EventEmitter';
 import moment from 'moment/moment';
 import { createClient } from './googleAuth';
 import * as googleSheets from './googleSheetsInternalAPI';

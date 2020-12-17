@@ -1,5 +1,5 @@
-import { OutputVendorName } from '@/originalBudgetTrackingApp/configManager/configManager';
-import { CompanyTypes } from '@/originalBudgetTrackingApp';
+import { OutputVendorName } from '@/backend/configManager/configManager';
+import { CompanyTypes } from '@/backend';
 import americanExpressLogo from './assets/logos/americanExpress.jpeg';
 import discountLogo from './assets/logos/discount.jpeg';
 import maxLogo from './assets/logos/max.jpeg';

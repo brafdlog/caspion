@@ -27,7 +27,7 @@
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api';
-import { AccountStatus } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
+import { AccountStatus } from '@/backend/eventEmitters/EventEmitter';
 
 export default defineComponent({
   props: {

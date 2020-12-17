@@ -48,11 +48,11 @@
 </template>
 
 <script lang="ts">
-import { OutputVendorName } from '@/originalBudgetTrackingApp/commonTypes';
-import { GoogleSheetsConfig } from '@/originalBudgetTrackingApp/configManager/configManager';
+import { OutputVendorName } from '@/backend/commonTypes';
+import { GoogleSheetsConfig } from '@/backend/configManager/configManager';
 import { setupExporterConfigForm } from '@/ui/components/app/exporters/exportersCommon';
 import { ref, onMounted, defineComponent } from '@vue/composition-api';
-import { validateToken } from '@/originalBudgetTrackingApp/export/outputVendors/googleSheets/googleAuth';
+import { validateToken } from '@/backend/export/outputVendors/googleSheets/googleAuth';
 import ElectronLogin from './electronGoogleOAuth2Connector';
 import SheetsCombobox from './SheetsCombobox.vue';
 

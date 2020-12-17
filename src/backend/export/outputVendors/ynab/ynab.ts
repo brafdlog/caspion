@@ -1,9 +1,9 @@
 import {
   EnrichedTransaction, ExportTransactionsFunction, OutputVendor, OutputVendorName
-} from '@/originalBudgetTrackingApp/commonTypes';
+} from '@/backend/commonTypes';
 import {
   EventNames, EventPublisher, ExporterEvent
-} from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
+} from '@/backend/eventEmitters/EventEmitter';
 import _ from 'lodash';
 import moment from 'moment/moment';
 import * as ynab from 'ynab';
