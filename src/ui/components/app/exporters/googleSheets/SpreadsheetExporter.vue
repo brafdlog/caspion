@@ -53,6 +53,7 @@ import { GoogleSheetsConfig } from '@/backend/configManager/configManager';
 import { setupExporterConfigForm } from '@/ui/components/app/exporters/exportersCommon';
 import { ref, onMounted, defineComponent } from '@vue/composition-api';
 import { validateToken } from '@/backend/export/outputVendors/googleSheets/googleAuth';
+import { createSpreadsheet } from '@/backend/export/outputVendors/googleSheets/googleSheets';
 import ElectronLogin from './electronGoogleOAuth2Connector';
 import SheetsCombobox from './SheetsCombobox.vue';
 
@@ -89,8 +90,20 @@ export default defineComponent({
       }
     };
 
+    const submit = async () => {
+      const isNewSheet = exporter.value.options.spreadsheetId.length < 30;
+      if (isNewSheet) {
+        status.value = Status.LOADING;
+        const spreadsheetId = await createSpreadsheet(exporter.value.options.spreadsheetId, exporter.value.options.credentials);
+        exporter.value.options.spreadsheetId = spreadsheetId;
+        status.value = Status.LOGGED_IN;
+      }
+      return dataToReturn.submit();
+    };
+
     return {
       ...dataToReturn,
+      submit,
       status,
       Status,
       login,
