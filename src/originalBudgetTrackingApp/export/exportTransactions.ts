@@ -15,9 +15,9 @@ export async function createTransactionsInExternalVendors(
   const executionResult = {};
   const allTransactions = _.flatten(Object.values(companyIdToTransactions));
 
-  for (let j = 0; j < outputVendors.length; j++) {
-    const outputVendor = outputVendors[j];
-    if (outputVendorsConfig[outputVendor.name]?.active) {
+  const exportPromises = outputVendors
+    .filter((outputVendor) => outputVendorsConfig[outputVendor.name]?.active)
+    .map(async (outputVendor) => {
       const baseEvent = {
         exporterName: outputVendor.name,
         allTransactions
@@ -33,12 +33,13 @@ export async function createTransactionsInExternalVendors(
         executionResult[outputVendor.name] = vendorResult;
       } catch (e) {
         await eventPublisher.emit(EventNames.EXPORTER_ERROR, new ExporterEvent({
-          message: e.message, error: e, exporterName: baseEvent.exporterName, allTransactions
+          message: e.message, error: e, ...baseEvent
         }));
         throw e;
       }
-    }
-  }
+    });
+
+  await Promise.all(exportPromises);
   if (!Object.keys(executionResult).length) {
     const error = new Error('You need to set at least one output vendor to be active');
     throw error;

@@ -19,8 +19,7 @@ const TRANSACTION_STATUS_COMPLETED = 'completed';
 export async function scrapeFinancialAccountsAndFetchTransactions(scrapingConfig: ScrapingConfig, startDate: Date, eventPublisher: EventPublisher) {
   const companyIdToTransactions: Record<string, EnrichedTransaction[]> = {};
   const accountsToScrape = scrapingConfig.accountsToScrape.filter((accountToScrape) => accountToScrape.active !== false);
-  for (let i = 0; i < accountsToScrape.length; i++) {
-    const accountToScrape = accountsToScrape[i];
+  const scrapingPromises = accountsToScrape.map(async (accountToScrape) => {
     const companyId = accountToScrape.key;
     try {
       await eventPublisher.emit(EventNames.IMPORTER_START, buildImporterEvent(accountToScrape, { message: 'Importer start' }));
@@ -34,7 +33,8 @@ export async function scrapeFinancialAccountsAndFetchTransactions(scrapingConfig
       }));
       throw error;
     }
-  }
+  });
+  await Promise.all(scrapingPromises);
   return companyIdToTransactions;
 }
 
