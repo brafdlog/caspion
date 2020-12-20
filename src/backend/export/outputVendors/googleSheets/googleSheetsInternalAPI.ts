@@ -52,3 +52,20 @@ export async function getSheetNames(spreadsheetId: string, auth: OAuth2Client): 
   });
   return spreadsheetResponse.data.sheets?.map((sheet) => sheet?.properties?.title as string) || [];
 }
+
+export async function createSpreadsheet(spreadsheetTitle: string, sheetTitle: string, auth: OAuth2Client): Promise<string> {
+  const spreadsheetResponse = await sheets.spreadsheets.create({
+    auth,
+    requestBody: {
+      properties: {
+        title: spreadsheetTitle
+      },
+      sheets: [
+        { properties: { title: sheetTitle } }
+      ]
+    }
+  });
+
+  const { spreadsheetId } = spreadsheetResponse.data;
+  return spreadsheetId as string;
+}

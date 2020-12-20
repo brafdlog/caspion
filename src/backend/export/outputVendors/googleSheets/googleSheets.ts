@@ -3,8 +3,10 @@ import {
 } from '@/backend/commonTypes';
 import { EventNames, EventPublisher, ExporterEvent } from '@/backend/eventEmitters/EventEmitter';
 import moment from 'moment/moment';
+import { Auth } from 'googleapis';
 import { createClient } from './googleAuth';
 import * as googleSheets from './googleSheetsInternalAPI';
+import { appendToSpreadsheet } from './googleSheetsInternalAPI';
 
 const GOOGLE_SHEETS_DATE_FORMAT = 'DD/MM/YYYY';
 const DEFAULT_SHEET_NAME = '_budget-tracking';
@@ -60,6 +62,17 @@ async function emitProgressEvent(eventPublisher: EventPublisher, allTransactions
   await eventPublisher.emit(EventNames.EXPORTER_PROGRESS, new ExporterEvent({
     message, exporterName: googleSheetsOutputVendor.name, allTransactions
   }));
+}
+
+export async function createSpreadsheet(spreadsheetTitle: string, credentials: Auth.Credentials): Promise<string> {
+  const auth = createClient(credentials);
+  const spreadsheetId = await googleSheets.createSpreadsheet(spreadsheetTitle, DEFAULT_SHEET_NAME, auth);
+
+  const columnHeaders = ['תאריך', 'סכום', 'תיאור', 'תיאור נוסף', 'קטגוריה', 'מספר חשבון', 'hash - לא לגעת'];
+
+  await appendToSpreadsheet(spreadsheetId, `${DEFAULT_SHEET_NAME}!A:A`, [columnHeaders], auth);
+
+  return spreadsheetId;
 }
 
 export const googleSheetsOutputVendor: OutputVendor = {
