@@ -18,99 +18,106 @@ import jsonLogo from './assets/logos/json.jpeg';
 import googleSheetsLogo from './assets/logos/sheets.png';
 import ynabLogo from './assets/logos/ynab.jpeg';
 
-type AccountKey = CompanyTypes | OutputVendorName;
-
 export type AccountMetadata = {
   companyKey: string;
   companyName: string;
   logo: any;
 }
 
-const ACCOUNT_METADATA: Record<AccountKey, AccountMetadata> = {
-  [CompanyTypes.max]: {
-    companyKey: CompanyTypes.max,
-    companyName: 'Max',
-    logo: maxLogo
+type AccountsMetadata = {
+  importers: Record<CompanyTypes, AccountMetadata>,
+  exporters: Record<OutputVendorName, AccountMetadata>
+}
+
+const ACCOUNT_METADATA: AccountsMetadata = {
+  importers: {
+    [CompanyTypes.max]: {
+      companyKey: CompanyTypes.max,
+      companyName: 'Max',
+      logo: maxLogo
+    },
+    [CompanyTypes.amex]: {
+      companyKey: CompanyTypes.amex,
+      companyName: 'American Express',
+      logo: americanExpressLogo
+    },
+    [CompanyTypes.beinleumi]: {
+      companyKey: CompanyTypes.beinleumi,
+      companyName: 'הבינלאומי',
+      logo: beinleumiLogo
+    },
+    [CompanyTypes.hapoalimBeOnline]: {
+      companyKey: CompanyTypes.hapoalimBeOnline,
+      companyName: 'הפועלים',
+      logo: hapoalimBeOnlineLogo
+    },
+    [CompanyTypes.isracard]: {
+      companyKey: CompanyTypes.isracard,
+      companyName: 'ישראכרט',
+      logo: isracardLogo
+    },
+    [CompanyTypes.leumiCard]: {
+      companyKey: CompanyTypes.leumiCard,
+      companyName: 'לאומי קארד',
+      logo: leumiCardLogo
+    },
+    [CompanyTypes.otsarHahayal]: {
+      companyKey: CompanyTypes.otsarHahayal,
+      companyName: 'אוצר החייל',
+      logo: otsarHahayalLogo
+    },
+    [CompanyTypes.union]: {
+      companyKey: CompanyTypes.union,
+      companyName: 'איגוד',
+      logo: igudLogo
+    },
+    [CompanyTypes.leumi]: {
+      companyKey: CompanyTypes.leumi,
+      companyName: 'לאומי',
+      logo: leumiLogo
+    },
+    [CompanyTypes.mizrahi]: {
+      companyKey: CompanyTypes.mizrahi,
+      companyName: 'מזרחי',
+      logo: mizrahiLogo
+    },
+    [CompanyTypes.hapoalim]: {
+      companyKey: CompanyTypes.hapoalim,
+      companyName: 'הפועלים',
+      logo: poalimLogo
+    },
+    [CompanyTypes.visaCal]: {
+      companyKey: CompanyTypes.visaCal,
+      companyName: 'ויזה כאל',
+      logo: visaCalLogo
+    },
+    [CompanyTypes.discount]: {
+      companyKey: CompanyTypes.discount,
+      companyName: 'דיסקונט',
+      logo: discountLogo
+    }
   },
-  [CompanyTypes.amex]: {
-    companyKey: CompanyTypes.amex,
-    companyName: 'American Express',
-    logo: americanExpressLogo
-  },
-  [CompanyTypes.beinleumi]: {
-    companyKey: CompanyTypes.beinleumi,
-    companyName: 'הבינלאומי',
-    logo: beinleumiLogo
-  },
-  [CompanyTypes.hapoalimBeOnline]: {
-    companyKey: CompanyTypes.hapoalimBeOnline,
-    companyName: 'הפועלים',
-    logo: hapoalimBeOnlineLogo
-  },
-  [CompanyTypes.isracard]: {
-    companyKey: CompanyTypes.isracard,
-    companyName: 'ישראכרט',
-    logo: isracardLogo
-  },
-  [CompanyTypes.leumiCard]: {
-    companyKey: CompanyTypes.leumiCard,
-    companyName: 'לאומי קארד',
-    logo: leumiCardLogo
-  },
-  [CompanyTypes.otsarHahayal]: {
-    companyKey: CompanyTypes.otsarHahayal,
-    companyName: 'אוצר החייל',
-    logo: otsarHahayalLogo
-  },
-  [CompanyTypes.union]: {
-    companyKey: CompanyTypes.union,
-    companyName: 'איגוד',
-    logo: igudLogo
-  },
-  [CompanyTypes.leumi]: {
-    companyKey: CompanyTypes.leumi,
-    companyName: 'לאומי',
-    logo: leumiLogo
-  },
-  [CompanyTypes.mizrahi]: {
-    companyKey: CompanyTypes.mizrahi,
-    companyName: 'מזרחי',
-    logo: mizrahiLogo
-  },
-  [CompanyTypes.hapoalim]: {
-    companyKey: CompanyTypes.hapoalim,
-    companyName: 'הפועלים',
-    logo: poalimLogo
-  },
-  [CompanyTypes.visaCal]: {
-    companyKey: CompanyTypes.visaCal,
-    companyName: 'ויזה כאל',
-    logo: visaCalLogo
-  },
-  [CompanyTypes.discount]: {
-    companyKey: CompanyTypes.discount,
-    companyName: 'דיסקונט',
-    logo: discountLogo
-  },
-  [OutputVendorName.CSV]: {
-    companyKey: OutputVendorName.CSV,
-    companyName: 'Excel (csv)',
-    logo: excelLogo
-  },
-  [OutputVendorName.JSON]: {
-    companyKey: OutputVendorName.JSON,
-    companyName: 'Json',
-    logo: jsonLogo
-  },
-  [OutputVendorName.GOOGLE_SHEETS]: {
-    companyKey: OutputVendorName.GOOGLE_SHEETS,
-    companyName: 'Google sheets',
-    logo: googleSheetsLogo
-  },
-  [OutputVendorName.YNAB]: {
-    companyKey: OutputVendorName.YNAB,
-    companyName: 'Ynab',
-    logo: ynabLogo
+  exporters: {
+    [OutputVendorName.CSV]: {
+      companyKey: OutputVendorName.CSV,
+      companyName: 'Excel (csv)',
+      logo: excelLogo
+    },
+    [OutputVendorName.JSON]: {
+      companyKey: OutputVendorName.JSON,
+      companyName: 'Json',
+      logo: jsonLogo
+    },
+    [OutputVendorName.GOOGLE_SHEETS]: {
+      companyKey: OutputVendorName.GOOGLE_SHEETS,
+      companyName: 'Google sheets',
+      logo: googleSheetsLogo
+    },
+    [OutputVendorName.YNAB]: {
+      companyKey: OutputVendorName.YNAB,
+      companyName: 'Ynab',
+      logo: ynabLogo
+    }
   }
 };
 
