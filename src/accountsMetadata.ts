@@ -1,106 +1,117 @@
 import { OutputVendorName } from '@/originalBudgetTrackingApp/configManager/configManager';
 import { CompanyTypes } from 'israeli-bank-scrapers-core';
+import americanExpressLogo from './assets/logos/americanExpress.jpeg';
+import discountLogo from './assets/logos/discount.jpeg';
+import maxLogo from './assets/logos/max.jpeg';
+import beinleumiLogo from './assets/logos/beinleumi.jpeg';
+import hapoalimBeOnlineLogo from './assets/logos/hapoalimBeOnline.jpeg';
+import isracardLogo from './assets/logos/isracard.jpeg';
+import leumiLogo from './assets/logos/leumi.png';
+import leumiCardLogo from './assets/logos/leumicard.png';
+import otsarHahayalLogo from './assets/logos/otsarHahayal.jpeg';
+import poalimLogo from './assets/logos/poalim.jpeg';
+import igudLogo from './assets/logos/igud.jpeg';
+import mizrahiLogo from './assets/logos/mizrahi.png';
+import visaCalLogo from './assets/logos/visa-cal.jpeg';
+import excelLogo from './assets/logos/excel.png';
+import jsonLogo from './assets/logos/json.jpeg';
+import googleSheetsLogo from './assets/logos/sheets.png';
+import ynabLogo from './assets/logos/ynab.jpeg';
 
 type AccountKey = CompanyTypes | OutputVendorName;
 
 export type AccountMetadata = {
   companyKey: string;
   companyName: string;
-  logo: string;
+  logo: any;
 }
-
-const PUBLIC_STORAGE_PREFIX = 'https://budget-tracking-public.s3.eu-central-1.amazonaws.com/logos';
 
 const ACCOUNT_METADATA: Record<AccountKey, AccountMetadata> = {
   [CompanyTypes.max]: {
     companyKey: CompanyTypes.max,
     companyName: 'Max',
-    logo: buildLogoUrl('max.jpeg',)
+    logo: maxLogo
   },
   [CompanyTypes.amex]: {
     companyKey: CompanyTypes.amex,
     companyName: 'American Express',
-    logo: buildLogoUrl('americanExpress.jpeg')
+    logo: americanExpressLogo
   },
   [CompanyTypes.beinleumi]: {
     companyKey: CompanyTypes.beinleumi,
     companyName: 'הבינלאומי',
-    logo: buildLogoUrl('beimleumi.jpeg')
+    logo: beinleumiLogo
   },
   [CompanyTypes.hapoalimBeOnline]: {
     companyKey: CompanyTypes.hapoalimBeOnline,
     companyName: 'הפועלים',
-    logo: buildLogoUrl('hapoalimBeOnline.jpeg')
+    logo: hapoalimBeOnlineLogo
   },
   [CompanyTypes.isracard]: {
     companyKey: CompanyTypes.isracard,
     companyName: 'ישראכרט',
-    logo: buildLogoUrl('isracard.jpeg')
+    logo: isracardLogo
   },
   [CompanyTypes.leumiCard]: {
     companyKey: CompanyTypes.leumiCard,
     companyName: 'לאומי קארד',
-    logo: buildLogoUrl('leumi.png')
+    logo: leumiCardLogo
   },
   [CompanyTypes.otsarHahayal]: {
     companyKey: CompanyTypes.otsarHahayal,
     companyName: 'אוצר החייל',
-    logo: buildLogoUrl('otsarHahayal.jpeg',)
+    logo: otsarHahayalLogo
   },
   [CompanyTypes.union]: {
     companyKey: CompanyTypes.union,
     companyName: 'איגוד',
-    logo: buildLogoUrl('igud.jpeg')
+    logo: igudLogo
   },
   [CompanyTypes.leumi]: {
     companyKey: CompanyTypes.leumi,
     companyName: 'לאומי',
-    logo: buildLogoUrl('leumi.png')
+    logo: leumiLogo
   },
   [CompanyTypes.mizrahi]: {
     companyKey: CompanyTypes.mizrahi,
     companyName: 'מזרחי',
-    logo: buildLogoUrl('mizrahi.jpeg')
+    logo: mizrahiLogo
   },
   [CompanyTypes.hapoalim]: {
     companyKey: CompanyTypes.hapoalim,
     companyName: 'הפועלים',
-    logo: buildLogoUrl('poalim.jpg')
+    logo: poalimLogo
   },
   [CompanyTypes.visaCal]: {
     companyKey: CompanyTypes.visaCal,
     companyName: 'ויזה כאל',
-    logo: buildLogoUrl('visa-cal.jpeg')
+    logo: visaCalLogo
   },
   [CompanyTypes.discount]: {
     companyKey: CompanyTypes.discount,
     companyName: 'דיסקונט',
-    logo: buildLogoUrl('discount.jpeg')
+    logo: discountLogo
   },
   [OutputVendorName.CSV]: {
     companyKey: OutputVendorName.CSV,
     companyName: 'Excel (csv)',
-    logo: buildLogoUrl('excel.png')
+    logo: excelLogo
   },
   [OutputVendorName.JSON]: {
     companyKey: OutputVendorName.JSON,
     companyName: 'Json',
-    logo: buildLogoUrl('json.png')
+    logo: jsonLogo
   },
   [OutputVendorName.GOOGLE_SHEETS]: {
     companyKey: OutputVendorName.GOOGLE_SHEETS,
     companyName: 'Google sheets',
-    logo: buildLogoUrl('googleSheets.jpg')
+    logo: googleSheetsLogo
   },
   [OutputVendorName.YNAB]: {
     companyKey: OutputVendorName.YNAB,
     companyName: 'Ynab',
-    logo: buildLogoUrl('ynab.jpg')
+    logo: ynabLogo
   }
 };
-
-function buildLogoUrl(fileName: string): string {
-  return `${PUBLIC_STORAGE_PREFIX}/${fileName}`;
-}
 
 export default ACCOUNT_METADATA;
