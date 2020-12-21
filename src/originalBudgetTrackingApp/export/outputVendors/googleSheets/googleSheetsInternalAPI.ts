@@ -35,7 +35,7 @@ export async function getExistingHashes(spreadsheetId: string, sheetName: string
   return existingHashes;
 }
 
-export type Spreadsheet = Pick<driveV3.Schema$File, 'id'| 'name'>
+export type Spreadsheet = Pick<driveV3.Schema$File, 'id' | 'name'>
 export const getAllSpreadsheets = async (auth: OAuth2Client) => {
   const response = await drive.files.list({
     q: 'mimeType="application/vnd.google-apps.spreadsheet"',
@@ -43,4 +43,14 @@ export const getAllSpreadsheets = async (auth: OAuth2Client) => {
   });
 
   return response.data.files as Spreadsheet[];
+};
+
+export const createSpreadhseet = async (spreadhseetName: string, auth: OAuth2Client) => {
+  const requestBody = {
+    properties: {
+      title: spreadhseetName
+    }
+  };
+
+  return sheets.spreadsheets.create({ requestBody, auth });
 };
