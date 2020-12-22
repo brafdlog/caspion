@@ -1,18 +1,33 @@
 <template>
   <div class="logs-container">
-    <p
-      v-for="(entry, i) in entries"
-      :key="i"
-      :class="getClass(entry.level)"
-    >
-      {{ entry.message }}
-    </p>
+    <v-container>
+      <v-row>
+        <v-col>
+          <div
+            v-for="(importer) in accountsState.importers"
+            :key="importer.id"
+          >
+            <account-card :account-state="importer" />
+          </div>
+        </v-col>
+        <v-col>
+          <div
+            v-for="(exporter) in accountsState.exporters"
+            :key="exporter.id"
+          >
+            <account-card :account-state="exporter" />
+          </div>
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from '@vue/composition-api';
-import { LogEntry, Levels } from './types';
+import { AccountsState } from '@/components/app/accountsState';
+import AccountCard from '@/components/shared/log/AccountCard.vue';
+import { Levels } from './types';
 
 const levelToClass = {
   [Levels.Error]: 'error-line',
@@ -21,15 +36,15 @@ const levelToClass = {
 };
 
 export default defineComponent({
+  components: { AccountCard },
   props: {
-    entries: {
-      type: Array as PropType<LogEntry[]>,
+    accountsState: {
+      type: Object as PropType<AccountsState>,
       required: true
     },
   },
   setup() {
     const getClass = (level: Levels) => levelToClass[level];
-
     return { getClass };
   }
 });
@@ -48,7 +63,7 @@ export default defineComponent({
 }
 
 .logs-container > p {
-  margin-bottom: 0px;
+  margin-bottom: 0;
   border-bottom: solid 1px #80808038;
 }
 

@@ -1,31 +1,63 @@
 <template>
-  <div class="container">
-    <div class="d-flex justify-center align-center">
-      <v-btn
-        x-large
-        :loading="inProgress"
-        :color="btnColor"
-        @click="scrape"
-      >
-        Run
-      </v-btn>
-    </div>
-    <div class="keep-bottom">
-      <log-viewer :entries="entries" />
-    </div>
-    <div>
-      <config-editor />
-    </div>
-  </div>
+  <v-container class="container d-flex flex-column">
+    <v-row
+      class="run-button-row"
+      align-content="center"
+    >
+      <v-col align="center">
+        <v-btn
+          x-large
+          :loading="inProgress"
+          :color="btnColor"
+          @click="scrape"
+        >
+          Run
+        </v-btn>
+      </v-col>
+    </v-row>
+    <v-row v-if="showAccountCards">
+      <v-col cols="12">
+        <div>
+          <log-viewer :accounts-state="accountsState" />
+        </div>
+      </v-col>
+    </v-row>
+    <v-row
+      v-else
+      align="end"
+    >
+      <v-col cols="12">
+        <div>
+          <config-editor />
+        </div>
+      </v-col>
+    </v-row>
+    <v-dialog
+      :value="generalError"
+      width="500"
+    >
+      <v-card>
+        <v-card-title class="headline red lighten-2">
+          Error
+        </v-card-title>
+        <v-card-text class="general-error-text subtitle-1">
+          {{ generalError }}
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+  </v-container>
 </template>
 
 <script lang="ts">
 import LogViewer from '@/components/shared/log/LogViewer.vue';
-import { ref, computed, defineComponent } from '@vue/composition-api';
-import { scrapeAndUpdateOutputVendors } from '@/originalBudgetTrackingApp';
-import ConfigEditor from './ConfigEditor.vue';
-import { LogEntry } from '../shared/log/types';
-import LogsEventEmitter from './LogsEventEmitter';
+import {
+  computed, defineComponent, ref
+} from '@vue/composition-api';
+import { EventEmitter, scrapeAndUpdateOutputVendors } from '@/originalBudgetTrackingApp';
+import { AccountsState, handleEvent } from '@/components/app/accountsState';
+import store from '@/store';
+import ConfigEditor from '@/components/app/ConfigEditor.vue';
+import { Levels } from '../shared/log/types';
 
 const statusToColor = {
   NOT_STARTED: null,
@@ -36,48 +68,56 @@ const statusToColor = {
 
 export default defineComponent({
   components: {
-    LogViewer, ConfigEditor
+    ConfigEditor,
+    LogViewer
   },
   setup() {
+    const config = store.getters.Config;
     const scrapingStatus = ref('NOT_STARTED' as keyof typeof statusToColor);
+    const generalError = ref<string>('');
     const inProgress = computed(() => scrapingStatus.value === 'IN_PROGRESS');
     const btnColor = computed(() => statusToColor[scrapingStatus.value]);
-    const entries = ref([] as LogEntry[]);
+    const showAccountCards = computed(() => scrapingStatus.value !== 'NOT_STARTED');
 
-    const eventPublisher = LogsEventEmitter((entry) => entries.value.push(entry));
+    const accountsState = ref(new AccountsState(config.getActiveImporters, config.getActiveExporters));
+
+    const eventEmitter = new EventEmitter.BudgetTrackingEventEmitter();
+
+    eventEmitter.onAny((eventName, eventData) => {
+      const message = eventData?.message || eventName;
+      const logLevel = eventData?.error ? Levels.Error : Levels.Info;
+      return handleEvent({ ...eventData, message, level: logLevel }, accountsState.value);
+    });
 
     const scrape = () => {
+      generalError.value = '';
+      accountsState.value = new AccountsState(config.getActiveImporters, config.getActiveExporters);
+      accountsState.value.setPendingStatus();
       scrapingStatus.value = 'IN_PROGRESS';
-      scrapeAndUpdateOutputVendors(eventPublisher)
+      scrapeAndUpdateOutputVendors(eventEmitter)
         .then(() => scrapingStatus.value = 'SUCCESS')
-        .catch(() => scrapingStatus.value = 'FAILURE');
+        .catch((e) => {
+          accountsState.value.clear();
+          generalError.value = e.message;
+          return scrapingStatus.value = 'FAILURE';
+        });
     };
 
     return {
-      inProgress, btnColor, scrape, entries
+      inProgress, btnColor, scrape, accountsState, showAccountCards, generalError
     };
   },
 });
 </script>
 
 <style scoped>
-
+.run-button-row {
+  flex: 0.5;
+}
 .container {
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: stretch;
 }
-
-.container > div {
-  flex: 1 1 0;
-  overflow: auto;
+.general-error-text {
+  margin-top: 15px;
 }
-
-.container > .keep-bottom {
-  display: flex;
-  flex-direction: column-reverse;
-}
-
 </style>

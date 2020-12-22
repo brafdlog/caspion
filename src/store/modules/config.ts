@@ -39,6 +39,20 @@ const configModule = defineModule({
     globalConfig: ({ scraping }): GlobalConfig => {
       const { numDaysBack, showBrowser } = scraping;
       return { numDaysBack, showBrowser };
+    },
+    getActiveImporters: (state) => {
+      return state.scraping.accountsToScrape
+        .filter((accountToScrape) => accountToScrape.active)
+        .map((accountToScrape) => ({ id: accountToScrape.key, name: accountToScrape.name }));
+    },
+    getActiveExporters: (state) => {
+      const activeExporters: { id: string, name: string }[] = [];
+      Object.entries(state.outputVendors).forEach(([outputVendorName, outputVendorConfig]) => {
+        if (outputVendorConfig?.active) {
+          activeExporters.push({ id: outputVendorName, name: outputVendorName });
+        }
+      });
+      return activeExporters;
     }
   },
   actions: {

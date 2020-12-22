@@ -1,7 +1,9 @@
 import {
   EnrichedTransaction, ExportTransactionsFunction, OutputVendor, OutputVendorName
 } from '@/originalBudgetTrackingApp/commonTypes';
-import { EventNames, EventPublisher } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
+import {
+  EventNames, EventPublisher, ExporterEvent
+} from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
 import _ from 'lodash';
 import moment from 'moment/moment';
 import * as ynab from 'ynab';
@@ -62,7 +64,9 @@ const createTransactions: ExportTransactionsFunction = async ({ transactionsToCr
     });
     return transactionCreationResult;
   } catch (e) {
-    await eventPublisher.emit(EventNames.EXPORTER_ERROR, { name: ynabOutputVendor.name, allTransactions: transactionsToCreate, error: e });
+    await eventPublisher.emit(EventNames.EXPORTER_ERROR, new ExporterEvent({
+      message: e.message, error: e, exporterName: ynabOutputVendor.name, allTransactions: transactionsToCreate
+    }));
     throw e;
   }
 };
@@ -217,7 +221,7 @@ async function getYnabCategories() {
 }
 
 async function emitProgressEvent(eventPublisher: EventPublisher, allTransactions: EnrichedTransaction[], message: string) {
-  await eventPublisher.emit(EventNames.EXPORTER_PROGRESS, { name: ynabOutputVendor.name, allTransactions, message });
+  await eventPublisher.emit(EventNames.EXPORTER_PROGRESS, new ExporterEvent({ message, exporterName: ynabOutputVendor.name, allTransactions }));
 }
 
 export const ynabOutputVendor: OutputVendor = {

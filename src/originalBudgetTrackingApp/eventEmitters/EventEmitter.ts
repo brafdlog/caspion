@@ -1,6 +1,7 @@
+// eslint-disable-next-line max-classes-per-file
 import Emittery from 'emittery';
-import { AccountToScrapeConfig } from '@/originalBudgetTrackingApp/configManager/configManager';
-import { EnrichedTransaction } from '@/originalBudgetTrackingApp/commonTypes';
+import { EnrichedTransaction, OutputVendorName } from '@/originalBudgetTrackingApp/commonTypes';
+import { CompanyTypes } from 'israeli-bank-scrapers-core';
 
 export enum EventNames {
   IMPORT_PROCESS_START = 'IMPORT_PROCESS_START',
@@ -19,53 +20,87 @@ export enum EventNames {
   LOG = 'LOG'
 }
 
-interface BudgetTrackingEvent {
-  message?: string;
+export enum AccountType {
+  IMPORTER, EXPORTER
 }
 
-export interface ErrorEvent extends BudgetTrackingEvent {
-  error: Error
+export enum AccountStatus {
+  IDLE, PENDING, IN_PROGRESS, DONE, ERROR
 }
 
-interface ImporterEvent extends BudgetTrackingEvent {
-  id: string
-  name: string
-  companyKey: AccountToScrapeConfig['key']
+export class BudgetTrackingEvent {
+  message: string;
+
+  vendorId?: CompanyTypes | OutputVendorName;
+
+  accountStatus?: AccountStatus;
+
+  error?: Error;
+
+  accountType?: AccountType;
+
+  constructor({
+    message, vendorId, error, accountType, accountStatus = AccountStatus.IN_PROGRESS
+  }: BudgetTrackingEvent) {
+    this.message = message;
+    this.vendorId = vendorId;
+    this.error = error;
+    this.accountType = accountType;
+    this.accountStatus = accountStatus;
+  }
 }
 
-interface ImporterErrorEvent extends ImporterEvent, ErrorEvent {
+export type ImporterEventParams = {
+  message: BudgetTrackingEvent['message'];
+  importerKey: CompanyTypes;
+  error?: BudgetTrackingEvent['error'];
+  status?: BudgetTrackingEvent['accountStatus'];
 }
 
-interface ImporterEndEvent extends ImporterEvent {
- transactions: EnrichedTransaction[]
+export class ImporterEvent extends BudgetTrackingEvent {
+  constructor({
+    message, importerKey, error, status
+  }: ImporterEventParams) {
+    super({
+      message, vendorId: importerKey, error, accountType: AccountType.IMPORTER, accountStatus: status
+    });
+  }
 }
 
-interface ExporterEvent extends BudgetTrackingEvent {
-  name: string
-  allTransactions: EnrichedTransaction[]
+export type ExporterEventParams = {
+  message: string;
+  exporterName: OutputVendorName;
+  allTransactions: EnrichedTransaction[];
+  status?: AccountStatus;
+  error?: Error;
 }
 
-interface ExporterErrorEvent extends ExporterEvent, ErrorEvent {
+export class ExporterEvent extends BudgetTrackingEvent {
+  allTransactions: EnrichedTransaction[];
 
-}
-
-interface ImportProcessStartEvent extends BudgetTrackingEvent {
-  startDate: Date
+  constructor({
+    message, allTransactions, status, error, exporterName
+  }: ExporterEventParams) {
+    super({
+      message, accountType: AccountType.EXPORTER, accountStatus: status, error, vendorId: exporterName
+    });
+    this.allTransactions = allTransactions;
+  }
 }
 
 export type EventDataMap = {
-  [EventNames.IMPORT_PROCESS_START]: ImportProcessStartEvent
+  [EventNames.IMPORT_PROCESS_START]: BudgetTrackingEvent
   [EventNames.IMPORTER_START]: ImporterEvent
   [EventNames.IMPORTER_PROGRESS]: ImporterEvent
-  [EventNames.IMPORTER_ERROR]: ImporterErrorEvent
-  [EventNames.IMPORTER_END]: ImporterEndEvent
+  [EventNames.IMPORTER_ERROR]: ImporterEvent
+  [EventNames.IMPORTER_END]: ImporterEvent
   [EventNames.IMPORT_PROCESS_END]: BudgetTrackingEvent
   [EventNames.EXPORT_PROCESS_START]: BudgetTrackingEvent
   [EventNames.EXPORTER_START]: ExporterEvent
   [EventNames.EXPORTER_PROGRESS]: ExporterEvent
-  [EventNames.EXPORTER_ERROR]: ExporterErrorEvent
+  [EventNames.EXPORTER_ERROR]: ExporterEvent
   [EventNames.EXPORTER_END]: ExporterEvent
-  [EventNames.GENERAL_ERROR]: ErrorEvent
+  [EventNames.GENERAL_ERROR]: BudgetTrackingEvent
   [EventNames.LOG]: BudgetTrackingEvent
 };
 

@@ -1,5 +1,7 @@
 import { Config } from '@/originalBudgetTrackingApp/configManager/configManager';
-import { EventPublisher, EventNames } from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
+import {
+  AccountStatus, EventNames, EventPublisher, ExporterEvent
+} from '@/originalBudgetTrackingApp/eventEmitters/EventEmitter';
 import { EnrichedTransaction } from '@/originalBudgetTrackingApp/commonTypes';
 import _ from 'lodash';
 import outputVendors from '@/originalBudgetTrackingApp/export/outputVendors';
@@ -16,18 +18,23 @@ export async function createTransactionsInExternalVendors(
   const exportPromises = outputVendors
     .filter((outputVendor) => outputVendorsConfig[outputVendor.name]?.active)
     .map(async (outputVendor) => {
-      const baseExporterEventData = { name: outputVendor.name.toString(), allTransactions };
+      const baseEvent = {
+        exporterName: outputVendor.name,
+        allTransactions
+      };
 
       await outputVendor.init?.(outputVendorsConfig);
-      await eventPublisher.emit(EventNames.EXPORTER_START, baseExporterEventData);
+      await eventPublisher.emit(EventNames.EXPORTER_START, new ExporterEvent({ message: 'Starting', ...baseEvent }));
       try {
         const vendorResult = await outputVendor.exportTransactions({
           transactionsToCreate: allTransactions, startDate, outputVendorsConfig
         }, eventPublisher);
-        await eventPublisher.emit(EventNames.EXPORTER_END, baseExporterEventData);
+        await eventPublisher.emit(EventNames.EXPORTER_END, new ExporterEvent({ message: 'Finished', ...baseEvent, status: AccountStatus.DONE }));
         executionResult[outputVendor.name] = vendorResult;
       } catch (e) {
-        await eventPublisher.emit(EventNames.EXPORTER_ERROR, { ...baseExporterEventData, error: e });
+        await eventPublisher.emit(EventNames.EXPORTER_ERROR, new ExporterEvent({
+          message: e.message, error: e, ...baseEvent
+        }));
         throw e;
       }
     });
