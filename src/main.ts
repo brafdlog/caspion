@@ -1,14 +1,14 @@
 import VueCompositionAPI, { h, ref } from '@vue/composition-api';
 import electron from 'electron';
 import Vue from 'vue';
-import App from './components/App.vue';
-import FormField from './components/shared/FormField';
-import SplashScreen from './components/SplashScreen.vue';
-import { initializeReporter } from './modules/reporting';
-import LoggerPlugin from './plugins/logger';
-import vuetify from './plugins/vuetify';
-import router from './router';
-import store from './store';
+import App from './ui/components/App.vue';
+import FormField from './ui/components/shared/FormField';
+import SplashScreen from './ui/components/SplashScreen.vue';
+import { initializeReporter } from './backend/reporting';
+import LoggerPlugin from './ui/plugins/logger';
+import vuetify from './ui/plugins/vuetify';
+import router from './ui/router';
+import store from './ui/store';
 
 initializeReporter();
 

@@ -1,4 +1,4 @@
-import { encryptObject, decryptObject } from '../../../src/modules/encryption/credentials';
+import { encryptObject, decryptObject } from '../../../src/backend/configManager/encryption/credentials';
 
 function isNotNullOrEmptyOrUndefined(value) {
   return value && value !== null && value !== '';

@@ -43,7 +43,7 @@
     "node_modules"
   ],
   "files": [
-    "./src/shims-vue.d.ts",
-    "./src/shims-tsx.d.ts"
+    "./src/types/shims-vue.d.ts",
+    "./src/types/shims-tsx.d.ts"
   ]
 }
