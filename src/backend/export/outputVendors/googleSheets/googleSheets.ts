@@ -20,9 +20,12 @@ const createTransactionsInGoogleSheets: ExportTransactionsFunction = async (
   if (!credentials) throw new Error('You must set the \'credentials\'');
   const oAuthClient = createClient(credentials);
 
-  const sheetName = await getSheetName(spreadsheetId, oAuthClient);
+  const sheet = await googleSheets.getSheet(spreadsheetId, DEFAULT_SHEET_NAME, oAuthClient);
+  if (!sheet) {
+    throw new Error(`There is no sheet called ${DEFAULT_SHEET_NAME} in the spreadsheet`);
+  }
 
-  const hashesAlreadyExistingInGoogleSheets = await googleSheets.getExistingHashes(spreadsheetId, sheetName, oAuthClient);
+  const hashesAlreadyExistingInGoogleSheets = await googleSheets.getExistingHashes(spreadsheetId, DEFAULT_SHEET_NAME, oAuthClient);
   const transactionsToCreate = transactions.filter((transaction) => !hashesAlreadyExistingInGoogleSheets.includes(transaction.hash));
 
   if (transactionsToCreate.length === 0) {
@@ -43,21 +46,10 @@ const createTransactionsInGoogleSheets: ExportTransactionsFunction = async (
   ]);
 
   const spreadsheetAppendResult = await googleSheets.appendToSpreadsheet(
-    spreadsheetId, `${sheetName}!A:A`, transactionsInSheetsFormat, oAuthClient
+    spreadsheetId, `${DEFAULT_SHEET_NAME}!A:A`, transactionsInSheetsFormat, oAuthClient
   );
   return spreadsheetAppendResult.data;
 };
-
-async function getSheetName(spreadsheetId, oAuthClient) {
-  const sheetNames = await googleSheets.getSheetNames(spreadsheetId, oAuthClient);
-  if (sheetNames.length === 1) {
-    return sheetNames[0];
-  }
-  if (sheetNames.includes(DEFAULT_SHEET_NAME)) {
-    return DEFAULT_SHEET_NAME;
-  }
-  throw new Error(`Cant find sheet to update. Sheet names are: ${sheetNames}`);
-}
 
 async function emitProgressEvent(eventPublisher: EventPublisher, allTransactions: EnrichedTransaction[], message: string) {
   await eventPublisher.emit(EventNames.EXPORTER_PROGRESS, new ExporterEvent({
