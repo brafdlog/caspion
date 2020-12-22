@@ -10,6 +10,7 @@ import { appendToSpreadsheet } from './googleSheetsInternalAPI';
 
 const GOOGLE_SHEETS_DATE_FORMAT = 'DD/MM/YYYY';
 const DEFAULT_SHEET_NAME = '_budget-tracking';
+const COLUMN_HEADERS = ['תאריך', 'סכום', 'תיאור', 'תיאור נוסף', 'קטגוריה', 'מספר חשבון', 'hash - לא לגעת'];
 
 const createTransactionsInGoogleSheets: ExportTransactionsFunction = async (
   { transactionsToCreate: transactions, outputVendorsConfig },
@@ -68,9 +69,7 @@ export async function createSpreadsheet(spreadsheetTitle: string, credentials: A
   const auth = createClient(credentials);
   const spreadsheetId = await googleSheets.createSpreadsheet(spreadsheetTitle, DEFAULT_SHEET_NAME, auth);
 
-  const columnHeaders = ['תאריך', 'סכום', 'תיאור', 'תיאור נוסף', 'קטגוריה', 'מספר חשבון', 'hash - לא לגעת'];
-
-  await appendToSpreadsheet(spreadsheetId, `${DEFAULT_SHEET_NAME}!A:A`, [columnHeaders], auth);
+  await appendToSpreadsheet(spreadsheetId, `${DEFAULT_SHEET_NAME}!A:A`, [COLUMN_HEADERS], auth);
 
   return spreadsheetId;
 }
