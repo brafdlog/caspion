@@ -25,7 +25,7 @@ export async function appendToSpreadsheet(spreadsheetId: string, range: string, 
   return result;
 }
 
-export async function getExistingHashes(spreadsheetId: string, sheetName: string, auth: OAuth2Client, hashColumn = 'H') {
+export async function getExistingHashes(spreadsheetId: string, sheetName: string, auth: OAuth2Client, hashColumn = 'G') {
   const result = await sheets.spreadsheets.values.get({
     auth,
     spreadsheetId,
@@ -54,3 +54,13 @@ export const createSpreadhseet = async (spreadhseetName: string, auth: OAuth2Cli
 
   return sheets.spreadsheets.create({ requestBody, auth });
 };
+
+export async function getSheet(spreadsheetId: string, sheetName: string, auth: OAuth2Client) {
+  const spreadsheetResponse = await sheets.spreadsheets.get({
+    auth,
+    spreadsheetId
+  });
+  const sheet = spreadsheetResponse.data.sheets?.find(({ properties }) => properties?.title === sheetName);
+
+  return sheet;
+}

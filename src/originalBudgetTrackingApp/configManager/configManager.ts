@@ -1,5 +1,5 @@
 import { decrypt, encrypt } from '@/modules/encryption/crypto';
-import { CompanyTypes } from '@brafdlog/israeli-bank-scrapers-core';
+import { CompanyTypes } from 'israeli-bank-scrapers-core';
 import { promises as fs, existsSync } from 'fs';
 import { Credentials } from '../export/outputVendors/googleSheets/googleAuth';
 import configExample from './defaultConfig';
@@ -12,6 +12,7 @@ export interface Config {
     [OutputVendorName.GOOGLE_SHEETS]?: GoogleSheetsConfig;
     [OutputVendorName.YNAB]?: YnabConfig;
     [OutputVendorName.JSON]?: JsonConfig;
+    [OutputVendorName.CSV]?: CsvConfig;
   };
   scraping: {
     numDaysBack: number;
@@ -30,7 +31,8 @@ export interface Config {
 export enum OutputVendorName {
   YNAB = 'ynab',
   GOOGLE_SHEETS = 'googleSheets',
-  JSON = 'json'
+  JSON = 'json',
+  CSV = 'csv'
 }
 
 export type OutputVendorConfigs = Exclude<Config['outputVendors'][OutputVendorName], undefined>
@@ -38,6 +40,12 @@ export type OutputVendorConfig<T extends OutputVendorName> = Exclude<Config['out
 
 interface OutputVendorConfigBase {
   active: boolean;
+}
+
+export interface CsvConfig extends OutputVendorConfigBase {
+  options: {
+    filePath: string;
+  }
 }
 
 export interface JsonConfig extends OutputVendorConfigBase {

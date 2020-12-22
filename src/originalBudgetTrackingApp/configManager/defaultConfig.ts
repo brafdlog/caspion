@@ -7,8 +7,14 @@ const DEFAULT_CONFIG: Config = {
     accountsToScrape: [],
   },
   outputVendors: {
-    json: {
+    csv: {
       active: true,
+      options: {
+        filePath: '../transaction.csv'
+      }
+    },
+    json: {
+      active: false,
       options: {
         filePath: '../transaction.json'
       }
