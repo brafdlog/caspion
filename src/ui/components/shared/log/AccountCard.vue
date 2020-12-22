@@ -72,7 +72,7 @@ export default defineComponent({
     const displayTheShowLogsIcon = computed<boolean>(() => [AccountStatus.DONE, AccountStatus.ERROR].includes(props.accountState.status));
     const fullLog = computed<string>(() => props.accountState.events.map((event) => event.message.trim()).join('\n'));
 
-    const accountMetadata: AccountMetadata = ACCOUNT_METADATA[props.accountState.id];
+    const accountMetadata: AccountMetadata = ACCOUNT_METADATA.importers[props.accountState.id] || ACCOUNT_METADATA.exporters[props.accountState.id];
     return {
       latestEventMessage, accountMetadata, displayTheShowLogsIcon, fullLog
     };

@@ -40,16 +40,8 @@ export class AccountsState {
   exporters: ExporterState[];
 
   constructor(importersConfig: readonly { id: string, name: string }[], exportersConfig: readonly { id: string, name: string }[]) {
-    this.importers = [];
-    this.exporters = [];
-
-    importersConfig.forEach(({ id, name }) => {
-      this.importers.push(new ImporterState({ id, name }));
-    });
-
-    exportersConfig.forEach(({ id, name }) => {
-      this.exporters.push(new ExporterState({ id, name }));
-    });
+    this.importers = importersConfig.map((importer) => new ImporterState(importer));
+    this.exporters = exportersConfig.map((exporter) => new ExporterState(exporter));
   }
 
   clear() {
