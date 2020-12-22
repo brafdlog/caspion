@@ -3,11 +3,14 @@ import {
 } from '@/backend/commonTypes';
 import { EventNames, EventPublisher, ExporterEvent } from '@/backend/eventEmitters/EventEmitter';
 import moment from 'moment/moment';
+import { Auth } from 'googleapis';
 import { createClient } from './googleAuth';
 import * as googleSheets from './googleSheetsInternalAPI';
+import { appendToSpreadsheet } from './googleSheetsInternalAPI';
 
 const GOOGLE_SHEETS_DATE_FORMAT = 'DD/MM/YYYY';
-const sheetName = '_budget-tracking';
+const DEFAULT_SHEET_NAME = '_budget-tracking';
+const COLUMN_HEADERS = ['תאריך', 'סכום', 'תיאור', 'תיאור נוסף', 'קטגוריה', 'מספר חשבון', 'hash - לא לגעת'];
 
 const createTransactionsInGoogleSheets: ExportTransactionsFunction = async (
   { transactionsToCreate: transactions, outputVendorsConfig },
@@ -17,12 +20,12 @@ const createTransactionsInGoogleSheets: ExportTransactionsFunction = async (
   if (!credentials) throw new Error('You must set the \'credentials\'');
   const oAuthClient = createClient(credentials);
 
-  const sheet = await googleSheets.getSheet(spreadsheetId, sheetName, oAuthClient);
+  const sheet = await googleSheets.getSheet(spreadsheetId, DEFAULT_SHEET_NAME, oAuthClient);
   if (!sheet) {
-    throw new Error(`There is no sheet called ${sheetName} in the spreadsheet`);
+    throw new Error(`There is no sheet called ${DEFAULT_SHEET_NAME} in the spreadsheet`);
   }
 
-  const hashesAlreadyExistingInGoogleSheets = await googleSheets.getExistingHashes(spreadsheetId, sheetName, oAuthClient);
+  const hashesAlreadyExistingInGoogleSheets = await googleSheets.getExistingHashes(spreadsheetId, DEFAULT_SHEET_NAME, oAuthClient);
   const transactionsToCreate = transactions.filter((transaction) => !hashesAlreadyExistingInGoogleSheets.includes(transaction.hash));
 
   if (transactionsToCreate.length === 0) {
@@ -43,7 +46,7 @@ const createTransactionsInGoogleSheets: ExportTransactionsFunction = async (
   ]);
 
   const spreadsheetAppendResult = await googleSheets.appendToSpreadsheet(
-    spreadsheetId, `${sheetName}!A:A`, transactionsInSheetsFormat, oAuthClient
+    spreadsheetId, `${DEFAULT_SHEET_NAME}!A:A`, transactionsInSheetsFormat, oAuthClient
   );
   return spreadsheetAppendResult.data;
 };
@@ -52,6 +55,15 @@ async function emitProgressEvent(eventPublisher: EventPublisher, allTransactions
   await eventPublisher.emit(EventNames.EXPORTER_PROGRESS, new ExporterEvent({
     message, exporterName: googleSheetsOutputVendor.name, allTransactions
   }));
+}
+
+export async function createSpreadsheet(spreadsheetTitle: string, credentials: Auth.Credentials): Promise<string> {
+  const auth = createClient(credentials);
+  const spreadsheetId = await googleSheets.createSpreadsheet(spreadsheetTitle, DEFAULT_SHEET_NAME, auth);
+
+  await appendToSpreadsheet(spreadsheetId, `${DEFAULT_SHEET_NAME}!A:A`, [COLUMN_HEADERS], auth);
+
+  return spreadsheetId;
 }
 
 export const googleSheetsOutputVendor: OutputVendor = {

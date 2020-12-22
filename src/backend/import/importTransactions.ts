@@ -82,7 +82,7 @@ async function fetchTransactions(
     showBrowser: scrapingConfig.showBrowser,
   }, emitImporterProgressEvent);
   if (!scrapeResult.success) {
-    throw new Error(scrapeResult.errorMessage);
+    throw new Error(scrapeResult.errorMessage || scrapeResult.errorType);
   }
   return scrapeResult;
 }

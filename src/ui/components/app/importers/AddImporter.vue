@@ -50,7 +50,7 @@
 import store from '@/ui/store';
 
 function initData(importerProp) {
-  const importerToAdd = { ...importerProp, loginFields: {} };
+  const importerToAdd = { active: true, ...importerProp, loginFields: {} };
   importerProp.loginFields.forEach((element) => {
     importerToAdd.loginFields[element] = null;
   });

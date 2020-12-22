@@ -8,8 +8,7 @@ export const clientId = GOOGLE_CLIENT_ID;
 export const clientSecret = GOOGLE_CLIENT_SECRET;
 export const redirectUri = homepage;
 export const scopes = [
-  'https://www.googleapis.com/auth/drive.metadata.readonly',
-  'https://www.googleapis.com/auth/spreadsheets',
+  'https://www.googleapis.com/auth/drive.file'
 ];
 
 export const createClient = (credentials: Auth.Credentials) => {
