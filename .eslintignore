@@ -38,6 +38,7 @@ app/renderer.prod.js.map
 app/style.css
 app/style.css.map
 dist
+dist_electron
 dll
 main.js
 main.js.map
@@ -49,3 +50,8 @@ __snapshots__
 # Package.json
 package.json
 .travis.yml
+
+src/originalBudgetTrackingApp/web
+src/originalBudgetTrackingApp/main*
+
+*.d.ts
