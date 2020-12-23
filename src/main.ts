@@ -2,7 +2,7 @@ import VueCompositionAPI, { h, ref } from '@vue/composition-api';
 import electron from 'electron';
 import { ElectronLog } from 'electron-log';
 import Vue from 'vue';
-import Sentry from './backend/reporting/sentry';
+import Sentry from './logging/sentry';
 import App from './ui/components/App.vue';
 import FormField from './ui/components/shared/FormField';
 import SplashScreen from './ui/components/SplashScreen.vue';

@@ -1,8 +1,8 @@
 import { app, BrowserWindow } from 'electron';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createProtocol, installVueDevtools } from 'vue-cli-plugin-electron-builder/lib';
-import CreateLogger from './logger';
-import Sentry from './backend/reporting/sentry';
+import CreateLogger from './logging/logger';
+import Sentry from './logging/sentry';
 // import './store';
 
 Sentry.initializeReporter();

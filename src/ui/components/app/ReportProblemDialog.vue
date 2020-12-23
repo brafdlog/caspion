@@ -92,7 +92,7 @@
 
 <script>
 import { shell } from 'electron';
-import Sentry from '@/backend/reporting/sentry';
+import Sentry from '@/logging/sentry';
 import LogSheet from '@/ui/components/shared/LogSheet';
 
 const createGithubIssueLink = (title, detailes, log) => {
