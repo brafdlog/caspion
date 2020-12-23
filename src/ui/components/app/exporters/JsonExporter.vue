@@ -13,12 +13,12 @@
       v-model="exporter.options.filePath"
       label="JSON file"
       outlined
-      :rules="[rules.legalPath]"
+      :rules="rules"
       @change="changed = true"
     />
     <v-btn
       color="primary"
-      :disabled="!readyToSave.value"
+      :disabled="!readyToSave"
       @click="submit()"
     >
       Save
@@ -29,16 +29,17 @@
 <script lang="ts">
 import { setupExporterConfigForm } from '@/ui/components/app/exporters/exportersCommon';
 import { OutputVendorName } from '@/backend/commonTypes';
-import { legalPath } from '@/ui/components/shared/formValidations';
+import { legalPath, required } from '@/ui/components/shared/formValidations';
 import { defineComponent } from '@vue/composition-api';
 
 export default defineComponent({
   setup() {
     return {
       ...setupExporterConfigForm(OutputVendorName.JSON),
-      rules: {
+      rules: [
+        required,
         legalPath
-      }
+      ]
     };
   }
 });
