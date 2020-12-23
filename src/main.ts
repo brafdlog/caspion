@@ -1,10 +1,11 @@
 import VueCompositionAPI, { h, ref } from '@vue/composition-api';
 import electron from 'electron';
+import { ElectronLog } from 'electron-log';
 import Vue from 'vue';
+import Sentry from './backend/reporting/sentry';
 import App from './ui/components/App.vue';
 import FormField from './ui/components/shared/FormField';
 import SplashScreen from './ui/components/SplashScreen.vue';
-import Sentry from './backend/reporting/sentry';
 import LoggerPlugin from './ui/plugins/logger';
 import vuetify from './ui/plugins/vuetify';
 import router from './ui/router';
@@ -17,7 +18,7 @@ process.on('unhandledRejection', (error) => {
   console.error(error);
 });
 
-const logger = electron.remote.getGlobal('logger');
+const logger: ElectronLog = electron.remote.getGlobal('logger');
 logger.info('The renderer process got the logger');
 Vue.use(LoggerPlugin, { logger });
 
