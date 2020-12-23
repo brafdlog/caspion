@@ -14,12 +14,14 @@
       type="password"
       label="Access Token"
       outlined
+      :rules="rules.required"
       @change="changed = true"
     />
     <v-text-field
       v-model="exporter.options.budgetId"
       label="Budget id"
       outlined
+      :rules="rules.required"
       @change="changed = true"
     />
     <ynab-account-mapping-table
@@ -32,7 +34,7 @@
         <v-col cols="10">
           <v-btn
             color="primary"
-            :disabled="!readyToSave.value"
+            :disabled="!readyToSave"
             @click="submit()"
           >
             Save
@@ -61,6 +63,7 @@ import { setupExporterConfigForm } from '@/ui/components/app/exporters/exporters
 import { OutputVendorName } from '@/backend/commonTypes';
 import YnabAccountMappingTable, { MappingTable } from '@/ui/components/app/exporters/YnabAccountMappingTable.vue';
 import { ref, defineComponent } from '@vue/composition-api';
+import { required } from '@/ui/components/shared/formValidations';
 
 export default defineComponent({
   components: { YnabAccountMappingTable },
@@ -73,6 +76,9 @@ export default defineComponent({
       mappingTable,
       ...dataToReturn,
       addAccountMapping: () => mappingTable.value?.addItem(),
+      rules: {
+        required
+      }
     };
   }
 });
