@@ -1,9 +1,11 @@
 import * as Sentry from '@sentry/electron';
 
-// https://github.com/getsentry/sentry-electron/issues/142
-const { init } = (process.type === 'browser'
+type Init = typeof Sentry.init
+
+// https://docs.sentry.io/platforms/javascript/guides/electron/#webpack-configuration
+const { init }: { init: Init } = process.type === 'browser'
   ? require('@sentry/electron/dist/main')
-  : require('@sentry/electron/dist/renderer'));
+  : require('@sentry/electron/dist/renderer');
 
 const reporterConfiguration = {
   dsn: SENTRY_DSN,
@@ -12,13 +14,11 @@ const reporterConfiguration = {
   enableJavaScript: false,
   enableNative: false,
   enableUnresponsive: false,
-};
+} as Sentry.ElectronOptions;
 
-export function initializeReporter() {
-  init(reporterConfiguration);
-}
+const initializeReporter = () => init(reporterConfiguration);
 
-export function ReportProblem(title, body, logs, email, extra) {
+const userReportProblem = (title: string, body: string, logs: string, email: string, extra: Record<string, any>) => {
   return Sentry.captureEvent({
     message: title,
     logger: logs,
@@ -30,4 +30,9 @@ export function ReportProblem(title, body, logs, email, extra) {
       ...extra,
     },
   });
-}
+};
+
+export default {
+  initializeReporter,
+  userReportProblem
+};

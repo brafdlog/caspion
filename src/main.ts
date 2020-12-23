@@ -4,13 +4,13 @@ import Vue from 'vue';
 import App from './ui/components/App.vue';
 import FormField from './ui/components/shared/FormField';
 import SplashScreen from './ui/components/SplashScreen.vue';
-import { initializeReporter } from './backend/reporting';
+import Sentry from './backend/reporting/sentry';
 import LoggerPlugin from './ui/plugins/logger';
 import vuetify from './ui/plugins/vuetify';
 import router from './ui/router';
 import store from './ui/store';
 
-initializeReporter();
+Sentry.initializeReporter();
 
 process.on('unhandledRejection', (error) => {
   // eslint-disable-next-line no-console
