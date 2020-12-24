@@ -4,7 +4,6 @@ import { ElectronLog } from 'electron-log';
 import Vue from 'vue';
 import Sentry from './logging/sentry';
 import App from './ui/components/App.vue';
-import FormField from './ui/components/shared/FormField';
 import SplashScreen from './ui/components/SplashScreen.vue';
 import LoggerPlugin from './ui/plugins/logger';
 import vuetify from './ui/plugins/vuetify';
@@ -25,8 +24,6 @@ Vue.use(LoggerPlugin, { logger });
 Vue.use(VueCompositionAPI);
 
 Vue.config.productionTip = process.env.NODE_ENV !== 'production';
-
-Vue.component('form-field', FormField);
 
 new Vue({
   router,
