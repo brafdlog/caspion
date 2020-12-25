@@ -3,12 +3,14 @@ import * as configManager from '@/backend/configManager/configManager';
 import * as bankScraper from '@/backend/import/bankScraper';
 import { ScaperScrapingResult, Transaction } from '@/backend/import/bankScraper';
 import * as categoryCalculation from '@/backend/import/categoryCalculationScript';
+import electron from 'electron';
 import _ from 'lodash';
 import moment from 'moment';
 import {
-  AccountStatus, BudgetTrackingEventEmitter, EventNames, EventPublisher, ImporterEvent
+  AccountStatus, BudgetTrackingEventEmitter, DownalodChromeEvent, EventNames, EventPublisher, ImporterEvent
 } from '../eventEmitters/EventEmitter';
 import { calculateTransactionHash } from '../transactions/transactions';
+import getChrome from './downloadChromium';
 
 type AccountToScrapeConfig = configManager.AccountToScrapeConfig;
 type Config = configManager.Config;
@@ -18,12 +20,15 @@ const TRANSACTION_STATUS_COMPLETED = 'completed';
 
 export async function scrapeFinancialAccountsAndFetchTransactions(scrapingConfig: ScrapingConfig, startDate: Date, eventPublisher: EventPublisher) {
   const companyIdToTransactions: Record<string, EnrichedTransaction[]> = {};
+
+  const chromePath = await getChrome(electron.remote.app.getPath('userData'), ({ percent }) => emitChromeDownload(eventPublisher, percent));
+
   const accountsToScrape = scrapingConfig.accountsToScrape.filter((accountToScrape) => accountToScrape.active !== false);
   const scrapingPromises = accountsToScrape.map(async (accountToScrape) => {
     const companyId = accountToScrape.key;
     try {
       await eventPublisher.emit(EventNames.IMPORTER_START, buildImporterEvent(accountToScrape, { message: 'Importer start' }));
-      const scrapeResult = await fetchTransactions(accountToScrape, startDate, scrapingConfig, eventPublisher);
+      const scrapeResult = await fetchTransactions(accountToScrape, startDate, scrapingConfig, eventPublisher, chromePath);
       const transactions = await postProcessTransactions(accountToScrape, scrapeResult);
       companyIdToTransactions[companyId] = transactions;
       await eventPublisher.emit(EventNames.IMPORTER_END, buildImporterEvent(accountToScrape, { message: 'Importer end', status: AccountStatus.DONE }));
@@ -45,6 +50,10 @@ function buildImporterEvent(accountConfig: AccountToScrapeConfig, additionalPara
     error: additionalParams.error,
     status: additionalParams.status
   });
+}
+
+function emitChromeDownload(eventPublisher: EventPublisher, percent: number) {
+  eventPublisher.emit(EventNames.DOWNLOAD_CHROME, new DownalodChromeEvent(percent));
 }
 
 export async function getFinancialAccountNumbers() {
@@ -69,7 +78,8 @@ export async function getFinancialAccountNumbers() {
 async function fetchTransactions(
   accountToScrapeConfig: AccountToScrapeConfig,
   startDate: Date, scrapingConfig: Config['scraping'],
-  eventPublisher: EventPublisher
+  eventPublisher: EventPublisher,
+  chromePath: string
 ) {
   const emitImporterProgressEvent = async (eventCompanyId: string, message: string) => {
     await eventPublisher.emit(EventNames.IMPORTER_PROGRESS, buildImporterEvent(accountToScrapeConfig, { message }));
@@ -80,7 +90,7 @@ async function fetchTransactions(
     credentials: accountToScrapeConfig.loginFields,
     startDate,
     showBrowser: scrapingConfig.showBrowser,
-  }, emitImporterProgressEvent);
+  }, emitImporterProgressEvent, chromePath);
   if (!scrapeResult.success) {
     throw new Error(scrapeResult.errorMessage || scrapeResult.errorType);
   }

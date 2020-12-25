@@ -1,5 +1,4 @@
 import { createScraper, SCRAPERS } from 'israeli-bank-scrapers-core';
-import getChrome from './downloadChromium';
 import { AccountToScrapeConfig } from '../configManager/configManager';
 
 export { ScaperScrapingResult } from 'israeli-bank-scrapers-core/lib/scrapers/base-scraper';
@@ -22,12 +21,10 @@ type EmitProgressEventFunction = (eventCompanyId: string, message: string) => Pr
 
 export async function scrape({
   companyId, credentials, startDate, showBrowser = false
-}: ScrapeParameters, emitProgressEvent: EmitProgressEventFunction) {
+}: ScrapeParameters, emitProgressEvent: EmitProgressEventFunction, chromePath: string) {
   if (!credentials || (!credentials.username && !credentials.num && !credentials.id) || !credentials.password) {
     throw new Error(`Missing credentials for scraper. CompanyId: ${companyId}`);
   }
-
-  const chromePath = await getChrome(undefined);
 
   const options = {
     companyId, // mandatory; one of 'hapoalim', 'discount', 'otsarHahayal', 'leumiCard', 'isracard', 'amex'
