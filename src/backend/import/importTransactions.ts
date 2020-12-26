@@ -3,7 +3,6 @@ import * as configManager from '@/backend/configManager/configManager';
 import * as bankScraper from '@/backend/import/bankScraper';
 import { ScaperScrapingResult, Transaction } from '@/backend/import/bankScraper';
 import * as categoryCalculation from '@/backend/import/categoryCalculationScript';
-import electron from 'electron';
 import _ from 'lodash';
 import moment from 'moment';
 import {
@@ -18,17 +17,19 @@ type ScrapingConfig = Config['scraping'];
 
 const TRANSACTION_STATUS_COMPLETED = 'completed';
 
-export async function scrapeFinancialAccountsAndFetchTransactions(scrapingConfig: ScrapingConfig, startDate: Date, eventPublisher: EventPublisher) {
+export async function scrapeFinancialAccountsAndFetchTransactions(
+  scrapingConfig: ScrapingConfig, startDate: Date, eventPublisher: EventPublisher, chromePath?: string
+) {
   const companyIdToTransactions: Record<string, EnrichedTransaction[]> = {};
 
-  const chromePath = await getChrome(electron.remote.app.getPath('userData'), ({ percent }) => emitChromeDownload(eventPublisher, percent));
+  const dowloadedChrome = await getChrome(chromePath, ({ percent }) => emitChromeDownload(eventPublisher, percent));
 
   const accountsToScrape = scrapingConfig.accountsToScrape.filter((accountToScrape) => accountToScrape.active !== false);
   const scrapingPromises = accountsToScrape.map(async (accountToScrape) => {
     const companyId = accountToScrape.key;
     try {
       await eventPublisher.emit(EventNames.IMPORTER_START, buildImporterEvent(accountToScrape, { message: 'Importer start' }));
-      const scrapeResult = await fetchTransactions(accountToScrape, startDate, scrapingConfig, eventPublisher, chromePath);
+      const scrapeResult = await fetchTransactions(accountToScrape, startDate, scrapingConfig, eventPublisher, dowloadedChrome);
       const transactions = await postProcessTransactions(accountToScrape, scrapeResult);
       companyIdToTransactions[companyId] = transactions;
       await eventPublisher.emit(EventNames.IMPORTER_END, buildImporterEvent(accountToScrape, { message: 'Importer end', status: AccountStatus.DONE }));
