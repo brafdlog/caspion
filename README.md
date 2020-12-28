@@ -1,7 +1,7 @@
-# Automated budget tracking
-
 ![Build/Release](https://github.com/brafdlog/budget-tracking/workflows/Build/Release/badge.svg?branch=master&event=push)
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/brafdlog/budget-tracking.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/brafdlog/budget-tracking/context:javascript)
+
+# Automated expense tracking from Israeli banks and credit cards
 
 Many people track their expenses with spreadsheets or with budgeting apps (like [YNAB](https://ynab.com/referral/?ref=Z5wPbP0cYTWjdTQj&utm_source=customer_referral)).
 
@@ -12,13 +12,6 @@ This project aims to automate this process by fetching the data automatically fr
 In addition, it can automatically set an expense category for transactions according to predefined patterns.
 
 Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israeli-bank-scrapers) npm package.
-
-
->
-> We have decided to merge the [israeli-bank-scrapers-desktop](https://github.com/baruchiro/israeli-bank-scrapers-desktop) project into this repository, and work together on the same project. 
->
-> The merge is in progress in the `unifyRepos` branch in this [PR](https://github.com/brafdlog/budget-tracking/pull/50)
->  
 
 ### What is currently supported:
 
