@@ -24,7 +24,7 @@ Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israel
 - Run `yarn` to install the dependencies
 - Run `yarn serve` to start the app
 - Set up additional exporters (Optional)
-  - See YNAB and Google spreadsheet instructions below
+  - If you want to set up YNAB, see instructions below
 - Run by clicking on the `Run` button in the app
 - Configure automatic category classification (Optional)
     - Open `categoryCalculationScript.js`. This file contains the patterns for classifying transactions to categories automatically.
@@ -53,32 +53,6 @@ YNAB is a budgeting software. If you want to manage your budget there and have y
     - These are the account numbers in the banks/credit card companies you added
 - For each financial account number from a previous step, find the corresponding ynab account and add to `ynab.accountNumbersToYnabAccountIds` an entry like: `accountNumber: ynabAccountId`
 - **Click on Save to save the configuration**
-
-## Google spreadsheet integration setup (optional)
-
-- Setup api access in the google api console as follows:
-  - Go to the [google api console](https://console.developers.google.com/)
-  - Create a project
-  - Click enable apis and services
-    - Find google sheets and enable it
-  - Click create credentials
-  - Create service account
-  - Give it a name and copy the **service account ID** (which looks like an email address), we will need it later.
-  - Continue twice until you reach a page with a button that says "Create key"
-  - Click on the "Create key" button
-  - Choose JSON and create it
-  - Save this json somewhere in the file system
-- Create spreadsheet
-  - You can start from [this template](https://docs.google.com/spreadsheets/d/1X3vhn9YvJPMi_wrldV0VChNXB2z7paSuVoIQ2J8j6vo/template/preview) that has basic budget tracking built in. Or create your own.
-  - After creating the spreadsheet, the url of the spreadsheet will look something like: `https://docs.google.com/spreadsheets/d/########################/edit#gid=0`
-  - The ############ part is the **spreadsheetId**
-  - Give a name to the sheet that will contain the transactions (it can stay with the default name e.g Sheet1), this is the **sheetName**
-  - From the spreadsheet screen click share, and share it with the service account ID that you got when creating the service account (see above).
-- Update the config JSON as follows:
-  - Set `outputVendors.googleSheets.active` to `true`
-  - Set `outputVendors.googleSheets.options.sheetName` to the sheetName
-  - Set `outputVendors.googleSheets.options.spreadsheetId` to the spreadsheetId
-  - Set `outputVendors.googleSheets.options.credentialsFilePath` to the path in the file system where you saved the google credentials json file
 
 #### Disclaimer
 
