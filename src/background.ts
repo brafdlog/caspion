@@ -1,11 +1,11 @@
 import { app, BrowserWindow } from 'electron';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createProtocol, installVueDevtools } from 'vue-cli-plugin-electron-builder/lib';
-import CreateLogger from './logger';
-import { initializeReporter } from './backend/reporting';
+import CreateLogger from './logging/logger';
+import Sentry from './logging/sentry';
 // import './store';
 
-initializeReporter();
+Sentry.initializeReporter();
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
