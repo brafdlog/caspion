@@ -54,6 +54,19 @@ YNAB is a budgeting software. If you want to manage your budget there and have y
 - For each financial account number from a previous step, find the corresponding ynab account and add to `ynab.accountNumbersToYnabAccountIds` an entry like: `accountNumber: ynabAccountId`
 - **Click on Save to save the configuration**
 
+### Building for production
+- Run `yarn build`
+
+#### Linux
+
+Currently, this project depends on `libsecret`, so you may need to install it before running `yarn`.
+
+Depending on your distribution, you will need to run the following command:
+
+* Debian/Ubuntu: `sudo apt-get install libsecret-1-dev`
+* Red Hat-based: `sudo yum install libsecret-devel`
+* Arch Linux: `sudo pacman -S libsecret`
+
 #### Disclaimer
 
 Providing your financial account credentials to software is not risk free. We will do our best to protect your credentials, but we take no responsibility for any possible damages. If you want to use this we suggest you ask your financial institution for credentials for a user that has only read access to the relevant account and use those credentials to reduce the potential risk.
