@@ -38,20 +38,20 @@ YNAB is a budgeting software. If you want to manage your budget there and have y
 - Create an account in [YNAB](https://ynab.com/referral/?ref=Z5wPbP0cYTWjdTQj&utm_source=customer_referral)
 - Create in YNAB unlinked accounts for each financial account you want to track (bank accounts and credit cards)
 - Get the **YNAB access token**
-  - In YNAB go to `Account settings -> Developer settings`
-  - Click on `New Token` and `generate`
-  - On the top of the screen you will see the full token (the token with XXXX in it is not the full one).
-  - In the budget app open `הגדרות מתקדמות` and edit the JSON set `outputVendors.ynab.accessToken` to the access token.
-  - Click on save.
+    - In YNAB go to `Account settings -> Developer settings`
+    - Click on `New Token` and `generate`
+    - On the top of the screen you will see the full token (the token with XXXX in it is not the full one).
+    - Save this token in the YNAB settings in the app and save.
+- Set your **YNAB budget id**
+    - Find your YNAB budget id by going into your budget and taking it from the url: `https://app.youneedabudget.com/XXXXXX-XXXXXX-XXXXXX-XXXXX/budget`
+    - Set this budget id in the YNAB settings and save.
 - Collect ynab account details by running `yarn print-ynab-account-data`. This will log among others the following:
-  - **YNAB budget id**
-    - Set this in the JSON under `outputVendors.ynab.budgetId`
-  - **YNAB account ids**
-    - Each account you created in YNAB has an id and we need those ids in order to match each transaction from a financial institution to the correct account in YNAB
-    - We will need these ids to setup the matching between financial account number to the corresponding ynab account id.
-  - **Financial institutions account numbers**
-    - These are the account numbers in the banks/credit card companies you added
-- For each financial account number from a previous step, find the corresponding ynab account and add to `ynab.accountNumbersToYnabAccountIds` an entry like: `accountNumber: ynabAccountId`
+    - **YNAB account ids**
+        - Each account you created in YNAB has an id. We need those ids in order to match each transaction from a financial institution to the correct account in YNAB
+        - We will need these ids to set up the matching between financial account number to the corresponding ynab account id.
+    - **Financial institutions account numbers**
+        - These are the account numbers in the banks/credit card companies you added
+- For each financial account number from a previous step, find the corresponding ynab account and add it to the table in the ynab settings.
 - **Click on Save to save the configuration**
 
 ### Building for production
