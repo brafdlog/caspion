@@ -1,5 +1,5 @@
-import electron from 'electron';
+import { app, remote } from 'electron';
 
-const App = electron.app || electron.remote.app;
+const App = app || remote.app;
 
 export const userDataPath = App.getPath('userData');
