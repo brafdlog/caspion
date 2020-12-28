@@ -20,7 +20,7 @@ export { BudgetTrackingEvent };
 
 export const { inputVendors } = bankScraper;
 
-export async function scrapeAndUpdateOutputVendors(optionalEventPublisher?: EventPublisher, chromePath?: string) {
+export async function scrapeAndUpdateOutputVendors(optionalEventPublisher?: EventPublisher) {
   const eventPublisher = createEventPublisher(optionalEventPublisher);
   const config = await configManager.getConfig();
 
@@ -31,7 +31,7 @@ export async function scrapeAndUpdateOutputVendors(optionalEventPublisher?: Even
 
   await eventPublisher.emit(EventNames.IMPORT_PROCESS_START, { message: `Starting to scrape from ${startDate} to today` });
 
-  const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config.scraping, startDate, eventPublisher, chromePath);
+  const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config.scraping, startDate, eventPublisher);
   try {
     const executionResult = await createTransactionsInExternalVendors(config.outputVendors, companyIdToTransactions, startDate, eventPublisher);
 

@@ -57,10 +57,7 @@ import { EventEmitter, scrapeAndUpdateOutputVendors } from '@/backend';
 import { AccountsState, handleEvent } from '@/ui/components/app/accountsState';
 import store from '@/ui/store';
 import ConfigEditor from '@/ui/components/app/ConfigEditor.vue';
-import electron from 'electron';
 import { Levels } from '../shared/log/types';
-
-const userDataPath = electron.remote.app.getPath('userData');
 
 const statusToColor = {
   NOT_STARTED: null,
@@ -97,7 +94,7 @@ export default defineComponent({
       accountsState.value = new AccountsState(config.getActiveImporters, config.getActiveExporters);
       accountsState.value.setPendingStatus();
       scrapingStatus.value = 'IN_PROGRESS';
-      scrapeAndUpdateOutputVendors(eventEmitter, userDataPath)
+      scrapeAndUpdateOutputVendors(eventEmitter)
         .then(() => scrapingStatus.value = 'SUCCESS')
         .catch((e) => {
           accountsState.value.clear();
