@@ -11,7 +11,6 @@ import outputVendors from './export/outputVendors';
 import * as bankScraper from './import/bankScraper';
 
 export { CompanyTypes } from 'israeli-bank-scrapers-core';
-export { printYnabAccountData } from './setupHelpers';
 export { outputVendors };
 export { configManager };
 export const EventEmitter = {

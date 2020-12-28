@@ -7,7 +7,7 @@ export async function loadSALT() {
   return keytar.getPassword(serviceName, accountName);
 }
 
-export async function saveSALT(newSALT) {
+export async function saveSALT(newSALT: string) {
   return keytar.setPassword(serviceName, accountName, newSALT);
 }
 

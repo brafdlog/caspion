@@ -92,7 +92,7 @@
 
 <script>
 import { shell } from 'electron';
-import { ReportProblem } from '@/backend/reporting';
+import Sentry from '@/logging/sentry';
 import LogSheet from '@/ui/components/shared/LogSheet';
 
 const createGithubIssueLink = (title, detailes, log) => {
@@ -170,7 +170,7 @@ export default {
     sendReport() {
       this.validateEmail = true;
       if (this.$refs.form.validate()) {
-        const eventId = ReportProblem(
+        const eventId = Sentry.userReportProblem(
           this.formData.title,
           this.formData.detailes,
           this.formData.attachLogs ? this.raw : '',
