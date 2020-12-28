@@ -16,11 +16,9 @@ Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israel
 ### What is currently supported:
 
 - One click to fetch transactions from multiple Israeli banks and credit cards
+- Exporting transactions to Google sheets, YNAB, CSV or JSON file
+- A basic UI for configuration
 - A configuration for automatically classifying transactions to categories according to predefined patterns
-- Creating transactions in YNAB automatically using YNAB's api
-- Initial implementation of creating transactions in a google spreadsheet of your choice
-- A very basic UI for configuration
-- Most of the configuration is currently in an encrypted JSON file and options that are not available in the ui can be changed by updating the JSON manually.
 
 ## Initial setup
 
