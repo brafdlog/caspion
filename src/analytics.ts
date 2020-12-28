@@ -2,7 +2,7 @@ import Analytics from 'analytics-node';
 import { machineId } from 'node-machine-id';
 import { BudgetTrackingEventEmitter, EventNames } from '@/backend/eventEmitters/EventEmitter';
 
-const analytics = new Analytics(SEGMENT_WRITE_KEY);
+const analytics = SEGMENT_WRITE_KEY ? new Analytics(SEGMENT_WRITE_KEY) : null;
 
 type EventProperties = Record<string, string | number | boolean | undefined>;
 
@@ -22,7 +22,7 @@ const EVENTS_TO_TRACK: EventNames[] = [
 
 export async function trackPage(pageName: string, properties?: EventProperties) {
   const event = await buildEvent(properties);
-  analytics.page({
+  analytics?.page({
     name: pageName,
     ...event
   });
@@ -30,7 +30,7 @@ export async function trackPage(pageName: string, properties?: EventProperties) 
 
 export async function trackEvent(eventType: string, properties?: EventProperties) {
   const event = await buildEvent(properties);
-  analytics.track({
+  analytics?.track({
     ...event,
     event: eventType
   });
