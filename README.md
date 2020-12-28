@@ -20,17 +20,16 @@ Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israel
 - A basic UI for configuration
 - A configuration for automatically classifying transactions to categories according to predefined patterns
 
-## Initial setup
-
+### Running in a development environment
 - Run `yarn` to install the dependencies
-- Copy `categoryCalculationScript-example.js` to `categoryCalculationScript.js`
-  - This file contains the patterns for classifying transactions to categories automatically.
-  - Edit this file to add any mapping from function description to category that fits your needs.
-  - If using YNAB, the categories you return must match category names in YNAB
-- Run `yarn start` to start the app
-- Go to `הגדרות` and add the financial institutions you want and remove the default ones
-- Setup YNAB and/or Google spreadsheet integrations (see instructions below). Make sure to disable integration that you aren't using (set active field to false)
-- Run by clicking on the `תראה לי ת׳כסף` button in the app
+- Run `yarn serve` to start the app
+- Set up additional exporters (Optional)
+  - See YNAB and Google spreadsheet instructions below
+- Run by clicking on the `Run` button in the app
+- Configure automatic category classification (Optional)
+    - Open `categoryCalculationScript.js`. This file contains the patterns for classifying transactions to categories automatically.
+    - Edit this file to add any mapping from function description to category that fits your needs.
+    - If using YNAB, the categories you return must match category names in YNAB
 
 ## YNAB integration setup (optional)
 
