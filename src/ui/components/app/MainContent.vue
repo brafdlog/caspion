@@ -57,6 +57,7 @@ import { scrapeAndUpdateOutputVendors, BudgetTrackingEventEmitter } from '@/back
 import { AccountsState, handleEvent } from '@/ui/components/app/accountsState';
 import store from '@/ui/store';
 import ConfigEditor from '@/ui/components/app/ConfigEditor.vue';
+import { initAnalyticsEventHandling } from '@/analytics';
 import { Levels } from '../shared/log/types';
 
 const statusToColor = {
@@ -83,11 +84,7 @@ export default defineComponent({
 
     const eventEmitter = new BudgetTrackingEventEmitter();
 
-    eventEmitter.onAny((eventName, eventData) => {
-      const message = eventData?.message || eventName;
-      const logLevel = eventData?.error ? Levels.Error : Levels.Info;
-      return handleEvent({ ...eventData, message, level: logLevel }, accountsState.value);
-    });
+    initEventHandlers(eventEmitter, accountsState);
 
     const scrape = () => {
       generalError.value = '';
@@ -108,6 +105,15 @@ export default defineComponent({
     };
   },
 });
+
+function initEventHandlers(eventEmitter: BudgetTrackingEventEmitter, accountsState: Ref<UnwrapRef<AccountsState>>) {
+  eventEmitter.onAny((eventName, eventData) => {
+    const message = eventData?.message || eventName;
+    const logLevel = eventData?.error ? Levels.Error : Levels.Info;
+    return handleEvent({ ...eventData, message, level: logLevel }, accountsState.value);
+  });
+  initAnalyticsEventHandling(eventEmitter);
+}
 </script>
 
 <style scoped>
