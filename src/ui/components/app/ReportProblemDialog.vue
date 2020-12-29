@@ -94,6 +94,7 @@
 import { shell } from 'electron';
 import Sentry from '@/logging/sentry';
 import LogSheet from '@/ui/components/shared/LogSheet';
+import os from 'os';
 import { repository } from '../../../../package.json';
 
 const createGithubIssueLink = (title, details, log) => {
@@ -108,9 +109,18 @@ ${details}` : '';
 ${log}
 \`\`\`` : '';
 
-  return `${repository}/issues/new?`
+  const sysInfo = `
+## System Info
+
+Source Version: ${SOURCE_COMMIT_SHORT || 'unknown'}
+OS: ${os.platform()}${os.arch()}
+OS Version: ${os.release()}
+`;
+
+  return `${`${repository}/issues/new?`
           + `title=${encodeURIComponent(title)}`
-          + `&body=${encodeURIComponent(formattedDetails)}${encodeURIComponent(formattedLog)}`;
+          + '&body='}${
+    encodeURIComponent(formattedDetails + formattedLog + sysInfo)}`;
 };
 
 const defaultFormData = {
