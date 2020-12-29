@@ -94,6 +94,7 @@
 import { shell } from 'electron';
 import Sentry from '@/logging/sentry';
 import LogSheet from '@/ui/components/shared/LogSheet';
+import { repository } from '../../../../package.json';
 
 const createGithubIssueLink = (title, detailes, log) => {
   const formattedDetailes = detailes ? `
@@ -107,7 +108,7 @@ ${detailes}` : '';
 ${log}
 \`\`\`` : '';
 
-  return 'https://github.com/baruchiro/israeli-bank-scrapers-desktop/issues/new?'
+  return `${repository}/issues/new?`
           + `title=${encodeURIComponent(title)}`
           + `&body=${encodeURIComponent(formattedDetailes)}${encodeURIComponent(formattedLog)}`;
 };
