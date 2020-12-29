@@ -112,9 +112,9 @@ ${log}
   const sysInfo = `
 ## System Info
 
-Source Version: ${SOURCE_COMMIT_SHORT || 'unknown'}
-OS: ${os.platform()}${os.arch()}
-OS Version: ${os.release()}
+ - Source Version: \`${SOURCE_COMMIT_SHORT || 'unknown'}\`
+ - OS: \`${os.platform()}${os.arch()}\`
+ - OS Version: \`${os.release()}\`
 `;
 
   return `${`${repository}/issues/new?`

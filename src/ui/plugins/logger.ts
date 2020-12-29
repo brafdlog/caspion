@@ -1,5 +1,5 @@
 export default {
-  install(Vue, logger) {
+  install(Vue, { logger }) {
     Vue.prototype.$logger = logger;
   }
 };
