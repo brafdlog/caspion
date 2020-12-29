@@ -56,7 +56,7 @@ function emitChromeDownload(eventPublisher: EventPublisher, percent: number) {
   eventPublisher.emit(EventNames.DOWNLOAD_CHROME, new DownalodChromeEvent(percent));
 }
 
-export async function getFinancialAccountNumbers() {
+export async function getFinancialAccountDetails() {
   const eventEmitter = new BudgetTrackingEventEmitter();
   const config = await configManager.getConfig();
 
@@ -66,13 +66,13 @@ export async function getFinancialAccountNumbers() {
     .toDate();
 
   const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config.scraping, startDate, eventEmitter);
-  const companyIdToAccountNumbers: Record<string, string[]> = {};
+  const financialAccountDetails: { name: string; accountNumber: string }[] = [];
   Object.keys(companyIdToTransactions).forEach((companyId) => {
     let accountNumbers = companyIdToTransactions[companyId].map((transaction) => transaction.accountNumber);
     accountNumbers = _.uniq(accountNumbers);
-    companyIdToAccountNumbers[companyId] = accountNumbers;
+    accountNumbers.forEach((accountNumber) => financialAccountDetails.push({ name: companyId, accountNumber }));
   });
-  return companyIdToAccountNumbers;
+  return financialAccountDetails;
 }
 
 async function fetchTransactions(

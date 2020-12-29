@@ -13,7 +13,7 @@ const INITIAL_YNAB_ACCESS_TOKEN = 'AABB';
 const YNAB_DATE_FORMAT = 'YYYY-MM-DD';
 const NOW = moment();
 
-type YnabFinancialAccount = Pick<ynab.Account, 'id' | 'name' | 'type'> & { budgetName: string };
+type YnabFinancialAccount = Pick<ynab.Account, 'id' | 'name' | 'type'> & { budgetId: string; active: boolean }
 
 interface YnabAccountDetails {
   budgets: ynab.BudgetSummary[];
@@ -201,8 +201,10 @@ async function getBudgetsAndAccountsData() {
   await Promise.all(
     budgets.map(async (budget) => {
       const budgetAccountsResponse = await ynabAPI!.accounts.getAccounts(budget.id);
-      const budgetAccounts = budgetAccountsResponse.data.accounts.map(({ id, name, type }) => ({
-        id, name, type, budgetName: budget.name
+      const budgetAccounts = budgetAccountsResponse.data.accounts.map(({
+        id, name, type, deleted, closed
+      }) => ({
+        id, name, type, budgetId: budget.id, active: !deleted && !closed
       }));
       accounts.push(...budgetAccounts);
     })
