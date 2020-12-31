@@ -68,6 +68,7 @@
 import { shell } from 'electron';
 import Importers from '@/ui/components/app/Importers';
 import Exporters from '@/ui/components/app/Exporters';
+import { trackPage } from '@/analytics';
 import ReportProblemDialog from './app/ReportProblemDialog';
 import MainContent from './app/MainContent';
 
@@ -80,6 +81,9 @@ export default {
     return {
       reportProblemDialog: false
     };
+  },
+  mounted() {
+    trackPage('Home');
   },
   methods: {
     openExternal(url) {

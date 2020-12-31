@@ -3,7 +3,7 @@ import { scrapeFinancialAccountsAndFetchTransactions } from '@/backend/import/im
 import moment from 'moment';
 import * as configManager from './configManager/configManager';
 import {
-  EventPublisher, EventNames, BudgetTrackingEventEmitter, BudgetTrackingEvent
+  BudgetTrackingEvent, BudgetTrackingEventEmitter, EventNames, EventPublisher
 } from './eventEmitters/EventEmitter';
 import { buildCompositeEventPublisher } from './eventEmitters/compositeEventPublisher';
 import { buildConsoleEmitter } from './eventEmitters/consoleEmitter';
@@ -13,10 +13,7 @@ import * as bankScraper from './import/bankScraper';
 export { CompanyTypes } from 'israeli-bank-scrapers-core';
 export { outputVendors };
 export { configManager };
-export const EventEmitter = {
-  EventNames, BudgetTrackingEventEmitter
-};
-export { BudgetTrackingEvent };
+export { BudgetTrackingEvent, BudgetTrackingEventEmitter };
 
 export const { inputVendors } = bankScraper;
 

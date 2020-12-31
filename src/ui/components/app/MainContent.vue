@@ -51,12 +51,13 @@
 <script lang="ts">
 import LogViewer from '@/ui/components/shared/log/LogViewer.vue';
 import {
-  computed, defineComponent, ref
+  computed, defineComponent, ref, Ref, UnwrapRef
 } from '@vue/composition-api';
-import { EventEmitter, scrapeAndUpdateOutputVendors } from '@/backend';
+import { scrapeAndUpdateOutputVendors, BudgetTrackingEventEmitter } from '@/backend';
 import { AccountsState, handleEvent } from '@/ui/components/app/accountsState';
 import store from '@/ui/store';
 import ConfigEditor from '@/ui/components/app/ConfigEditor.vue';
+import { initAnalyticsEventHandling } from '@/analytics';
 import { Levels } from '../shared/log/types';
 
 const statusToColor = {
@@ -81,13 +82,9 @@ export default defineComponent({
 
     const accountsState = ref(new AccountsState(config.getActiveImporters, config.getActiveExporters));
 
-    const eventEmitter = new EventEmitter.BudgetTrackingEventEmitter();
+    const eventEmitter = new BudgetTrackingEventEmitter();
 
-    eventEmitter.onAny((eventName, eventData) => {
-      const message = eventData?.message || eventName;
-      const logLevel = eventData?.error ? Levels.Error : Levels.Info;
-      return handleEvent({ ...eventData, message, level: logLevel }, accountsState.value);
-    });
+    initEventHandlers(eventEmitter, accountsState);
 
     const scrape = () => {
       generalError.value = '';
@@ -108,6 +105,15 @@ export default defineComponent({
     };
   },
 });
+
+function initEventHandlers(eventEmitter: BudgetTrackingEventEmitter, accountsState: Ref<UnwrapRef<AccountsState>>) {
+  eventEmitter.onAny((eventName, eventData) => {
+    const message = eventData?.message || eventName;
+    const logLevel = eventData?.error ? Levels.Error : Levels.Info;
+    return handleEvent({ ...eventData, message, level: logLevel }, accountsState.value);
+  });
+  initAnalyticsEventHandling(eventEmitter);
+}
 </script>
 
 <style scoped>
