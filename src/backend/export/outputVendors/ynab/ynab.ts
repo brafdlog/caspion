@@ -12,6 +12,7 @@ import { Config, YnabConfig } from '../../../configManager/configManager';
 const INITIAL_YNAB_ACCESS_TOKEN = 'AABB';
 const YNAB_DATE_FORMAT = 'YYYY-MM-DD';
 const NOW = moment();
+const YNAB_ACCESS_TOKEN_LENGTH = 64;
 
 type YnabFinancialAccount = Pick<ynab.Account, 'id' | 'name' | 'type'> & { budgetId: string; active: boolean }
 
@@ -191,6 +192,19 @@ export async function getYnabAccountDetails(outputVendorsConfig: Config['outputV
     };
   }
   return ynabAccountDetails;
+}
+
+export async function isAccessTokenValid(accessToken) {
+  if (!accessToken || accessToken.length !== YNAB_ACCESS_TOKEN_LENGTH) {
+    return false;
+  }
+  try {
+    const localYnabApi = new ynab.API(accessToken);
+    await localYnabApi.budgets.getBudgets();
+    return true;
+  } catch (e) {
+    return false;
+  }
 }
 
 async function getBudgetsAndAccountsData() {
