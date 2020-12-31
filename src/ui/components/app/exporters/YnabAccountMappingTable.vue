@@ -14,21 +14,15 @@
           :key="index"
         >
           <td>
-            <v-text-field
+            <v-combobox
               v-model="accountYnabPair.account"
-              full-width
-              dense
-              :rules="[rules.required]"
-              @input="onInput"
+              :items="financialAccounts"
             />
           </td>
           <td>
-            <v-text-field
+            <v-combobox
               v-model="accountYnabPair.ynab"
-              full-width
-              dense
-              :rules="[rules.required]"
-              @input="onInput"
+              :items="ynabAccounts"
             />
           </td>
           <td>
@@ -48,12 +42,19 @@
 
 <script lang="ts">
 import { required } from '@/ui/components/shared/formValidations';
-import { ref, defineComponent, PropType } from '@vue/composition-api';
+import {
+  ref, defineComponent, PropType, computed
+} from '@vue/composition-api';
 import { cloneDeep } from 'lodash';
+import { Account } from 'ynab';
 
 export type MappingTable = {
   addItem: () => void
 }
+
+const { CreditCard, Checking, Savings } = Account.TypeEnum;
+
+const RELEVANT_YNAB_ACCOUNT_TYPES = [CreditCard, Checking, Savings];
 
 const mappingToArrayOfMappingObjects = (accountToYnab: Record<string, string>) => Object.keys(accountToYnab)
   .map((account) => ({ account, ynab: accountToYnab[account] }));
@@ -71,6 +72,9 @@ export default defineComponent({
     value: {
       type: Object as PropType<Record<string, string>>,
       required: true
+    },
+    accountsInfo: {
+      type: Object
     }
   },
   setup(props, { emit }) {
@@ -89,6 +93,34 @@ export default defineComponent({
       onInput();
     };
 
+    const ynabAccounts = computed(() => props.accountsInfo?.ynabAccounts
+      ?.filter((ynabAccountInfo) => RELEVANT_YNAB_ACCOUNT_TYPES.includes(ynabAccountInfo.type))
+      ?.map((ynabAccountInfo) => {
+        return {
+          text: ynabAccountInfo.name,
+          value: ynabAccountInfo.id
+        };
+      }));
+    const financialAccounts = computed(() => {
+      const financialAccountsFromScraping = props.accountsInfo?.financialAccounts?.map((financialAccount) => {
+        return {
+          text: `${financialAccount.name} (${financialAccount.accountNumber})`,
+          value: financialAccount.accountNumber
+        };
+      }) || [];
+      const accountNumbersFromConfig = accountToYnabArray.value.map((accountYnabPair) => {
+        return {
+          value: accountYnabPair.account,
+          text: accountYnabPair.account
+        };
+      });
+      const merged = [
+        ...(financialAccountsFromScraping),
+        ...(accountNumbersFromConfig)
+      ];
+      return merged;
+    });
+
     return {
       accountToYnabArray,
       onInput,
@@ -96,7 +128,9 @@ export default defineComponent({
       addItem,
       rules: {
         required
-      }
+      },
+      ynabAccounts,
+      financialAccounts
     };
   }
 });
