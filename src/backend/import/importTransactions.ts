@@ -21,7 +21,7 @@ const TRANSACTION_STATUS_COMPLETED = 'completed';
 export async function scrapeFinancialAccountsAndFetchTransactions(scrapingConfig: ScrapingConfig, startDate: Date, eventPublisher: EventPublisher) {
   const companyIdToTransactions: Record<string, EnrichedTransaction[]> = {};
 
-  const dowloadedChrome = await getChrome(userDataPath, ({ percent }) => emitChromeDownload(eventPublisher, percent));
+  const dowloadedChrome = await getChrome(userDataPath, (percent) => emitChromeDownload(eventPublisher, percent));
 
   const accountsToScrape = scrapingConfig.accountsToScrape.filter((accountToScrape) => accountToScrape.active !== false);
   const scrapingPromises = accountsToScrape.map(async (accountToScrape) => {

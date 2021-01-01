@@ -26,7 +26,11 @@ export enum AccountType {
 }
 
 export enum AccountStatus {
-  IDLE, PENDING, IN_PROGRESS, DONE, ERROR
+  IDLE = 'IDLE',
+  PENDING = 'PENDING',
+  IN_PROGRESS = 'IN_PROGRESS',
+  DONE = 'DONE',
+  ERROR = 'ERROR'
 }
 
 export class BudgetTrackingEvent {
