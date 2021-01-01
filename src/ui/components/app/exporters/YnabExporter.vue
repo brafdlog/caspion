@@ -14,14 +14,14 @@
       type="password"
       label="Access Token"
       outlined
-      :rules="rules.required"
+      :rules="[rules.required]"
       @change="changed = true"
     />
     <v-text-field
       v-model="exporter.options.budgetId"
       label="Budget id"
       outlined
-      :rules="rules.required"
+      :rules="[rules.required]"
       @change="changed = true"
     />
     <ynab-account-mapping-table
