@@ -15,15 +15,12 @@
   "scripts": {
     "serve": "vue-cli-service electron:serve",
     "build": "vue-cli-service electron:build",
-
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
     "prepare": "node scripts/copyCategoryCalculationScript.js",
-
     "lint": "eslint --ext .js,.vue,.ts -f ./node_modules/eslint-friendly-formatter src test",
     "lint:fix": "yarn lint --fix",
     "typeCheck": "tsc --noEmit",
-
     "unit": "vue-cli-service test:unit",
     "e2e": "vue-cli-service test:unit --config='test/e2e/jest.e2e.config.js'",
     "test": "yarn unit && yarn e2e"
@@ -37,6 +34,7 @@
     "@getstation/electron-google-oauth2": "2.1.0",
     "@sentry/electron": "^1.3.0",
     "@vue/composition-api": "^1.0.0-beta.14",
+    "analytics-node": "^3.4.0-beta.3",
     "core-js": "^3.4.4",
     "csv-parse": "^4.14.1",
     "csv-stringify": "^5.5.3",
@@ -49,6 +47,7 @@
     "keytar": "^5.2.0",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
+    "node-machine-id": "^1.1.12",
     "vue": "^2.6.10",
     "vue-router": "^3.1.6",
     "vuetify": "^2.2.22",
@@ -62,6 +61,7 @@
     "@babel/preset-env": "^7.9.5",
     "@babel/preset-typescript": "^7.10.1",
     "@babel/register": "^7.9.0",
+    "@types/analytics-node": "^3.1.4",
     "@types/jest": "^26.0.10",
     "@types/lodash": "^4.14.158",
     "@types/node": "12",
