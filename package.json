@@ -1,13 +1,13 @@
 {
   "name": "budget-tracking",
   "version": "0.1.3-beta",
-  "author": "Baruch Rothkoff <baruchiro@gmail.com>",
+  "author": "Jonathan Goldfarb <brafdlog@gmail.com>",
   "description": "An electron app for automating expense tracking",
   "license": "MIT",
   "main": "background.js",
   "private": true,
-  "repository": "github:brafdlog/budget-tracking",
-  "homepage": "https://github.com/brafdlog/budget-tracking",
+  "repository": "https://github.com/brafdlog/budget-tracking",
+  "homepage": "https://github.com/brafdlog/budget-tracking#README.md",
   "scripts": {
     "serve": "vue-cli-service electron:serve",
     "build": "vue-cli-service electron:build",

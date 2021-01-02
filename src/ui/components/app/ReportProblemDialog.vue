@@ -34,10 +34,10 @@
             <v-row>
               <v-col>
                 <v-textarea
-                  v-model="formData.detailes"
+                  v-model="formData.details"
                   label="Bug Details (אפשר לכתוב בעברית)"
                   filled
-                  :rules="[detailesRule]"
+                  :rules="[detailsRule]"
                   :required="!formData.attachLogs"
                 />
               </v-col>
@@ -46,7 +46,7 @@
               <v-col>
                 <v-checkbox
                   v-model="formData.attachLogs"
-                  :required="!formData.detailes"
+                  :required="!formData.details"
                 >
                   <template slot="label">
                     Attach logs (<a @click.prevent="sheet = true">see</a>)
@@ -94,12 +94,14 @@
 import { shell } from 'electron';
 import Sentry from '@/logging/sentry';
 import LogSheet from '@/ui/components/shared/LogSheet';
+import os from 'os';
+import { repository } from '../../../../package.json';
 
-const createGithubIssueLink = (title, detailes, log) => {
-  const formattedDetailes = detailes ? `
-## Detailes
+const createGithubIssueLink = (title, details, log) => {
+  const formattedDetails = details ? `
+## Details
 
-${detailes}` : '';
+${details}` : '';
 
   const formattedLog = log ? `
 ## Log
@@ -107,15 +109,24 @@ ${detailes}` : '';
 ${log}
 \`\`\`` : '';
 
-  return 'https://github.com/baruchiro/israeli-bank-scrapers-desktop/issues/new?'
+  const sysInfo = `
+## System Info
+
+ - Source Version: \`${SOURCE_COMMIT_SHORT || 'unknown'}\`
+ - OS: \`${os.platform()}${os.arch()}\`
+ - OS Version: \`${os.release()}\`
+`;
+
+  return `${`${repository}/issues/new?`
           + `title=${encodeURIComponent(title)}`
-          + `&body=${encodeURIComponent(formattedDetailes)}${encodeURIComponent(formattedLog)}`;
+          + '&body='}${
+    encodeURIComponent(formattedDetails + formattedLog + sysInfo)}`;
 };
 
 const defaultFormData = {
   title: '',
   email: '',
-  detailes: '',
+  details: '',
   attachLogs: true,
 };
 
@@ -152,15 +163,15 @@ export default {
     titleRule: (v) => !!v || 'Title is required',
     emailExistRule(v) { return !this.validateEmail || !!v || 'Email is required'; },
     emailValidRule(v) { return !this.validateEmail || /.+@.+\..+/.test(v) || 'Email must be valid'; },
-    detailesRule() {
-      return !!this.formData.detailes || this.formData.attachLogs || 'You must describe your report or attach the logs';
+    detailsRule() {
+      return !!this.formData.details || this.formData.attachLogs || 'You must describe your report or attach the logs';
     },
     openGithub() {
       this.validateEmail = false;
       if (this.$refs.form.validate()) {
         const url = createGithubIssueLink(
           this.formData.title,
-          this.formData.detailes,
+          this.formData.details,
           this.formData.attachLogs ? this.raw : '',
         );
         this.$logger.info(`Open bug report url with title: ${this.formData.title}`);
@@ -172,7 +183,7 @@ export default {
       if (this.$refs.form.validate()) {
         const eventId = Sentry.userReportProblem(
           this.formData.title,
-          this.formData.detailes,
+          this.formData.details,
           this.formData.attachLogs ? this.raw : '',
           this.formData.email,
         );
