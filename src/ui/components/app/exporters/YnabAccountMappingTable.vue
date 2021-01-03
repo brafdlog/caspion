@@ -15,14 +15,20 @@
         >
           <td>
             <v-combobox
-              v-model="accountYnabPair.account"
+              :value="financialAccounts.find(({ accountNumber }) => accountYnabPair.account === accountNumber)"
               :items="financialAccounts"
+              :item-text="({ name, accountNumber }) => `${name} (${accountNumber})`"
+              item-value="accountNumber"
+              @change="(item) => accountYnabPair.account = item.accountNumber"
             />
           </td>
           <td>
             <v-combobox
-              v-model="accountYnabPair.ynab"
+              :value="ynabAccounts.find(({ id }) => accountYnabPair.ynab === id)"
               :items="ynabAccounts"
+              item-text="name"
+              item-value="id"
+              @change="(item) => accountYnabPair.ynab = item.id"
             />
           </td>
           <td>
@@ -94,32 +100,9 @@ export default defineComponent({
     };
 
     const ynabAccounts = computed(() => props.accountsInfo?.ynabAccounts
-      ?.filter((ynabAccountInfo) => RELEVANT_YNAB_ACCOUNT_TYPES.includes(ynabAccountInfo.type))
-      ?.map((ynabAccountInfo) => {
-        return {
-          text: ynabAccountInfo.name,
-          value: ynabAccountInfo.id
-        };
-      }));
-    const financialAccounts = computed(() => {
-      const financialAccountsFromScraping = props.accountsInfo?.financialAccounts?.map((financialAccount) => {
-        return {
-          text: `${financialAccount.name} (${financialAccount.accountNumber})`,
-          value: financialAccount.accountNumber
-        };
-      }) || [];
-      const accountNumbersFromConfig = accountToYnabArray.value.map((accountYnabPair) => {
-        return {
-          value: accountYnabPair.account,
-          text: accountYnabPair.account
-        };
-      });
-      const merged = [
-        ...(financialAccountsFromScraping),
-        ...(accountNumbersFromConfig)
-      ];
-      return merged;
-    });
+      ?.filter((ynabAccountInfo) => RELEVANT_YNAB_ACCOUNT_TYPES.includes(ynabAccountInfo.type)) || []);
+
+    const financialAccounts = computed(() => props.accountsInfo?.financialAccounts || []);
 
     return {
       accountToYnabArray,

@@ -17,15 +17,20 @@
       :rules="[rules.required, accessTokenValid]"
       @change="changed = true"
     />
-    <v-text-field
+    <v-select
       v-model="exporter.options.budgetId"
+      :items="budgets"
+      item-text="name"
+      item-value="id"
       label="Budget id"
+      :loading="accessTokenValid && !budgets"
+      :disabled="!accessTokenValid"
       outlined
       :rules="[rules.required]"
       @change="changed = true"
     />
     <div
-      v-if="accessTokenValid"
+      v-if="accessTokenValid && budgetIdDefined"
       id="accountMappingTableContainer"
     >
       <v-overlay
@@ -79,12 +84,13 @@ import { setupExporterConfigForm } from '@/ui/components/app/exporters/exporters
 import { OutputVendorName } from '@/backend/commonTypes';
 import YnabAccountMappingTable, { MappingTable } from '@/ui/components/app/exporters/YnabAccountMappingTable.vue';
 import {
-  ref, defineComponent, watchEffect
+  ref, defineComponent, watch, computed, toRef, Ref
 } from '@vue/composition-api';
 import { required } from '@/ui/components/shared/formValidations';
-import { isAccessTokenValid } from '@/backend/export/outputVendors/ynab/ynab';
+import { getBudgets, isAccessTokenValid } from '@/backend/export/outputVendors/ynab/ynab';
 import { YnabConfig } from '@/backend/configManager/configManager';
 import { getYnabAccountData } from '@/manual/setupHelpers';
+import defaultConfig from '@/backend/configManager/defaultConfig';
 
 export default defineComponent({
   components: { YnabAccountMappingTable },
@@ -97,21 +103,30 @@ export default defineComponent({
     const ynabAccounts = ref();
     const financialAccounts = ref();
     const loading = ref(false);
+    const budgets = ref();
 
-    const ynabConfig = dataToReturn.exporter as YnabConfig;
+    const ynabConfig = toRef(dataToReturn, 'exporter') as Ref<YnabConfig>;
+    const ynabOptions = toRef(ynabConfig.value, 'options');
+    const accessToken = toRef(ynabOptions.value, 'accessToken');
 
-    watchEffect(async () => {
-      accessTokenValid.value = await isAccessTokenValid(ynabConfig.options.accessToken);
-      if (accessTokenValid.value && ynabConfig.options.budgetId) {
-        await fetchYnabAccountInfo();
-      }
+    const budgetIdDefined = computed(() => {
+      return ynabOptions.value.budgetId !== defaultConfig.outputVendors.ynab?.options.budgetId;
     });
+    watch([accessTokenValid, budgetIdDefined, accessToken], async () => {
+      accessTokenValid.value = await isAccessTokenValid(accessToken.value);
+      if (accessTokenValid.value) {
+        budgets.value = await getBudgets(accessToken.value);
+        if (budgetIdDefined.value) {
+          await fetchYnabAccountInfo();
+        }
+      }
+    }, { immediate: true });
 
     async function fetchYnabAccountInfo() {
-      const { budgetId } = ynabConfig.options;
+      const { budgetId } = ynabOptions.value;
       loading.value = true;
 
-      const accountData = await getYnabAccountData();
+      const accountData = await getYnabAccountData(ynabConfig.value);
 
       ynabAccounts.value = accountData.ynabAccountData.accounts.filter((ynabAccount) => {
         return ynabAccount.budgetId === budgetId && ynabAccount.active;
@@ -130,7 +145,9 @@ export default defineComponent({
       ynabAccounts,
       financialAccounts,
       accessTokenValid,
-      loading
+      loading,
+      budgetIdDefined,
+      budgets
     };
   }
 });

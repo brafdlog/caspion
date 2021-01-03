@@ -30,17 +30,12 @@ let ynabAPI: ynab.API | undefined;
 let ynabAccountDetails: YnabAccountDetails | undefined;
 
 export async function init(outputVendorsConfig: Config['outputVendors']) {
-  if (ynabConfig && ynabAPI) {
-    return;
-  }
-
   ynabConfig = outputVendorsConfig.ynab;
 
-  if (!ynabConfig?.active) {
-    return;
-  }
   verifyYnabAccessTokenWasDefined();
-  ynabAPI = new ynab.API(ynabConfig.options.accessToken);
+  if (ynabConfig) {
+    ynabAPI = new ynab.API(ynabConfig.options.accessToken);
+  }
 }
 
 const createTransactions: ExportTransactionsFunction = async ({ transactionsToCreate, startDate }, eventPublisher) => {
@@ -192,6 +187,12 @@ export async function getYnabAccountDetails(outputVendorsConfig: Config['outputV
     };
   }
   return ynabAccountDetails;
+}
+
+export async function getBudgets(accessToken): Promise<{ id: string; name: string; }[] | undefined> {
+  const localYnabApi = new ynab.API(accessToken);
+  const budgetsResponse = await localYnabApi.budgets.getBudgets();
+  return budgetsResponse?.data.budgets.map((budget) => ({ id: budget.id, name: budget.name }));
 }
 
 export async function isAccessTokenValid(accessToken) {

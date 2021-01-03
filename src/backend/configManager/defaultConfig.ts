@@ -23,11 +23,8 @@ const DEFAULT_CONFIG: Config = {
       active: false,
       options: {
         accessToken: 'YNAB_ACCESS_TOKEN_GOES_HERE',
-        budgetId: '########-####-####-####-############',
+        budgetId: '',
         accountNumbersToYnabAccountIds: {
-          1234: '########-####-####-####-############',
-          5678: '########-####-####-####-############',
-          4837: '########-####-####-####-############'
         }
       }
     },
