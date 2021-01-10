@@ -53,7 +53,8 @@ const configModule = defineModule({
         }
       });
       return activeExporters;
-    }
+    },
+    getState: (state) => state
   },
   actions: {
     addImporter: ({ commit }, importer) => {
