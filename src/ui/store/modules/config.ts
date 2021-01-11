@@ -28,13 +28,7 @@ const configModule = defineModule({
     }
   },
   getters: {
-    importersWithStatus: (state) => {
-      const importers = state.scraping.accountsToScrape.map((importer) => {
-        const status = {};
-        return { ...importer, status };
-      });
-      return importers;
-    },
+    importers: (state) => state.scraping.accountsToScrape,
     getExporter: <T extends OutputVendorName>(state) => (name: T): OutputVendorConfig<T> => state.outputVendors[name],
     globalConfig: ({ scraping }): GlobalConfig => {
       const { numDaysBack, showBrowser } = scraping;
