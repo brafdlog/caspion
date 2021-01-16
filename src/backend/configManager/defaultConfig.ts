@@ -10,13 +10,13 @@ const DEFAULT_CONFIG: Config = {
     csv: {
       active: true,
       options: {
-        filePath: '../transaction.csv'
+        filePath: 'transaction.csv'
       }
     },
     json: {
       active: false,
       options: {
-        filePath: '../transaction.json'
+        filePath: 'transaction.json'
       }
     },
     ynab: {
