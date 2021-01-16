@@ -38,13 +38,6 @@ const DEFAULT_CONFIG: Config = {
         spreadsheetId: ''
       }
     }
-  },
-  monitoring: {
-    email: {
-      toEmailAddress: 'joe@someemail.com',
-      sendgridApiKey: process.env.SENDGRID_API_KEY,
-      sendReport: false
-    }
   }
 };
 

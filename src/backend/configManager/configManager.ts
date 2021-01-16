@@ -19,13 +19,6 @@ export interface Config {
     showBrowser: boolean;
     accountsToScrape: AccountToScrapeConfig[];
   };
-  monitoring?: {
-    email: {
-      sendReport: boolean;
-      toEmailAddress?: string;
-      sendgridApiKey?: string;
-    }
-  };
 }
 
 export enum OutputVendorName {
