@@ -17,9 +17,8 @@ export { BudgetTrackingEvent, BudgetTrackingEventEmitter };
 
 export const { inputVendors } = bankScraper;
 
-export async function scrapeAndUpdateOutputVendors(optionalEventPublisher?: EventPublisher) {
+export async function scrapeAndUpdateOutputVendors(config: configManager.Config, optionalEventPublisher?: EventPublisher) {
   const eventPublisher = createEventPublisher(optionalEventPublisher);
-  const config = await configManager.getConfig();
 
   const startDate = moment()
     .subtract(config.scraping.numDaysBack, 'days')

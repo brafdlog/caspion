@@ -56,9 +56,8 @@ function emitChromeDownload(eventPublisher: EventPublisher, percent: number) {
   eventPublisher.emit(EventNames.DOWNLOAD_CHROME, new DownalodChromeEvent(percent));
 }
 
-export async function getFinancialAccountNumbers() {
+export async function getFinancialAccountNumbers(config: configManager.Config) {
   const eventEmitter = new BudgetTrackingEventEmitter();
-  const config = await configManager.getConfig();
 
   const startDate = moment()
     .subtract(30, 'days')

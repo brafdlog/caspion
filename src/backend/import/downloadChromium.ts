@@ -27,9 +27,10 @@ export default async function downloadChromium(installPath?: string, onProgress?
 
   const browserFetcher = puppeteer.createBrowserFetcher({ path: installPath });
   downloadProm = browserFetcher.download(revision, progressCallback)
-    .then(({ executablePath }) => executablePath);
-
-  downloadProm.then(() => downloadProm = null);
+    .then(({ executablePath }) => {
+      downloadProm = null;
+      return executablePath;
+    });
 
   return downloadProm;
 }

@@ -91,7 +91,7 @@ export default defineComponent({
       accountsState.value = new AccountsState(config.getActiveImporters, config.getActiveExporters);
       accountsState.value.setPendingStatus();
       scrapingStatus.value = 'IN_PROGRESS';
-      scrapeAndUpdateOutputVendors(eventEmitter)
+      scrapeAndUpdateOutputVendors(store.getters.Config.getState, eventEmitter)
         .then(() => scrapingStatus.value = 'SUCCESS')
         .catch((e) => {
           accountsState.value.clear();
