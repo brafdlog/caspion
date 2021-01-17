@@ -1,11 +1,8 @@
 import { decrypt, encrypt } from '@/backend/configManager/encryption/crypto';
+import { existsSync, promises as fs } from 'fs';
 import { CompanyTypes } from 'israeli-bank-scrapers-core';
-import { promises as fs, existsSync } from 'fs';
 import { Credentials } from '../export/outputVendors/googleSheets/googleAuth';
 import configExample from './defaultConfig';
-
-const CONFIG_FILE_NAME = 'config.encrypted';
-const LOCAL_CONFIG_FILE_PATH = CONFIG_FILE_NAME;
 
 export interface Config {
   outputVendors: {
@@ -71,24 +68,22 @@ export interface AccountToScrapeConfig {
   active?: boolean;
 }
 
-export async function getConfig(): Promise<Config> {
-  let parsedConfig: Config;
-  let configFromFile = await getConfigFromFile(LOCAL_CONFIG_FILE_PATH);
+export async function getConfig(configPath: string): Promise<Config> {
+  const configFromFile = await getConfigFromFile(configPath);
 
   if (configFromFile) {
-    configFromFile = await decrypt(configFromFile) as string;
-    parsedConfig = JSON.parse(configFromFile);
-  } else {
-    // Fallback to configExample if there is no config file defined at all
-    parsedConfig = configExample;
+    const decripted = await decrypt(configFromFile) as string;
+    return JSON.parse(decripted);
   }
-  return parsedConfig;
+
+  // Fallback to configExample if there is no config file defined at all
+  return configExample;
 }
 
-export async function updateConfig(configToUpdate: Config): Promise<void> {
+export async function updateConfig(configPath: string, configToUpdate: Config): Promise<void> {
   const stringifiedConfig = JSON.stringify(configToUpdate, null, 2);
   const encryptedConfigStr = await encrypt(stringifiedConfig);
-  await fs.writeFile(LOCAL_CONFIG_FILE_PATH, encryptedConfigStr);
+  await fs.writeFile(configPath, encryptedConfigStr);
 }
 
 async function getConfigFromFile(configFilePath: string) {

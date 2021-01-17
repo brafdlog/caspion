@@ -8,3 +8,4 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export const userDataPath = App.getPath('userData');
+export const configFilePath = path.resolve(userDataPath, 'config.encrypt');

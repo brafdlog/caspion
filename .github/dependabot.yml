@@ -10,9 +10,3 @@ updates:
   - dependency-name: electron
     versions:
     - "> 5.0.13"
-
-- package-ecosystem: npm
-  directory: "/nuxt/"
-  schedule:
-    interval: monthly
-  open-pull-requests-limit: 3
