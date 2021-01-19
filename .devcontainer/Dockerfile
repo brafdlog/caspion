@@ -17,3 +17,5 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 # RUN su node -c "npm install -g <your-package-list-here>"
 
 ENV DISPLAY=host.docker.internal:0.0
+
+COPY gnome-keyring-fix.sh .
