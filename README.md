@@ -20,7 +20,27 @@ Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israel
 - A basic UI for configuration
 - A configuration for automatically classifying transactions to categories according to predefined patterns
 
-### Running in a development environment
+## Running in a development environment
+
+### Prerequisites
+
+- [NodeJS](https://nodejs.org/en/download/).
+- [`node-gyp`](https://github.com/nodejs/node-gyp#installation). In Windows you have a checkbox in the NodeJS installer to install also the `node-gyp`.  
+  This module is for packages that compiling a native code in their installation, in our case it required for `electron` and `keytar`.
+- [Yarn](https://yarnpkg.com/getting-started/install).
+
+#### Linux Prerequisites
+
+Currently, this project depends on `libsecret`, so you may need to install it before running `yarn`.
+
+Depending on your distribution, you will need to run the following command:
+
+* Debian/Ubuntu: `sudo apt-get install libsecret-1-dev`
+* Red Hat-based: `sudo yum install libsecret-devel`
+* Arch Linux: `sudo pacman -S libsecret`
+
+### Start from Source
+
 - Run `yarn` to install the dependencies
 - Run `yarn serve` to start the app
 - Set up additional exporters (Optional)
@@ -31,7 +51,7 @@ Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israel
     - Edit this file to add any mapping from function description to category that fits your needs.
     - If using YNAB, the categories you return must match category names in YNAB
 
-## YNAB integration setup (optional)
+### YNAB integration setup (optional)
 
 YNAB is a budgeting software. If you want to manage your budget there and have your expenses updated automatically to YNAB follow these steps:
 
@@ -56,16 +76,6 @@ YNAB is a budgeting software. If you want to manage your budget there and have y
 
 ### Building for production
 - Run `yarn build`
-
-#### Linux
-
-Currently, this project depends on `libsecret`, so you may need to install it before running `yarn`.
-
-Depending on your distribution, you will need to run the following command:
-
-* Debian/Ubuntu: `sudo apt-get install libsecret-1-dev`
-* Red Hat-based: `sudo yum install libsecret-devel`
-* Arch Linux: `sudo pacman -S libsecret`
 
 #### Disclaimer
 
