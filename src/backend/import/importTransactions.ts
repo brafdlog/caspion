@@ -19,27 +19,25 @@ type ScrapingConfig = Config['scraping'];
 const TRANSACTION_STATUS_COMPLETED = 'completed';
 
 export async function scrapeFinancialAccountsAndFetchTransactions(scrapingConfig: ScrapingConfig, startDate: Date, eventPublisher: EventPublisher) {
-  const companyIdToTransactions: Record<string, EnrichedTransaction[]> = {};
-
   const dowloadedChrome = await getChrome(userDataPath, (percent) => emitChromeDownload(eventPublisher, percent));
 
-  const accountsToScrape = scrapingConfig.accountsToScrape.filter((accountToScrape) => accountToScrape.active !== false);
-  const scrapingPromises = accountsToScrape.map(async (accountToScrape) => {
-    const companyId = accountToScrape.key;
-    try {
-      await eventPublisher.emit(EventNames.IMPORTER_START, buildImporterEvent(accountToScrape, { message: 'Importer start' }));
-      const scrapeResult = await fetchTransactions(accountToScrape, startDate, scrapingConfig, eventPublisher, dowloadedChrome);
-      const transactions = await postProcessTransactions(accountToScrape, scrapeResult);
-      companyIdToTransactions[companyId] = transactions;
-      await eventPublisher.emit(EventNames.IMPORTER_END, buildImporterEvent(accountToScrape, { message: 'Importer end', status: AccountStatus.DONE }));
-    } catch (error) {
-      await eventPublisher.emit(EventNames.IMPORTER_ERROR, buildImporterEvent(accountToScrape, {
-        message: 'Importer error', error, status: AccountStatus.ERROR
-      }));
-      throw error;
-    }
-  });
-  await Promise.all(scrapingPromises);
+  const scrapePromises = scrapingConfig.accountsToScrape
+    .filter((accountToScrape) => accountToScrape.active !== false)
+    .map(async (accountToScrape) => ({
+      id: accountToScrape.id,
+      transactions: await fetchTransactions(accountToScrape, startDate, scrapingConfig.showBrowser, eventPublisher, dowloadedChrome)
+    }));
+
+  const promiseResults = await Promise.allSettled(scrapePromises);
+  const companyIdToTransactions = promiseResults
+    .reduce((idToTrxAcc, scrapeRes) => {
+      if (scrapeRes.status === 'fulfilled') {
+        const { id, transactions } = scrapeRes.value;
+        idToTrxAcc[id] = transactions;
+      }
+      return idToTrxAcc;
+    }, {} as Record<string, EnrichedTransaction[]>);
+
   return companyIdToTransactions;
 }
 
@@ -75,25 +73,39 @@ export async function getFinancialAccountNumbers(config: configManager.Config) {
 }
 
 async function fetchTransactions(
-  accountToScrapeConfig: AccountToScrapeConfig,
-  startDate: Date, scrapingConfig: Config['scraping'],
+  account: AccountToScrapeConfig,
+  startDate: Date,
+  showBrowser: boolean,
   eventPublisher: EventPublisher,
   chromePath: string
 ) {
-  const emitImporterProgressEvent = async (eventCompanyId: string, message: string) => {
-    await eventPublisher.emit(EventNames.IMPORTER_PROGRESS, buildImporterEvent(accountToScrapeConfig, { message }));
-  };
+  try {
+    await eventPublisher.emit(EventNames.IMPORTER_START, buildImporterEvent(account, { message: 'Importer start' }));
 
-  const scrapeResult = await bankScraper.scrape({
-    companyId: accountToScrapeConfig.key,
-    credentials: accountToScrapeConfig.loginFields,
-    startDate,
-    showBrowser: scrapingConfig.showBrowser,
-  }, emitImporterProgressEvent, chromePath);
-  if (!scrapeResult.success) {
-    throw new Error(scrapeResult.errorMessage || scrapeResult.errorType);
+    const emitImporterProgressEvent = async (eventCompanyId: string, message: string) => {
+      await eventPublisher.emit(EventNames.IMPORTER_PROGRESS, buildImporterEvent(account, { message }));
+    };
+
+    const scrapeResult = await bankScraper.scrape({
+      companyId: account.key,
+      credentials: account.loginFields,
+      startDate,
+      showBrowser,
+    }, emitImporterProgressEvent, chromePath);
+    if (!scrapeResult.success) {
+      throw new Error(scrapeResult.errorMessage || scrapeResult.errorType);
+    }
+
+    const transactions = await postProcessTransactions(account, scrapeResult);
+    await eventPublisher.emit(EventNames.IMPORTER_END, buildImporterEvent(account, { message: 'Importer end', status: AccountStatus.DONE }));
+
+    return transactions;
+  } catch (error) {
+    await eventPublisher.emit(EventNames.IMPORTER_ERROR, buildImporterEvent(account, {
+      message: 'Importer error', error, status: AccountStatus.ERROR
+    }));
+    throw error;
   }
-  return scrapeResult;
 }
 
 // eslint-disable-next-line max-len
