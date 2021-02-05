@@ -26,7 +26,7 @@ Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israel
 
 - [NodeJS](https://nodejs.org/en/download/).
 - [`node-gyp`](https://github.com/nodejs/node-gyp#installation). In Windows you have a checkbox in the NodeJS installer to install also the `node-gyp`.  
-  This module is for packages that compiling a native code in their installation, in our case it required for `electron` and `keytar`.
+  This module is for packages that compile native code in their installation, in our case it is required for `electron` and `keytar`.
 - [Yarn](https://yarnpkg.com/getting-started/install).
 
 #### Linux Prerequisites
