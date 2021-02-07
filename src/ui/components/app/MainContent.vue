@@ -8,6 +8,7 @@
         <v-btn
           x-large
           :loading="inProgress"
+          :disabled="!enableRun"
           :color="btnColor"
           @click="scrape"
         >
@@ -79,6 +80,7 @@ export default defineComponent({
     const inProgress = computed(() => scrapingStatus.value === 'IN_PROGRESS');
     const btnColor = computed(() => statusToColor[scrapingStatus.value]);
     const showAccountCards = computed(() => scrapingStatus.value !== 'NOT_STARTED');
+    const enableRun = computed(() => config.getActiveImporters.length && config.getActiveExporters.length);
 
     const accountsState = ref(new AccountsState(config.getActiveImporters, config.getActiveExporters));
 
@@ -101,7 +103,13 @@ export default defineComponent({
     };
 
     return {
-      inProgress, btnColor, scrape, accountsState, showAccountCards, generalError
+      inProgress,
+      btnColor,
+      scrape,
+      accountsState,
+      showAccountCards,
+      generalError,
+      enableRun
     };
   },
 });

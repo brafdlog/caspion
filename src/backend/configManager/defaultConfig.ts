@@ -10,13 +10,13 @@ const DEFAULT_CONFIG: Config = {
     csv: {
       active: true,
       options: {
-        filePath: '../transaction.csv'
+        filePath: 'transaction.csv'
       }
     },
     json: {
       active: false,
       options: {
-        filePath: '../transaction.json'
+        filePath: 'transaction.json'
       }
     },
     ynab: {
@@ -37,13 +37,6 @@ const DEFAULT_CONFIG: Config = {
         credentials: {},
         spreadsheetId: ''
       }
-    }
-  },
-  monitoring: {
-    email: {
-      toEmailAddress: 'joe@someemail.com',
-      sendgridApiKey: process.env.SENDGRID_API_KEY,
-      sendReport: false
     }
   }
 };

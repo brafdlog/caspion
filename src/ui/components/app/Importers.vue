@@ -7,29 +7,12 @@
     </v-toolbar>
     <v-expansion-panels>
       <v-expansion-panel
-        v-for="importer in getImporters"
+        v-for="importer in registeredImporters"
         :key="importer.id"
         class="ma-1"
       >
-        <v-expansion-panel-header disable-icon-rotate>
+        <v-expansion-panel-header>
           {{ importer.name }}
-          <template v-slot:actions>
-            <v-tooltip
-              v-if="importer.status.lastMessage !== null"
-              bottom
-            >
-              <template v-slot:activator="{ on }">
-                <v-icon
-                  :color="iconClass(importer.status.success).color"
-                  dark
-                  v-on="on"
-                >
-                  {{ iconClass(importer.status.success).icon }}
-                </v-icon>
-              </template>
-              <span>{{ importer.status.lastMessage }}</span>
-            </v-tooltip>
-          </template>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
           <importer
@@ -52,7 +35,7 @@
       </v-toolbar>
       <v-expansion-panels>
         <add-importer
-          v-for="importer in importersToAdd"
+          v-for="importer in availableImporters"
           :key="importer.key"
           :importer="importer"
           class="add-importer"
@@ -82,44 +65,20 @@
 <script>
 import { inputVendors } from '@/backend';
 import store from '@/ui/store';
+import { defineComponent, ref, computed } from '@vue/composition-api';
 import AddImporter from './importers/AddImporter';
 import Importer from './importers/Importer';
 
-export default {
+export default defineComponent({
   components: { AddImporter, Importer },
-  data() {
-    return {
-      id: null,
-      drawer: null,
-    };
-  },
-  computed: {
-    importersToAdd() {
-      return inputVendors;
-    },
-    getImporters: () => store.getters.Config.importersWithStatus
-  },
-  methods: {
-    iconClass(success) {
-      if (success === true) {
-        return {
-          icon: 'mdi-check-circle',
-          color: 'green',
-        };
-      }
-      if (success === false) {
-        return {
-          icon: 'mdi-alert-circle',
-          color: 'error',
-        };
-      }
-      return {
-        icon: 'mdi-help-circle',
-        color: 'info',
-      };
-    },
-  },
-};
+  setup() {
+    const drawer = ref(false);
+    const availableImporters = computed(() => inputVendors);
+    const registeredImporters = computed(() => store.getters.Config.importers);
+
+    return { drawer, availableImporters, registeredImporters };
+  }
+});
 </script>
 
 <style scoped>

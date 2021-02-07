@@ -90,3 +90,4 @@ categoryCalculationScript.ts
 config.encrypted
 googleApiToken.json
 *.map
+/userData

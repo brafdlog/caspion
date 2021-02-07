@@ -10,6 +10,7 @@
   "homepage": "https://github.com/brafdlog/budget-tracking#README.md",
   "scripts": {
     "serve": "vue-cli-service electron:serve",
+    "serve:docker": "yarn serve --no-sandbox",
     "build": "vue-cli-service electron:build",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",

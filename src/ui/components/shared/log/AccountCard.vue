@@ -37,7 +37,10 @@
           </v-dialog>
 
           <v-list-item-icon class="status-indicator-wrapper">
-            <account-card-status-indicator :account-status="accountState.status" />
+            <account-card-status-indicator
+              :account-status="accountState.status"
+              :error-message="errorMessage"
+            />
           </v-list-item-icon>
         </v-list-item>
       </v-list>
@@ -71,10 +74,11 @@ export default defineComponent({
 
     const displayTheShowLogsIcon = computed<boolean>(() => [AccountStatus.DONE, AccountStatus.ERROR].includes(props.accountState.status));
     const fullLog = computed<string>(() => props.accountState.events.map((event) => event.message.trim()).join('\n'));
+    const errorMessage = computed(() => props.accountState.events.find((event) => event.error)?.error?.message);
 
     const accountMetadata: AccountMetadata = ACCOUNT_METADATA.importers[props.accountState.id] || ACCOUNT_METADATA.exporters[props.accountState.id];
     return {
-      latestEventMessage, accountMetadata, displayTheShowLogsIcon, fullLog
+      latestEventMessage, accountMetadata, displayTheShowLogsIcon, fullLog, errorMessage
     };
   }
 });

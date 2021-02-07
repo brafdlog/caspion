@@ -11,12 +11,30 @@
   >
     mdi-check
   </v-icon>
-  <v-icon
+
+  <v-dialog
     v-else-if="accountStatus === accountStatusEnum.ERROR"
-    color="red"
+    width="500"
   >
-    mdi-alert
-  </v-icon>
+    <template v-slot:activator="{ on, attrs }">
+      <v-icon
+        v-bind="attrs"
+        color="red"
+        v-on="on"
+      >
+        mdi-alert
+      </v-icon>
+    </template>
+    <v-card>
+      <v-card-title class="headline red lighten-2">
+        Error
+      </v-card-title>
+      <v-card-text class="general-error-text subtitle-1">
+        {{ errorMessage }}
+      </v-card-text>
+    </v-card>
+  </v-dialog>
+
   <v-icon
     v-else-if="accountStatus === accountStatusEnum.PENDING"
     color="yellow darken-2"
@@ -33,6 +51,10 @@ export default defineComponent({
   props: {
     accountStatus: {
       required: true
+    },
+    errorMessage: {
+      type: String,
+      required: false
     }
   },
   setup() {
