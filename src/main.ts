@@ -1,7 +1,7 @@
 import VueCompositionAPI, { h, ref } from '@vue/composition-api';
 import electron from 'electron';
-import { ElectronLog } from 'electron-log';
 import Vue from 'vue';
+import CreateLogger from './logging/logger';
 import Sentry from './logging/sentry';
 import App from './ui/components/App.vue';
 import SplashScreen from './ui/components/SplashScreen.vue';
@@ -17,9 +17,7 @@ process.on('unhandledRejection', (error) => {
   console.error(error);
 });
 
-const logger: ElectronLog = electron.remote.getGlobal('logger');
-logger.info('The renderer process got the logger');
-Vue.use(LoggerPlugin, { logger });
+Vue.use(LoggerPlugin, CreateLogger(electron.remote.app));
 
 Vue.use(VueCompositionAPI);
 
@@ -33,6 +31,7 @@ new Vue({
   name: 'IsraeliBankScrapersDesktop',
 
   setup(_, { root }) {
+    root.$logger.info('Vue started');
     const loaded = ref(false);
     root.$store.restored.then(() => {
       loaded.value = true;

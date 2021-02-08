@@ -5,8 +5,6 @@ import * as configManager from './configManager/configManager';
 import {
   BudgetTrackingEvent, BudgetTrackingEventEmitter, EventNames, EventPublisher
 } from './eventEmitters/EventEmitter';
-import { buildCompositeEventPublisher } from './eventEmitters/compositeEventPublisher';
-import { buildConsoleEmitter } from './eventEmitters/consoleEmitter';
 import outputVendors from './export/outputVendors';
 import * as bankScraper from './import/bankScraper';
 
@@ -18,7 +16,7 @@ export { BudgetTrackingEvent, BudgetTrackingEventEmitter };
 export const { inputVendors } = bankScraper;
 
 export async function scrapeAndUpdateOutputVendors(config: configManager.Config, optionalEventPublisher?: EventPublisher) {
-  const eventPublisher = createEventPublisher(optionalEventPublisher);
+  const eventPublisher = optionalEventPublisher || new BudgetTrackingEventEmitter();
 
   const startDate = moment()
     .subtract(config.scraping.numDaysBack, 'days')
@@ -36,13 +34,4 @@ export async function scrapeAndUpdateOutputVendors(config: configManager.Config,
     await eventPublisher.emit(EventNames.GENERAL_ERROR, new BudgetTrackingEvent({ message: e.message, error: e }));
     throw e;
   }
-}
-
-function createEventPublisher<Name>(optionalEventPublisher: EventPublisher | undefined): EventPublisher {
-  const eventPublishers = [buildConsoleEmitter()];
-  if (optionalEventPublisher) {
-    eventPublishers.push(optionalEventPublisher);
-  }
-  const compositeEventPublisher = buildCompositeEventPublisher(eventPublishers);
-  return compositeEventPublisher;
 }

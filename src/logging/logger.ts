@@ -1,5 +1,5 @@
 import { App } from 'electron';
-import logger from 'electron-log';
+import logger from 'electron-log'; // eslint-disable-line no-restricted-imports
 import fs from 'fs';
 import { EOL } from 'os';
 

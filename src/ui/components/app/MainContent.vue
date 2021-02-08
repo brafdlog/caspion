@@ -73,7 +73,7 @@ export default defineComponent({
     ConfigEditor,
     LogViewer
   },
-  setup() {
+  setup(_, { root }) {
     const config = store.getters.Config;
     const scrapingStatus = ref('NOT_STARTED' as keyof typeof statusToColor);
     const generalError = ref<string>('');
@@ -86,7 +86,7 @@ export default defineComponent({
 
     const eventEmitter = new BudgetTrackingEventEmitter();
 
-    initEventHandlers(eventEmitter, accountsState);
+    initEventHandlers(eventEmitter, accountsState, root.$logger);
 
     const scrape = () => {
       generalError.value = '';
@@ -114,10 +114,23 @@ export default defineComponent({
   },
 });
 
-function initEventHandlers(eventEmitter: BudgetTrackingEventEmitter, accountsState: Ref<UnwrapRef<AccountsState>>) {
+type LogFunction = (...obj: string[]) => void
+type Logger = {
+  info: LogFunction,
+  error: LogFunction,
+  warn: LogFunction
+}
+const levelToLog = {
+  [Levels.Info]: 'info',
+  [Levels.Error]: 'error',
+  [Levels.Warn]: 'warn'
+};
+
+function initEventHandlers(eventEmitter: BudgetTrackingEventEmitter, accountsState: Ref<UnwrapRef<AccountsState>>, logger?: Logger) {
   eventEmitter.onAny((eventName, eventData) => {
     const message = eventData?.message || eventName;
     const logLevel = eventData?.error ? Levels.Error : Levels.Info;
+    logger?.[levelToLog[logLevel]](message);
     return handleEvent({ ...eventData, message, level: logLevel }, accountsState.value);
   });
   initAnalyticsEventHandling(eventEmitter);
