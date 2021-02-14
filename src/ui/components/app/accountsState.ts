@@ -1,6 +1,6 @@
 // eslint-disable-next-line max-classes-per-file
 import { BudgetTrackingEvent } from '@/backend';
-import { Levels } from '@/ui/components/shared/log/types';
+import { Levels } from '@/logging/logger';
 import { UnwrapRef } from '@vue/composition-api';
 import { AccountStatus, AccountType } from '@/backend/eventEmitters/EventEmitter';
 

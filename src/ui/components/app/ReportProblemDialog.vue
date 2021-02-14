@@ -95,6 +95,7 @@ import { shell } from 'electron';
 import Sentry from '@/logging/sentry';
 import LogSheet from '@/ui/components/shared/LogSheet';
 import os from 'os';
+import { getLastLines } from '@/logging/logger';
 import { repository } from '../../../../package.json';
 
 const createGithubIssueLink = (title, details, log) => {
@@ -193,7 +194,7 @@ export default {
       }
     },
     resetForm() {
-      this.raw = this.$logger.getLastLines(10);
+      this.raw = getLastLines(10);
       this.formData = { ...defaultFormData };
       this.validateEmail = false;
     },

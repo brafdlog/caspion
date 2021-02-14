@@ -58,8 +58,8 @@ import { scrapeAndUpdateOutputVendors, BudgetTrackingEventEmitter } from '@/back
 import { AccountsState, handleEvent } from '@/ui/components/app/accountsState';
 import store from '@/ui/store';
 import ConfigEditor from '@/ui/components/app/ConfigEditor.vue';
-import { initAnalyticsEventHandling } from '@/analytics';
-import { Levels } from '../shared/log/types';
+import { initAnalyticsEventHandling } from '@/logging/analytics';
+import logger, { Levels } from '@/logging/logger';
 
 const statusToColor = {
   NOT_STARTED: null,
@@ -73,7 +73,7 @@ export default defineComponent({
     ConfigEditor,
     LogViewer
   },
-  setup(_, { root }) {
+  setup() {
     const config = store.getters.Config;
     const scrapingStatus = ref('NOT_STARTED' as keyof typeof statusToColor);
     const generalError = ref<string>('');
@@ -86,7 +86,7 @@ export default defineComponent({
 
     const eventEmitter = new BudgetTrackingEventEmitter();
 
-    initEventHandlers(eventEmitter, accountsState, root.$logger);
+    initEventHandlers(eventEmitter, accountsState);
 
     const scrape = () => {
       generalError.value = '';
@@ -114,23 +114,11 @@ export default defineComponent({
   },
 });
 
-type LogFunction = (...obj: string[]) => void
-type Logger = {
-  info: LogFunction,
-  error: LogFunction,
-  warn: LogFunction
-}
-const levelToLog = {
-  [Levels.Info]: 'info',
-  [Levels.Error]: 'error',
-  [Levels.Warn]: 'warn'
-};
-
-function initEventHandlers(eventEmitter: BudgetTrackingEventEmitter, accountsState: Ref<UnwrapRef<AccountsState>>, logger?: Logger) {
+function initEventHandlers(eventEmitter: BudgetTrackingEventEmitter, accountsState: Ref<UnwrapRef<AccountsState>>) {
   eventEmitter.onAny((eventName, eventData) => {
     const message = eventData?.message || eventName;
-    const logLevel = eventData?.error ? Levels.Error : Levels.Info;
-    logger?.[levelToLog[logLevel]](message);
+    const logLevel: Levels = eventData?.error ? 'error' : 'info';
+    logger[logLevel](message);
     return handleEvent({ ...eventData, message, level: logLevel }, accountsState.value);
   });
   initAnalyticsEventHandling(eventEmitter);

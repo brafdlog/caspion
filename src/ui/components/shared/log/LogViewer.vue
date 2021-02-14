@@ -27,12 +27,12 @@
 import { defineComponent, PropType } from '@vue/composition-api';
 import { AccountsState } from '@/ui/components/app/accountsState';
 import AccountCard from '@/ui/components/shared/log/AccountCard.vue';
-import { Levels } from './types';
+import { Levels } from '@/logging/logger';
 
 const levelToClass = {
-  [Levels.Error]: 'error-line',
-  [Levels.Warn]: 'warn-line',
-  [Levels.Info]: 'info-line'
+  error: 'error-line',
+  warn: 'warn-line',
+  info: 'info-line'
 };
 
 export default defineComponent({
@@ -44,7 +44,7 @@ export default defineComponent({
     },
   },
   setup() {
-    const getClass = (level: Levels) => levelToClass[level];
+    const getClass = (level: Levels):string => levelToClass[level];
     return { getClass };
   }
 });
