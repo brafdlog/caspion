@@ -7,7 +7,7 @@
       color="primary"
     >
       <div class="d-flex align-center">
-        <span class="shrink mr-2 headline">Israeli Bank Scrapers Desktop</span>
+        <span class="shrink mr-2 headline"> {{ appName }} </span>
       </div>
 
       <v-spacer />
@@ -50,7 +50,7 @@
       <v-btn
         text
         small
-        @click="() => openExternal('https://github.com/baruchiro/israeli-bank-scrapers-desktop')"
+        @click="() => openExternal({appRepository})"
       >
         <span class="mr-2">Open in Github</span>
         <v-icon>mdi-open-in-new</v-icon>
@@ -71,6 +71,7 @@ import Exporters from '@/ui/components/app/Exporters';
 import { trackPage } from '@/analytics';
 import ReportProblemDialog from './app/ReportProblemDialog';
 import MainContent from './app/MainContent';
+import appProperties from '../../../package.json';
 
 export default {
   name: 'App',
@@ -79,7 +80,9 @@ export default {
   },
   data() {
     return {
-      reportProblemDialog: false
+      reportProblemDialog: false,
+      appRepository: appProperties.repository,
+      appName: APP_NAME
     };
   },
   mounted() {

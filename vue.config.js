@@ -27,8 +27,8 @@ module.exports = {
         'israeli-bank-scrapers-core'
       ],
       builderOptions: {
-        productName: 'israeli-bank-scrapers-desktop',
-        appId: 'com.electron.israeli-bank-scrapers-desktop',
+        productName: globals.APP_NAME,
+        appId: 'com.electron.' + globals.APP_NAME,
         dmg: {
           contents: [
             {
