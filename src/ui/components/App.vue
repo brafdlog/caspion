@@ -50,7 +50,7 @@
       <v-btn
         text
         small
-        @click="() => openExternal({appRepository})"
+        @click="() => openExternal(appRepository)"
       >
         <span class="mr-2">Open in Github</span>
         <v-icon>mdi-open-in-new</v-icon>
@@ -71,7 +71,7 @@ import Exporters from '@/ui/components/app/Exporters';
 import { trackPage } from '@/analytics';
 import ReportProblemDialog from './app/ReportProblemDialog';
 import MainContent from './app/MainContent';
-import appProperties from '../../../package.json';
+import { repository } from '../../../package.json';
 
 export default {
   name: 'App',
@@ -81,7 +81,7 @@ export default {
   data() {
     return {
       reportProblemDialog: false,
-      appRepository: appProperties.repository,
+      appRepository: repository,
       appName: APP_NAME
     };
   },
