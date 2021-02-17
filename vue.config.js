@@ -1,4 +1,5 @@
 const globals = require('./globals');
+import {name as appName} from './package.json';
 
 const defineGlobals = (config) => {
   config.plugin('define').tap((args) => {
@@ -27,8 +28,8 @@ module.exports = {
         'israeli-bank-scrapers-core'
       ],
       builderOptions: {
-        productName: globals.APP_NAME,
-        appId: 'com.electron.' + globals.APP_NAME,
+        productName: appName,
+        appId: 'com.electron.' + appName,
         dmg: {
           contents: [
             {
