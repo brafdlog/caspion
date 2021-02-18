@@ -1,5 +1,5 @@
 const globals = require('./globals');
-import {name as appName} from './package.json';
+import { name as appName } from './package.json';
 
 const defineGlobals = (config) => {
   config.plugin('define').tap((args) => {
