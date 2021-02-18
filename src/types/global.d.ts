@@ -6,6 +6,7 @@ declare global {
   const GOOGLE_CLIENT_SECRET: string
   const SEGMENT_WRITE_KEY: string
   const SOURCE_COMMIT_SHORT: string
+  const APP_NAME: string
   namespace NodeJS {
     interface Global {
       logger: ElectronLog.ElectronLog & {

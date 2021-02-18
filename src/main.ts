@@ -30,7 +30,7 @@ new Vue({
   store: store.original,
   vuetify,
 
-  name: 'IsraeliBankScrapersDesktop',
+  name: APP_NAME,
 
   setup(_, { root }) {
     const loaded = ref(false);

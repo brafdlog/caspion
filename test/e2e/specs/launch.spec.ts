@@ -49,7 +49,7 @@ const skip = true;
     expect(width).toBeGreaterThan(0);
     expect(height).toBeGreaterThan(0);
     // App is loaded properly
-    expect(await client.getHTML('#app')).toMatch(/Israeli Bank Scrapers Desktop/);
+    expect(await client.getHTML('#app')).toMatch('Hiuvi');
   });
 
   test('Hide AddScraper components by default', async () => {
