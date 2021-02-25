@@ -24,7 +24,7 @@ new Vue({
   store: store.original,
   vuetify,
 
-  name: 'IsraeliBankScrapersDesktop',
+  name: APP_NAME,
 
   setup(_, { root }) {
     logger.info('Vue started');
