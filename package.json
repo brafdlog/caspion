@@ -32,7 +32,7 @@
     "@sentry/electron": "^1.3.0",
     "@vue/composition-api": "^1.0.0-beta.14",
     "analytics-node": "^3.4.0-beta.3",
-    "core-js": "^3.4.4",
+    "core-js": "^3.9.1",
     "csv-parse": "^4.14.1",
     "csv-stringify": "^5.5.3",
     "direct-vuex": "^0.12.0",
