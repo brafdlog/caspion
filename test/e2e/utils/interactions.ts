@@ -26,8 +26,7 @@ export default class Interactions {
   }
 
   async getAddScrapers() {
-    return Promise.all(this.client.$$(AddScrapers))
-      .then((elements) => elements.map(({ value }) => new Element(this.client, value)));
+    return this.client.$$(AddScrapers);
   }
 
   waitForAddScrapersVisible() {
