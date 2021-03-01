@@ -70,7 +70,7 @@ module.exports = {
     'no-restricted-imports': ['error', {
       name: 'electron-log',
       importNames: ['default'],
-      message: 'You should use logging/logger instead'
+      message: 'You should import from logging/logger instead'
     }]
   },
 
