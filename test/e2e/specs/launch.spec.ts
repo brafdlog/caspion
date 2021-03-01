@@ -11,11 +11,7 @@ const screenshotsDir = './screenshots';
 
 jest.setTimeout(100000);
 
-// Remove when https://github.com/nklayman/vue-cli-plugin-electron-builder/issues/625 closed
-// const skip = process.env.GITHUB_ACTIONS && process.platform === 'win32';
-const skip = true;
-
-(skip ? describe.skip : describe)('Launch', () => {
+describe('Launch', () => {
   let app: Application;
   let stopServe: StopServe;
   let browserWindow: SpectronWindow;
