@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { testWithSpectron } from 'vue-cli-plugin-electron-builder';
+import spectron from 'spectron';
 import {
   Application, SpectronClient, SpectronWindow, StopServe
 } from '../type';
@@ -23,7 +24,7 @@ const skip = true;
 
   beforeAll(async () => {
     let stdout: string;
-    ({ app, stopServe, stdout } = await testWithSpectron());
+    ({ app, stopServe, stdout } = await testWithSpectron(spectron));
 
     // eslint-disable-next-line no-console
     console.log(stdout);

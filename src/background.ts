@@ -21,10 +21,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     height: 563,
     useContentSize: true,
-    width: 1000,
-    webPreferences: {
-      nodeIntegration: true,
-    },
+    width: 1000
   });
 
   // Workaround from https://github.com/electron/electron/issues/19554

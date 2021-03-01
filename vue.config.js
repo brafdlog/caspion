@@ -20,6 +20,7 @@ const defineGlobals = (config) => {
 module.exports = {
   pluginOptions: {
     electronBuilder: {
+      nodeIntegration: true,
       chainWebpackMainProcess: defineGlobals,
       chainWebpackRendererProcess: defineGlobals,
       // List native deps here if they don't work
