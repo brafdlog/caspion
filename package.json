@@ -81,6 +81,7 @@
     "babel-jest": "^26.3.0",
     "babel-plugin-component": "^1.1.1",
     "electron": "^7.0.0",
+    "electron-devtools-installer": "^3.1.1",
     "eslint": "^7.1.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-config-prettier": "^6.11.0",
