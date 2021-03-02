@@ -22,7 +22,10 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     height: 563,
     useContentSize: true,
-    width: 1000
+    width: 1000,
+    webPreferences: {
+      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION as unknown as boolean | undefined,
+    },
   });
 
   // Workaround from https://github.com/electron/electron/issues/19554
