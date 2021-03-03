@@ -20,6 +20,15 @@ Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israel
 - A basic UI for configuration
 - A configuration for automatically classifying transactions to categories according to predefined patterns
 
+## Running the app
+You can download the app from [here](https://github.com/brafdlog/budget-tracking/actions?query=branch%3Amaster+workflow%3ABuild%2FRelease+is%3Asuccess+event%3Apush)
+
+### Initial setup
+Before running the app for the first time you will need to set up the accounts you want to fetch data from (importers).
+
+Now you can set up the exporters - where the data will be sent to. The CSV exporter is enabled by default.
+If you want to export to YNAB, see instructions at the end of the README.
+
 ## Running in a development environment
 
 ### Prerequisites
@@ -51,6 +60,9 @@ Depending on your distribution, you will need to run the following command:
     - Edit this file to add any mapping from function description to category that fits your needs.
     - If using YNAB, the categories you return must match category names in YNAB
 
+### Building for production
+- Run `yarn build`
+
 ### YNAB integration setup (optional)
 
 YNAB is a budgeting software. If you want to manage your budget there and have your expenses updated automatically to YNAB follow these steps:
@@ -61,21 +73,15 @@ YNAB is a budgeting software. If you want to manage your budget there and have y
     - In YNAB go to `Account settings -> Developer settings`
     - Click on `New Token` and `generate`
     - On the top of the screen you will see the full token (the token with XXXX in it is not the full one).
-    - Save this token in the YNAB settings in the app and save.
+    - Save this token in the YNAB settings in the app.
 - Set your **YNAB budget id**
     - Find your YNAB budget id by going into your budget and taking it from the url: `https://app.youneedabudget.com/XXXXXX-XXXXXX-XXXXXX-XXXXX/budget`
     - Set this budget id in the YNAB settings and save.
-- Collect ynab account details by running `yarn print-ynab-account-data`. This will log among others the following:
-    - **YNAB account ids**
-        - Each account you created in YNAB has an id. We need those ids in order to match each transaction from a financial institution to the correct account in YNAB
-        - We will need these ids to set up the matching between financial account number to the corresponding ynab account id.
-    - **Financial institutions account numbers**
-        - These are the account numbers in the banks/credit card companies you added
-- For each financial account number from a previous step, find the corresponding ynab account and add it to the table in the ynab settings.
+- Fill the table containing account number to ynab account id mapping
+    - For each account you want to track add another row to the table
+    - To get the `ynab account id` of the account navigate to that account in ynab and get the account id from the url: `https://app.youneedabudget.com/akfkmksdcscd/accounts/XXXXXXXX-XXXX-XXXX-XXXX-XXXX`
+    - The `account number` could be the credit card number, or the bank account number. To be sure, you can run the app so it exports transactions to a CSV and get the account number from there.
 - **Click on Save to save the configuration**
-
-### Building for production
-- Run `yarn build`
 
 #### Disclaimer
 
