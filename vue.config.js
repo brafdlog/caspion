@@ -6,15 +6,12 @@ const defineGlobals = (config) => {
     args[0] = globals;
     return args;
   });
+
   config.module
-    .rule('babel')
-    .test(/base-scraper\.js$/)
-    .use('babel')
-    .loader('babel-loader')
-    .options({
-      presets: [['@babel/preset-env', { modules: false }]],
-      plugins: ['@babel/plugin-proposal-class-properties']
-    });
+    .rule('binary')
+    .test(/\.node$/)
+    .use()
+    .loader('node-loader');
 };
 
 module.exports = {
