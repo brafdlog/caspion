@@ -24,7 +24,7 @@ Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israel
 You can download the app from [here](https://github.com/brafdlog/budget-tracking/actions?query=branch%3Amaster+workflow%3ABuild%2FRelease+is%3Asuccess+event%3Apush)
 
 ### Initial setup
-Before running the app for the first time you will need to set up the accounts you want to fetch data from (importers).
+The first time you run the app, you will need to set up the accounts you want to fetch data from (importers).
 
 Now you can set up the exporters - where the data will be sent to. The CSV exporter is enabled by default.
 If you want to export to YNAB, see instructions at the end of the README.
