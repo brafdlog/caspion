@@ -9,7 +9,7 @@ import {
 
 const screenshotsDir = './screenshots';
 
-jest.setTimeout(100000);
+jest.setTimeout(1000000);
 
 describe('Launch', () => {
   let app: Application;
