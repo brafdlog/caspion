@@ -21,7 +21,8 @@ Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israel
 - A configuration for automatically classifying transactions to categories according to predefined patterns
 
 ## Running the app
-You can download the app from [here](https://github.com/brafdlog/budget-tracking/actions?query=branch%3Amaster+workflow%3ABuild%2FRelease+is%3Asuccess+event%3Apush)
+
+Download the latest version from [Releases](https://github.com/brafdlog/budget-tracking/releases) page.
 
 ### Initial setup
 The first time you run the app, you will need to set up the accounts you want to fetch data from (importers).
