@@ -52,7 +52,6 @@ module.exports = {
         linux: {
           target: [
             'AppImage',
-            'snap',
             'deb',
           ],
           icon: 'build/icons',
