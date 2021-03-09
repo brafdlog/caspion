@@ -5,7 +5,7 @@ on:
     paths-ignore:
       - "nuxt/**"
   push:
-    branches: master
+    branches: release-test
     paths-ignore:
       - "nuxt/**"
 
@@ -35,15 +35,15 @@ jobs:
         # debug: true
         script: |
           const releases = await github.repos.listReleases({
-            owner: 'baruchiro',
-            repo: 'israeli-bank-scrapers-desktop'
+            owner: 'brafdlog',
+            repo: 'budget-tracking'
           })
           // console.log(releases)
           const published_release_tags = releases.data.filter(release => !release.draft).map(release => release.tag_name)
           // console.log(published_release_tags)
           // github.event_name: ${{ github.event_name }}
           // github.ref: ${{ github.ref }}
-          const isPushToMaster = ${{ startsWith(github.event_name, 'push') && github.ref == 'refs/heads/master' }}
+          const isPushToMaster = ${{ startsWith(github.event_name, 'push') && github.ref == 'refs/heads/release-test' }}
           console.log('Is push to mster: ' + isPushToMaster)
           const publishToRelease = !published_release_tags.includes('v${{ env.package_version }}') && isPushToMaster
           console.log('publishToRelease: ' + publishToRelease)
