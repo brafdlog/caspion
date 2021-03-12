@@ -86,6 +86,15 @@ YNAB is a budgeting software. If you want to manage your budget there and have y
   - The `account number` could be the credit card number, or the bank account number. To be sure, you can run the app so it exports transactions to a CSV and get the account number from there.
 - **Click on Save to save the configuration**
 
+### CSV (Excel) Note
+
+In some cases you may get gibberish when you open the CSV file in Excel. In this case, please follow the next steps:
+
+1. Open a new Excel document.
+1. Go to `Data` -> `Import From CSV/Text`.
+1. Select your CSV file.
+1. For the "Encoding"/"File Origin", select `Unicode UTF-8 (65001)`.
+
 ## Release
 
 The Release workflow, configured in `.github/workflows/release.yml`, will **draft** a new release or update the artifacts on an existing draft, according to the following conditions:
