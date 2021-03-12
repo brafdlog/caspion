@@ -88,11 +88,13 @@ YNAB is a budgeting software. If you want to manage your budget there and have y
 
 ## Release
 
-The Release workflow, configured in `.github/workflows/release.yml`, will draft a new release or update the artifacts on an existing draft, according to the following conditions:
+The Release workflow, configured in `.github/workflows/release.yml`, will **draft** a new release or update the artifacts on an existing draft, according to the following conditions:
 
 1. A change pushed to the `master` branch.
 1. The `version` from the `package.json`, with the prefix `v`, is not a **published** release.
 1. Upload the artifacts to the `v${package_version}` Github Release.
+
+It means that after you published a new release, from the Github interface, you need to upgrade the version in the `package.json` file, to get a new draft.
 
 #### Disclaimer
 
