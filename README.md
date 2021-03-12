@@ -1,4 +1,4 @@
-# Automated Expense Tracking from Israeli Banks and Credit Cards
+# Automated expense tracking from Israeli banks and credit cards
 
 ![Build/Release](https://github.com/brafdlog/budget-tracking/workflows/Build/Release/badge.svg?branch=master&event=push)
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/brafdlog/budget-tracking.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/brafdlog/budget-tracking/context:javascript)
