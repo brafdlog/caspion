@@ -1,6 +1,7 @@
 import { app, BrowserWindow } from 'electron';
+import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { createProtocol, installVueDevtools } from 'vue-cli-plugin-electron-builder/lib';
+import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
 import CreateLogger from './logging/logger';
 import Sentry from './logging/sentry';
 // import './store';
@@ -23,7 +24,7 @@ function createWindow() {
     useContentSize: true,
     width: 1000,
     webPreferences: {
-      nodeIntegration: true,
+      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION as unknown as boolean | undefined,
     },
   });
 
@@ -75,7 +76,7 @@ app.on('ready', async () => {
     // In addition, if the linked issue is closed,
     // you can upgrade electron and uncomment these lines
     try {
-      await installVueDevtools();
+      await installExtension(VUEJS_DEVTOOLS);
     } catch (e) {
       logger.info('Vue Devtools failed to install:', e.toString());
     }
