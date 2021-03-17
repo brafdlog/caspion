@@ -37,7 +37,8 @@ If you want to export to YNAB, see instructions at the end of the README.
 
 - [NodeJS](https://nodejs.org/en/download/).
 - [`node-gyp`](https://github.com/nodejs/node-gyp#installation). In Windows you have a checkbox in the NodeJS installer to install also the `node-gyp`.  
-  This module is for packages that compile native code in their installation, in our case it is required for `electron` and `keytar`.
+  This module is for packages that compile native code in their installation, in our case it is required for `electron` and `keytar`. (Note that if you install visual studio, you need to add the workload of `desktop development with C++`) ![image](https://user-images.githubusercontent.com/7272927/111470123-2c849b00-8730-11eb-8fd2-f40628d34413.png)
+
 - [Yarn](https://yarnpkg.com/getting-started/install).
 
 #### Linux Prerequisites
