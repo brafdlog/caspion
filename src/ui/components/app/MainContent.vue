@@ -24,7 +24,7 @@
       </v-col>
     </v-row>
     <v-row
-      v-else
+      v-if="!inProgress"
       align="end"
     >
       <v-col cols="12">
