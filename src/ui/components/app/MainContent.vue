@@ -54,7 +54,7 @@ import LogViewer from '@/ui/components/shared/log/LogViewer.vue';
 import {
   computed, defineComponent, ref, Ref, UnwrapRef
 } from '@vue/composition-api';
-import { scrapeAndUpdateOutputVendors, BudgetTrackingEventEmitter } from '@/backend';
+import { scrapeAndUpdateOutputVendors, Events } from '@/backend';
 import { AccountsState, handleEvent } from '@/ui/components/app/accountsState';
 import store from '@/ui/store';
 import ConfigEditor from '@/ui/components/app/ConfigEditor.vue';
@@ -84,7 +84,7 @@ export default defineComponent({
 
     const accountsState = ref(new AccountsState(config.getActiveImporters, config.getActiveExporters));
 
-    const eventEmitter = new BudgetTrackingEventEmitter();
+    const eventEmitter = new Events.BudgetTrackingEventEmitter();
 
     initEventHandlers(eventEmitter, accountsState);
 
@@ -114,7 +114,7 @@ export default defineComponent({
   },
 });
 
-function initEventHandlers(eventEmitter: BudgetTrackingEventEmitter, accountsState: Ref<UnwrapRef<AccountsState>>) {
+function initEventHandlers(eventEmitter: Events.BudgetTrackingEventEmitter, accountsState: Ref<UnwrapRef<AccountsState>>) {
   eventEmitter.onAny((eventName, eventData) => {
     const message = eventData?.message || eventName;
     const logLevel = eventData?.error ? Levels.Error : Levels.Info;
