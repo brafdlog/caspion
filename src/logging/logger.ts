@@ -2,6 +2,7 @@ import { App } from '@/app-globals';
 import logger, { LogFunctions, LogLevel } from 'electron-log'; // eslint-disable-line no-restricted-imports
 import fs from 'fs';
 import { EOL } from 'os';
+import path from 'path';
 
 export type Logger = LogFunctions
 export type Levels = LogLevel
@@ -20,5 +21,7 @@ export const getLastLines = (n: number) => {
   const lastLines = lines.slice(lines.length - n);
   return lastLines.join(EOL);
 };
+
+export const getLogsFolder = () => path.dirname(logger.transports.file.getFile().path);
 
 export default logger as Logger;
