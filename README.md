@@ -13,17 +13,19 @@ In addition, it can automatically set an expense category for transactions accor
 
 Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israeli-bank-scrapers) npm package.
 
-### What is currently supported:
+## Features
 
 - One click to fetch transactions from multiple Israeli banks and credit cards
-- Exporting transactions to Google sheets, YNAB, CSV or JSON file
+- Exporting transactions to *Google Sheets*, *YNAB*, *Excel (CSV)* or *JSON* file
 - A basic UI for configuration
 - A configuration for automatically classifying transactions to categories according to predefined patterns
 
 ## Running the app
-You can download the app from [here](https://github.com/brafdlog/budget-tracking/actions?query=branch%3Amaster+workflow%3ABuild%2FRelease+is%3Asuccess+event%3Apush)
+
+Download the latest version from [Releases](https://github.com/brafdlog/budget-tracking/releases) page, or build it from source, with the instructions below.
 
 ### Initial setup
+
 The first time you run the app, you will need to set up the accounts you want to fetch data from (importers).
 
 Now you can set up the exporters - where the data will be sent to. The CSV exporter is enabled by default.
@@ -35,7 +37,8 @@ If you want to export to YNAB, see instructions at the end of the README.
 
 - [NodeJS](https://nodejs.org/en/download/).
 - [`node-gyp`](https://github.com/nodejs/node-gyp#installation). In Windows you have a checkbox in the NodeJS installer to install also the `node-gyp`.  
-  This module is for packages that compile native code in their installation, in our case it is required for `electron` and `keytar`.
+  This module is for packages that compile native code in their installation, in our case it is required for `electron` and `keytar`. (Note that if you install visual studio, you need to add the workload of `desktop development with C++`) ![image](https://user-images.githubusercontent.com/7272927/111470123-2c849b00-8730-11eb-8fd2-f40628d34413.png)
+
 - [Yarn](https://yarnpkg.com/getting-started/install).
 
 #### Linux Prerequisites
@@ -44,9 +47,9 @@ Currently, this project depends on `libsecret`, so you may need to install it be
 
 Depending on your distribution, you will need to run the following command:
 
-* Debian/Ubuntu: `sudo apt-get install libsecret-1-dev`
-* Red Hat-based: `sudo yum install libsecret-devel`
-* Arch Linux: `sudo pacman -S libsecret`
+- Debian/Ubuntu: `sudo apt-get install libsecret-1-dev`
+- Red Hat-based: `sudo yum install libsecret-devel`
+- Arch Linux: `sudo pacman -S libsecret`
 
 ### Start from Source
 
@@ -56,11 +59,12 @@ Depending on your distribution, you will need to run the following command:
   - If you want to set up YNAB, see instructions below
 - Run by clicking on the `Run` button in the app
 - Configure automatic category classification (Optional)
-    - Open `categoryCalculationScript.js`. This file contains the patterns for classifying transactions to categories automatically.
-    - Edit this file to add any mapping from function description to category that fits your needs.
-    - If using YNAB, the categories you return must match category names in YNAB
+  - Open `categoryCalculationScript.js`. This file contains the patterns for classifying transactions to categories automatically.
+  - Edit this file to add any mapping from function description to category that fits your needs.
+  - If using YNAB, the categories you return must match category names in YNAB
 
 ### Building for production
+
 - Run `yarn build`
 
 ### YNAB integration setup (optional)
@@ -70,18 +74,37 @@ YNAB is a budgeting software. If you want to manage your budget there and have y
 - Create an account in [YNAB](https://ynab.com/referral/?ref=Z5wPbP0cYTWjdTQj&utm_source=customer_referral)
 - Create in YNAB unlinked accounts for each financial account you want to track (bank accounts and credit cards)
 - Get the **YNAB access token**
-    - In YNAB go to `Account settings -> Developer settings`
-    - Click on `New Token` and `generate`
-    - On the top of the screen you will see the full token (the token with XXXX in it is not the full one).
-    - Save this token in the YNAB settings in the app.
+  - In YNAB go to `Account settings -> Developer settings`
+  - Click on `New Token` and `generate`
+  - On the top of the screen you will see the full token (the token with XXXX in it is not the full one).
+  - Save this token in the YNAB settings in the app.
 - Set your **YNAB budget id**
-    - Find your YNAB budget id by going into your budget and taking it from the url: `https://app.youneedabudget.com/XXXXXX-XXXXXX-XXXXXX-XXXXX/budget`
-    - Set this budget id in the YNAB settings and save.
+  - Find your YNAB budget id by going into your budget and taking it from the url: `https://app.youneedabudget.com/XXXXXX-XXXXXX-XXXXXX-XXXXX/budget`
+  - Set this budget id in the YNAB settings and save.
 - Fill the table containing account number to ynab account id mapping
-    - For each account you want to track add another row to the table
-    - To get the `ynab account id` of the account navigate to that account in ynab and get the account id from the url: `https://app.youneedabudget.com/akfkmksdcscd/accounts/XXXXXXXX-XXXX-XXXX-XXXX-XXXX`
-    - The `account number` could be the credit card number, or the bank account number. To be sure, you can run the app so it exports transactions to a CSV and get the account number from there.
+  - For each account you want to track add another row to the table
+  - To get the `ynab account id` of the account navigate to that account in ynab and get the account id from the url: `https://app.youneedabudget.com/akfkmksdcscd/accounts/XXXXXXXX-XXXX-XXXX-XXXX-XXXX`
+  - The `account number` could be the credit card number, or the bank account number. To be sure, you can run the app so it exports transactions to a CSV and get the account number from there.
 - **Click on Save to save the configuration**
+
+### CSV (Excel) Note
+
+In some cases you may get gibberish when you open the CSV file in Excel. In this case, please follow the next steps:
+
+1. Open a new Excel document.
+1. Go to `Data` -> `Import From CSV/Text`.
+1. Select your CSV file.
+1. For the "Encoding"/"File Origin", select `Unicode UTF-8 (65001)`.
+
+## Release
+
+The Release workflow, configured in `.github/workflows/release.yml`, will **draft** a new release or update the artifacts on an existing draft, according to the following conditions:
+
+1. A change pushed to the `master` branch.
+1. The `version` from the `package.json`, with the prefix `v`, is not a **published** release.
+1. Upload the artifacts to the `v${package_version}` Github Release.
+
+It means that after you published a new release, from the Github interface, you need to upgrade the version in the `package.json` file, to get a new draft.
 
 #### Disclaimer
 

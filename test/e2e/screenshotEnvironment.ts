@@ -1,6 +1,6 @@
-const JSDOMEnvironment = require('jest-environment-jsdom');
+const NodeEnvironment = require('jest-environment-node');
 
-class ScreenshotEnvironment extends JSDOMEnvironment {
+class ScreenshotEnvironment extends NodeEnvironment {
   constructor(config, context) {
     super(config, context);
 
