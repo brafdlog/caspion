@@ -109,7 +109,7 @@
     "replace-in-file": "5.0.2",
     "sass": "^1.26.3",
     "sass-loader": "^8.0.0",
-    "spectron": "^11.0.0",
+    "spectron": "^14.0.0",
     "ts-jest": "^26.3.0",
     "typescript": "^3.9.7",
     "vue-cli-plugin-electron-builder": "^2.0.0-rc.6",
