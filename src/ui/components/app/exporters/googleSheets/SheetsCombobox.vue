@@ -33,6 +33,7 @@ export default defineComponent({
     value: {
       type: String,
       required: false,
+      default: null
     },
     credentials: {
       type: Object as PropType<Credentials>,
