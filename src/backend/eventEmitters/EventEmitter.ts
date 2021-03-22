@@ -94,8 +94,11 @@ export class ExporterEvent extends BudgetTrackingEvent {
 }
 
 export class DownalodChromeEvent extends BudgetTrackingEvent {
+  percent: number;
+
   constructor(percent: number) {
     super({ message: `Download Chrome: ${percent}%` });
+    this.percent = percent;
   }
 }
 

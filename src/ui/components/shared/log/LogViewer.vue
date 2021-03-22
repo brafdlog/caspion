@@ -2,6 +2,17 @@
   <div class="logs-container">
     <v-container>
       <v-row>
+        <v-col
+          v-if="chromePercentage > 0"
+          cols="12"
+        >
+          <v-progress-linear
+            v-model="chromePercentage"
+            height="25"
+          >
+            <strong>{{ downloadMessage }}</strong>
+          </v-progress-linear>
+        </v-col>
         <v-col>
           <div
             v-for="(importer) in accountsState.importers"
@@ -24,16 +35,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from '@vue/composition-api';
+import { computed, defineComponent, PropType } from '@vue/composition-api';
 import { AccountsState } from '@/ui/components/app/accountsState';
 import AccountCard from '@/ui/components/shared/log/AccountCard.vue';
-import { Levels } from './types';
-
-const levelToClass = {
-  [Levels.Error]: 'error-line',
-  [Levels.Warn]: 'warn-line',
-  [Levels.Info]: 'info-line'
-};
 
 export default defineComponent({
   components: { AccountCard },
@@ -42,10 +46,15 @@ export default defineComponent({
       type: Object as PropType<AccountsState>,
       required: true
     },
+    chromePercentage: {
+      type: Number,
+      required: false,
+      default: 0
+    }
   },
-  setup() {
-    const getClass = (level: Levels) => levelToClass[level];
-    return { getClass };
+  setup(props) {
+    const downloadMessage = computed(() => (props.chromePercentage >= 100 ? 'Chrome Downloaded' : 'Downloading Chrome'));
+    return { downloadMessage };
   }
 });
 </script>
@@ -67,15 +76,4 @@ export default defineComponent({
   border-bottom: solid 1px #80808038;
 }
 
-.logs-container .error-line {
-  color: rgb(240, 0, 0);
-}
-
-.logs-container .warn-line {
-  color: rgb(225, 125, 50);
-}
-
-.logs-container .info-line {
-  color: rgb(0, 125, 60);
-}
 </style>
