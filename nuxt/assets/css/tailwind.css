@@ -1,8 +1,0 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
-@import "./qa.css";
-
-* {
-  direction: rtl;
-}
