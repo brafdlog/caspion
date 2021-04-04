@@ -1,18 +1,19 @@
 version: 2
 updates:
-- package-ecosystem: npm
-  directory: "/"
-  schedule:
-    interval: weekly
-  ignore:
-  - dependency-name: electron
-  - dependency-name: spectron
-  - dependency-name: typescript
-  - dependency-name: sass-loader
-    versions: ["11.x"]
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    ignore:
+      - dependency-name: "electron"
+      - dependency-name: "spectron"
+      - dependency-name: "typescript"
+      - dependency-name: "sass-loader"
+        versions: ["11.x"]
+      - dependency-name: "@types/node"
 
-- package-ecosystem: npm
-  directory: "/nuxt/"
-  open-pull-requests-limit: 0
-  schedule:
-    interval: "weekly"
+  - package-ecosystem: npm
+    directory: "/nuxt"
+    open-pull-requests-limit: 0
+    schedule:
+      interval: "weekly"
