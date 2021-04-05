@@ -11,9 +11,3 @@ updates:
       - dependency-name: "sass-loader"
         versions: ["11.x"]
       - dependency-name: "@types/node"
-
-  - package-ecosystem: npm
-    directory: "/nuxt"
-    open-pull-requests-limit: 0
-    schedule:
-      interval: "weekly"
