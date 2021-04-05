@@ -5020,10 +5020,10 @@ csv-parse@^4.14.1:
   resolved "https://registry.yarnpkg.com/csv-parse/-/csv-parse-4.14.2.tgz#c1329cff95a99b8773a92c4e62f8bff114b34726"
   integrity sha512-YE2xlTKtM035/94llhgsp9qFQxGi47EkQJ1pZ+mLT/98GpIsbjkMGAb7Rmu9hNxVfYFOLf10hP+rPVqnoccLgw==
 
-csv-stringify@^5.5.3:
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/csv-stringify/-/csv-stringify-5.6.0.tgz#3dcde51da7561f5052220f1847bfd4db7618fcfa"
-  integrity sha512-E0LNLevBrwaJ1WKsl4HUPOmK96WyhizTfY79mJgfr2dsIb6zyJd3B9+lToO7gSkTaKi8CIo0Pd0vDGfa0whozg==
+csv-stringify@^5.6.2:
+  version "5.6.2"
+  resolved "https://registry.yarnpkg.com/csv-stringify/-/csv-stringify-5.6.2.tgz#e653783e2189c4c797fbb12abf7f4943c787caa9"
+  integrity sha512-n3rIVbX6ylm1YsX2NEug9IaPV8xRnT+9/NNZbrA/bcHgOSSeqtWla6XnI/xmyu57wIw+ASCAoX1oM6EZtqJV0A==
 
 cyclist@^1.0.1:
   version "1.0.1"
