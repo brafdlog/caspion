@@ -1,12 +1,13 @@
 version: 2
 updates:
-- package-ecosystem: npm
-  directory: "/"
-  schedule:
-    interval: weekly
-  ignore:
-  - dependency-name: electron
-  - dependency-name: spectron
-  - dependency-name: typescript
-  - dependency-name: sass-loader
-    versions: ["11.x"]
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    ignore:
+      - dependency-name: "electron"
+      - dependency-name: "spectron"
+      - dependency-name: "typescript"
+      - dependency-name: "sass-loader"
+        versions: ["11.x"]
+      - dependency-name: "@types/node"
