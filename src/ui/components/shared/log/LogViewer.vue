@@ -7,7 +7,7 @@
           cols="12"
         >
           <v-progress-linear
-            v-model="chromePercentage"
+            :value="chromePercentage"
             height="25"
           >
             <strong>{{ downloadMessage }}</strong>
