@@ -18,7 +18,7 @@
             <v-list-item-subtitle v-text="latestEventMessage" />
           </v-list-item-content>
           <v-dialog width="500px">
-            <template v-slot:activator="{ on, attrs }">
+            <template #activator="{ on, attrs }">
               <v-list-item-icon>
                 <v-icon
                   v-if="displayTheShowLogsIcon"

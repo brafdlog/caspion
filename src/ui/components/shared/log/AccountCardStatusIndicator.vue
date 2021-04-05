@@ -16,7 +16,7 @@
     v-else-if="accountStatus === accountStatusEnum.ERROR"
     width="500"
   >
-    <template v-slot:activator="{ on, attrs }">
+    <template #activator="{ on, attrs }">
       <v-icon
         v-bind="attrs"
         color="red"
@@ -44,17 +44,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent, PropType } from '@vue/composition-api';
 import { AccountStatus } from '@/backend/eventEmitters/EventEmitter';
 
 export default defineComponent({
   props: {
     accountStatus: {
-      required: true
+      required: true,
+      type: Object as PropType<AccountStatus>
     },
     errorMessage: {
       type: String,
-      required: false
+      required: false,
+      default: 'Unknown Error'
     }
   },
   setup() {

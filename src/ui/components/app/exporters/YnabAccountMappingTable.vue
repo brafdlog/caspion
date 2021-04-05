@@ -1,6 +1,6 @@
 <template>
   <v-simple-table dense>
-    <template v-slot:default>
+    <template #default>
       <thead>
         <tr>
           <th>Account number</th>
