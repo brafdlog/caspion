@@ -8325,10 +8325,10 @@ isobject@^3.0.0, isobject@^3.0.1:
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
   integrity sha1-TkMekrEalzFjaqH5yNHMvP2reN8=
 
-israeli-bank-scrapers-core@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/israeli-bank-scrapers-core/-/israeli-bank-scrapers-core-1.0.1.tgz#9398ac242326dfc61430fd2a1105105fd9a03d50"
-  integrity sha512-bIgOvl8mkBDUffKvJI7UQ9ow4uvnaX7uO06rz35iEYpYq+2t5bTzZnbzYa/hwtVV2pkS7YUsB4wYxq6To5G2zA==
+israeli-bank-scrapers-core@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/israeli-bank-scrapers-core/-/israeli-bank-scrapers-core-1.0.3.tgz#ca8803b5cd5c046e35da5fe413d4955f4f56b796"
+  integrity sha512-9/Yx1e133zBNDghlwdoQWhuEVS1Po2NCa4pFoiAjTJ3jccu6K5fGppHLsBC90vccmhP81GEDJA/qa8aaTjYPDA==
   dependencies:
     build-url "^2.0.0"
     core-js "^3.1.4"
@@ -14393,7 +14393,7 @@ vue-cli-plugin-electron-builder@^2.0.0-rc.6:
     webpack-merge "^4.2.2"
     yargs "^15.3.1"
 
-vue-cli-plugin-vuetify@~2.3.1:
+vue-cli-plugin-vuetify@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/vue-cli-plugin-vuetify/-/vue-cli-plugin-vuetify-2.3.1.tgz#9e45a686902351320e876881d057eb69c646a22b"
   integrity sha512-96NLmCE12FalyWSxbfFerbOKSwuPq5b4zYRei5BRLbdCBq+YgmCMv8zgZl8Rx/kR/91T4i8XZDCNgfQ78mpQ3A==
