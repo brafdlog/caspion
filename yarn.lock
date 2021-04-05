@@ -2390,10 +2390,10 @@
   optionalDependencies:
     prettier "^1.18.2"
 
-"@vue/composition-api@^1.0.0-rc.5":
-  version "1.0.0-rc.5"
-  resolved "https://registry.yarnpkg.com/@vue/composition-api/-/composition-api-1.0.0-rc.5.tgz#9b857743dd2692073b6df90fa2cfb9a75a1bb2f6"
-  integrity sha512-sFBUDZxwi5YOQqH//VSGenO6WH0JuW94+CWo1eUsGSTRue8POfwD4oeduVqi/c6QcwXg2tJL/m6aOD2t/IR6zg==
+"@vue/composition-api@^1.0.0-rc.6":
+  version "1.0.0-rc.6"
+  resolved "https://registry.yarnpkg.com/@vue/composition-api/-/composition-api-1.0.0-rc.6.tgz#21ce2c169dd4ff17a5bf60c6e98863dff1a36540"
+  integrity sha512-M3jsyDBozQFqAPYdM4GCoVZEljIHsTVdcq5fZx9axpKz9ChIlQngxNf1ziLVaJvWX7T+MO1rVTEx6Xjgg/gUcQ==
   dependencies:
     tslib "^2.1.0"
 
@@ -5020,10 +5020,10 @@ csv-parse@^4.14.1:
   resolved "https://registry.yarnpkg.com/csv-parse/-/csv-parse-4.14.2.tgz#c1329cff95a99b8773a92c4e62f8bff114b34726"
   integrity sha512-YE2xlTKtM035/94llhgsp9qFQxGi47EkQJ1pZ+mLT/98GpIsbjkMGAb7Rmu9hNxVfYFOLf10hP+rPVqnoccLgw==
 
-csv-stringify@^5.5.3:
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/csv-stringify/-/csv-stringify-5.6.0.tgz#3dcde51da7561f5052220f1847bfd4db7618fcfa"
-  integrity sha512-E0LNLevBrwaJ1WKsl4HUPOmK96WyhizTfY79mJgfr2dsIb6zyJd3B9+lToO7gSkTaKi8CIo0Pd0vDGfa0whozg==
+csv-stringify@^5.6.2:
+  version "5.6.2"
+  resolved "https://registry.yarnpkg.com/csv-stringify/-/csv-stringify-5.6.2.tgz#e653783e2189c4c797fbb12abf7f4943c787caa9"
+  integrity sha512-n3rIVbX6ylm1YsX2NEug9IaPV8xRnT+9/NNZbrA/bcHgOSSeqtWla6XnI/xmyu57wIw+ASCAoX1oM6EZtqJV0A==
 
 cyclist@^1.0.1:
   version "1.0.1"
@@ -6074,10 +6074,10 @@ eslint-plugin-standard@^5.0.0:
   resolved "https://registry.yarnpkg.com/eslint-plugin-standard/-/eslint-plugin-standard-5.0.0.tgz#c43f6925d669f177db46f095ea30be95476b1ee4"
   integrity sha512-eSIXPc9wBM4BrniMzJRBm2uoVuXz2EPa+NXPk2+itrVt+r5SbKFERx/IgrK/HmfjddyKVz2f+j+7gBRvu19xLg==
 
-eslint-plugin-vue@^7.7.0:
-  version "7.7.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-vue/-/eslint-plugin-vue-7.7.0.tgz#a90df4595e670821bf243bd2750ededdb74948b8"
-  integrity sha512-mYz4bpLGv5jx6YG/GvKkqbGSfV7uma2u1P3mLA41Q5vQl8W1MeuTneB8tfsLq6xxxesFubcrOC0BZBJ5R+eaCQ==
+eslint-plugin-vue@^7.8.0:
+  version "7.8.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-vue/-/eslint-plugin-vue-7.8.0.tgz#cb0e85d65b65fa8d15e783fbb03c049d2c4cfdae"
+  integrity sha512-OGrnPz+PuYL2HmVyBHxm4mRjxW2kfFCQE6Hw9G6qOHs/Pcu0srOlCCW0FMa8SLzIEqxl8WuKoBSPcMnrjUG2vw==
   dependencies:
     eslint-utils "^2.1.0"
     natural-compare "^1.4.0"
@@ -14393,10 +14393,10 @@ vue-cli-plugin-electron-builder@^2.0.0-rc.6:
     webpack-merge "^4.2.2"
     yargs "^15.3.1"
 
-vue-cli-plugin-vuetify@~2.0.5:
-  version "2.0.9"
-  resolved "https://registry.yarnpkg.com/vue-cli-plugin-vuetify/-/vue-cli-plugin-vuetify-2.0.9.tgz#982991aec28e79d1f0c2eb8f6e3d62e042087ee8"
-  integrity sha512-J4fzpz27OmCCAA3CI56ulYsUrZ859dQAh58Z9XZilY03kd/M+svLlPkK45cBIrGGfjSqQ40oyWezA3NiPBEG8g==
+vue-cli-plugin-vuetify@~2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/vue-cli-plugin-vuetify/-/vue-cli-plugin-vuetify-2.3.1.tgz#9e45a686902351320e876881d057eb69c646a22b"
+  integrity sha512-96NLmCE12FalyWSxbfFerbOKSwuPq5b4zYRei5BRLbdCBq+YgmCMv8zgZl8Rx/kR/91T4i8XZDCNgfQ78mpQ3A==
   dependencies:
     null-loader "^3.0.0"
     semver "^7.1.2"
