@@ -19,12 +19,15 @@
     <v-row v-if="showAccountCards">
       <v-col cols="12">
         <div>
-          <log-viewer :accounts-state="accountsState" />
+          <log-viewer
+            :accounts-state="accountsState"
+            :chrome-percentage="downloadingChrome"
+          />
         </div>
       </v-col>
     </v-row>
     <v-row
-      v-else
+      v-if="!inProgress"
       align="end"
     >
       <v-col cols="12">
@@ -54,7 +57,7 @@ import LogViewer from '@/ui/components/shared/log/LogViewer.vue';
 import {
   computed, defineComponent, ref, Ref, UnwrapRef
 } from '@vue/composition-api';
-import { scrapeAndUpdateOutputVendors, BudgetTrackingEventEmitter } from '@/backend';
+import { scrapeAndUpdateOutputVendors, Events } from '@/backend';
 import { AccountsState, handleEvent } from '@/ui/components/app/accountsState';
 import store from '@/ui/store';
 import ConfigEditor from '@/ui/components/app/ConfigEditor.vue';
@@ -65,13 +68,13 @@ const statusToColor = {
   NOT_STARTED: null,
   IN_PROGRESS: null,
   SUCCESS: 'green',
-  FAILURE: 'red'
+  FAILURE: 'red',
 };
 
 export default defineComponent({
   components: {
     ConfigEditor,
-    LogViewer
+    LogViewer,
   },
   setup() {
     const config = store.getters.Config;
@@ -81,10 +84,12 @@ export default defineComponent({
     const btnColor = computed(() => statusToColor[scrapingStatus.value]);
     const showAccountCards = computed(() => scrapingStatus.value !== 'NOT_STARTED');
     const enableRun = computed(() => config.getActiveImporters.length && config.getActiveExporters.length);
+    const downloadingChrome = ref(0);
 
     const accountsState = ref(new AccountsState(config.getActiveImporters, config.getActiveExporters));
 
-    const eventEmitter = new BudgetTrackingEventEmitter();
+    const eventEmitter = new Events.BudgetTrackingEventEmitter();
+    eventEmitter.on(Events.EventNames.DOWNLOAD_CHROME, ({ percent }: Events.DownalodChromeEvent) => (downloadingChrome.value = percent));
 
     initEventHandlers(eventEmitter, accountsState);
 
@@ -94,12 +99,13 @@ export default defineComponent({
       accountsState.value.setPendingStatus();
       scrapingStatus.value = 'IN_PROGRESS';
       scrapeAndUpdateOutputVendors(store.getters.Config.getState, eventEmitter)
-        .then(() => scrapingStatus.value = 'SUCCESS')
+        .then(() => (scrapingStatus.value = 'SUCCESS'))
         .catch((e) => {
           accountsState.value.clear();
           generalError.value = e.message;
-          return scrapingStatus.value = 'FAILURE';
-        });
+          scrapingStatus.value = 'FAILURE';
+        })
+        .finally(() => (downloadingChrome.value = 0));
     };
 
     return {
@@ -109,12 +115,13 @@ export default defineComponent({
       accountsState,
       showAccountCards,
       generalError,
-      enableRun
+      enableRun,
+      downloadingChrome,
     };
   },
 });
 
-function initEventHandlers(eventEmitter: BudgetTrackingEventEmitter, accountsState: Ref<UnwrapRef<AccountsState>>) {
+function initEventHandlers(eventEmitter: Events.BudgetTrackingEventEmitter, accountsState: Ref<UnwrapRef<AccountsState>>) {
   eventEmitter.onAny((eventName, eventData) => {
     const message = eventData?.message || eventName;
     const logLevel: Levels = eventData?.error ? 'error' : 'info';

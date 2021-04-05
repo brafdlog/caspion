@@ -1,8 +1,8 @@
 // eslint-disable-next-line max-classes-per-file
-import { BudgetTrackingEvent } from '@/backend';
+import { Events } from '@/backend';
+import { AccountStatus, AccountType } from '@/backend/eventEmitters/EventEmitter';
 import { Levels } from '@/logging/logger';
 import { UnwrapRef } from '@vue/composition-api';
-import { AccountStatus, AccountType } from '@/backend/eventEmitters/EventEmitter';
 
 export class AccountState {
   id: string;
@@ -11,7 +11,7 @@ export class AccountState {
 
   status: AccountStatus;
 
-  events: BudgetTrackingEvent[];
+  events: Events.BudgetTrackingEvent[];
 
   constructor({ id, name }) {
     this.id = id;
@@ -55,7 +55,7 @@ export class AccountsState {
   }
 }
 
-export function handleEvent(event: BudgetTrackingEvent & { level: Levels }, accountsState: UnwrapRef<AccountsState>) {
+export function handleEvent(event: Events.BudgetTrackingEvent & { level: Levels }, accountsState: UnwrapRef<AccountsState>) {
   let accountState: AccountState | undefined;
   if (event.accountType === AccountType.IMPORTER) {
     accountState = accountsState.importers.find(({ id }) => id === event.vendorId);
