@@ -112,8 +112,7 @@ function getYnabCategoryIdFromCategoryName(categoryName?: string) {
   }
   const categoryToReturn = categoriesMap.get(categoryName);
   if (!categoryToReturn) {
-    const errorMessage = `No category for name ${categoryName}`;
-    throw new Error(errorMessage);
+    return null;
   }
   return categoryToReturn && categoryToReturn.id;
 }
