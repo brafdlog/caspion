@@ -60,6 +60,8 @@
             </v-row>
           </v-container>
           <small>*indicates required field</small>
+          <br>
+          <small>You can find the logs here: {{ logsDir }}</small>
         </v-form>
       </v-card-text>
       <v-card-actions>
@@ -95,6 +97,8 @@ import { shell } from 'electron';
 import Sentry from '@/logging/sentry';
 import LogSheet from '@/ui/components/shared/LogSheet';
 import os from 'os';
+import { getLastLines, getLogsFolder } from '@/logging/logger';
+import { defineComponent } from '@vue/composition-api';
 import { repository } from '../../../../package.json';
 
 const createGithubIssueLink = (title, details, log) => {
@@ -130,7 +134,7 @@ const defaultFormData = {
   attachLogs: true,
 };
 
-export default {
+export default defineComponent({
   name: 'ReportProblemDialog',
   components: { LogSheet },
   props: {
@@ -146,6 +150,7 @@ export default {
       validateEmail: false,
       formData: { ...defaultFormData },
       raw: null,
+      logsDir: getLogsFolder()
     };
   },
   computed: {
@@ -193,12 +198,12 @@ export default {
       }
     },
     resetForm() {
-      this.raw = this.$logger.getLastLines(10);
+      this.raw = getLastLines(10);
       this.formData = { ...defaultFormData };
       this.validateEmail = false;
     },
   },
-};
+});
 </script>
 
 <style>

@@ -18,9 +18,11 @@
 </template>
 
 <script>
+import { defineComponent } from '@vue/composition-api';
+import { getLastLines } from '@/logging/logger';
 import LogLines from './LogLines';
 
-export default {
+export default defineComponent({
   name: 'LogSheet',
   components: {
     LogLines
@@ -44,10 +46,10 @@ export default {
     textToShow() {
       if (this.raw) return this.raw;
 
-      return this.$logger.getLastLines(10);
+      return getLastLines(10);
     },
   },
-};
+});
 </script>
 
 <style>

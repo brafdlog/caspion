@@ -2,7 +2,7 @@ import { app, BrowserWindow } from 'electron';
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
-import CreateLogger from './logging/logger';
+import logger from './logging/logger';
 import Sentry from './logging/sentry';
 // import './store';
 
@@ -13,9 +13,6 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow: BrowserWindow | null;
-
-global.logger = CreateLogger(app);
-const { logger } = global;
 
 function createWindow() {
   // Create the browser window.

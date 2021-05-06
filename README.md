@@ -31,6 +31,13 @@ The first time you run the app, you will need to set up the accounts you want to
 Now you can set up the exporters - where the data will be sent to. The CSV exporter is enabled by default.
 If you want to export to YNAB, see instructions at the end of the README.
 
+### Report a problem
+
+We are still in beta, and you may find errors.
+Please use the **REPORT A PROBLEM** button in the app to report to us.
+
+Use this button to find the **logs folder** as well.
+
 ## Running in a development environment
 
 ### Prerequisites

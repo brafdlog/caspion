@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { getConfig } from '@/backend/configManager/configManager';
-import { configFilePath } from '@/backend/consts';
+import { configFilePath } from '@/app-globals';
 import { getYnabAccountDetails } from '@/backend/export/outputVendors/ynab/ynab';
 import { getFinancialAccountNumbers } from '@/backend/import/importTransactions';
 

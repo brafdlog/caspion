@@ -2,7 +2,7 @@ import { app, remote } from 'electron';
 import { mkdirSync } from 'fs';
 import path from 'path';
 
-const App = app || remote.app;
+export const App = app || remote.app;
 
 if (process.env.NODE_ENV !== 'production') {
   const localUserData = path.resolve('userData');

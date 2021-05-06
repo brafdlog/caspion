@@ -61,8 +61,8 @@ import { scrapeAndUpdateOutputVendors, Events } from '@/backend';
 import { AccountsState, handleEvent } from '@/ui/components/app/accountsState';
 import store from '@/ui/store';
 import ConfigEditor from '@/ui/components/app/ConfigEditor.vue';
-import { initAnalyticsEventHandling } from '@/analytics';
-import { Levels } from '../shared/log/types';
+import { initAnalyticsEventHandling } from '@/logging/analytics';
+import logger, { Levels } from '@/logging/logger';
 
 const statusToColor = {
   NOT_STARTED: null,
@@ -124,7 +124,8 @@ export default defineComponent({
 function initEventHandlers(eventEmitter: Events.BudgetTrackingEventEmitter, accountsState: Ref<UnwrapRef<AccountsState>>) {
   eventEmitter.onAny((eventName, eventData) => {
     const message = eventData?.message || eventName;
-    const logLevel = eventData?.error ? Levels.Error : Levels.Info;
+    const logLevel: Levels = eventData?.error ? 'error' : 'info';
+    logger[logLevel](message);
     return handleEvent({ ...eventData, message, level: logLevel }, accountsState.value);
   });
   initAnalyticsEventHandling(eventEmitter);

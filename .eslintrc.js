@@ -66,7 +66,12 @@ module.exports = {
     'arrow-body-style': 'off',
     'object-curly-newline': 'warn',
     'semi': productionError,
-    'no-return-assign': 'off'
+    'no-return-assign': 'off',
+    'no-restricted-imports': ['error', {
+      name: 'electron-log',
+      importNames: ['default'],
+      message: 'You should import from logging/logger instead'
+    }]
   },
 
   overrides: [

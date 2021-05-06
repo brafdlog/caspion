@@ -1,6 +1,6 @@
+import { userDataPath } from '@/app-globals';
 import { EnrichedTransaction } from '@/backend/commonTypes';
 import * as configManager from '@/backend/configManager/configManager';
-import { userDataPath } from '@/backend/consts';
 import * as bankScraper from '@/backend/import/bankScraper';
 import { ScaperScrapingResult, Transaction } from '@/backend/import/bankScraper';
 import * as categoryCalculation from '@/backend/import/categoryCalculationScript';
