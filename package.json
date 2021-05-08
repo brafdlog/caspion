@@ -42,7 +42,7 @@
     "googleapis": "^59.0.0",
     "israeli-bank-scrapers-core": "^1.0.3",
     "keytar": "^7.4.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "moment": "^2.24.0",
     "node-machine-id": "^1.1.12",
     "puppeteer-core": "^5.5.0",
