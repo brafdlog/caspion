@@ -33,6 +33,6 @@ jobs:
       - name: yarn
         run: yarn
       - name: deploy
-        run: yarn deploy -r "https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}/hiuvi.git" -u "github-actions-bot <support+actions@github.com>" -m "$GITHUB_SHA"
+        run: yarn deploy -r "https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" -u "github-actions-bot <support+actions@github.com>" -m "$GITHUB_SHA"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -10,6 +10,7 @@ const routerBase = process.env.GITHUB_ACTIONS ? {
 
 export default {
   ...routerBase,
+  target: 'static',
   /*
    ** Headers of the page
    */
