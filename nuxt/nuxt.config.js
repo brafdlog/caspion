@@ -9,13 +9,12 @@ const routerBase = process.env.GITHUB_ACTIONS ? {
 } : {};
 
 export default {
-  mode: 'universal',
   ...routerBase,
   /*
    ** Headers of the page
    */
   head: {
-    title: 'עוש"י',
+    title: 'חיובי',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },

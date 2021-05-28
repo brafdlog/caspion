@@ -2,7 +2,7 @@ const faq = require('./content/FAQ');
 
 const globals = {
   FAQ_STRINGS_LIST: faq,
-  GITHUB_REPO: 'baruchiro/israeli-bank-scrapers-desktop',
+  GITHUB_REPO: 'brafdlog/hiuvi',
 };
 
 const stringified = Object.keys(globals).reduce((acc, globalName) => {

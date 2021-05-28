@@ -7,8 +7,7 @@ exports[`HeroContent renders properly 1`] = `
       <p class=\\"uppercase tracking-loose w-full\\">
         קשה לך לעקוב אחרי ההוצאות?
       </p>
-      <h1 class=\\"my-4 text-5xl font-bold leading-tight\\">
-        עו\\"שי מרכז למקום אחד את כל פירוטי ההוצאות שלך
+      <h1 class=\\"my-4 text-5xl font-bold leading-tight\\"><i>חיובי</i> מרכז למקום אחד את כל פירוטי ההוצאות שלך
       </h1>
       <p class=\\"leading-normal text-2xl mb-8\\">
         בצורה מאובטחת, ללא צד שלישי ובפיקוח הקהילה

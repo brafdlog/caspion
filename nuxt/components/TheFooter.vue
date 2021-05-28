@@ -54,8 +54,8 @@ const links = {
   },
   מפתחים: {
     GitHub: repo,
+    'יהונתן גולדפרב': 'https://github.com/brafdlog',
     'ברוך אודם': 'https://github.com/baruchiro',
-    'אריאל גורדון': 'https://github.com/Arielgordon123',
   },
 };
 

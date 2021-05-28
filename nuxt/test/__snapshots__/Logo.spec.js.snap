@@ -2,6 +2,6 @@
 
 exports[`Logo renders properly 1`] = `
 "<a href=\\"#\\" class=\\"no-underline hover:no-underline font-bold text-2xl lg:text-4xl text-white\\"><img src=\\"../../public/favicon.ico\\" class=\\"h-8 fill-current inline\\">
-  &nbsp;עו\\"שי
+  &nbsp;חיובי
 </a>"
 `;
