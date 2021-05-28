@@ -9,7 +9,7 @@ import * as googleSheets from './googleSheetsInternalAPI';
 import { appendToSpreadsheet } from './googleSheetsInternalAPI';
 
 const GOOGLE_SHEETS_DATE_FORMAT = 'DD/MM/YYYY';
-const DEFAULT_SHEET_NAME = '_budget-tracking';
+const DEFAULT_SHEET_NAME = '_hiuvi';
 const COLUMN_HEADERS = ['תאריך', 'סכום', 'תיאור', 'תיאור נוסף', 'קטגוריה', 'מספר חשבון', 'hash - לא לגעת'];
 
 const createTransactionsInGoogleSheets: ExportTransactionsFunction = async (

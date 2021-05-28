@@ -6,8 +6,8 @@
   "license": "MIT",
   "main": "background.js",
   "private": true,
-  "repository": "https://github.com/brafdlog/budget-tracking",
-  "homepage": "https://github.com/brafdlog/budget-tracking#README.md",
+  "repository": "https://github.com/brafdlog/hiuvi",
+  "homepage": "https://github.com/brafdlog/hiuvi#README.md",
   "scripts": {
     "serve": "vue-cli-service electron:serve",
     "serve:docker": "yarn serve --no-sandbox",

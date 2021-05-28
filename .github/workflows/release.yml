@@ -32,7 +32,7 @@ jobs:
         script: |
           const releases = await github.repos.listReleases({
             owner: 'brafdlog',
-            repo: 'budget-tracking'
+            repo: 'hiuvi'
           })
           // console.log(releases)
           const published_release_tags = releases.data.filter(release => !release.draft).map(release => release.tag_name)
