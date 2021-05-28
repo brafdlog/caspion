@@ -8,14 +8,14 @@
       <teaser-column
         :rows="3"
       >
-        <template v-slot:overline>
+        <template #overline>
           עקרון #1
         </template>
-        <template v-slot:headline>
+        <template #headline>
           ריצה מקומית
         </template>
         <template
-          v-slot:content
+          #content
         >
           האפליקצייה רצה מקומית אצלך במחשב. הסיסמאות לא נשלחות לאף אחד, ולא מתבצעת שום בקשה לשירות חיצוני כלשהו כדי לקבל את המידע.
         </template>
@@ -25,14 +25,14 @@
         action="GitHub"
         @clicked="openGithub"
       >
-        <template v-slot:overline>
+        <template #overline>
           עקרון #2
         </template>
-        <template v-slot:headline>
+        <template #headline>
           קוד פתוח
         </template>
         <template
-          v-slot:content
+          #content
         >
           ניתן ממש לראות את הקוד בו כתובה האפליקצייה, ובמקרה הצורך גם להריץ אותה ישירות מהקוד, כדי להיות בטוחים באמינות השירות.
         </template>

@@ -11,7 +11,7 @@ const factory = () => shallowMount(TeaserColumn, {
 describe('TeaserColumn', () => {
   it('is a Vue instance', () => {
     const wrapper = factory();
-    expect(wrapper.isVueInstance()).toBeTruthy();
+    expect(wrapper.vm).toBeTruthy();
   });
 
   it('renders properly', () => {
