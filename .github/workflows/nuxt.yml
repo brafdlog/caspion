@@ -2,6 +2,9 @@ name: Test and Deploy Github Pages with Nuxt
 
 on:
   pull_request:
+    paths:
+      - 'nuxt/**'
+      - '.github/workflows/*nuxt*.yml'
   push:
     branches: master
     paths:
