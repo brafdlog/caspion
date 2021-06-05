@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
@@ -79,6 +79,14 @@ app.on('ready', async () => {
     }
   }
   createWindow();
+});
+
+// open folder dir picker window and return string of folder path
+ipcMain.handle('choose-dir', async () => {
+  const dir = await dialog.showOpenDialog(mainWindow, {
+    properties: ['openDirectory'],
+  });
+  return dir.filePaths[0];
 });
 
 // Exit cleanly on request from parent process in development mode.

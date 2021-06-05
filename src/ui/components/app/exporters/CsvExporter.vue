@@ -14,6 +14,8 @@
       label="CSV file"
       outlined
       :rules="rules"
+      append-icon="mdi-folder-open"
+      @click:append="openNativeDialog"
       @change="changed = true"
     />
     <v-btn
@@ -27,6 +29,7 @@
 </template>
 
 <script lang="ts">
+import { ipcRenderer } from 'electron';
 import { setupExporterConfigForm } from '@/ui/components/app/exporters/exportersCommon';
 import { OutputVendorName } from '@/backend/commonTypes';
 import { legalPath, required } from '@/ui/components/shared/formValidations';
@@ -43,6 +46,19 @@ export default defineComponent({
         legalPath
       ]
     };
+  },
+  data(data) {
+    return {
+      filePath: data.exporter.options.filePath,
+    };
+  },
+  methods: {
+    async openNativeDialog() {
+      const filePath = await ipcRenderer.invoke('choose-dir');
+
+      this.filePath = filePath;
+      this.$emit('change', filePath);
+    }
   }
 });
 
