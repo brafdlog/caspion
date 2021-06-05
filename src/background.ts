@@ -82,11 +82,15 @@ app.on('ready', async () => {
 });
 
 // open folder dir picker window and return string of folder path
-ipcMain.handle('choose-dir', async () => {
-  const dir = await dialog.showOpenDialog(mainWindow, {
-    properties: ['openDirectory'],
-  });
-  return dir.filePaths[0];
+ipcMain.handle('choose-dir', async (): Promise<string| null> => {
+  if (mainWindow !== null) {
+    const dir = await dialog.showOpenDialog(mainWindow, {
+      properties: ['openDirectory'],
+      buttonLabel: 'Select'
+    });
+    return dir.filePaths[0];
+  }
+  return null;
 });
 
 // Exit cleanly on request from parent process in development mode.
