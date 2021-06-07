@@ -31,4 +31,9 @@ export const mergeTransactions = (a: EnrichedTransaction[], b: EnrichedTransacti
   return Object.values(mergedObj);
 };
 
+export const filterExistedHashes = (transactions: EnrichedTransaction[], existingHashes: string[]) => {
+  const unifiedExistingHashs = existingHashes.map(unifyHash);
+  return transactions.filter(({ hash }) => !unifiedExistingHashs.includes(unifyHash(hash)));
+};
+
 export const sortByDate = (transactions: EnrichedTransaction[]) => transactions.sort(compareObjectsByDate);

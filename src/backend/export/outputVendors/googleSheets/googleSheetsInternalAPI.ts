@@ -31,11 +31,11 @@ export async function getExistingHashes(spreadsheetId: string, sheetName: string
     spreadsheetId,
     range: `${sheetName}!${hashColumn}:${hashColumn}`
   });
-  const existingHashes = _.flatten(result.data.values);
+  const existingHashes: string[] = _.flatten(result.data.values);
   return existingHashes;
 }
 
-export type Spreadsheet = Pick<driveV3.Schema$File, 'id'| 'name'>
+export type Spreadsheet = Pick<driveV3.Schema$File, 'id' | 'name'>
 export const getAllSpreadsheets = async (auth: OAuth2Client) => {
   const response = await drive.files.list({
     q: 'mimeType="application/vnd.google-apps.spreadsheet"',
