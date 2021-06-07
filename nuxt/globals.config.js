@@ -4,7 +4,7 @@ const globals = {
   FAQ_STRINGS_LIST: faq,
   GITHUB_REPO: 'brafdlog/hiuvi',
   BASE_URL: 'https://brafdlog.github.io',
-  BASE_PATH: '/hiuvi/'
+  BASE_PATH: '/hiuvi/',
 };
 
 const stringified = Object.keys(globals).reduce((acc, globalName) => {
