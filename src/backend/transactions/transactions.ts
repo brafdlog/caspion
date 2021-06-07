@@ -5,7 +5,8 @@ import { compareObjectsByDate } from './dates';
 
 const unifyHash = (hash: string) => hash
   .replace(/`/g, "'")
-  .replace(/00\dZ/, '000Z');
+  .replace(/00\dZ/, '000Z')
+  .replace(/[\u0000-\u001F\u007F-\u009F\u200E]/g, ''); // eslint-disable-line no-control-regex
 
 const transactionArrayToUnifyHash = (transactions: EnrichedTransaction[]) => transactions.reduce((acc, enrichedTransaction) => {
   acc[unifyHash(enrichedTransaction.hash)] = enrichedTransaction;

@@ -20,7 +20,7 @@ Array [
     "accountNumber": "2222",
     "chargedAmount": -200,
     "date": "2020-03-27T21:00:00.000Z",
-    "description": "מי גבעתיים בע\`מ",
+    "description": "מי גבעתיים‎ בע'מ",
     "hash": "2020-03-27T21:00:00.000Z_-200_מי גבעתיים בע'מ_some memo_visaCal_2222",
     "installments": undefined,
     "memo": "some memo",

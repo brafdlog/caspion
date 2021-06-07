@@ -47,7 +47,8 @@ describe('Transactions', () => {
     [TRANSACTION_2, TRANSACTION_2_HASH],
     [{ ...TRANSACTION_1, processedDate: '2020-06-01T21:00:00.002Z' }, TRANSACTION_1_HASH],
     [{ ...TRANSACTION_1, date: '2020-03-24T22:00:00.002Z' }, TRANSACTION_1_HASH],
-    [{ ...TRANSACTION_2, description: 'מי גבעתיים בע`מ' }, TRANSACTION_2_HASH]
+    [{ ...TRANSACTION_2, description: 'מי גבעתיים בע`מ' }, TRANSACTION_2_HASH],
+    [{ ...TRANSACTION_2, description: "מי גבעתיים\u200E בע'מ" }, TRANSACTION_2_HASH]
   ])('Transaction hash', (transaction, expectedHash) => {
     expect(calculateTransactionHash(transaction, companyId, accountNumber)).toEqual(expectedHash);
   });
@@ -57,14 +58,13 @@ describe('Transactions', () => {
     const b = [
       { ...TRANSACTION_1, processedDate: '2020-06-01T21:00:00.002Z' },
       { ...TRANSACTION_1, date: '2020-03-24T22:00:00.002Z' },
-      { ...TRANSACTION_2, description: 'מי גבעתיים בע`מ' }
+      { ...TRANSACTION_2, description: 'מי גבעתיים בע`מ' },
+      { ...TRANSACTION_2, description: "מי גבעתיים\u200E בע'מ" }
     ].map(enrich);
 
-    const actualMerged = mergeTransactions(a, b);
+    const actualMerged: Transaction[] = mergeTransactions(a, b);
 
     expect(actualMerged.length).toBe(2);
     expect(actualMerged).toMatchSnapshot();
   });
-
-  // 2021-04-04T21:00:00.000Z_14931.01_צ`קמרקס בע\"מ-י_העברה מאת: צ'קמרקס בע 12-174-000434928 משכורת_leumi_‎678-132628_02‎
 });
