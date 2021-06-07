@@ -28,7 +28,6 @@
 </template>
 
 <script lang="ts">
-import { ipcRenderer } from 'electron';
 import { OutputVendorName } from '@/backend/commonTypes';
 import { legalPath, required } from '@/ui/components/shared/formValidations';
 import {
@@ -38,6 +37,7 @@ import store from '@/ui/store';
 import { VForm } from '@/types/vuetify';
 
 import { cloneDeep } from 'lodash';
+import { SelectDirHandler } from '@/handlers/select-dir';
 
 function createSetupConfigForm() {
   const vForm = ref<VForm>();
@@ -55,7 +55,7 @@ function createSetupConfigForm() {
   };
 
   const click = async () => {
-    const filePath = await ipcRenderer.invoke('choose-dir');
+    const filePath = await SelectDirHandler.invoke();
     if (filePath) {
       exporter.options.filePath = filePath;
       changed.value = true;

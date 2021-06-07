@@ -1,9 +1,10 @@
-import { app, BrowserWindow, dialog, ipcMain } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
 import logger from './logging/logger';
 import Sentry from './logging/sentry';
+import initializeHandlers from './handlers/initialize';
 // import './store';
 
 Sentry.initializeReporter();
@@ -21,7 +22,9 @@ function createWindow() {
     useContentSize: true,
     width: 1000,
     webPreferences: {
-      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION as unknown as boolean | undefined,
+      nodeIntegration: (process.env.ELECTRON_NODE_INTEGRATION as unknown) as
+        | boolean
+        | undefined,
     },
   });
 
@@ -38,6 +41,9 @@ function createWindow() {
     // Load the index.html when not in development
     loadURL('app://./index.html');
   }
+
+  initializeHandlers();
+
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
@@ -79,18 +85,6 @@ app.on('ready', async () => {
     }
   }
   createWindow();
-});
-
-// open folder dir picker window and return string of folder path
-ipcMain.handle('choose-dir', async (): Promise<string| null> => {
-  if (mainWindow !== null) {
-    const dir = await dialog.showOpenDialog(mainWindow, {
-      properties: ['openDirectory'],
-      buttonLabel: 'Select'
-    });
-    return dir.filePaths[0];
-  }
-  return null;
 });
 
 // Exit cleanly on request from parent process in development mode.
