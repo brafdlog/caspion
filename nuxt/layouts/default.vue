@@ -9,11 +9,24 @@
 <script>
 import TheHeader from '@/components/TheHeader';
 import TheFooter from '@/components/TheFooter';
+import meta from '@/mixins/meta';
+import screenshot from '~/assets/img/main-screenshot.png'; // eslint-disable-line
+
+const title = 'חיובי';
+const description = 'חיובי מרכז למקום אחד את כל פירוטי ההוצאות שלך';
 
 export default {
   components: {
     'the-header': TheHeader,
     'the-footer': TheFooter,
+  },
+  head: {
+    meta: meta(BASE_URL, {
+      path: BASE_PATH,
+      title,
+      description,
+      image: screenshot,
+    }),
   },
 };
 </script>

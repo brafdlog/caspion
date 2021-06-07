@@ -1,12 +1,15 @@
 import { DefinePlugin } from 'webpack';
-import { stringified } from './globals.config';
+import { stringified, globals } from './globals.config';
 
 // only add `router.base = '/<repository-name>/'` if `GITHUB_ACTIONS` is `true`
 const routerBase = process.env.GITHUB_ACTIONS ? {
   router: {
-    base: '/hiuvi/',
+    base: globals.BASE_PATH,
   },
 } : {};
+
+const title = 'חיובי';
+const description = 'חיובי מרכז למקום אחד את כל פירוטי ההוצאות שלך';
 
 export default {
   ...routerBase,
@@ -15,14 +18,14 @@ export default {
    ** Headers of the page
    */
   head: {
-    title: 'חיובי',
+    title,
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       {
         hid: 'description',
         name: 'description',
-        content: 'ניהול הוצאות',
+        content: description,
       },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
