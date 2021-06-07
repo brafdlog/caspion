@@ -7,7 +7,7 @@
     <!--Icon from: http://www.potlabicons.com/ -->
     <img
       class="h-8 fill-current inline"
-      src="../../public/favicon.ico"
+      src="../static/favicon.ico"
     >
     &nbsp;חיובי
   </a>

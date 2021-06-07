@@ -73,9 +73,10 @@ export default {
       config.module.rules.push({
         test: /\.icon?$/,
         loader: 'url-loader',
-        query: {
+        options: {
           limit: 1000, // 1kB
           name: 'img/[name].[hash:7].[ext]',
+          esModule: false,
         },
       });
     },
