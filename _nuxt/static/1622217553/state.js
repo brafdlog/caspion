@@ -1,1 +1,0 @@
-window.__NUXT__=(function(a){return {staticAssetsBase:"\u002Fisraeli-bank-scrapers-desktop\u002F_nuxt\u002Fstatic\u002F1622217553",layout:"default",error:a,serverRendered:true,routePath:"\u002F",config:{_app:{basePath:"\u002Fisraeli-bank-scrapers-desktop\u002F",assetsPath:"\u002Fisraeli-bank-scrapers-desktop\u002F_nuxt\u002F",cdnURL:a}}}}(null));
