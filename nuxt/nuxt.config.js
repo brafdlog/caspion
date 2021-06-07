@@ -4,7 +4,7 @@ import { stringified } from './globals.config';
 // only add `router.base = '/<repository-name>/'` if `GITHUB_ACTIONS` is `true`
 const routerBase = process.env.GITHUB_ACTIONS ? {
   router: {
-    base: '/israeli-bank-scrapers-desktop/',
+    base: '/hiuvi/',
   },
 } : {};
 
