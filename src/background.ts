@@ -4,7 +4,7 @@ import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
 import logger from './logging/logger';
 import Sentry from './logging/sentry';
-import initializeHandlers from './handlers/initialize';
+import initializeHandlers from './handlers';
 // import './store';
 
 Sentry.initializeReporter();
@@ -22,7 +22,9 @@ function createWindow() {
     useContentSize: true,
     width: 1000,
     webPreferences: {
-      nodeIntegration: (process.env.ELECTRON_NODE_INTEGRATION as unknown) as | boolean | undefined,
+      nodeIntegration: (process.env.ELECTRON_NODE_INTEGRATION as unknown) as
+        | boolean
+        | undefined,
     },
   });
 

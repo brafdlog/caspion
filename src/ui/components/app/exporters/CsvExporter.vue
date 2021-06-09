@@ -37,7 +37,7 @@ import store from '@/ui/store';
 import { VForm } from '@/types/vuetify';
 
 import { cloneDeep } from 'lodash';
-import { SelectDirHandler } from '@/handlers/select-dir';
+import { SelectDirHandler } from '@/handlers/';
 
 function createSetupConfigForm() {
   const vForm = ref<VForm>();
@@ -56,6 +56,8 @@ function createSetupConfigForm() {
 
   const click = async () => {
     const filePath = await SelectDirHandler.invoke();
+    console.log({ filePath });
+
     if (filePath) {
       exporter.options.filePath = filePath;
       changed.value = true;
