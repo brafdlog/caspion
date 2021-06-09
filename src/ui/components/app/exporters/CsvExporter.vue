@@ -15,7 +15,7 @@
       outlined
       :rules="rules"
       readonly
-      @click="click()"
+      @click="selectFolderDialog()"
     />
     <v-btn
       color="primary"
@@ -30,55 +30,28 @@
 <script lang="ts">
 import { OutputVendorName } from '@/backend/commonTypes';
 import { legalPath, required } from '@/ui/components/shared/formValidations';
-import {
-  defineComponent, computed, reactive, ref
-} from '@vue/composition-api';
-import store from '@/ui/store';
-import { VForm } from '@/types/vuetify';
-
-import { cloneDeep } from 'lodash';
+import { defineComponent } from '@vue/composition-api';
 import { SelectDirHandler } from '@/handlers/';
-
-function createSetupConfigForm() {
-  const vForm = ref<VForm>();
-
-  const exporter = reactive(cloneDeep(store.getters.Config.getExporter(OutputVendorName.CSV)));
-  const validated = ref(true);
-  const changed = ref(false);
-  const readyToSave = computed(() => validated.value && changed.value);
-
-  const submit = async () => {
-    if (vForm.value?.validate()) {
-      await store.dispatch.Config.updateExporter({ name: OutputVendorName.CSV, exporter });
-      changed.value = false;
-    }
-  };
-
-  const click = async () => {
-    const filePath = await SelectDirHandler.invoke();
-    console.log({ filePath });
-
-    if (filePath) {
-      exporter.options.filePath = filePath;
-      changed.value = true;
-    }
-  };
-
-  return {
-    validated, changed, readyToSave, submit, exporter, vForm, click
-  };
-}
+import { CsvConfig } from '@/backend/configManager/configManager';
+import { setupExporterConfigForm } from './exportersCommon';
 
 export default defineComponent({
   name: 'CsvExporter',
 
   setup() {
+    const dataToReturn = setupExporterConfigForm(OutputVendorName.CSV);
+
+    const selectFolderDialog = async () => {
+      const filePath = await SelectDirHandler.invoke();
+      if (filePath) {
+        (dataToReturn.exporter as CsvConfig).options.filePath = filePath;
+        dataToReturn.changed.value = true;
+      }
+    };
     return {
-      ...createSetupConfigForm(),
-      rules: [
-        required,
-        legalPath
-      ]
+      ...dataToReturn,
+      selectFolderDialog,
+      rules: [required, legalPath],
     };
   },
 });

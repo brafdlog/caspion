@@ -7,9 +7,7 @@ export default function initialize() {
 export const SelectDirHandler = {
   name: 'SELECT_DIRECTORY_FOLDER',
   async handler() {
-    const dir = await dialog.showSaveDialog({
-      buttonLabel: 'Select',
-    });
+    const dir = await dialog.showSaveDialog({});
 
     return dir.filePath;
   },

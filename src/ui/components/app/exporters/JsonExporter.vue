@@ -14,7 +14,8 @@
       label="JSON file"
       outlined
       :rules="rules"
-      @change="changed = true"
+      readonly
+      @click="selectFolderDialog()"
     />
     <v-btn
       color="primary"
@@ -31,11 +32,23 @@ import { setupExporterConfigForm } from '@/ui/components/app/exporters/exporters
 import { OutputVendorName } from '@/backend/commonTypes';
 import { legalPath, required } from '@/ui/components/shared/formValidations';
 import { defineComponent } from '@vue/composition-api';
+import { SelectDirHandler } from '@/handlers';
+import { CsvConfig } from '@/backend/configManager/configManager';
 
 export default defineComponent({
   setup() {
+    const dataToReturn = setupExporterConfigForm(OutputVendorName.JSON);
+
+    const selectFolderDialog = async () => {
+      const filePath = await SelectDirHandler.invoke();
+      if (filePath) {
+        (dataToReturn.exporter as CsvConfig).options.filePath = filePath;
+        dataToReturn.changed.value = true;
+      }
+    };
     return {
-      ...setupExporterConfigForm(OutputVendorName.JSON),
+      ...dataToReturn,
+      selectFolderDialog,
       rules: [
         required,
         legalPath
