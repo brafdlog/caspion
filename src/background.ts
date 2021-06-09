@@ -22,9 +22,7 @@ function createWindow() {
     useContentSize: true,
     width: 1000,
     webPreferences: {
-      nodeIntegration: (process.env.ELECTRON_NODE_INTEGRATION as unknown) as
-        | boolean
-        | undefined,
+      nodeIntegration: (process.env.ELECTRON_NODE_INTEGRATION as unknown) as | boolean | undefined,
     },
   });
 
@@ -42,6 +40,7 @@ function createWindow() {
     loadURL('app://./index.html');
   }
 
+  // initialize electron event handlers
   initializeHandlers();
 
   mainWindow.on('closed', () => {
