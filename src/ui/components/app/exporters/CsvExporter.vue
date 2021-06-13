@@ -14,7 +14,8 @@
       label="CSV file"
       outlined
       :rules="rules"
-      @change="changed = true"
+      readonly
+      @click="selectFolderDialog()"
     />
     <v-btn
       color="primary"
@@ -27,23 +28,32 @@
 </template>
 
 <script lang="ts">
-import { setupExporterConfigForm } from '@/ui/components/app/exporters/exportersCommon';
 import { OutputVendorName } from '@/backend/commonTypes';
 import { legalPath, required } from '@/ui/components/shared/formValidations';
 import { defineComponent } from '@vue/composition-api';
+import { SelectDirHandler } from '@/handlers/';
+import { CsvConfig } from '@/backend/configManager/configManager';
+import { setupExporterConfigForm } from './exportersCommon';
 
 export default defineComponent({
   name: 'CsvExporter',
 
   setup() {
-    return {
-      ...setupExporterConfigForm(OutputVendorName.CSV),
-      rules: [
-        required,
-        legalPath
-      ]
+    const dataToReturn = setupExporterConfigForm(OutputVendorName.CSV);
+
+    const selectFolderDialog = async () => {
+      const filePath = await SelectDirHandler.invoke();
+      if (filePath) {
+        (dataToReturn.exporter as CsvConfig).options.filePath = filePath;
+        dataToReturn.changed.value = true;
+      }
     };
-  }
+    return {
+      ...dataToReturn,
+      selectFolderDialog,
+      rules: [required, legalPath],
+    };
+  },
 });
 
 </script>
