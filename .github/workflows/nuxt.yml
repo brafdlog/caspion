@@ -22,7 +22,7 @@ jobs:
   
   
   deploy:
-    # if: github.ref == 'refs/heads/nuxt'
+    if: github.ref == 'refs/heads/master'
     needs: test
     defaults:
       run:
