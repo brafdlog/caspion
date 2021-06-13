@@ -2,8 +2,9 @@ import {
   EnrichedTransaction, ExportTransactionsFunction, OutputVendor, OutputVendorName
 } from '@/backend/commonTypes';
 import { EventNames, EventPublisher, ExporterEvent } from '@/backend/eventEmitters/EventEmitter';
-import moment from 'moment/moment';
+import { filterExistedHashes } from '@/backend/transactions/transactions';
 import { Auth } from 'googleapis';
+import moment from 'moment/moment';
 import { createClient } from './googleAuth';
 import * as googleSheets from './googleSheetsInternalAPI';
 import { appendToSpreadsheet } from './googleSheetsInternalAPI';
@@ -26,7 +27,7 @@ const createTransactionsInGoogleSheets: ExportTransactionsFunction = async (
   }
 
   const hashesAlreadyExistingInGoogleSheets = await googleSheets.getExistingHashes(spreadsheetId, DEFAULT_SHEET_NAME, oAuthClient);
-  const transactionsToCreate = transactions.filter((transaction) => !hashesAlreadyExistingInGoogleSheets.includes(transaction.hash));
+  const transactionsToCreate = filterExistedHashes(transactions, hashesAlreadyExistingInGoogleSheets);
 
   if (transactionsToCreate.length === 0) {
     await emitProgressEvent(eventPublisher, transactions, 'All transactions already exist in google sheets');
