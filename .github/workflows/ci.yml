@@ -2,6 +2,8 @@ name: Node CI
 
 on:
   pull_request:
+    paths-ignore:
+      - "nuxt/**"
 
 jobs:
   lint:

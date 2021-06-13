@@ -36,4 +36,6 @@ jobs:
       - name: yarn
         run: yarn
       - name: deploy
-        run: yarn deploy -r "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/baruchiro/israeli-bank-scrapers-desktop.git" -u "Baruch Odem <baruchiro@gmail.com>" -m "$GITHUB_SHA"
+        run: yarn deploy -r "https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" -u "github-actions-bot <support+actions@github.com>" -m "$GITHUB_SHA"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
