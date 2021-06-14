@@ -46,6 +46,7 @@
       app
       color="primary"
     >
+      <Updater />
       <v-spacer />
       <v-btn
         text
@@ -71,12 +72,13 @@ import Exporters from '@/ui/components/app/Exporters';
 import { trackPage } from '@/logging/analytics';
 import ReportProblemDialog from './app/ReportProblemDialog';
 import MainContent from './app/MainContent';
+import Updater from './app/Updater';
 import { repository } from '../../../package.json';
 
 export default {
   name: 'App',
   components: {
-    Importers, MainContent, Exporters, ReportProblemDialog,
+    Importers, MainContent, Exporters, ReportProblemDialog, Updater
   },
   data() {
     return {
