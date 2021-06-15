@@ -1,51 +1,24 @@
 import { ipcMain, dialog, ipcRenderer } from 'electron';
-import { checkForUpdate, downloadUpdate, quitAndInstall } from '../updater';
+import { checkForUpdate, downloadUpdate, quitAndInstall } from './updater';
 
-export const SelectDirHandler = {
-  name: 'SELECT_DIRECTORY_FOLDER',
-  async handler() {
+const functions = {
+  showSaveDialog: async () => {
     const dir = await dialog.showSaveDialog({});
-
     return dir.filePath;
   },
-  invoke() {
-    return ipcRenderer.invoke(this.name);
-  },
+  checkForUpdate,
+  downloadUpdate,
+  quitAndInstall
 };
+type Functions = typeof functions;
 
-export const checkForUpdateHandler = {
-  name: 'CHECK_FOR_UPDATE',
-  async handler() {
-    return checkForUpdate();
-  },
-  invoke() {
-    return ipcRenderer.invoke(this.name);
-  }
+export const ipcHandlers = Object.keys(functions).reduce((acc, funcName) => {
+  acc[funcName] = () => ipcRenderer.invoke(funcName);
+  return acc;
+}, {} as Functions);
+
+export const registerHandlers = () => {
+  Object.keys(functions).forEach((funcName) => {
+    ipcMain.handle(funcName, functions[funcName]);
+  });
 };
-
-export const downloadUpdateHandler = {
-  name: 'DOWNLOAD_UPDATE',
-  async handler() {
-    return downloadUpdate();
-  },
-  invoke() {
-    return ipcRenderer.invoke(this.name);
-  }
-};
-
-export const quitAndInstallHandler = {
-  name: 'QUIT_AND_INSTALL',
-  async handler() {
-    return quitAndInstall();
-  },
-  invoke() {
-    return ipcRenderer.invoke(this.name);
-  }
-};
-
-export default function initialize() {
-  ipcMain.handle(SelectDirHandler.name, SelectDirHandler.handler);
-  ipcMain.handle(checkForUpdateHandler.name, checkForUpdateHandler.handler);
-  ipcMain.handle(downloadUpdateHandler.name, downloadUpdateHandler.handler);
-  ipcMain.handle(quitAndInstallHandler.name, quitAndInstallHandler.handler);
-}

@@ -4,7 +4,7 @@ import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
 import logger from './logging/logger';
 import Sentry from './logging/sentry';
-import initializeHandlers from './handlers';
+import { registerHandlers } from './handlers';
 // import './store';
 
 Sentry.initializeReporter();
@@ -43,7 +43,7 @@ function createWindow() {
   }
 
   // initialize electron event handlers
-  initializeHandlers();
+  registerHandlers();
 
   mainWindow.on('closed', () => {
     mainWindow = null;

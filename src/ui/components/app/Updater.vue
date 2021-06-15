@@ -60,8 +60,8 @@
 
 <script lang="ts">
 import { defineComponent, ref } from '@vue/composition-api';
-import { checkForUpdateHandler, downloadUpdateHandler, quitAndInstallHandler } from '@/handlers';
-import logger from '@/logging/logger';
+import { ipcHandlers } from '@/handlers';
+import { UpdateInfo } from '@/handlers/updater';
 import { App } from '@/app-globals';
 import { shell } from 'electron';
 import { repository } from '../../../../package.json';
@@ -80,32 +80,30 @@ const currentVersion = App.getVersion();
 export default defineComponent({
   setup() {
     const state = ref(STATES.INIT);
-    const updateInfo = ref({ version: '0.0.6' });
+    const updateInfo = ref<UpdateInfo|undefined>();
 
     const checkUpdates = async () => {
       state.value = STATES.LOADING;
-      checkForUpdateHandler.invoke()
+      ipcHandlers.checkForUpdate()
         .then((info) => {
-          logger.info({ info });
-          updateInfo.value = info;
+          updateInfo.value = info || undefined;
           state.value = info
             ? STATES.NEW_VERSION_AVAIL
             : STATES.NO_NEW_VERSION;
-        })
-        .catch(() => (state.value = STATES.ERROR));
+        }).catch(() => (state.value = STATES.ERROR));
     };
     const downloadNewVersion = async () => {
       state.value = STATES.LOADING;
-      downloadUpdateHandler.invoke()
+      ipcHandlers.downloadUpdate()
         .then(() => (state.value = STATES.READY_TO_INSTALL))
         .catch(() => (state.value = STATES.ERROR));
     };
-    const quitAndInstall = () => quitAndInstallHandler.invoke();
+    const { quitAndInstall } = ipcHandlers;
     const openGithubRelease = () => {
-      shell.openExternal(`${repository}/releases/tag/v${updateInfo.value.version}`);
+      shell.openExternal(`${repository}/releases/tag/v${updateInfo?.value?.version}`);
     };
     const openCompare = () => {
-      shell.openExternal(`${repository}/compare/v${currentVersion}...v${updateInfo.value.version}`);
+      shell.openExternal(`${repository}/compare/v${currentVersion}...v${updateInfo?.value?.version}`);
     };
 
     return {
