@@ -10,10 +10,13 @@ import parse from 'csv-parse/lib/sync';
 export function parseTransactions(csvText: string) {
   return parse(csvText, {
     columns: true,
+    bom: true,
+    ltrim: true,
+    rtrim: true,
     cast: (value, context) => {
       return parseColumn(value, context.column);
     }
-  }) as EnrichedTransaction[];
+  }) as unknown as EnrichedTransaction[];
 }
 
 function parseColumn(value:string, column) {
