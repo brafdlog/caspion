@@ -97,7 +97,7 @@ import { shell } from 'electron';
 import Sentry from '@/logging/sentry';
 import LogSheet from '@/ui/components/shared/LogSheet';
 import os from 'os';
-import { getLastLines, getLogsFolder } from '@/logging/logger';
+import logger, { getLastLines, getLogsFolder } from '@/logging/logger';
 import { defineComponent } from '@vue/composition-api';
 import { repository } from '../../../../package.json';
 
@@ -179,7 +179,7 @@ export default defineComponent({
           this.formData.details,
           this.formData.attachLogs ? this.raw : '',
         );
-        this.$logger.info(`Open bug report url with title: ${this.formData.title}`);
+        logger.info(`Open bug report url with title: ${this.formData.title}`);
         shell.openExternal(url);
       }
     },
@@ -193,7 +193,7 @@ export default defineComponent({
           this.formData.email,
         );
 
-        this.$logger.info(`Problem reported. Event ${eventId}`);
+        logger.info(`Problem reported. Event ${eventId}`);
         this.dialog = false;
       }
     },
