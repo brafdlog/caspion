@@ -24,9 +24,6 @@ type EmitProgressEventFunction = (eventCompanyId: string, message: string) => Pr
 export async function scrape({
   companyId, credentials, startDate, showBrowser = false
 }: ScrapeParameters, emitProgressEvent: EmitProgressEventFunction, chromePath: string) {
-  if (!credentials || (!credentials.username && !credentials.num && !credentials.id) || !credentials.password) {
-    throw new Error(`Missing credentials for scraper. CompanyId: ${companyId}`);
-  }
 
   const options = {
     companyId, // mandatory; one of 'hapoalim', 'discount', 'otsarHahayal', 'leumiCard', 'isracard', 'amex'
@@ -34,9 +31,7 @@ export async function scrape({
     combineInstallments: false, // if set to true, all installment transactions will be combine into the first one
     showBrowser, // shows the browser while scraping, good for debugging (default false)
     verbose: false, // include more debug info about in the output
-    executablePath: chromePath,
-    prepareBrowser: async (_browser) => { },
-    preparePage: async (_page) => { }
+    executablePath: chromePath
   };
   const scraper = createScraper(options);
   scraper.onProgress((eventCompanyId: string, payload: { type: string }) => {
