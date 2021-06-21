@@ -1,17 +1,24 @@
 import { ipcMain, dialog, ipcRenderer } from 'electron';
+import { checkForUpdate, downloadUpdate, quitAndInstall } from './updater';
 
-export default function initialize() {
-  ipcMain.handle(SelectDirHandler.name, SelectDirHandler.handler);
-}
-
-export const SelectDirHandler = {
-  name: 'SELECT_DIRECTORY_FOLDER',
-  async handler() {
+const functions = {
+  showSaveDialog: async () => {
     const dir = await dialog.showSaveDialog({});
-
     return dir.filePath;
   },
-  invoke() {
-    return ipcRenderer.invoke(this.name);
-  },
+  checkForUpdate,
+  downloadUpdate,
+  quitAndInstall
+};
+type Functions = typeof functions;
+
+export const ipcHandlers = Object.keys(functions).reduce((acc, funcName) => {
+  acc[funcName] = () => ipcRenderer.invoke(funcName);
+  return acc;
+}, {} as Functions);
+
+export const registerHandlers = () => {
+  Object.keys(functions).forEach((funcName) => {
+    ipcMain.handle(funcName, functions[funcName]);
+  });
 };
