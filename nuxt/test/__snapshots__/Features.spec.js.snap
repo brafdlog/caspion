@@ -5,7 +5,7 @@ exports[`Features renders properly 1`] = `
   <div class=\\"container max-w-5xl mx-auto m-8\\">
     <section-title-stub>תכונות</section-title-stub>
     <feature-right-stub headline=\\"ייבוא מאתר הבנק\\" content=\\"עם חיובי, ניתן לייבא נתונים בצורה אוטומטית מפירוט העובר ושב של חשבונות הבנק והאשראי.\\"><img src=\\"~assets/img/cloud_files.svg\\" alt=\\"\\"></feature-right-stub>
-    <feature-left-stub headline=\\"ייצוא לתוכנות ניתוח נתונים\\" content=\\"את הנתונים שחיובי מושך מחשבונות הבנק והאשראי ניתן לייצא לתוכנות ניהול נתונים שונות.\\"><img src=\\"~assets/img/file_sync.svg\\" alt=\\"\\"></feature-left-stub>
+    <feature-left-stub headline=\\"ייצוא לתוכנות ניתוח נתונים\\" content=\\"את הנתונים שחיובי מושך מחשבונות הבנק והאשראי ניתן לייצא לתוכנות ניהול נתונים שונות, כמו Excel, Google Sheets וYNAB\\"><img src=\\"~assets/img/file_sync.svg\\" alt=\\"\\"></feature-left-stub>
   </div>
 </section>"
 `;
