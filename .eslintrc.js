@@ -66,6 +66,7 @@ module.exports = {
     'arrow-body-style': 'off',
     'object-curly-newline': 'warn',
     'semi': productionError,
+    'padded-blocks': 'off',
     'no-return-assign': 'off',
     'no-restricted-imports': ['error', {
       name: 'electron-log',
