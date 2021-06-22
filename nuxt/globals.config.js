@@ -2,9 +2,9 @@ const faq = require('./content/FAQ');
 
 const globals = {
   FAQ_STRINGS_LIST: faq,
-  GITHUB_REPO: 'brafdlog/hiuvi',
+  GITHUB_REPO: 'brafdlog/caspion',
   BASE_URL: 'https://brafdlog.github.io',
-  BASE_PATH: '/hiuvi/',
+  BASE_PATH: '/caspion/',
 };
 
 const stringified = Object.keys(globals).reduce((acc, globalName) => {

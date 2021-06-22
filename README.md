@@ -1,7 +1,7 @@
-# Automated expense tracking from Israeli banks and credit cards
+# Caspion - Automated expense tracking from Israeli banks and credit cards
 
-![Build/Release](https://github.com/brafdlog/hiuvi/workflows/Build/Release/badge.svg?branch=master&event=push)
-[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/brafdlog/hiuvi.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/brafdlog/hiuvi/context:javascript)
+![Build/Release](https://github.com/brafdlog/caspion/workflows/Build/Release/badge.svg?branch=master&event=push)
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/brafdlog/caspion.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/brafdlog/caspion/context:javascript)
 
 Many people track their expenses with spreadsheets or with budgeting apps (like [YNAB](https://ynab.com/referral/?ref=Z5wPbP0cYTWjdTQj&utm_source=customer_referral)).
 
@@ -22,7 +22,7 @@ Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israel
 
 ## Running the app
 
-Download the latest version from [Releases](https://github.com/brafdlog/hiuvi/releases) page, or build it from source, with the instructions below.
+Download the latest version from [Releases](https://github.com/brafdlog/caspion/releases) page, or build it from source, with the instructions below.
 
 ### Initial setup
 
