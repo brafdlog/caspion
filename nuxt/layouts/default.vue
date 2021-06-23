@@ -12,9 +12,6 @@ import TheFooter from '@/components/TheFooter';
 import meta from '@/mixins/meta';
 import screenshot from '~/assets/img/main-screenshot.png'; // eslint-disable-line
 
-const title = 'חיובי';
-const description = 'חיובי מרכז למקום אחד את כל פירוטי ההוצאות שלך';
-
 export default {
   components: {
     'the-header': TheHeader,
@@ -23,8 +20,8 @@ export default {
   head: {
     meta: meta(BASE_URL, {
       path: BASE_PATH,
-      title,
-      description,
+      title: TITLE,
+      description: DESCRIPTION,
       image: screenshot,
     }),
   },

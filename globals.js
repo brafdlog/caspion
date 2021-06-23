@@ -5,5 +5,5 @@ module.exports = {
   GOOGLE_CLIENT_SECRET: JSON.stringify(process.env.GOOGLE_CLIENT_SECRET),
   SEGMENT_WRITE_KEY: JSON.stringify(process.env.SEGMENT_WRITE_KEY),
   SOURCE_COMMIT_SHORT: JSON.stringify(process.env.GITHUB_SHA),
-  APP_NAME: JSON.stringify("Hiuvi"),
+  APP_NAME: JSON.stringify('Caspion'),
 };

@@ -8,9 +8,6 @@ const routerBase = process.env.GITHUB_ACTIONS ? {
   },
 } : {};
 
-const title = 'חיובי';
-const description = 'חיובי מרכז למקום אחד את כל פירוטי ההוצאות שלך';
-
 export default {
   ...routerBase,
   target: 'static',
@@ -18,14 +15,14 @@ export default {
    ** Headers of the page
    */
   head: {
-    title,
+    title: globals.TITLE,
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       {
         hid: 'description',
         name: 'description',
-        content: description,
+        content: globals.DESCRIPTION,
       },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],

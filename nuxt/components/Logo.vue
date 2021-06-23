@@ -9,7 +9,7 @@
       class="h-8 fill-current inline"
       src="../static/favicon.ico"
     >
-    &nbsp;חיובי
+    &nbsp;כספיון
   </a>
 </template>
 
