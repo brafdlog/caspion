@@ -5,6 +5,8 @@ const globals = {
   GITHUB_REPO: 'brafdlog/caspion',
   BASE_URL: 'https://brafdlog.github.io',
   BASE_PATH: '/caspion/',
+  TITLE: 'כספיון',
+  DESCRIPTION: 'כספיון מרכז למקום אחד את כל פירוטי ההוצאות שלך',
 };
 
 const stringified = Object.keys(globals).reduce((acc, globalName) => {

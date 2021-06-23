@@ -9,7 +9,7 @@
           קשה לך לעקוב אחרי ההוצאות?
         </p>
         <h1 class="my-4 text-5xl font-bold leading-tight">
-          <i>חיובי</i> מרכז למקום אחד את כל פירוטי ההוצאות שלך
+          <i>כספיון</i> מרכז למקום אחד את כל פירוטי ההוצאות שלך
         </h1>
         <p
           class="leading-normal text-2xl mb-8"
