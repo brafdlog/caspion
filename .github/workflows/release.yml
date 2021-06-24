@@ -75,6 +75,7 @@ jobs:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         NODE_OPTIONS: --max-old-space-size=4096
         SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
+        SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
       run: |
         yarn
         yarn build --publish $PUBLISH_PARAM
