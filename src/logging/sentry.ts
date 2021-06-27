@@ -11,7 +11,7 @@ const reporterConfiguration = {
   dsn: SENTRY_DSN,
   defaultIntegrations: false,
   environment: process.env.NODE_ENV,
-  enableJavaScript: false,
+  enableJavaScript: true,
   enableNative: false,
   enableUnresponsive: false,
 } as Sentry.ElectronOptions;
@@ -19,14 +19,13 @@ const reporterConfiguration = {
 const initializeReporter = () => init(reporterConfiguration);
 
 const userReportProblem = (title: string, body: string, logs: string, email: string, extra: Record<string, any>) => {
-  return Sentry.captureEvent({
-    message: title,
-    logger: logs,
+  return Sentry.captureMessage(title, {
     user: {
       email,
     },
     extra: {
       body,
+      logs,
       ...extra,
     },
   });
