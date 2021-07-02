@@ -5,7 +5,11 @@ exports[`Features renders properly 1`] = `
   <div class=\\"container max-w-5xl mx-auto m-8\\">
     <section-title-stub>תכונות</section-title-stub>
     <feature-right-stub headline=\\"ייבוא מאתר הבנק\\" content=\\"עם כספיון, ניתן לייבא נתונים בצורה אוטומטית מפירוט העובר ושב של חשבונות הבנק והאשראי.\\"><img src=\\"~assets/img/cloud_files.svg\\" alt=\\"\\"></feature-right-stub>
-    <feature-left-stub headline=\\"ייצוא לתוכנות ניתוח נתונים\\" content=\\"את הנתונים שכספיון מושך מחשבונות הבנק והאשראי ניתן לייצא לתוכנות ניהול נתונים שונות, כמו Excel, Google Sheets וYNAB\\"><img src=\\"~assets/img/file_sync.svg\\" alt=\\"\\"></feature-left-stub>
+    <feature-left-stub headline=\\"ייצוא לתוכנות ניתוח נתונים\\"><img src=\\"~assets/img/google-data-studio.png\\" alt=\\"\\">
+      <div>
+        את הנתונים ש<i>כספיון</i> מושך מחשבונות הבנק והאשראי ניתן לייצא לתוכנות ניהול נתונים שונות, כמו Excel, Google Sheets וYNAB.
+        <br><br> <a href=\\"https://bscstudent.netlify.app/caspion\\">להסבר על ייצוא נתונים והצגה שלהם עם Google Data Studio.</a></div>
+    </feature-left-stub>
   </div>
 </section>"
 `;

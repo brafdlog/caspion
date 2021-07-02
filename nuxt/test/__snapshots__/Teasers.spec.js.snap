@@ -2,10 +2,13 @@
 
 exports[`Teasers renders properly 1`] = `
 "<section id=\\"security\\" class=\\"bg-white border-b py-8\\">
-  <div class=\\"container mx-auto flex flex-wrap pt-4 pb-12\\">
+  <div class=\\"container mx-auto flex flex-wrap pt-4\\">
     <section-title-stub>עקרונות האבטחה</section-title-stub>
     <teaser-column-stub rows=\\"3\\" action=\\"\\"></teaser-column-stub>
     <teaser-column-stub rows=\\"3\\" action=\\"GitHub\\"></teaser-column-stub>
+  </div>
+  <div class=\\"container mx-auto flex flex-wrap pb-12\\">
+    <teaser-column-stub rows=\\"3\\" action=\\"\\"></teaser-column-stub>
   </div>
 </section>"
 `;

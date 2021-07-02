@@ -6,3 +6,7 @@
 * {
   direction: rtl;
 }
+
+a {
+  @apply text-blue-500 hover:underline;
+}
