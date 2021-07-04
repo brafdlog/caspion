@@ -100,7 +100,7 @@ const parseTransactionsFile = async (filename: string) => {
 };
 
 async function writeCsvFile(filePath: string, csvText: string) {
-  await fs.writeFile(filePath, `\ufeff${csvText}!`, { encoding: 'utf8' });
+  await fs.writeFile(filePath, `\ufeff${csvText}`, { encoding: 'utf8' });
 }
 
 export default {
