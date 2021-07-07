@@ -104,7 +104,7 @@
     "ncp": "^2.0.0",
     "node-loader": "^1.0.2",
     "replace-in-file": "5.0.2",
-    "sass": "^1.26.3",
+    "sass": "~1.32",
     "sass-loader": "^10.0.0",
     "spectron": "^11.0.0",
     "ts-jest": "^26.3.0",
