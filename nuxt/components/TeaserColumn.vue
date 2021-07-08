@@ -14,9 +14,7 @@
         <div class="w-full font-bold text-xl text-gray-800 px-6">
           <slot name="headline" />
         </div>
-        <p class="text-gray-800 text-base px-6 mb-5">
-          <slot name="content" />
-        </p>
+        <slot name="content" />
       </a>
     </div>
     <div

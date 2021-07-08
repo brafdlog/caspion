@@ -3,7 +3,7 @@
     id="security"
     class="bg-white border-b py-8"
   >
-    <div class="container mx-auto flex flex-wrap pt-4 pb-12">
+    <div class="container mx-auto flex flex-wrap pt-4">
       <section-title>עקרונות האבטחה</section-title>
       <teaser-column
         :rows="3"
@@ -17,7 +17,20 @@
         <template
           #content
         >
-          האפליקצייה רצה מקומית אצלך במחשב. הסיסמאות לא נשלחות לאף אחד, ולא מתבצעת שום בקשה לשירות חיצוני כלשהו כדי לקבל את המידע.
+          <div class="text-gray-800 text-base px-6">
+            <p class="mb-5">
+              האפליקצייה רצה מקומית אצלך במחשב. הסיסמאות לא נשלחות לאף אחד, ולא מתבצעת שום בקשה לשירות חיצוני כלשהו כדי לקבל את המידע.
+            </p>
+            <p class="w-full font-bold text-l">
+              איך זה מתבצע?
+            </p>
+            <p>
+              <i>כספיון</i> מבוססת על פרויקט ישראלי אחר שנקרא <a href="">israeli-bank-scrapers</a>, שהוא כמובן עומד בעקרונות האבטחה שלנו, ואנחנו גם עוזרים בתחזוקה שלו.
+            </p>
+            <p>
+              יחד עם הפרויקט הזה, אנחנו מריצים את דפדפן Chrome, בצורה אוטומית, וגולשים לאתר הבנק בדיוק כמו שמשתמש רגיל עושה זאת.
+            </p>
+          </div>
         </template>
       </teaser-column>
       <teaser-column
@@ -34,7 +47,34 @@
         <template
           #content
         >
-          ניתן ממש לראות את הקוד בו כתובה האפליקצייה, ובמקרה הצורך גם להריץ אותה ישירות מהקוד, כדי להיות בטוחים באמינות השירות.
+          <p class="text-gray-800 text-base px-6 mb-5">
+            ניתן ממש לראות את הקוד בו כתובה האפליקצייה, ובמקרה הצורך גם להריץ אותה ישירות מהקוד, כדי להיות בטוחים באמינות השירות.
+          </p>
+        </template>
+      </teaser-column>
+    </div>
+    <div class="container mx-auto flex flex-wrap pb-12">
+      <teaser-column
+        :rows="3"
+      >
+        <template #overline>
+          שימו לב!
+        </template>
+        <template #headline>
+          שימוש בסיסמאות
+        </template>
+        <template
+          #content
+        >
+          <p class="text-gray-800 text-base px-6 mb-5">
+            אנחנו מצפינים את הסיסמאות שנשמרות באפליקצייה, ועושים ככל שביכולתנו כדי לשמור עליהם. אחרי הכל, גם אנחנו משתמשים בתוכנה שלנו.
+          </p>
+          <p class="text-gray-800 text-base px-6 mb-5">
+            אבל אחרי הכל, חשוב לזכור שסיסמאות לא נוצרו כדי שנמסור אותם לצד שלישי, וכל עוד הבנקים לא תומכים בגישה תכנותית לנתונים, מסירת הסיסמאות היא סיכון.
+          </p>
+          <p class="text-gray-800 text-base px-6 mb-5">
+            מומלץ לבקש מהבנק לפתוח חשבון אינטרנט נוסף עם הרשאות קריאה בלבד.
+          </p>
         </template>
       </teaser-column>
     </div>

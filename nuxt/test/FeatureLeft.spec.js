@@ -4,6 +4,8 @@ import FeatureLeft from '@/components/FeatureLeft';
 const factory = () => shallowMount(FeatureLeft, {
   propsData: {
     headline: 'Lorem Ipsum',
+  },
+  slots: {
     content: 'Lorem Ipsum dolor sit',
   },
 });
@@ -26,6 +28,6 @@ describe('FeatureLeft', () => {
 
   it('has the property content', () => {
     const wrapper = factory();
-    expect(wrapper.props('content')).toBe('Lorem Ipsum dolor sit');
+    expect(wrapper.text()).toContain('Lorem Ipsum dolor sit');
   });
 });

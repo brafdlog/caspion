@@ -9,13 +9,7 @@
           {{ headline }}
         </h3>
         <p class="text-gray-600 mb-8">
-          {{ content }}
-          <br>
-          <br>Images from:
-          <a
-            class="text-orange-500 underline"
-            href="https://undraw.co/"
-          >undraw.co</a>
+          <slot name="content" />
         </p>
       </div>
     </div>
@@ -27,10 +21,6 @@ export default {
   name: 'FeatureLeft',
   props: {
     headline: {
-      type: String,
-      required: true,
-    },
-    content: {
       type: String,
       required: true,
     },

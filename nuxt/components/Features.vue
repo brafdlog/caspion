@@ -15,15 +15,19 @@
           alt
         >
       </feature-right>
-      <feature-left
-        headline="ייצוא לתוכנות ניתוח נתונים"
-        content="את הנתונים שכספיון מושך מחשבונות הבנק והאשראי ניתן לייצא לתוכנות ניהול נתונים שונות, כמו Excel, Google Sheets וYNAB"
-      >
+      <feature-left headline="ייצוא לתוכנות ניתוח נתונים">
         <img
           slot="svg"
-          src="~assets/img/file_sync.svg"
+          src="~assets/img/google-data-studio.png"
           alt
         >
+        <div
+          slot="content"
+        >
+          את הנתונים ש<i>כספיון</i> מושך מחשבונות הבנק והאשראי ניתן לייצא לתוכנות ניהול נתונים שונות, כמו Excel, Google Sheets וYNAB.
+          <br><br>
+          <a href="https://bscstudent.netlify.app/caspion">להסבר על ייצוא נתונים והצגה שלהם עם Google Data Studio.</a>
+        </div>
       </feature-left>
     </div>
   </section>
