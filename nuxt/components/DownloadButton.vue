@@ -15,8 +15,8 @@
         הורדות נוספות
       </button>
       <div
-        class="w-full text-gray-800 "
-        :style="{visibility: showDownloads? 'visible' : 'hidden'}"
+        class="w-full text-gray-800"
+        :style="{ visibility: showDownloads ? 'visible' : 'hidden' }"
       >
         <span
           v-for="obj in downloads"
@@ -26,7 +26,8 @@
             class="no-underline hover:underline text-blue-600"
             :href="obj.url"
             :title="obj.name"
-          >{{ obj.extension }}</a>, </span>
+          >{{ obj.extension }}</a>,
+        </span>
         <a
           class="font-bold hover:underline"
           :href="releasesUrl"
@@ -48,7 +49,6 @@ const getOS = () => {
     // "Linux"      for all versions of Linux
     // "UNIX"       for all other UNIX flavors
     // "Unknown" indicates failure to detect the OS
-
     if (navigator.appVersion.includes('Android')) return 'Windows';
     if (navigator.appVersion.includes('Win')) return 'Windows';
     if (navigator.appVersion.includes('Mac')) return 'MacOS';
@@ -68,11 +68,16 @@ const osToExtension = {
     default: 'exe',
     extensions: ['exe'],
   },
+  MacOS: {
+    default: 'dmg',
+    extensions: ['dmg', 'zip'],
+  },
 };
 
 const excludeExtensions = ['blockmap', 'yml'];
 
-const isWithExtension = (extensions, name) => extensions.filter((ext) => name.toLowerCase().endsWith(ext.toLowerCase())).length > 0;
+const isWithExtension = (extensions, name) => extensions.filter((ext) => name.toLowerCase().endsWith(ext.toLowerCase()))
+  .length > 0;
 
 export default {
   name: 'DownloadButton',
@@ -99,7 +104,8 @@ export default {
   created() {
     this.os = getOS();
 
-    axios.get(`https://api.github.com/repos/${GITHUB_REPO}/releases`)
+    axios
+      .get(`https://api.github.com/repos/${GITHUB_REPO}/releases`)
       .then((response) => response.data)
       .then((releases) => releases
         .sort((a, b) => new Date(b.published_at) - new Date(a.published_at))
@@ -149,5 +155,4 @@ export default {
 </script>
 
 <style>
-
 </style>
