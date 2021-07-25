@@ -46,6 +46,10 @@ module.exports = {
         },
         mac: {
           icon: 'build/icons/icon.icns',
+          target: {
+            target: 'default',
+            arch: 'universal'
+          }
         },
         win: {
           icon: 'build/icons/icon.ico',
