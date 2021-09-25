@@ -39,7 +39,7 @@
     "electron-devtools-installer": "^3.1.1",
     "electron-log": "^4.1.1",
     "electron-updater": "^4.3.9",
-    "emittery": "^0.7.1",
+    "emittery": "^0.10.0",
     "googleapis": "^87.0.0",
     "israeli-bank-scrapers-core": "1.4.0",
     "keytar": "^7.4.0",

@@ -89,7 +89,7 @@ export default defineComponent({
     const accountsState = ref(new AccountsState(config.getActiveImporters, config.getActiveExporters));
 
     const eventEmitter = new Events.BudgetTrackingEventEmitter();
-    eventEmitter.on(Events.EventNames.DOWNLOAD_CHROME, ({ percent }: Events.DownalodChromeEvent) => (downloadingChrome.value = percent));
+    eventEmitter.on(Events.EventNames.DOWNLOAD_CHROME, ({ percent }) => { downloadingChrome.value = percent; });
 
     initEventHandlers(eventEmitter, accountsState);
 
