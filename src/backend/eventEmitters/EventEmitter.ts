@@ -109,8 +109,9 @@ export type EventDataMap = {
   [EventNames.IMPORTER_PROGRESS]: ImporterEvent
   [EventNames.IMPORTER_ERROR]: ImporterEvent
   [EventNames.IMPORTER_END]: ImporterEvent
-  [EventNames.IMPORT_PROCESS_END]: BudgetTrackingEvent
-  [EventNames.EXPORT_PROCESS_START]: BudgetTrackingEvent
+  [EventNames.IMPORT_PROCESS_END]: undefined
+  [EventNames.EXPORT_PROCESS_START]: undefined
+  [EventNames.EXPORT_PROCESS_END]: undefined
   [EventNames.EXPORTER_START]: ExporterEvent
   [EventNames.EXPORTER_PROGRESS]: ExporterEvent
   [EventNames.EXPORTER_ERROR]: ExporterEvent
@@ -119,9 +120,7 @@ export type EventDataMap = {
   [EventNames.LOG]: BudgetTrackingEvent
 };
 
-type EmptyEvents = EventNames.IMPORT_PROCESS_START | EventNames.IMPORT_PROCESS_END | EventNames.EXPORT_PROCESS_START | EventNames.EXPORT_PROCESS_END;
-
-export class BudgetTrackingEventEmitter extends Emittery.Typed<EventDataMap, EmptyEvents> {
+export class BudgetTrackingEventEmitter extends Emittery<EventDataMap> {
 
 }
 
