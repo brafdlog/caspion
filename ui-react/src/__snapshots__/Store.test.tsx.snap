@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Store Properties and getters basic 1`] = `
+Object {
+  "numDaysBack": 40,
+  "showBrowser": false,
+}
+`;
+
+exports[`Store Properties and getters exporters 1`] = `
+Array [
+  Object {
+    "active": true,
+    "companyId": "csv",
+    "displayName": "אקסל",
+    "id": "csv",
+    "logo": "excel.png",
+    "logs": Array [],
+    "type": "Exporter",
+  },
+  Object {
+    "active": false,
+    "companyId": "json",
+    "displayName": "Json",
+    "id": "json",
+    "logo": "json.jpeg",
+    "logs": Array [],
+    "type": "Exporter",
+  },
+  Object {
+    "active": true,
+    "companyId": "ynab",
+    "displayName": "Ynab",
+    "id": "ynab",
+    "logo": "ynab.jpeg",
+    "logs": Array [],
+    "type": "Exporter",
+  },
+  Object {
+    "active": false,
+    "companyId": "googleSheets",
+    "displayName": "Google Sheets",
+    "id": "googleSheets",
+    "logo": "sheets.png",
+    "logs": Array [],
+    "type": "Exporter",
+  },
+]
+`;
+
+exports[`Store Properties and getters importers 1`] = `
+Object {
+  "active": true,
+  "companyId": "discount",
+  "displayName": "דיסקונט",
+  "id": "efsvxasgd416f94d1e45a9cfc8c0a95f",
+  "logo": "discount.jpeg",
+  "logs": Array [],
+  "type": "Importer",
+}
+`;
+
+exports[`Store Properties and getters importers 2`] = `
+Object {
+  "active": true,
+  "companyId": "visaCal",
+  "displayName": "ויזה כאל",
+  "id": "794a9ksj532d86cb4xxxb3438d0da942",
+  "logo": "visa-cal.jpeg",
+  "logs": Array [],
+  "type": "Importer",
+}
+`;
+
+exports[`Store Properties and getters importers 3`] = `
+Object {
+  "active": true,
+  "companyId": "max",
+  "displayName": "Max",
+  "id": "9xve2485ac202f53f85bcdb4f795dssc",
+  "logo": "max.jpg",
+  "logs": Array [],
+  "type": "Importer",
+}
+`;

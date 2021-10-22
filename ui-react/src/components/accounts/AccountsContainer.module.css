@@ -1,0 +1,15 @@
+.container {
+    height: 344px;
+    width: 260px;
+}
+
+.title {
+    font-style: normal;
+    font-weight: 500;
+}
+
+.accountsWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

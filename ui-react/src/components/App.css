@@ -1,0 +1,19 @@
+/*
+Silver: #E3E1E2
+Blue: #2E4372
+*/
+
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+}
+
+.App {
+  text-align: center;
+  direction: rtl;
+  height: 100%;
+  font-family: Work Sans, monospace;
+}
