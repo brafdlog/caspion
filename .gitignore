@@ -91,3 +91,5 @@ config.encrypted
 googleApiToken.json
 *.map
 /userData
+config.encrypt
+transaction.csv
