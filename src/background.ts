@@ -1,11 +1,8 @@
 import { app, BrowserWindow } from 'electron';
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
 import logger from './logging/logger';
 import Sentry from './logging/sentry';
 import { registerHandlers } from './handlers';
-// import './store';
 
 Sentry.initializeReporter();
 
@@ -18,13 +15,14 @@ let mainWindow: BrowserWindow | null;
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    height: 563,
+    height: 700,
     useContentSize: true,
-    width: 1000,
+    width: 1152,
     webPreferences: {
       nodeIntegration: (process.env.ELECTRON_NODE_INTEGRATION as unknown) as
         | boolean
         | undefined,
+      enableRemoteModule: true
     },
   });
 
@@ -34,12 +32,12 @@ function createWindow() {
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
-    loadURL(process.env.WEBPACK_DEV_SERVER_URL);
+    // loadURL(process.env.WEBPACK_DEV_SERVER_URL);
+    loadURL('http://localhost:3000');
     if (!process.env.IS_TEST) mainWindow.webContents.openDevTools();
   } else {
-    createProtocol('app');
     // Load the index.html when not in development
-    loadURL('app://./index.html');
+    mainWindow.loadFile('../ui-react/build/index.html');
   }
 
   // initialize electron event handlers
