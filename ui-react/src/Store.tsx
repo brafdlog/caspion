@@ -77,8 +77,10 @@ export default class Store {
           });
         }
         const accountScrapingData = this.accountScrapingData.get(accountId);
-        accountScrapingData.logs.push({ message: budgetTrackingEvent.message });
-        accountScrapingData.status = budgetTrackingEvent.accountStatus;
+        if (accountScrapingData) {
+          accountScrapingData.logs.push({message: budgetTrackingEvent.message});
+          accountScrapingData.status = budgetTrackingEvent.accountStatus;
+        }
       }
     }
   }
@@ -101,12 +103,14 @@ export default class Store {
       };
   }
 
-  addImporter(scraperConfig: AccountToScrapeConfig) {
+  async addImporter(scraperConfig: AccountToScrapeConfig) {
+    this.verifyConfigDefined();
     this.config.scraping.accountsToScrape.push(scraperConfig);
     await updateConfig(this.config);
   }
 
-  updateImporter(id: string, updatedImporterConfig: AccountToScrapeConfig) {
+  async updateImporter(id: string, updatedImporterConfig: AccountToScrapeConfig) {
+    this.verifyConfigDefined();
     const importerIndex = this.config.scraping.accountsToScrape.findIndex(importer => importer.id === id);
     if (importerIndex === -1) {
       throw new Error(`Cant update importer with id ${id}. No importer with that id found`);
@@ -115,10 +119,18 @@ export default class Store {
     await updateConfig(this.config);
   }
 
-  deleteImporter(id: string) {
+  async deleteImporter(id: string) {
+    this.verifyConfigDefined();
     this.config.scraping.accountsToScrape = this.config.scraping.accountsToScrape.filter(importer => importer.id !== id);
     await updateConfig(this.config);
   }
+
+  verifyConfigDefined() {
+    if (!this.config) {
+      throw new Error('Config not defined');
+    }
+  }
+
 }
 
 export const StoreContext = createContext<Store>(null);
