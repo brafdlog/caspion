@@ -1,5 +1,6 @@
 import { action, makeAutoObservable } from 'mobx';
 import { createContext } from 'react';
+import { updateConfig } from "./eventsBridge";
 import { Account, AccountStatus, AccountToScrapeConfig, AccountType, BudgetTrackingEvent, Config, Log } from './types';
 import accountMetadata from './accountMetadata';
 
@@ -102,6 +103,7 @@ export default class Store {
 
   addImporter(scraperConfig: AccountToScrapeConfig) {
     this.config.scraping.accountsToScrape.push(scraperConfig);
+    await updateConfig(this.config);
   }
 
   updateImporter(id: string, updatedImporterConfig: AccountToScrapeConfig) {
@@ -110,10 +112,12 @@ export default class Store {
       throw new Error(`Cant update importer with id ${id}. No importer with that id found`);
     }
     this.config.scraping.accountsToScrape[importerIndex] = updatedImporterConfig;
+    await updateConfig(this.config);
   }
 
   deleteImporter(id: string) {
     this.config.scraping.accountsToScrape = this.config.scraping.accountsToScrape.filter(importer => importer.id !== id);
+    await updateConfig(this.config);
   }
 }
 

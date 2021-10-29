@@ -1,6 +1,6 @@
 import { ipcMain, dialog, ipcRenderer } from 'electron';
 import { checkForUpdate, downloadUpdate, quitAndInstall } from './updater';
-import { getConfigHandler } from './configHandlers';
+import { getConfigHandler, updateConfigHandler } from './configHandlers';
 import { configFilePath } from '@/app-globals';
 import { getConfig } from '@/backend/configManager/configManager';
 import { scrapeAndUpdateOutputVendors } from '@/backend';
@@ -14,7 +14,8 @@ const functions = {
   checkForUpdate,
   downloadUpdate,
   quitAndInstall,
-  getConfig: getConfigHandler
+  getConfig: getConfigHandler,
+  updateConfig: updateConfigHandler
 };
 type Functions = typeof functions;
 
