@@ -18,23 +18,6 @@ export default class Store {
     this.config = config;
   }
 
-  handleScrapingEvent(eventName: string, budgetTrackingEvent?: BudgetTrackingEvent) {
-    if (budgetTrackingEvent) {
-      const accountId = budgetTrackingEvent.vendorId;
-      if (accountId) {
-        if (!this.accountScrapingData.has(accountId)) {
-          this.accountScrapingData.set(accountId, {
-            logs: [],
-            status: AccountStatus.IDLE
-          });
-        }
-        const accountScrapingData = this.accountScrapingData.get(accountId);
-        accountScrapingData.logs.push({ message: budgetTrackingEvent.message });
-        accountScrapingData.status = budgetTrackingEvent.accountStatus;
-      }
-    }
-  }
-
   get importers(): Account[] {
     if (!this.config) return [];
     return this.config.scraping.accountsToScrape.map(accountToScrape => {
@@ -79,12 +62,29 @@ export default class Store {
     return !!Array.from(this.accountScrapingData.values()).find(account => account.status === AccountStatus.IN_PROGRESS);
   }
 
+  handleScrapingEvent(eventName: string, budgetTrackingEvent?: BudgetTrackingEvent) {
+    if (budgetTrackingEvent) {
+      const accountId = budgetTrackingEvent.vendorId;
+      if (accountId) {
+        if (!this.accountScrapingData.has(accountId)) {
+          this.accountScrapingData.set(accountId, {
+            logs: [],
+            status: AccountStatus.IDLE
+          });
+        }
+        const accountScrapingData = this.accountScrapingData.get(accountId);
+        accountScrapingData.logs.push({ message: budgetTrackingEvent.message });
+        accountScrapingData.status = budgetTrackingEvent.accountStatus;
+      }
+    }
+  }
+
   createAccountObject(id: string, companyId: string, type: AccountType, active: boolean): Account {
     const {
         companyName,
         logo
       } = accountMetadata[companyId];
-      const accountData = this.accountScrapingData.get(companyId);
+      const accountScrapingData = this.accountScrapingData.get(companyId);
       return {
         id,
         companyId,
@@ -92,8 +92,8 @@ export default class Store {
         logo,
         type,
         active,
-        status: accountData ? accountData.status : AccountStatus.IDLE,
-        logs: accountData ? accountData.logs : []
+        status: accountScrapingData ? accountScrapingData.status : AccountStatus.IDLE,
+        logs: accountScrapingData ? accountScrapingData.logs : []
       };
   }
 }

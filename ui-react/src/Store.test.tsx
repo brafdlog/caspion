@@ -40,5 +40,10 @@ describe('Store', () => {
         expect(store.allAccounts).toHaveLength(store.importers.length + store.exporters.length);
         [...store.importers, ...store.exporters].forEach(account => expect(store.allAccounts).toContainEqual(account));
     });
+
+    test('settings', () => {
+       expect(store.settings.numDaysBack).toEqual(dummyConfig.scraping.numDaysBack);
+       expect(store.settings.showBrowser).toEqual(dummyConfig.scraping.showBrowser);
+    });
   });
 });
