@@ -16,6 +16,7 @@ Array [
     "id": "csv",
     "logo": "excel.png",
     "logs": Array [],
+    "status": "IDLE",
     "type": "Exporter",
   },
   Object {
@@ -25,6 +26,7 @@ Array [
     "id": "json",
     "logo": "json.jpeg",
     "logs": Array [],
+    "status": "IDLE",
     "type": "Exporter",
   },
   Object {
@@ -34,6 +36,7 @@ Array [
     "id": "ynab",
     "logo": "ynab.jpeg",
     "logs": Array [],
+    "status": "IDLE",
     "type": "Exporter",
   },
   Object {
@@ -43,6 +46,7 @@ Array [
     "id": "googleSheets",
     "logo": "sheets.png",
     "logs": Array [],
+    "status": "IDLE",
     "type": "Exporter",
   },
 ]
@@ -56,6 +60,7 @@ Object {
   "id": "efsvxasgd416f94d1e45a9cfc8c0a95f",
   "logo": "discount.jpeg",
   "logs": Array [],
+  "status": "IDLE",
   "type": "Importer",
 }
 `;
@@ -68,6 +73,7 @@ Object {
   "id": "794a9ksj532d86cb4xxxb3438d0da942",
   "logo": "visa-cal.jpeg",
   "logs": Array [],
+  "status": "IDLE",
   "type": "Importer",
 }
 `;
@@ -80,6 +86,7 @@ Object {
   "id": "9xve2485ac202f53f85bcdb4f795dssc",
   "logo": "max.jpg",
   "logs": Array [],
+  "status": "IDLE",
   "type": "Importer",
 }
 `;

@@ -87,7 +87,7 @@ export enum CompanyTypes {
 }
 
 export enum AccountType {
-  IMPORTER, EXPORTER
+  IMPORTER = 'Importer', EXPORTER = 'Exporter'
 }
 
 export enum AccountStatus {

@@ -35,5 +35,10 @@ describe('Store', () => {
 
      expect(store.exporters).toMatchSnapshot();
     });
+
+    test('allAccounts', () => {
+        expect(store.allAccounts).toHaveLength(store.importers.length + store.exporters.length);
+        [...store.importers, ...store.exporters].forEach(account => expect(store.allAccounts).toContainEqual(account));
+    });
   });
 });
