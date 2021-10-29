@@ -90,3 +90,16 @@ Object {
   "type": "Importer",
 }
 `;
+
+exports[`Store actions addImporter 1`] = `
+Object {
+  "active": false,
+  "companyId": "discount",
+  "displayName": "דיסקונט",
+  "id": "moshe",
+  "logo": "discount.jpeg",
+  "logs": Array [],
+  "status": "IDLE",
+  "type": "Importer",
+}
+`;

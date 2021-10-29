@@ -1,5 +1,6 @@
 import Store from './Store';
 import { dummyConfig } from './test/testData';
+import { AccountToScrapeConfig, CompanyTypes } from "./types";
 
 describe('Store', () => {
  let store;
@@ -45,5 +46,41 @@ describe('Store', () => {
        expect(store.settings.numDaysBack).toEqual(dummyConfig.scraping.numDaysBack);
        expect(store.settings.showBrowser).toEqual(dummyConfig.scraping.showBrowser);
     });
+  });
+  describe('actions', () => {
+     test('addImporter', () => {
+        const accountToAdd: AccountToScrapeConfig = {
+            id: 'moshe',
+            key: CompanyTypes.discount,
+            name: 'Poalim',
+            loginFields: {
+                username: 'david'
+            },
+            active: false
+        };
+        expect(store.allAccountsById.get(accountToAdd.id)).toBeFalsy();
+        store.addImporter(accountToAdd);
+        expect(store.allAccountsById.get(accountToAdd.id)).toMatchSnapshot();
+     });
+
+     test('updateImporter', () => {
+         const importer = dummyConfig.scraping.accountsToScrape[0];
+         const updatedImporter = {
+             ...importer,
+             active: !importer.active
+         };
+         store.updateImporter(importer.id, updatedImporter);
+         expect(store.importers.find(i => i.id === importer.id)).toHaveProperty('active', updatedImporter.active);
+     });
+
+     test('deleteImporter', () => {
+         const importer = dummyConfig.scraping.accountsToScrape[0];
+         let originalNumImporters = dummyConfig.scraping.accountsToScrape.length;
+         expect(store.importers).toHaveLength(originalNumImporters);
+         expect(store.allAccountsById.get(importer.id)).toBeTruthy();
+         store.deleteImporter(importer.id);
+         expect(store.importers).toHaveLength(originalNumImporters - 1);
+         expect(store.allAccountsById.get(importer.id)).toBeFalsy();
+     });
   });
 });

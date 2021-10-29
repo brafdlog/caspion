@@ -1,6 +1,6 @@
 import { action, makeAutoObservable } from 'mobx';
 import { createContext } from 'react';
-import { Account, AccountStatus, AccountType, BudgetTrackingEvent, Config, Log } from './types';
+import { Account, AccountStatus, AccountToScrapeConfig, AccountType, BudgetTrackingEvent, Config, Log } from './types';
 import accountMetadata from './accountMetadata';
 
 export default class Store {
@@ -10,7 +10,10 @@ export default class Store {
   constructor() {
     this.accountScrapingData = new Map();
     makeAutoObservable(this, {
-      handleScrapingEvent: action
+      handleScrapingEvent: action,
+      addImporter: action,
+      updateImporter: action,
+      deleteImporter: action
     });
   }
 
@@ -95,6 +98,22 @@ export default class Store {
         status: accountScrapingData ? accountScrapingData.status : AccountStatus.IDLE,
         logs: accountScrapingData ? accountScrapingData.logs : []
       };
+  }
+
+  addImporter(scraperConfig: AccountToScrapeConfig) {
+    this.config.scraping.accountsToScrape.push(scraperConfig);
+  }
+
+  updateImporter(id: string, updatedImporterConfig: AccountToScrapeConfig) {
+    const importerIndex = this.config.scraping.accountsToScrape.findIndex(importer => importer.id === id);
+    if (importerIndex === -1) {
+      throw new Error(`Cant update importer with id ${id}. No importer with that id found`);
+    }
+    this.config.scraping.accountsToScrape[importerIndex] = updatedImporterConfig;
+  }
+
+  deleteImporter(id: string) {
+    this.config.scraping.accountsToScrape = this.config.scraping.accountsToScrape.filter(importer => importer.id !== id);
   }
 }
 
