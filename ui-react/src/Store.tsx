@@ -115,22 +115,23 @@ export default class Store {
       };
   }
 
-  async addImporter(scraperConfig: AccountToScrapeConfig) {
+  async addImporter(importerConfig: Importer) {
     this.verifyConfigDefined();
-    if (!accountMetadata[scraperConfig.key]) {
-      throw new Error(`key ${scraperConfig.key} is not a valid company id`);
+    if (!accountMetadata[importerConfig.companyId]) {
+      throw new Error(`Company id ${importerConfig.companyId} is not a valid company id`);
     }
-    this.config.scraping.accountsToScrape.push(scraperConfig);
+    const accountToScrapeConfig: AccountToScrapeConfig = this.createAccountToScrapeConfigFromImporter(importerConfig);
+    this.config.scraping.accountsToScrape.push(accountToScrapeConfig);
     await updateConfig(this.config);
   }
 
-  async updateImporter(id: string, updatedImporterConfig: AccountToScrapeConfig) {
+  async updateImporter(id: string, updatedImporterConfig: Importer) {
     this.verifyConfigDefined();
     const importerIndex = this.config.scraping.accountsToScrape.findIndex(importer => importer.id === id);
     if (importerIndex === -1) {
       throw new Error(`Cant update importer with id ${id}. No importer with that id found`);
     }
-    this.config.scraping.accountsToScrape[importerIndex] = updatedImporterConfig;
+    this.config.scraping.accountsToScrape[importerIndex] = this.createAccountToScrapeConfigFromImporter(updatedImporterConfig);
     await updateConfig(this.config);
   }
 
@@ -138,6 +139,10 @@ export default class Store {
     this.verifyConfigDefined();
     this.config.scraping.accountsToScrape = this.config.scraping.accountsToScrape.filter(importer => importer.id !== id);
     await updateConfig(this.config);
+  }
+
+  createAccountToScrapeConfigFromImporter(importerConfig: Importer): AccountToScrapeConfig {
+    return { id: importerConfig.id, active: importerConfig.active, key: importerConfig.companyId, loginFields: importerConfig.loginFields, name: importerConfig.displayName };
   }
 
   verifyConfigDefined() {

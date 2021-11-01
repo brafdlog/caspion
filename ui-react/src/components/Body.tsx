@@ -1,5 +1,5 @@
 import styles from './Body.module.css';
-import {Account, AccountToScrapeConfig, ModalStatus} from '../types';
+import {Account, Importer, ModalStatus} from '../types';
 import {Button, Modal} from 'react-bootstrap';
 import {useContext, useState} from 'react';
 import {observer} from 'mobx-react-lite';
@@ -29,11 +29,11 @@ const Body = ({ scrape }: BodyProps) => {
     setModalStatus(ModalStatus.NewScraper);
   };
 
-  const createImporter = async (importer: AccountToScrapeConfig) => {
+  const createImporter = async (importer: Importer) => {
     await store.addImporter(importer);
     closeModal();
   };
-  const updateImporter = async (importer: AccountToScrapeConfig) => {
+  const updateImporter = async (importer: Importer) => {
     await store.updateImporter(importer.id, importer);
     closeModal();
   };

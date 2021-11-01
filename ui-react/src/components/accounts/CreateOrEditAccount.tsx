@@ -1,13 +1,13 @@
 import styles from './CreateOrEditAccount.module.css';
 import { v4 as uuidv4 } from 'uuid';
-import { Importer, AccountToScrapeConfig } from '../../types';
+import { Importer } from '../../types';
 import { importers, IMPORTERS_LOGIN_FIELDS, LOGIN_FIELD_DISPLAY_NAMES } from "../../accountMetadata";
 import Account from "./Account";
 import { useState } from "react";
 import {Button, Card, Form, Image} from "react-bootstrap";
 
 type CreateOrEditAccountProps = {
-    handleSave: (importer: AccountToScrapeConfig) => Promise<void>;
+    handleSave: (importer: Importer) => Promise<void>;
     handleDelete?: (id: string) => Promise<void>;
     account?: Importer;
 }
@@ -21,8 +21,8 @@ export default function CreateOrEditAccount({
     const [loginFields, setLoginFields] = useState<Record<string, string>>(account?.loginFields || {});
     const handleChooseAccount = (account: Importer) => setImporterToCreate({ ...account, id: uuidv4() });
     const onSaveClicked = async () => {
-      const importer: AccountToScrapeConfig = {id: importerToCreate.id, active: importerToCreate.active, key: importerToCreate.companyId, loginFields: loginFields, name: importerToCreate.displayName };
-      await handleSave(importer);
+        importerToCreate.loginFields = loginFields;
+        await handleSave(importerToCreate);
     };
     const onLoginFieldChanged = (loginFieldName: string, value) => {
         setLoginFields({
