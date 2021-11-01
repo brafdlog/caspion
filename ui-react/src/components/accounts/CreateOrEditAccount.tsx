@@ -35,7 +35,7 @@ export default function CreateOrEditAccount({
         {
             !importerToCreate && (
                 <div className={styles.accountSelectionWrapper}>
-                {importers.map(importer => <div className={styles.accountWrapper} onClick={() => handleChooseAccount(importer)}><Account account={importer} /></div>)}
+                {importers.map(importer => <div key={importer.id} className={styles.accountWrapper} onClick={() => handleChooseAccount(importer)}><Account account={importer} /></div>)}
                 </div>
             )
         }
@@ -46,7 +46,7 @@ export default function CreateOrEditAccount({
                     <Card.Body className={styles.cardBody}>
                         <Form>
                             {IMPORTERS_LOGIN_FIELDS[importerToCreate.companyId].map(loginField => (
-                                <Form.Group className={styles.formGroup} controlId={loginField}>
+                                <Form.Group key={loginField} className={styles.formGroup} controlId={loginField}>
                                     <Form.Control placeholder={LOGIN_FIELD_DISPLAY_NAMES[loginField]} type={loginField === 'password' ? 'password' : '' } value={loginFields[loginField]} onChange={(event) => onLoginFieldChanged(loginField, event.target.value)} />
                                 </Form.Group>
                             ))}
