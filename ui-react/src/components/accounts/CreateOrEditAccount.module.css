@@ -1,0 +1,37 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.title {
+    font-style: normal;
+    font-weight: 500;
+}
+
+.accountSelectionWrapper {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.accountWrapper {
+    margin-left: 15px;
+}
+.card {
+    align-items: center;
+}
+
+.logo {
+    margin-top: 10px;
+    height: 100px;
+    width: 100px;
+}
+
+.actionButtonsWrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.formGroup {
+    margin-bottom: 10px;
+}

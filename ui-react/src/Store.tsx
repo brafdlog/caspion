@@ -1,7 +1,16 @@
 import { action, makeAutoObservable } from 'mobx';
 import { createContext } from 'react';
 import { updateConfig } from "./eventsBridge";
-import { Account, AccountStatus, AccountToScrapeConfig, AccountType, BudgetTrackingEvent, Config, Log } from './types';
+import {
+  Account,
+  AccountStatus,
+  AccountToScrapeConfig,
+  AccountType,
+  BudgetTrackingEvent,
+  Config,
+  Importer,
+  Log
+} from './types';
 import accountMetadata from './accountMetadata';
 
 export default class Store {
@@ -22,10 +31,13 @@ export default class Store {
     this.config = config;
   }
 
-  get importers(): Account[] {
+  get importers(): Importer[] {
     if (!this.config) return [];
     return this.config.scraping.accountsToScrape.map(accountToScrape => {
-      return this.createAccountObject(accountToScrape.id, accountToScrape.key, AccountType.IMPORTER, accountToScrape.active);
+      return {
+        ...this.createAccountObject(accountToScrape.id, accountToScrape.key, AccountType.IMPORTER, accountToScrape.active),
+        loginFields: accountToScrape.loginFields
+      };
     });
   }
 
@@ -86,16 +98,16 @@ export default class Store {
   }
 
   createAccountObject(id: string, companyId: string, type: AccountType, active: boolean): Account {
-    const {
-        companyName,
-        logo
-      } = accountMetadata[companyId];
+    const metadata = accountMetadata[companyId];
+    if (!metadata) {
+      throw new Error(`No metadata found for companyId ${companyId}`);
+    }
       const accountScrapingData = this.accountScrapingData.get(companyId);
       return {
         id,
         companyId,
-        displayName: companyName,
-        logo,
+        displayName: metadata.companyName,
+        logo: metadata.logo,
         type,
         active,
         status: accountScrapingData ? accountScrapingData.status : AccountStatus.IDLE,
@@ -105,6 +117,9 @@ export default class Store {
 
   async addImporter(scraperConfig: AccountToScrapeConfig) {
     this.verifyConfigDefined();
+    if (!accountMetadata[scraperConfig.key]) {
+      throw new Error(`key ${scraperConfig.key} is not a valid company id`);
+    }
     this.config.scraping.accountsToScrape.push(scraperConfig);
     await updateConfig(this.config);
   }

@@ -1,4 +1,4 @@
-import { AccountMetadata, CompanyTypes, OutputVendorName } from './types';
+import {Account, AccountMetadata, AccountType, CompanyTypes, OutputVendorName} from './types';
 import { exporterIcons, importerIcons } from './assets';
 import mapValues from 'lodash/mapValues';
 
@@ -35,5 +35,51 @@ const accountMetadata: Record<CompanyTypes | OutputVendorName, AccountMetadata> 
     logo: icons[accountId]
   };
 });
+
+const PASSWORD_FIELD = 'password';
+
+export const IMPORTERS_LOGIN_FIELDS = {
+  [CompanyTypes.hapoalim]: ['userCode', PASSWORD_FIELD],
+  [CompanyTypes.hapoalimBeOnline]: ['userCode', PASSWORD_FIELD],
+  [CompanyTypes.leumi]: ['username', PASSWORD_FIELD],
+  [CompanyTypes.mizrahi]: ['username', PASSWORD_FIELD],
+  [CompanyTypes.discount]: ['id', PASSWORD_FIELD, 'num'],
+  [CompanyTypes.otsarHahayal]: ['username', PASSWORD_FIELD],
+  [CompanyTypes.leumiCard]: ['username', PASSWORD_FIELD],
+  [CompanyTypes.max]: ['username', PASSWORD_FIELD],
+  [CompanyTypes.visaCal]: ['username', PASSWORD_FIELD],
+  [CompanyTypes.isracard]: ['id', 'card6Digits', PASSWORD_FIELD],
+  [CompanyTypes.amex]: ['id', 'card6Digits', PASSWORD_FIELD],
+  [CompanyTypes.union]: ['username', PASSWORD_FIELD],
+  [CompanyTypes.beinleumi]: ['username', PASSWORD_FIELD],
+  [CompanyTypes.massad]: ['username', PASSWORD_FIELD]
+};
+
+export const LOGIN_FIELD_DISPLAY_NAMES = {
+  'userCode': 'קוד משתמש',
+  [PASSWORD_FIELD]: 'סיסמא',
+  username: 'שם משתמש',
+  id: 'מספר זהות',
+  num: 'קוד מזהה',
+  card6Digits: '6 ספרות של הכרטיס',
+
+};
+
+export const importers: Account[] = [];
+
+for (const importerName in CompanyTypes) {
+  const metadata = accountMetadata[importerName];
+  const importer : Account = {
+    id: importerName,
+    companyId: metadata.companyId,
+    displayName: metadata.companyName,
+    logo: metadata.logo,
+    type: AccountType.IMPORTER,
+    active: true,
+    logs: []
+  };
+
+  importers.push(importer);
+}
 
 export default accountMetadata;

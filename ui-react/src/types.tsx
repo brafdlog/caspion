@@ -129,6 +129,10 @@ export interface Account {
   logs: Log[]
 }
 
+export interface Importer extends Account {
+  loginFields: Record<string, string>;
+}
+
 export type AccountMetadata = {
   companyId: string,
   companyName: string,
@@ -138,5 +142,6 @@ export type AccountMetadata = {
 export enum ModalStatus {
   Settings,
   Logs,
-  Hidden
+  Hidden,
+  NewScraper
 }
