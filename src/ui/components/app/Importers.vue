@@ -63,9 +63,9 @@
 </template>
 
 <script>
+import { defineComponent, ref, computed } from '@vue/composition-api';
 import { inputVendors } from '@/backend';
 import store from '@/ui/store';
-import { defineComponent, ref, computed } from '@vue/composition-api';
 import AddImporter from './importers/AddImporter';
 import Importer from './importers/Importer';
 

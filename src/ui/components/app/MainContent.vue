@@ -53,10 +53,10 @@
 </template>
 
 <script lang="ts">
-import LogViewer from '@/ui/components/shared/log/LogViewer.vue';
 import {
   computed, defineComponent, ref, Ref, UnwrapRef
 } from '@vue/composition-api';
+import LogViewer from '@/ui/components/shared/log/LogViewer.vue';
 import { scrapeAndUpdateOutputVendors, Events } from '@/backend';
 import { AccountsState, handleEvent } from '@/ui/components/app/accountsState';
 import store from '@/ui/store';

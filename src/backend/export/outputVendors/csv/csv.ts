@@ -1,11 +1,11 @@
-import {
-  EnrichedTransaction, ExportTransactionsFunction, OutputVendor, OutputVendorName
-} from '@/backend/commonTypes';
-import { mergeTransactions, sortByDate } from '@/backend/transactions/transactions';
 import { TransactionInstallments } from 'israeli-bank-scrapers-core/lib/transactions';
 import { promises as fs } from 'fs';
 import stringify from 'csv-stringify/lib/sync';
 import parse from 'csv-parse/lib/sync';
+import {
+  EnrichedTransaction, ExportTransactionsFunction, OutputVendor, OutputVendorName
+} from '@/backend/commonTypes';
+import { mergeTransactions, sortByDate } from '@/backend/transactions/transactions';
 
 export function parseTransactions(csvText: string) {
   return parse(csvText, {

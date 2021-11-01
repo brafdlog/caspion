@@ -60,10 +60,10 @@
 
 <script lang="ts">
 import { defineComponent, ref } from '@vue/composition-api';
+import { shell } from 'electron';
 import { ipcHandlers } from '@/handlers';
 import { UpdateInfo } from '@/handlers/updater';
 import { App } from '@/app-globals';
-import { shell } from 'electron';
 import { repository } from '../../../../package.json';
 
 enum STATES {

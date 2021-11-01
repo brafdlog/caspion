@@ -1,6 +1,6 @@
+import VuexPersistence from 'vuex-persist';
 import { configManager } from '@/backend';
 import { configFilePath } from '@/app-globals';
-import VuexPersistence from 'vuex-persist';
 
 export default (configModuleName: string) => new VuexPersistence<any>({
   modules: [configModuleName],

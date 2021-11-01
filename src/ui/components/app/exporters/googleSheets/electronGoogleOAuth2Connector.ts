@@ -1,7 +1,7 @@
+import ElectronGoogleOAuth2 from '@getstation/electron-google-oauth2';
 import {
   clientId, clientSecret, redirectUri, scopes
 } from '@/backend/export/outputVendors/googleSheets/googleAuth';
-import ElectronGoogleOAuth2 from '@getstation/electron-google-oauth2';
 
 export default () => {
   if (!clientId || !clientSecret) throw Error('No \'clientId\' or \'clientSecret\' for google login');

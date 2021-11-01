@@ -1,8 +1,8 @@
+import { promises as fs } from 'fs';
 import {
   EnrichedTransaction, ExportTransactionsFunction, OutputVendor, OutputVendorName
 } from '@/backend/commonTypes';
 import { mergeTransactions, sortByDate } from '@/backend/transactions/transactions';
-import { promises as fs } from 'fs';
 
 const parseTransactionsFile = async (filename: string) => {
   try {

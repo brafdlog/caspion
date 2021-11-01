@@ -1,6 +1,6 @@
+import moment from 'moment';
 import { createTransactionsInExternalVendors } from '@/backend/export/exportTransactions';
 import { scrapeFinancialAccountsAndFetchTransactions } from '@/backend/import/importTransactions';
-import moment from 'moment';
 import * as configManager from './configManager/configManager';
 import * as Events from './eventEmitters/EventEmitter';
 import outputVendors from './export/outputVendors';

@@ -1,9 +1,9 @@
+import _ from 'lodash';
 import { Config } from '@/backend/configManager/configManager';
 import {
   AccountStatus, EventNames, EventPublisher, ExporterEvent
 } from '@/backend/eventEmitters/EventEmitter';
 import { EnrichedTransaction } from '@/backend/commonTypes';
-import _ from 'lodash';
 import outputVendors from '@/backend/export/outputVendors';
 
 export async function createTransactionsInExternalVendors(

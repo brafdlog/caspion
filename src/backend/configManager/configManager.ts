@@ -1,6 +1,6 @@
-import { decrypt, encrypt } from '@/backend/configManager/encryption/crypto';
 import { existsSync, promises as fs } from 'fs';
 import { CompanyTypes } from 'israeli-bank-scrapers-core';
+import { decrypt, encrypt } from '@/backend/configManager/encryption/crypto';
 import { Credentials } from '../export/outputVendors/googleSheets/googleAuth';
 import configExample from './defaultConfig';
 

@@ -1,12 +1,12 @@
-import {
-  EnrichedTransaction, ExportTransactionsFunction, OutputVendor, OutputVendorName
-} from '@/backend/commonTypes';
-import {
-  EventNames, EventPublisher, ExporterEvent
-} from '@/backend/eventEmitters/EventEmitter';
 import _ from 'lodash';
 import moment from 'moment/moment';
 import * as ynab from 'ynab';
+import {
+  EventNames, EventPublisher, ExporterEvent
+} from '@/backend/eventEmitters/EventEmitter';
+import {
+  EnrichedTransaction, ExportTransactionsFunction, OutputVendor, OutputVendorName
+} from '@/backend/commonTypes';
 import { Config, YnabConfig } from '../../../configManager/configManager';
 
 const INITIAL_YNAB_ACCESS_TOKEN = 'AABB';

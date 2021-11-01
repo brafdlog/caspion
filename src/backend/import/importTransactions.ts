@@ -1,11 +1,11 @@
+import _ from 'lodash';
+import moment from 'moment';
 import { userDataPath } from '@/app-globals';
 import { EnrichedTransaction } from '@/backend/commonTypes';
 import * as configManager from '@/backend/configManager/configManager';
 import * as bankScraper from '@/backend/import/bankScraper';
 import { ScaperScrapingResult, Transaction } from '@/backend/import/bankScraper';
 import * as categoryCalculation from '@/backend/import/categoryCalculationScript';
-import _ from 'lodash';
-import moment from 'moment';
 import {
   AccountStatus, BudgetTrackingEventEmitter, DownalodChromeEvent, EventNames, EventPublisher, ImporterEvent
 } from '../eventEmitters/EventEmitter';

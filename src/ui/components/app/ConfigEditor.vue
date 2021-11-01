@@ -40,10 +40,10 @@
 </template>
 
 <script lang="ts">
+import { defineComponent, ref, computed } from '@vue/composition-api';
 import { VForm } from '@/types/vuetify';
 import { required, positive } from '@/ui/components/shared/formValidations';
 import store from '@/ui/store';
-import { defineComponent, ref, computed } from '@vue/composition-api';
 import { GlobalConfig } from '@/ui/store/modules/config';
 
 export default defineComponent({
