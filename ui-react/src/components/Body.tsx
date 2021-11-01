@@ -7,7 +7,8 @@ import {StoreContext} from '../Store';
 import Container from 'react-bootstrap/Container';
 import Stack from 'react-bootstrap/Stack';
 import AccountsContainer from './accounts/AccountsContainer';
-import CreateOrEditAccount from "./accounts/CreateOrEditAccount";
+import EditImporter from "./accounts/EditImporter";
+import CreateImporter from "./accounts/CreateImporter";
 
 type BodyProps = {
   scrape
@@ -59,8 +60,8 @@ const Body = ({ scrape }: BodyProps) => {
           </Modal.Header>
           <Modal.Body>
             { modalStatus === ModalStatus.Logs && currentAccount && currentAccount.logs.map(log => <div key={log.message}>{log.message}</div>)}
-            { modalStatus === ModalStatus.Settings && currentAccount && <CreateOrEditAccount handleSave={updateImporter} account={currentAccount} handleDelete={deleteImporter} />}
-            { modalStatus === ModalStatus.NewScraper && <CreateOrEditAccount handleSave={createImporter} />}
+            { modalStatus === ModalStatus.Settings && currentAccount && <EditImporter handleSave={updateImporter} importer={currentAccount} handleDelete={deleteImporter} />}
+            { modalStatus === ModalStatus.NewScraper && <CreateImporter handleSave={createImporter} />}
           </Modal.Body>
         </Modal>
       </Container>

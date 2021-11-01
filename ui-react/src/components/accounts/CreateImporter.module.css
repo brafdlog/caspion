@@ -17,21 +17,3 @@
 .accountWrapper {
     margin-left: 15px;
 }
-.card {
-    align-items: center;
-}
-
-.logo {
-    margin-top: 10px;
-    height: 100px;
-    width: 100px;
-}
-
-.actionButtonsWrapper {
-    display: flex;
-    justify-content: space-between;
-}
-
-.formGroup {
-    margin-bottom: 10px;
-}
