@@ -8,6 +8,7 @@ import {
   AccountType,
   BudgetTrackingEvent,
   Config,
+  Exporter,
   Importer,
   Log
 } from './types';
@@ -41,12 +42,15 @@ export default class Store {
     });
   }
 
-  get exporters(): Account[] {
+  get exporters(): Exporter[] {
     if (!this.config) return [];
     const outputVendors = this.config.outputVendors;
     return Object.keys(outputVendors).map(exporterKey => {
       const exporter = outputVendors[exporterKey];
-      return this.createAccountObject(exporterKey, exporterKey, AccountType.EXPORTER, exporter.active);
+      return {
+        ...this.createAccountObject(exporterKey, exporterKey, AccountType.EXPORTER, exporter.active),
+        options: exporter.options
+      };
     });
   }
 
@@ -141,8 +145,21 @@ export default class Store {
     await updateConfig(this.config);
   }
 
+  async updateExporter(updatedExporterConfig: Exporter) {
+    this.verifyConfigDefined();
+    this.config.outputVendors[updatedExporterConfig.companyId] = this.createOutputVendorConfigFromExporter(updatedExporterConfig);
+    await updateConfig(this.config);
+  }
+
   createAccountToScrapeConfigFromImporter(importerConfig: Importer): AccountToScrapeConfig {
     return { id: importerConfig.id, active: importerConfig.active, key: importerConfig.companyId, loginFields: importerConfig.loginFields, name: importerConfig.displayName };
+  }
+
+  createOutputVendorConfigFromExporter(exporterConfig: Exporter) {
+    return {
+      active: exporterConfig.active,
+      options: exporterConfig.options
+    }
   }
 
   verifyConfigDefined() {

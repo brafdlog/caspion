@@ -133,6 +133,10 @@ export interface Importer extends Account {
   loginFields: Record<string, string>;
 }
 
+export interface Exporter extends Account {
+  options: object
+}
+
 export type AccountMetadata = {
   companyId: string,
   companyName: string,

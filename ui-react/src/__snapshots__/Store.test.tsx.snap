@@ -16,6 +16,9 @@ Array [
     "id": "csv",
     "logo": "excel.png",
     "logs": Array [],
+    "options": Object {
+      "filePath": "transaction.csv",
+    },
     "status": "IDLE",
     "type": "Exporter",
   },
@@ -26,6 +29,9 @@ Array [
     "id": "json",
     "logo": "json.jpeg",
     "logs": Array [],
+    "options": Object {
+      "filePath": "transaction.json",
+    },
     "status": "IDLE",
     "type": "Exporter",
   },
@@ -36,6 +42,16 @@ Array [
     "id": "ynab",
     "logo": "ynab.jpeg",
     "logs": Array [],
+    "options": Object {
+      "accessToken": "################-######-####-###",
+      "accountNumbersToYnabAccountIds": Object {
+        "1111": "xcvxcvxcvsd",
+        "3333": "xvxcdv",
+        "5555": "asdvasdvsdvs",
+        "555555555": "vsdvsdvserverv",
+      },
+      "budgetId": "advasdvasd-asdvasdva-sdvasdvasdv-asdvasdvf",
+    },
     "status": "IDLE",
     "type": "Exporter",
   },
@@ -46,6 +62,10 @@ Array [
     "id": "googleSheets",
     "logo": "sheets.png",
     "logs": Array [],
+    "options": Object {
+      "credentials": "",
+      "spreadsheetId": "",
+    },
     "status": "IDLE",
     "type": "Exporter",
   },
@@ -58,6 +78,11 @@ Object {
   "companyId": "discount",
   "displayName": "דיסקונט",
   "id": "efsvxasgd416f94d1e45a9cfc8c0a95f",
+  "loginFields": Object {
+    "id": "234234134",
+    "num": "LY9999",
+    "password": "notARealPass",
+  },
   "logo": "discount.jpeg",
   "logs": Array [],
   "status": "IDLE",
@@ -71,6 +96,10 @@ Object {
   "companyId": "visaCal",
   "displayName": "ויזה כאל",
   "id": "794a9ksj532d86cb4xxxb3438d0da942",
+  "loginFields": Object {
+    "password": "somePassword",
+    "username": "someUsername",
+  },
   "logo": "visa-cal.jpeg",
   "logs": Array [],
   "status": "IDLE",
@@ -84,6 +113,10 @@ Object {
   "companyId": "max",
   "displayName": "Max",
   "id": "9xve2485ac202f53f85bcdb4f795dssc",
+  "loginFields": Object {
+    "password": "greatPass",
+    "username": "whatAUserName",
+  },
   "logo": "max.jpg",
   "logs": Array [],
   "status": "IDLE",
@@ -91,13 +124,16 @@ Object {
 }
 `;
 
-exports[`Store actions addImporter 1`] = `
+exports[`Store actions importers addImporter 1`] = `
 Object {
   "active": false,
-  "companyId": "discount",
-  "displayName": "דיסקונט",
+  "companyId": "hapoalim",
+  "displayName": "הפועלים",
   "id": "moshe",
-  "logo": "discount.jpeg",
+  "loginFields": Object {
+    "username": "david",
+  },
+  "logo": "poalim.jpeg",
   "logs": Array [],
   "status": "IDLE",
   "type": "Importer",

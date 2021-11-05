@@ -1,6 +1,6 @@
 import Store from './Store';
 import { dummyConfig } from './test/testData';
-import { AccountToScrapeConfig, CompanyTypes } from "./types";
+import { AccountType, CompanyTypes, Exporter, Importer } from "./types";
 
 describe('Store', () => {
  let store;
@@ -48,39 +48,59 @@ describe('Store', () => {
     });
   });
   describe('actions', () => {
-     test('addImporter', () => {
-        const accountToAdd: AccountToScrapeConfig = {
-            id: 'moshe',
-            key: CompanyTypes.discount,
-            name: 'Poalim',
-            loginFields: {
-                username: 'david'
-            },
-            active: false
-        };
-        expect(store.allAccountsById.get(accountToAdd.id)).toBeFalsy();
-        store.addImporter(accountToAdd);
-        expect(store.allAccountsById.get(accountToAdd.id)).toMatchSnapshot();
-     });
+      describe('importers', () => {
+          test('addImporter', () => {
+              const accountToAdd: Importer = {
+                  id: 'moshe',
+                  companyId: CompanyTypes.hapoalim,
+                  displayName: 'פועלים',
+                  loginFields: {
+                      username: 'david'
+                  },
+                  logo: "",
+                  logs: [],
+                  type: AccountType.IMPORTER,
+                  active: false
+              };
+              expect(store.allAccountsById.get(accountToAdd.id)).toBeFalsy();
+              const originalImportersLength = store.importers.length;
+              store.addImporter(accountToAdd);
+              expect(store.importers).toHaveLength(originalImportersLength + 1);
+              expect(store.allAccountsById.get(accountToAdd.id)).toMatchSnapshot();
+          });
 
-     test('updateImporter', () => {
-         const importer = dummyConfig.scraping.accountsToScrape[0];
-         const updatedImporter = {
-             ...importer,
-             active: !importer.active
-         };
-         store.updateImporter(importer.id, updatedImporter);
-         expect(store.importers.find(i => i.id === importer.id)).toHaveProperty('active', updatedImporter.active);
-     });
+          test('updateImporter', () => {
+              const importer = store.importers[0];
+              const updatedImporter = {
+                  ...importer,
+                  active: !importer.active
+              };
+              store.updateImporter(importer.id, updatedImporter);
+              expect(store.importers.find(i => i.id === importer.id)).toHaveProperty('active', updatedImporter.active);
+          });
 
-     test('deleteImporter', () => {
-         const importer = dummyConfig.scraping.accountsToScrape[0];
-         let originalNumImporters = dummyConfig.scraping.accountsToScrape.length;
-         expect(store.importers).toHaveLength(originalNumImporters);
-         expect(store.allAccountsById.get(importer.id)).toBeTruthy();
-         store.deleteImporter(importer.id);
-         expect(store.importers).toHaveLength(originalNumImporters - 1);
-         expect(store.allAccountsById.get(importer.id)).toBeFalsy();
-     });
+          test('deleteImporter', () => {
+              const importer = dummyConfig.scraping.accountsToScrape[0];
+              let originalNumImporters = dummyConfig.scraping.accountsToScrape.length;
+              expect(store.importers).toHaveLength(originalNumImporters);
+              expect(store.allAccountsById.get(importer.id)).toBeTruthy();
+              store.deleteImporter(importer.id);
+              expect(store.importers).toHaveLength(originalNumImporters - 1);
+              expect(store.allAccountsById.get(importer.id)).toBeFalsy();
+          });
+      });
+      describe('exporters', () => {
+         test('updateExporter', () => {
+             const exporter: Exporter = store.exporters[0];
+             const updatedExporter: Exporter = {
+                 ...exporter,
+                 options: {
+                     moo: 'foo'
+                 }
+             };
+             store.updateExporter(updatedExporter);
+             expect(store.exporters[0]).toMatchObject(updatedExporter);
+         });
+      });
   });
 });
