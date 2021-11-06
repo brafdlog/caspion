@@ -6,7 +6,7 @@ import {Button, Card, Form, Image} from "react-bootstrap";
 
 type EditImporterProps = {
     handleSave: (importer: Importer) => Promise<void>;
-    handleDelete?: (id: string) => Promise<void>;
+    handleDelete: (id: string) => Promise<void>;
     importer: Importer;
 }
 
@@ -41,7 +41,7 @@ export default function EditImporter({
                     ))}
                 </Form>
                 <div className={styles.actionButtonsWrapper}>
-                    { handleDelete && <Button variant="danger" onClick={() => handleDelete(importer.id)}>מחק</Button> }
+                    <Button variant="danger" onClick={() => handleDelete(importer.id)}>מחק</Button>
                     <Button variant="primary" onClick={onSaveClicked}>שמור</Button>
                 </div>
 

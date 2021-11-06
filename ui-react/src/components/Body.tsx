@@ -1,5 +1,5 @@
 import styles from './Body.module.css';
-import {Account, Importer, ModalStatus} from '../types';
+import {Account, Exporter, Importer, ModalStatus} from '../types';
 import {Button, Modal} from 'react-bootstrap';
 import {useContext, useState} from 'react';
 import {observer} from 'mobx-react-lite';
@@ -9,6 +9,9 @@ import Stack from 'react-bootstrap/Stack';
 import AccountsContainer from './accounts/AccountsContainer';
 import EditImporter from "./accounts/EditImporter";
 import CreateImporter from "./accounts/CreateImporter";
+import Importers from "./accounts/Importers";
+import Exporters from "./exporters/Exporters";
+import EditExporter from "./exporters/EditExporter";
 
 type BodyProps = {
   scrape
@@ -39,6 +42,11 @@ const Body = ({ scrape }: BodyProps) => {
     closeModal();
   };
 
+  const updateExporter = async (exporter: Exporter) => {
+    await store.updateExporter(exporter);
+    closeModal();
+  };
+
   const deleteImporter = async (importerId) => {
     await store.deleteImporter(importerId);
     closeModal();
@@ -49,9 +57,14 @@ const Body = ({ scrape }: BodyProps) => {
         <div className={styles.contentContainer}>
           <Stack direction="horizontal" gap={5}>
             {config && config.scraping &&
-            <AccountsContainer title="בנקים וכרטיסי אשראי" accounts={store.importers} isScraping={isScraping} showModal={showModal} handleNewAccountClicked={newScraperClicked} />}
+            <AccountsContainer title="בנקים וכרטיסי אשראי">
+              <Importers accounts={store.importers} isScraping={isScraping} showModal={showModal} handleNewAccountClicked={newScraperClicked} />
+            </AccountsContainer>}
             {config && config.outputVendors &&
-            <AccountsContainer title="תוכנות ניהול תקציב" accounts={store.exporters} isScraping={isScraping} showModal={showModal} />}
+            <AccountsContainer title="תוכנות ניהול תקציב" accounts={store.exporters} isScraping={isScraping} showModal={showModal} >
+              <Exporters exporters={store.exporters} isScraping={isScraping} showModal={showModal} />
+            </AccountsContainer>
+            }
           </Stack>
         </div>
         <Modal show={modalStatus !== ModalStatus.Hidden} onHide={closeModal}>
@@ -61,13 +74,13 @@ const Body = ({ scrape }: BodyProps) => {
           <Modal.Body>
             { modalStatus === ModalStatus.Logs && currentAccount && currentAccount.logs.map(log => <div key={log.message}>{log.message}</div>)}
             { modalStatus === ModalStatus.Settings && currentAccount && <EditImporter handleSave={updateImporter} importer={currentAccount} handleDelete={deleteImporter} />}
+            { modalStatus === ModalStatus.SettingsExporter && currentAccount && <EditExporter handleSave={updateExporter} exporter={currentAccount} handleDelete={deleteImporter} />}
             { modalStatus === ModalStatus.NewScraper && <CreateImporter handleSave={createImporter} />}
           </Modal.Body>
         </Modal>
       </Container>
       <Button onClick={scrape} disabled={store.isScraping}>הפעל</Button>
     </div>
-
   );
 };
 
