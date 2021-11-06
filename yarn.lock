@@ -8588,13 +8588,14 @@ isobject@^3.0.0, isobject@^3.0.1:
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
   integrity sha1-TkMekrEalzFjaqH5yNHMvP2reN8=
 
-israeli-bank-scrapers-core@1.4.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/israeli-bank-scrapers-core/-/israeli-bank-scrapers-core-1.4.1.tgz#03bc247b966a21e782e97af6b999ff3015381caa"
-  integrity sha512-YdksYryy90ebPvglY+59Q/W2Z3Lj0vsUyZ+nPbOukMXCov+IdHHrKqjnNmFQYtiuPIYhv5L/arGDnui/SetKzw==
+israeli-bank-scrapers-core@1.5.3:
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/israeli-bank-scrapers-core/-/israeli-bank-scrapers-core-1.5.3.tgz#1a3cf0376d5272e5959b1df7507f933a5d95ca75"
+  integrity sha512-K+aMlT5MkHYMe+2p6EGOergy3E0jNxHGRAkN6Bl5DDeHbg57PWcHLjn1wtvSPzqtdNvBqWA0QSS5BlMjVkLFhA==
   dependencies:
     build-url "^2.0.0"
     core-js "^3.1.4"
+    debug "^4.3.2"
     husky "^4.2.5"
     json2csv "^4.5.4"
     lodash "^4.17.10"
