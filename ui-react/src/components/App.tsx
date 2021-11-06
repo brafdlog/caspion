@@ -7,6 +7,7 @@ import './App.css';
 
 const store = new Store();
 const boundScrape = async function() {
+  store.clearScrapingStatus();
   await scrape(store);
 }
 

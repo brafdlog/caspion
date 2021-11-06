@@ -24,7 +24,8 @@ export default class Store {
       handleScrapingEvent: action,
       addImporter: action,
       updateImporter: action,
-      deleteImporter: action
+      deleteImporter: action,
+      clearScrapingStatus: action
     });
   }
 
@@ -80,6 +81,10 @@ export default class Store {
 
   get isScraping(): boolean {
     return !!Array.from(this.accountScrapingData.values()).find(account => account.status === AccountStatus.IN_PROGRESS);
+  }
+
+  clearScrapingStatus() {
+    this.accountScrapingData = new Map();
   }
 
   handleScrapingEvent(eventName: string, budgetTrackingEvent?: BudgetTrackingEvent) {
