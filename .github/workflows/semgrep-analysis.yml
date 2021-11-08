@@ -5,7 +5,7 @@ on:
   pull_request: {}
 
   Scan all files on branches, block on any issues
-  push:
+push:
     branches: ["master", "main"]
 
   Schedule this job to run at a certain time, using cron syntax
