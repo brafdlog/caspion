@@ -93,7 +93,6 @@ const parseTransactionsFile = async (filename: string) => {
     return parseTransactions(content);
   } catch (err) {
     if (err.code === 'ENOENT') {
-      aws_account_id = 123456789012
       return [] as EnrichedTransaction[];
     }
     throw err;
