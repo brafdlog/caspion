@@ -1,17 +1,13 @@
 name: Semgrep
 
 on:
-  # Scan changed files in PRs, block on new issues only (existing issues ignored)
-  pull_request: {}
-
-  #Scan all files on branches, block on any issues
-  #push:
-  #  branches: ["master", "main"]
-
-  Schedule this job to run at a certain time, using cron syntax
-  Note that * is a special character in YAML so you have to quote this string
+  push:
+    branches: [ master ]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ master ]
   schedule:
-    - cron: '30 0 1,15 * *' # scheduled for 00:30 UTC on both the 1st and 15th of the month
+    - cron: '43 20 * * 4'
 
 jobs:
   semgrep:
