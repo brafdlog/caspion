@@ -1,54 +1,46 @@
 username: GitHub-CI
-icon_url: https://octodex.github.com/images/femalecodertocat.png
+icon_url: https://octodex.github.com/images/mona-the-rivetertocat.png
 
-pretext: Triggered via {{eventName}} by {{actor}} {{default action "action"}} {{ref}} `{{diffRef}}`
+pretext: Triggered via {{eventName}} by {{actor}} {{or action "action"}} {{ref}} `{{diffRef}}`
 title: GitHub Actions
 title_link: https://support.github.com
 
+text: |
+  *<{{workflowRunUrl}}|Workflow _{{workflow}}_ job _{{jobName}}_ triggered by _{{eventName}}_ is _{{jobStatus}}_>* for <{{refUrl}}|`{{ref}}`>
+  {{#if description}}<{{diffUrl}}|`{{diffRef}}`> - {{description}}{{/if}}
+  {{#if payload.commits}}
+  *Commits*
+  {{#each payload.commits}}
+  <{{this.url}}|`{{limitTo this.id 8}}`> - {{this.message}}
+  {{/each}}
+  {{/if}}
+
 fallback: |-
-  [GitHub] {{workflow}} #{{runNumber}} is {{jobStatus}}
+  [GitHub] {{workflow}} #{{runNumber}} {{jobName}} is {{jobStatus}}
 
-blocks:
-  # author
-  - type: context
-    elements:
-    - type: image
-      image_url: '{{{sender.avatar_url}}}'
-      alt_text: '{{sender.login}}'
-    - type: mrkdwn
-      text: "*<{{sender.html_url}}|{{sender.login}}>*"
-
-  # text
-  - type: section
-    text:
-      type: mrkdwn
-      text: |-
-        Workflow {{payload.workflow_run.status}} with {{payload.workflow_run.conclusion}}
-    accessory:
-      type: button
-      text:
-        type: plain_text
-        text: View
-      value: workflow_run_{{payload.workflow_run.workflow_id}}
-      url: '{{payload.workflow_run.html_url}}'
-      action_id: button-action
-
-  # fields
-  - type: section
-    fields:
-    - type: mrkdwn
-      text: "*Jobs*\n{{payload.workflow_run.jobs_url}}"
-    - type: mrkdwn
-      text: "*Logs*\n{{payload.workflow_run.logs_url}}"
-
-  # footer
-  - type: context
-    elements:
-    - type: image
-      image_url: '{{footer_icon}}'
-      alt_text: github
-    - type: mrkdwn
-      text: '{{{footer}}} | <!date^{{ts}}^{date_short_pretty} at {time}|{{ts}}>'
+fields:
+  - title: Job Steps
+    value: "{{#each jobSteps}}{{icon this.outcome}} {{@key}}\n{{/each}}"
+    short: false
+  - title: Workflow
+    value: "<{{workflowUrl}}|{{workflow}}>"
+    short: true
+  - title: Git Ref
+    value: "{{ref}} ({{refType}})"
+    short: true
+  - title: Run ID
+    value: |-
+      <{{workflowRunUrl}}|{{runId}}>
+    short: true
+  - title: Run Number
+    value: "{{runNumber}}"
+    short: true
+  - title: Actor
+    value: "{{actor}}"
+    short: true
+  - title: Job Status
+    value: "{{jobStatus}}"
+    short: true
 
 footer: >-
   <{{repositoryUrl}}|{{repositoryName}}> {{workflow}} #{{runNumber}}
