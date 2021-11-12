@@ -49,3 +49,8 @@ jobs:
         with:
           sarif_file: semgrep.sarif
         if: always()
+      - uses: actions/checkout@v2
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
