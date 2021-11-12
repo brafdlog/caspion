@@ -1,0 +1,67 @@
+username: GitHub-CI
+icon_url: https://octodex.github.com/images/femalecodertocat.png
+
+pretext: Triggered via {{eventName}} by {{actor}} {{default action "action"}} {{ref}} `{{diffRef}}`
+title: GitHub Actions
+title_link: https://support.github.com
+
+fallback: |-
+  [GitHub] {{workflow}} #{{runNumber}} is {{jobStatus}}
+
+blocks:
+  # author
+  - type: context
+    elements:
+    - type: image
+      image_url: '{{{sender.avatar_url}}}'
+      alt_text: '{{sender.login}}'
+    - type: mrkdwn
+      text: "*<{{sender.html_url}}|{{sender.login}}>*"
+
+  # text
+  - type: section
+    text:
+      type: mrkdwn
+      text: |-
+        Workflow {{payload.workflow_run.status}} with {{payload.workflow_run.conclusion}}
+    accessory:
+      type: button
+      text:
+        type: plain_text
+        text: View
+      value: workflow_run_{{payload.workflow_run.workflow_id}}
+      url: '{{payload.workflow_run.html_url}}'
+      action_id: button-action
+
+  # fields
+  - type: section
+    fields:
+    - type: mrkdwn
+      text: "*Jobs*\n{{payload.workflow_run.jobs_url}}"
+    - type: mrkdwn
+      text: "*Logs*\n{{payload.workflow_run.logs_url}}"
+
+  # footer
+  - type: context
+    elements:
+    - type: image
+      image_url: '{{footer_icon}}'
+      alt_text: github
+    - type: mrkdwn
+      text: '{{{footer}}} | <!date^{{ts}}^{date_short_pretty} at {time}|{{ts}}>'
+
+footer: >-
+  <{{repositoryUrl}}|{{repositoryName}}> {{workflow}} #{{runNumber}}
+
+colors:
+  success: '#5DADE2'
+  failure: '#884EA0'
+  cancelled: '#A569BD'
+  default: '#7D3C98'
+
+icons:
+  success: ':white_check_mark:'
+  failure: ':grimacing:'
+  cancelled: ':x:'
+  skipped: ':heavy_minus_sign:'
+  default: ':interrobang:'
