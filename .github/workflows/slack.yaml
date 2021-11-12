@@ -1,36 +1,36 @@
-name: "workflow-run"
-on:
-  workflow_run:
-    workflows: ["semgrep"]
-    # branches: [master]
-    # types:
-    #   - completed
-    #   - requested
+# name: "workflow-run"
+# on:
+#   workflow_run:
+#     workflows: ["semgrep"]
+#     # branches: [master]
+#     # types:
+#     #   - completed
+#     #   - requested
 
-env:
-  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+# env:
+#   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
-jobs:
-  on-success:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    steps:
-    - uses: actions/checkout@v2
-    - uses: ./
-      with:
-        status: ${{ github.event.workflow_run.conclusion }}
-        channel: '#actions'
-        config: .github/slack-workflow.yml
-      if: always()
+# jobs:
+#   on-success:
+#     runs-on: ubuntu-latest
+#     if: ${{ github.event.workflow_run.conclusion == 'success' }}
+#     steps:
+#     - uses: actions/checkout@v2
+#     - uses: ./
+#       with:
+#         status: ${{ github.event.workflow_run.conclusion }}
+#         channel: '#actions'
+#         config: .github/slack-workflow.yml
+#       if: always()
 
-  on-failure:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
-    steps:
-    - uses: actions/checkout@v2
-    - uses: ./
-      with:
-        status: ${{ github.event.workflow_run.conclusion }}
-        channel: '#actions'
-        config: .github/slack-workflow.yml
-      if: always()
+#   on-failure:
+#     runs-on: ubuntu-latest
+#     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+#     steps:
+#     - uses: actions/checkout@v2
+#     - uses: ./
+#       with:
+#         status: ${{ github.event.workflow_run.conclusion }}
+#         channel: '#actions'
+#         config: .github/slack-workflow.yml
+#       if: always()
