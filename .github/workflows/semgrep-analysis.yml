@@ -48,14 +48,14 @@ jobs:
       - uses: github/codeql-action/upload-sarif@v1
         with:
           sarif_file: semgrep.sarif
-        if: always()
+        if: (github.actor != 'dependabot[bot]')
 
       - uses: act10ns/slack@v1
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         with: 
           status: ${{ job.status }}
-        if: always()
+        if: (github.actor != 'dependabot[bot]')
 
       #slack message
       #   if: always()
