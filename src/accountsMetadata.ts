@@ -18,6 +18,7 @@ import poalimLogo from './ui/assets/logos/poalim.jpeg';
 import googleSheetsLogo from './ui/assets/logos/sheets.png';
 import visaCalLogo from './ui/assets/logos/visa-cal.jpeg';
 import ynabLogo from './ui/assets/logos/ynab.jpeg';
+import yahavLogo from './ui/assets/logos/yahavLogo.jpg';
 
 export type AccountMetadata = {
   companyKey: string;
@@ -101,6 +102,11 @@ const ACCOUNT_METADATA: AccountsMetadata = {
       companyKey: CompanyTypes.massad,
       companyName: 'מסד',
       logo: massadLogo
+    },
+    [CompanyTypes.yahav]: {
+      companyKey: CompanyTypes.yahav,
+      companyName: 'יהב',
+      logo: yahavLogo
     }
   },
   exporters: {
