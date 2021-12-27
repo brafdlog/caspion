@@ -2,6 +2,7 @@
 
 ![Build/Release](https://github.com/brafdlog/caspion/workflows/Build/Release/badge.svg?branch=master&event=push)
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/brafdlog/caspion.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/brafdlog/caspion/context:javascript)
+[![Discord Shield](https://discordapp.com/api/guilds/924617301209260103/widget.png?style=shield)](https://discord.gg/XWWg7xvJyS)
 
 Many people track their expenses with spreadsheets or with budgeting apps (like [YNAB](https://ynab.com/referral/?ref=Z5wPbP0cYTWjdTQj&utm_source=customer_referral)).
 
@@ -12,6 +13,8 @@ This project aims to automate this process by fetching the data automatically fr
 In addition, it can automatically set an expense category for transactions according to predefined patterns.
 
 Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israeli-bank-scrapers) npm package.
+
+If you want to ask questions, suggest features or report issues, join [our discord channel](https://discord.gg/XWWg7xvJyS).
 
 ## Features
 
