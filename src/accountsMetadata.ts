@@ -2,6 +2,7 @@ import { CompanyTypes } from '@/backend';
 import { OutputVendorName } from '@/backend/configManager/configManager';
 import americanExpressLogo from './ui/assets/logos/americanExpress.jpeg';
 import beinleumiLogo from './ui/assets/logos/beinleumi.jpeg';
+import beyahadLogo from './ui/assets/logos/beyahadLogo.png';
 import discountLogo from './ui/assets/logos/discount.jpeg';
 import excelLogo from './ui/assets/logos/excel.png';
 import hapoalimBeOnlineLogo from './ui/assets/logos/hapoalimBeOnline.jpeg';
@@ -17,8 +18,8 @@ import otsarHahayalLogo from './ui/assets/logos/otsarHahayal.jpeg';
 import poalimLogo from './ui/assets/logos/poalim.jpeg';
 import googleSheetsLogo from './ui/assets/logos/sheets.png';
 import visaCalLogo from './ui/assets/logos/visa-cal.jpeg';
-import ynabLogo from './ui/assets/logos/ynab.jpeg';
 import yahavLogo from './ui/assets/logos/yahavLogo.jpg';
+import ynabLogo from './ui/assets/logos/ynab.jpeg';
 
 export type AccountMetadata = {
   companyKey: string;
@@ -107,6 +108,11 @@ const ACCOUNT_METADATA: AccountsMetadata = {
       companyKey: CompanyTypes.yahav,
       companyName: 'יהב',
       logo: yahavLogo
+    },
+    [CompanyTypes.beyahadBishvilha]: {
+      companyKey: CompanyTypes.beyahadBishvilha,
+      companyName: 'ביחד בשבילך',
+      logo: beyahadLogo
     }
   },
   exporters: {
