@@ -28,7 +28,7 @@
   },
   "scripts": {
     "start": "cross-env SKIP_PREFLIGHT_CHECK=true BROWSER=none react-scripts start",
-    "build": "react-scripts build",
+    "build": "cross-env SKIP_PREFLIGHT_CHECK=true react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
