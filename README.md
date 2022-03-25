@@ -97,7 +97,7 @@ YNAB is a budgeting software. If you want to manage your budget there and have y
   - The `account number` could be the credit card number, or the bank account number. To be sure, you can run the app so it exports transactions to a CSV and get the account number from there.
 - **Click on Save to save the configuration**
 
-### Google Sheet integration setup (optional)
+### Google Sheets integration setup - when building from source code (optional)
 
 Google Sheet can be setup as an exporter, Once done, the transactions results will appear in a dedicated sheet.
 The release version of Caspion uses Release values for that integration. If you wish though to build/debug this, you will need to setup your own test OAuth 2.0 Client on GCP (Google Cloud Platform). Follow these steps:
