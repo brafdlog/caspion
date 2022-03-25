@@ -47,6 +47,15 @@
       color="primary"
     >
       <Updater />
+      <v-divider
+        vertical
+        style="margin-right: 15px"
+      />
+      Use new ui
+      <v-switch
+        style="margin-left: 15px"
+        @click="switchToReactUI"
+      />
       <v-spacer />
       <v-btn
         text
@@ -66,7 +75,7 @@
 </template>
 
 <script>
-import { shell } from 'electron';
+import { shell, ipcRenderer } from 'electron';
 import Importers from '@/ui/components/app/Importers';
 import Exporters from '@/ui/components/app/Exporters';
 import { trackPage } from '@/logging/analytics';
@@ -94,6 +103,9 @@ export default {
     openExternal(url) {
       shell.openExternal(url);
     },
+    switchToReactUI() {
+      ipcRenderer.send('toggleUiVersion');
+    }
   },
 };
 </script>

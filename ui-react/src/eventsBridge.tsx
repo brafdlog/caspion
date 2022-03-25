@@ -26,3 +26,7 @@ export async function scrape(store) {
         progressListenerDefined = true;
     }
 }
+
+export async function toggleUIVersion() {
+    await electron.ipcRenderer.send('toggleUiVersion');
+}

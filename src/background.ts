@@ -1,5 +1,7 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
 import logger from './logging/logger';
 import Sentry from './logging/sentry';
 import { registerHandlers } from './handlers';
@@ -7,6 +9,12 @@ import { registerHandlers } from './handlers';
 Sentry.initializeReporter();
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
+let useReactUI = true;
+
+function toggleUseReactUI() {
+  useReactUI = !useReactUI;
+  loadUIIntoWindow();
+}
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -25,20 +33,7 @@ function createWindow() {
       enableRemoteModule: true
     },
   });
-
-  // Workaround from https://github.com/electron/electron/issues/19554
-  // @ts-ignore
-  const loadURL = (url) => setTimeout(() => mainWindow.loadURL(url), 100);
-
-  if (process.env.WEBPACK_DEV_SERVER_URL) {
-    // Load the url of the dev server if in development mode
-    // loadURL(process.env.WEBPACK_DEV_SERVER_URL);
-    loadURL('http://localhost:3000');
-    if (!process.env.IS_TEST) mainWindow.webContents.openDevTools();
-  } else {
-    // Load the index.html when not in development
-    mainWindow.loadFile('../ui-react/build/index.html');
-  }
+  loadUIIntoWindow();
 
   // initialize electron event handlers
   registerHandlers();
@@ -46,6 +41,31 @@ function createWindow() {
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
+}
+
+function loadUIIntoWindow() {
+  if (mainWindow == null) {
+    throw Error('Main window is null');
+  }
+  // Workaround from https://github.com/electron/electron/issues/19554
+  // @ts-ignore
+  const loadURL = (url) => setTimeout(() => mainWindow.loadURL(url), 100);
+  if (process.env.WEBPACK_DEV_SERVER_URL) {
+    // Load the url of the dev server if in development mode
+    const uiDevUrl = useReactUI ? 'http://localhost:3000' : process.env.WEBPACK_DEV_SERVER_URL;
+    loadURL(uiDevUrl);
+    if (!process.env.IS_TEST) mainWindow.webContents.openDevTools();
+  } else {
+    // Load the index.html when not in development
+    // eslint-disable-next-line no-lonely-if
+    if (useReactUI) {
+      mainWindow.loadFile('../ui-react/build/index.html');
+    } else {
+      // TODO remove when vue code is removed
+      createProtocol('app');
+      loadURL('app://./index.html');
+    }
+  }
 }
 
 // Quit when all windows are closed.
@@ -84,6 +104,10 @@ app.on('ready', async () => {
     }
   }
   createWindow();
+});
+
+ipcMain.on('toggleUiVersion', async (_event, _args) => {
+  toggleUseReactUI();
 });
 
 // Exit cleanly on request from parent process in development mode.

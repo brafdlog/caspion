@@ -5,5 +5,17 @@
     justify-content: center;
 }
 
+.buttonsContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.scrapeButton {
+    width: 75px;
+    margin-bottom: 15px;
+}
+
 .contentContainer {
 }
