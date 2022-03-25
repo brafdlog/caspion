@@ -99,8 +99,9 @@ YNAB is a budgeting software. If you want to manage your budget there and have y
 
 ### Google Sheets integration setup - when building from source code (optional)
 
-Google Sheet can be setup as an exporter, Once done, the transactions results will appear in a dedicated sheet.
-The release version of Caspion uses Release values for that integration. If you wish though to build/debug this, you will need to setup your own test OAuth 2.0 Client on GCP (Google Cloud Platform). Follow these steps:
+If you set Google Sheets as an exporter the transactions results will appear in a dedicated sheet.
+In the release version of Caspion, this integration will work out of the box. 
+If you wish though to build/debug this from source, you will need to setup your own test OAuth 2.0 Client on GCP (Google Cloud Platform). Follow these steps:
 
 - Create a new project in [GCP](https://console.cloud.google.com/apis/credentials)
 - Enable [Google Sheets API](https://console.cloud.google.com/apis/api/sheets.googleapis.com)
