@@ -1,10 +1,10 @@
 import { ipcMain, dialog, ipcRenderer } from 'electron';
-import { checkForUpdate, downloadUpdate, quitAndInstall } from './updater';
-import { getConfigHandler, updateConfigHandler } from './configHandlers';
 import { configFilePath } from '@/app-globals';
 import { getConfig } from '@/backend/configManager/configManager';
 import { scrapeAndUpdateOutputVendors } from '@/backend';
 import { BudgetTrackingEventEmitter } from '@/backend/eventEmitters/EventEmitter';
+import { getConfigHandler, updateConfigHandler } from './configHandlers';
+import { checkForUpdate, downloadUpdate, quitAndInstall } from './updater';
 
 const functions = {
   showSaveDialog: async () => {
