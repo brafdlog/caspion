@@ -1,7 +1,6 @@
 import styles from './EditFileExporter.module.css';
 import {observer} from 'mobx-react-lite';
 import { Exporter } from '../../types';
-import Toggle from "../accounts/Toggle";
 import { useState } from "react";
 import {Button, Card, Form, Image} from "react-bootstrap";
 
@@ -52,8 +51,12 @@ const EditFileExporter = ({
                             <Form.Control value={exporterConfig.options.filePath} onChange={handleChooseFile} />
                         </Form.Group>
                         <Form.Group controlId='exporterActive'>
-                            <Form.Label className={styles.activeToggleLabel}>פעיל</Form.Label>
-                            <Toggle on={exporterConfig.active} onChange={handleActiveChange} />
+                            <Form.Check
+                                type="switch"
+                                onChange={handleActiveChange}
+                                label="פעיל"
+                                checked={exporterConfig.active}
+                            />
                         </Form.Group>
                     </Form>
                     <div className={styles.actionButtonsWrapper}>
