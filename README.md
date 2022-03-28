@@ -19,7 +19,7 @@ If you want to ask questions, suggest features or report issues, join [our disco
 ## Features
 
 - One click to fetch transactions from multiple Israeli banks and credit cards
-- Exporting transactions to *Google Sheets*, *YNAB*, *Excel (CSV)* or *JSON* file
+- Exporting transactions to _Google Sheets_, _YNAB_, _Excel (CSV)_ or _JSON_ file
 - A basic UI for configuration
 - A configuration for automatically classifying transactions to categories according to predefined patterns
 
@@ -54,7 +54,7 @@ Use this button to find the **logs folder** as well.
 #### Linux Prerequisites
 
 Currently, this project depends on `libsecret`, so you may need to install it before running `yarn`.
-
+aws_account_id=532532532532532
 Depending on your distribution, you will need to run the following command:
 
 - Debian/Ubuntu: `sudo apt-get install libsecret-1-dev`
