@@ -11,7 +11,7 @@ import { appendToSpreadsheet } from './googleSheetsInternalAPI';
 
 const GOOGLE_SHEETS_DATE_FORMAT = 'DD/MM/YYYY';
 const DEFAULT_SHEET_NAME = '_caspion';
-const COLUMN_HEADERS = ['תאריך', 'סכום', 'מטבע', 'תיאור', 'תיאור נוסף', 'קטגוריה', 'מספר חשבון', 'hash - לא לגעת'];
+const COLUMN_HEADERS = ['תאריך', 'סכום', 'תיאור', 'תיאור נוסף', 'קטגוריה', 'מספר חשבון', 'hash - לא לגעת', 'מטבע'];
 
 const createTransactionsInGoogleSheets: ExportTransactionsFunction = async (
   { transactionsToCreate: transactions, outputVendorsConfig },
@@ -39,12 +39,12 @@ const createTransactionsInGoogleSheets: ExportTransactionsFunction = async (
   const transactionsInSheetsFormat = transactionsToCreate.map((transaction) => [
     moment(transaction.date).format(GOOGLE_SHEETS_DATE_FORMAT),
     transaction.chargedAmount,
-    transaction.originalCurrency,
     transaction.description,
     transaction.memo,
     transaction.category,
     transaction.accountNumber,
-    transaction.hash
+    transaction.hash,
+    transaction.originalCurrency
   ]);
 
   const spreadsheetAppendResult = await googleSheets.appendToSpreadsheet(
