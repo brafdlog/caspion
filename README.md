@@ -66,7 +66,7 @@ Depending on your distribution, you will need to run the following command:
 - Run `yarn` to install the dependencies
 - Run `yarn serve` to start the app
 - Set up additional exporters (Optional)
-  - If you want to set up YNAB, see instructions below
+  - If you want to set up YNAB or Google Sheets, see instructions below
 - Run by clicking on the `Run` button in the app
 - Configure automatic category classification (Optional)
   - Open `categoryCalculationScript.js`. This file contains the patterns for classifying transactions to categories automatically.
@@ -96,6 +96,31 @@ YNAB is a budgeting software. If you want to manage your budget there and have y
   - To get the `ynab account id` of the account navigate to that account in ynab and get the account id from the url: `https://app.youneedabudget.com/akfkmksdcscd/accounts/XXXXXXXX-XXXX-XXXX-XXXX-XXXX`
   - The `account number` could be the credit card number, or the bank account number. To be sure, you can run the app so it exports transactions to a CSV and get the account number from there.
 - **Click on Save to save the configuration**
+
+### Google Sheets integration setup - when building from source code (optional)
+
+If you set Google Sheets as an exporter the transactions results will appear in a dedicated sheet.
+In the release version of Caspion, this integration will work out of the box. 
+If you wish though to build/debug this from source, you will need to setup your own test OAuth 2.0 Client on GCP (Google Cloud Platform). Follow these steps:
+
+- Create a new project in [GCP](https://console.cloud.google.com/apis/credentials)
+- Enable [Google Sheets API](https://console.cloud.google.com/apis/api/sheets.googleapis.com)
+- On the left panel, click to create [OAuth consent screen](https://console.cloud.google.com/apis/credentials/consent)
+- Now you are ready to create your credentials that will be used later on by Caspion
+  - On the left panel, click "Credentials" -> "CREATE CREDENTIALS" (on the top) -> "OAuth 2.0 Client IDs"
+  - Application Type: "Web Application"
+  - Authorized JavaScript origins, add: `http://localhost`
+  - Authorized redirect URIs, add: `http://127.0.0.1:42813/callback` and/or `http://localhost:42813/callback`
+  - Save.
+  - Write down the generated `Client ID` & `Client Secret`
+
+Now that you have the keys above, store them as env variables:
+```
+EXPORT GOOGLE_CLIENT_ID=XXXXX
+EXPORT GOOGLE_CLIENT_SECRET=YYYYYY
+```
+
+That's it. Next time you'll run the code a one time OAuth authorization window will appear and ask for access.
 
 ### CSV (Excel) Note
 

@@ -1,6 +1,6 @@
 {
   "name": "caspion",
-  "version": "0.0.16-beta",
+  "version": "0.0.20-beta",
   "author": "Jonathan Goldfarb <brafdlog@gmail.com>",
   "description": "An electron app for automating expense tracking",
   "license": "MIT",
@@ -45,7 +45,7 @@
     "electron-updater": "^4.3.9",
     "emittery": "^0.10.0",
     "googleapis": "^87.0.0",
-    "israeli-bank-scrapers-core": "1.11.0",
+    "israeli-bank-scrapers-core": "1.13.2",
     "keytar": "^7.4.0",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
