@@ -75,16 +75,25 @@ function getTransactions(startDate: Date): Promise<ynab.TransactionsResponse> {
   return ynabAPI!.transactions.getTransactions(ynabConfig!.options.budgetId, moment(startDate).format(YNAB_DATE_FORMAT));
 }
 
+export function getPayeeName(transaction: EnrichedTransaction, payeeNameMaxLength: number = 50) {
+  // Specific case for Bank Hapoalim - Where we can extract the payee name from the memo. Note the "." is added
+  // from the israeli-bank-scrapers project, and not from the bank itself
+  if (transaction.memo?.startsWith('לטובת') && transaction.memo.includes('עבור')) {
+    return transaction.memo.slice(7, transaction.memo.indexOf('עבור') - 2);
+  }
+  return transaction.description.substring(0, payeeNameMaxLength);
+}
+
 function convertTransactionToYnabFormat(originalTransaction: EnrichedTransaction): ynab.SaveTransaction {
-  const payeeNameMaxLength = ynabConfig!.options.maxPayeeNameLength || 50;
   const amount = Math.round(originalTransaction.chargedAmount * 1000);
   const date = convertTimestampToYnabDateFormat(originalTransaction);
+
   return {
     account_id: getYnabAccountIdByAccountNumberFromTransaction(originalTransaction.accountNumber),
     date, // "2019-01-17",
     amount,
     // "payee_id": "string",
-    payee_name: originalTransaction.description.substring(0, payeeNameMaxLength),
+    payee_name: getPayeeName(originalTransaction, ynabConfig!.options.maxPayeeNameLength || 50),
     category_id: getYnabCategoryIdFromCategoryName(originalTransaction.category),
     memo: originalTransaction.memo,
     cleared: ynab.SaveTransaction.ClearedEnum.Cleared
