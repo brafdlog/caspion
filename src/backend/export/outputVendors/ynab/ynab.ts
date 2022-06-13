@@ -93,7 +93,7 @@ function convertTransactionToYnabFormat(originalTransaction: EnrichedTransaction
     date, // "2019-01-17",
     amount,
     // "payee_id": "string",
-    payee_name: getPayeeName(originalTransaction, ynabConfig!.options.maxPayeeNameLength || 50),
+    payee_name: getPayeeName(originalTransaction, ynabConfig!.options.maxPayeeNameLength),
     category_id: getYnabCategoryIdFromCategoryName(originalTransaction.category),
     memo: originalTransaction.memo,
     cleared: ynab.SaveTransaction.ClearedEnum.Cleared
