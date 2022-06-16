@@ -8455,10 +8455,10 @@ isobject@^3.0.0, isobject@^3.0.1:
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
   integrity sha1-TkMekrEalzFjaqH5yNHMvP2reN8=
 
-israeli-bank-scrapers-core@1.13.2:
-  version "1.13.2"
-  resolved "https://registry.yarnpkg.com/israeli-bank-scrapers-core/-/israeli-bank-scrapers-core-1.13.2.tgz#8e9683438c97a93471931fb513849f85b294b1bf"
-  integrity sha512-xGEEb9gKmM9wDWs0WXtK/rXiqfdIrRkAEHG8N9OSorjq9x7V0OkCkamP9x8TgmHJrhl/Ic+HrJewBXmi/3TF8A==
+israeli-bank-scrapers-core@1.13.5:
+  version "1.13.5"
+  resolved "https://registry.yarnpkg.com/israeli-bank-scrapers-core/-/israeli-bank-scrapers-core-1.13.5.tgz#9b51a4dd0dc15c9e6a1457557c39eedb3513aaa5"
+  integrity sha512-YyjY9FQIUUg29ccu0mgdo8jOfrdp813D5dB0W5MF8kxGa3uF5FMUF0xYOFPxZCtIMrR7ZBpPM0zFI4BJTR2W8w==
   dependencies:
     build-url "^2.0.0"
     core-js "^3.1.4"
@@ -8468,7 +8468,7 @@ israeli-bank-scrapers-core@1.13.2:
     lodash "^4.17.10"
     moment "^2.22.2"
     node-fetch "^2.2.0"
-    puppeteer-core "^5.1.0"
+    puppeteer-core "5.5.0"
     uuid "^3.3.2"
 
 isstream@~0.1.2:
@@ -12035,7 +12035,7 @@ pupa@^2.1.1:
   dependencies:
     escape-goat "^2.0.0"
 
-puppeteer-core@^5.1.0, puppeteer-core@^5.5.0:
+puppeteer-core@5.5.0, puppeteer-core@^5.1.0, puppeteer-core@^5.5.0:
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/puppeteer-core/-/puppeteer-core-5.5.0.tgz#dfb6266efe5a933cbf1a368d27025a6fd4f5a884"
   integrity sha512-tlA+1n+ziW/Db03hVV+bAecDKse8ihFRXYiEypBe9IlLRvOCzYFG6qrCMBYK34HO/Q/Ecjc+tvkHRAfLVH+NgQ==
