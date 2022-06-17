@@ -1,4 +1,6 @@
 import { SaveTransaction, TransactionDetail } from 'ynab';
+import { EnrichedTransaction } from '@/backend/commonTypes';
+import { TransactionStatuses, TransactionTypes } from 'israeli-bank-scrapers-core/lib/transactions';
 import * as ynab from './ynab';
 import ClearedEnum = SaveTransaction.ClearedEnum;
 
@@ -53,6 +55,45 @@ describe('ynab', () => {
     });
     test('should consider two different strings as not equal', async () => {
       expect(ynab.areStringsEqualIgnoreCaseAndWhitespace('Gett', ' shmett ')).toBeFalsy();
+    });
+  });
+  describe('getPayeeName', () => {
+    const transactionSample : EnrichedTransaction = {
+      description: 'הוראת-קבע',
+      memo: '',
+      accountNumber: '',
+      hash: '',
+      type: TransactionTypes[TransactionTypes.Normal],
+      date: '2022-01-01',
+      identifier: '',
+      processedDate: '',
+      originalAmount: 1000,
+      originalCurrency: '',
+      chargedAmount: 1,
+      status: TransactionStatuses[TransactionStatuses.Completed],
+    };
+
+    test.each([
+      ['מסטרקרד', ''],
+      [' משכורת', 'המבצע: לאומי'],
+      ['קצבת ילדים', ''],
+      ['בזק-הוראת קבע', 'בזק - חיובי טלפון']
+    ])('Verify getPayeeName extracts the correct payeeName', async (description, memo) => {
+      transactionSample.description = description;
+      transactionSample.memo = memo;
+      expect(ynab.getPayeeName(transactionSample)).toBe(transactionSample.description);
+    });
+    test.each([
+      ['הוראת קבע', 'לטובת: צהרון. עבור: צהרון גנים - ילד 00-000-0000000', 'צהרון'],
+      ["העב' לאחר-נייד", 'לטובת: איש כלשהו. עבור: סוף חשבון', 'איש כלשהו'],
+      ['העברה לאחר', 'לטובת: פנסיה לדוגמא. עבור: סיבה מסויימת', 'פנסיה לדוגמא'],
+      ['העברה מהבנק', 'לטובת: אישה כלשהי. עבור: משכורת אוגוסט', 'אישה כלשהי'],
+      // Weird bank accounts names
+      ['הוראת קבע', 'לטובת: di. עבור: גן 092-.', 'di'],
+    ])('Verify hapoalim transfers capture the correct payee name', async (description, memo, expected) => {
+      transactionSample.description = description;
+      transactionSample.memo = memo;
+      expect(ynab.getPayeeName(transactionSample)).toBe(expected);
     });
   });
 });
