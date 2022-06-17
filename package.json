@@ -1,6 +1,6 @@
 {
   "name": "caspion",
-  "version": "0.0.20-beta",
+  "version": "0.0.21-beta",
   "author": "Jonathan Goldfarb <brafdlog@gmail.com>",
   "description": "An electron app for automating expense tracking",
   "license": "MIT",
