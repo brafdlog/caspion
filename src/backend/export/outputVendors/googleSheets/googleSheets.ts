@@ -12,9 +12,9 @@ import { appendToSpreadsheet } from './googleSheetsInternalAPI';
 const GOOGLE_SHEETS_DATE_FORMAT = 'DD/MM/YYYY';
 const DEFAULT_SHEET_NAME = '_caspion';
 const COLUMN_HEADERS = [
-'תאריך', 'סכום', 'תיאור', 'תיאור נוסף',
- 'קטגוריה', 'מספר חשבון', 'hash - לא לגעת',
- 'מטבע','סכום מקורי', 'ת. חיוב', 'מזהה', 'סוג', 'סטטוס'
+  'תאריך', 'סכום', 'תיאור', 'תיאור נוסף',
+  'קטגוריה', 'מספר חשבון', 'hash - לא לגעת',
+  'מטבע', 'סכום מקורי', 'ת. חיוב', 'מזהה', 'סוג', 'סטטוס'
 ];
 
 const createTransactionsInGoogleSheets: ExportTransactionsFunction = async (
