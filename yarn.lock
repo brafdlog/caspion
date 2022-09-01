@@ -8465,10 +8465,10 @@ isobject@^3.0.0, isobject@^3.0.1:
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
   integrity sha1-TkMekrEalzFjaqH5yNHMvP2reN8=
 
-israeli-bank-scrapers-core@1.14.3:
-  version "1.14.3"
-  resolved "https://registry.yarnpkg.com/israeli-bank-scrapers-core/-/israeli-bank-scrapers-core-1.14.3.tgz#0bba373ff87934d202c4d7ca6ca7faaa6c51c289"
-  integrity sha512-LVeBK7VlOREr6ORwfesbBYCwzHvtqzzoLf0E8xjLse3QgnO6OqtOdnVlKpHviWLjIcQ/iM193CN2X9dElJaKRg==
+israeli-bank-scrapers-core@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/israeli-bank-scrapers-core/-/israeli-bank-scrapers-core-2.0.0.tgz#269cf4bee546119e3f400a4d1d6f3b61899d7975"
+  integrity sha512-aPI1xXmutyyb9BlXVNZqe3FZf4/1iK29cYTUZSX8X0zJr+pYQzLQ2ydTLwo/+6HFZVU7iYqvydV3L+SArDB8ow==
   dependencies:
     build-url "^2.0.0"
     core-js "^3.1.4"
@@ -8477,6 +8477,7 @@ israeli-bank-scrapers-core@1.14.3:
     json2csv "^4.5.4"
     lodash "^4.17.10"
     moment "^2.22.2"
+    moment-timezone "^0.5.37"
     node-fetch "^2.2.0"
     puppeteer-core "^6.0.0"
     uuid "^3.3.2"
@@ -10430,10 +10431,22 @@ mkdirp@1.x, mkdirp@^1.0.3, mkdirp@^1.0.4:
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
-moment@^2.22.2, moment@^2.29.4:
+moment-timezone@^0.5.37:
+  version "0.5.37"
+  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.37.tgz#adf97f719c4e458fdb12e2b4e87b8bec9f4eef1e"
+  integrity sha512-uEDzDNFhfaywRl+vwXxffjjq1q0Vzr+fcQpQ1bU0kbzorfS7zVtZnCnGc8mhWmF39d4g4YriF6kwA75mJKE/Zg==
+  dependencies:
+    moment ">= 2.9.0"
+
+"moment@>= 2.9.0", moment@^2.29.4:
   version "2.29.4"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
   integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
+
+moment@^2.22.2:
+  version "2.29.3"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.3.tgz#edd47411c322413999f7a5940d526de183c031f3"
+  integrity sha512-c6YRvhEo//6T2Jz/vVtYzqBzwvPT95JBQ+smCytzf7c50oMZRsR/a4w88aD34I+/QVSfnoAnSBFPJHItlOMJVw==
 
 move-concurrently@^1.0.1:
   version "1.0.1"
