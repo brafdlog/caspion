@@ -4,10 +4,10 @@ on:
   pull_request:
     paths-ignore:
       - "nuxt/**"
-  push:
-    branches: master
-    paths-ignore:
-      - "nuxt/**"
+  # push:
+  #   branches: master
+  #   paths-ignore:
+  #     - "nuxt/**"
 
 jobs:
   release:

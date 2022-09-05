@@ -106,6 +106,7 @@
     "replace-in-file": "5.0.2",
     "sass": "~1.32",
     "sass-loader": "^10.0.0",
+    "semantic-release": "^19.0.5",
     "spectron": "^11.0.0",
     "ts-jest": "^26.3.0",
     "typescript": "^3.9.7",
