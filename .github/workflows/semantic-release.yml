@@ -2,7 +2,8 @@ name: Build/Release
 
 on:
   push:
-    branches: release
+    branches:
+    - release
     paths-ignore:
       - "nuxt/**"
 
@@ -10,6 +11,6 @@ jobs:
   release:
     runs-on: ubuntu-latest
   
-  steps:
-    - uses: actions/checkout@v2
-    - run: yarn semantic-release
+    steps:
+      - uses: actions/checkout@v3
+      - run: yarn semantic-release
