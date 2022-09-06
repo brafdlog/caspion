@@ -60,6 +60,7 @@
     "@babel/preset-env": "^7.9.5",
     "@babel/preset-typescript": "^7.10.1",
     "@babel/register": "^7.9.0",
+    "@semantic-release/exec": "^6.0.3",
     "@types/analytics-node": "^3.1.4",
     "@types/jest": "^26.0.22",
     "@types/lodash": "^4.14.158",

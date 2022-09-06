@@ -8,12 +8,52 @@ on:
       - "nuxt/**"
 
 jobs:
-  release:
+  semantic-release:
     runs-on: ubuntu-latest
   
     steps:
       - uses: actions/checkout@v3
       - run: yarn
-      - run: yarn semantic-release
+      - uses: cycjimmy/semantic-release-action@e1fe1fc00a3729593e87efb2f88475de76d64a24
+        id: semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
+  publish:
+    needs: [semantic-release]
+    
+    strategy:
+      max-parallel: 1
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+    
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install Node.js, NPM and Yarn
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14.x
+    - name: Install Snapcraft
+      uses: samuelmeuli/action-snapcraft@06f69b882c878790b568f0247d623eaa49de2f3d
+      # Only install Snapcraft  on Ubuntu
+      if: startsWith(matrix.os, 'ubuntu')
+      continue-on-error: true
+      with:
+        # Log in to  Snap Store
+        snapcraft_token: ${{ secrets.snapcraft_token }}
+    - name: Build & release Electron app
+      shell: bash
+      env:
+        GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+        GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NODE_OPTIONS: --max-old-space-size=4096
+        SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
+        SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+        PUBLISH_PARAM: ${{ jobs.semantic-release.steps.semantic-release.outputs.new_release_published && 'always' || 'never' }}
+      run: |
+        yarn
+        yarn version --new-version ${{ jobs.semantic-release.steps.semantic-release.outputs.new_release_version }}
+        yarn build --publish $PUBLISH_PARAM
