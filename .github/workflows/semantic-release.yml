@@ -24,7 +24,7 @@ jobs:
   
   publish:
     needs: [semantic-release]
-    if: needs.semantic-release.outputs.new_release_published
+    if: needs.semantic-release.outputs.new_release_published == 'true'
     
     strategy:
       max-parallel: 1
@@ -59,6 +59,6 @@ jobs:
         NODE_OPTIONS: --max-old-space-size=4096
         SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
         SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-        PUBLISH_PARAM: ${{ needs.semantic-release.outputs.new_release_published && 'always' || 'never' }}
+        PUBLISH_PARAM: ${{ needs.semantic-release.outputs.new_release_published == 'true' && 'always' || 'never' }}
       run: |
         yarn build --publish $PUBLISH_PARAM
