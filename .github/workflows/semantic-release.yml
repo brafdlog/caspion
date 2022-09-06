@@ -17,7 +17,6 @@ jobs:
   
     steps:
       - uses: actions/checkout@v3
-      - run: yarn
       - uses: cycjimmy/semantic-release-action@e1fe1fc00a3729593e87efb2f88475de76d64a24
         id: semantic
         env:
