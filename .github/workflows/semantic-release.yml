@@ -64,3 +64,15 @@ jobs:
         PUBLISH_PARAM: ${{ needs.dry-release.outputs.new_release_published == 'true' && 'always' || 'never' }}
       run: |
         yarn build --publish $PUBLISH_PARAM
+
+
+  release:
+    runs-on: ubuntu-latest
+    needs: [publish]
+  
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cycjimmy/semantic-release-action@e1fe1fc00a3729593e87efb2f88475de76d64a24
+        id: semantic
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
