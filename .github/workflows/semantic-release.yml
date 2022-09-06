@@ -10,12 +10,16 @@ on:
 jobs:
   semantic-release:
     runs-on: ubuntu-latest
+
+    outputs:
+      new_release_version: ${{ steps.semantic.outputs.new_release_version }}
+      new_release_published: ${{ steps.semantic.outputs.new_release_published }}
   
     steps:
       - uses: actions/checkout@v3
       - run: yarn
       - uses: cycjimmy/semantic-release-action@e1fe1fc00a3729593e87efb2f88475de76d64a24
-        id: semantic-release
+        id: semantic
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
@@ -52,8 +56,8 @@ jobs:
         NODE_OPTIONS: --max-old-space-size=4096
         SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
         SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-        PUBLISH_PARAM: ${{ jobs.semantic-release.steps.semantic-release.outputs.new_release_published && 'always' || 'never' }}
+        PUBLISH_PARAM: ${{ needs.semantic-release.outputs.new_release_published && 'always' || 'never' }}
       run: |
         yarn
-        yarn version --new-version ${{ jobs.semantic-release.steps.semantic-release.outputs.new_release_version }}
+        yarn version --new-version ${{ needs.semantic-release.outputs.new_release_version }}
         yarn build --publish $PUBLISH_PARAM
