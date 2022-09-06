@@ -47,6 +47,9 @@ jobs:
       with:
         # Log in to  Snap Store
         snapcraft_token: ${{ secrets.snapcraft_token }}
+    - name: set version
+      run: yarn version --new-version ${{ needs.semantic-release.outputs.new_release_version }}
+    - run: yarn
     - name: Build & release Electron app
       shell: bash
       env:
@@ -58,6 +61,4 @@ jobs:
         SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
         PUBLISH_PARAM: ${{ needs.semantic-release.outputs.new_release_published && 'always' || 'never' }}
       run: |
-        yarn
-        yarn version --new-version ${{ needs.semantic-release.outputs.new_release_version }}
         yarn build --publish $PUBLISH_PARAM
