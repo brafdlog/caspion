@@ -24,6 +24,7 @@ jobs:
   
   publish:
     needs: [semantic-release]
+    if: needs.semantic-release.outputs.new_release_published
     
     strategy:
       max-parallel: 1
