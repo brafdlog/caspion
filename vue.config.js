@@ -28,7 +28,13 @@ module.exports = {
       ],
       builderOptions: {
         productName: appName,
-        appId: 'com.electron.' + appName,
+        appId: `com.electron.${appName}`,
+        publish: [
+          {
+            provider: 'github',
+            releaseType: 'release'
+          }
+        ],
         dmg: {
           contents: [
             {
