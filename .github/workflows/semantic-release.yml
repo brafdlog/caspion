@@ -3,9 +3,9 @@ name: Release
 on:
   push:
     branches:
-    - release
+    - master
     paths-ignore:
-      - "nuxt/**"
+    - "nuxt/**"
 
 jobs:
   release:

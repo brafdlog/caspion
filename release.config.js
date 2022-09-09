@@ -12,7 +12,7 @@ const releaseRules = {
 };
 
 module.exports = {
-  branches: ['release'],
+  branches: ['master'],
   plugins: [
     [
       '@semantic-release/commit-analyzer',

@@ -79,7 +79,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 14.x
-    - name: Build & release Electron app
+    - name: Build Electron app
       shell: bash
       env:
         GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
