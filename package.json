@@ -1,13 +1,13 @@
 {
   "name": "caspion",
-  "version": "v1.2.3",
+  "version": "0.0.24-beta",
   "author": "Jonathan Goldfarb <brafdlog@gmail.com>",
   "description": "An electron app for automating expense tracking",
   "license": "MIT",
   "main": "background.js",
   "private": true,
-  "repository": "https://github.com/baruchiro/caspion",
-  "homepage": "https://github.com/baruchiro/caspion#README.md",
+  "repository": "https://github.com/brafdlog/caspion",
+  "homepage": "https://github.com/brafdlog/caspion#README.md",
   "scripts": {
     "serve": "vue-cli-service electron:serve",
     "serve:docker": "yarn serve --no-sandbox",
