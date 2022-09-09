@@ -1,4 +1,4 @@
-name: Build/Release
+name: Release
 
 on:
   push:
@@ -24,8 +24,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
   publish:
-    needs: [dry-release]
-    if: needs.dry-release.outputs.new_release_published == 'true'
+    needs: [release]
+    if: needs.release.outputs.new_release_published == 'true'
     
     strategy:
       max-parallel: 1
@@ -49,7 +49,7 @@ jobs:
         # Log in to  Snap Store
         snapcraft_token: ${{ secrets.snapcraft_token }}
     - name: set version
-      run: yarn version --no-git-tag-version --new-version ${{ needs.dry-release.outputs.new_release_version }}
+      run: yarn version --no-git-tag-version --new-version ${{ needs.release.outputs.new_release_version }}
     - run: yarn
     - name: Build & release Electron app
       shell: bash
@@ -60,6 +60,6 @@ jobs:
         NODE_OPTIONS: --max-old-space-size=4096
         SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
         SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-        PUBLISH_PARAM: ${{ needs.dry-release.outputs.new_release_published == 'true' && 'always' || 'never' }}
+        PUBLISH_PARAM: ${{ needs.release.outputs.new_release_published == 'true' && 'always' || 'never' }}
       run: |
         yarn build --publish $PUBLISH_PARAM
