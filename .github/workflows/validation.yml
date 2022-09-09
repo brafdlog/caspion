@@ -1,0 +1,43 @@
+name: Validation
+
+on:
+  pull_request:
+    paths-ignore:
+      - "nuxt/**"
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+
+    # Platforms to build on/for
+    strategy:
+      max-parallel: 1
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install Node.js, NPM and Yarn
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14.x
+    - name: Build & release Electron app
+      shell: bash
+      env:
+        GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+        GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NODE_OPTIONS: --max-old-space-size=4096
+        SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
+        SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+      run: |
+        yarn
+        yarn build --publish never
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        # Artifact name
+        name: ${{ matrix.os }}-artifact
+        # Directory containing files to upload
+        path: dist_electron
