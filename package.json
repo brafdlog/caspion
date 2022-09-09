@@ -84,6 +84,7 @@
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.3.0",
     "babel-plugin-component": "^1.1.1",
+    "conventional-changelog-eslint": "^3.0.9",
     "electron": "^9.0.0",
     "eslint": "^7.1.0",
     "eslint-config-airbnb-base": "^14.1.0",
