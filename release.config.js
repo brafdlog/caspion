@@ -7,7 +7,8 @@ const releaseRules = {
     { tag: 'Fix', release: 'patch' },
     { tag: 'New', release: 'minor' },
     { tag: 'Update', release: 'minor' },
-    { tag: 'Upgrade', release: 'minor' }
+    { tag: 'Upgrade', release: 'minor' },
+    { tag: 'Deps', release: 'patch' }
   ]
 };
 
