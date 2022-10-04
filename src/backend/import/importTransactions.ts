@@ -1,8 +1,7 @@
 import _ from 'lodash';
 import moment from 'moment';
 import { userDataPath } from '@/app-globals';
-import { EnrichedTransaction } from '@/backend/commonTypes';
-import * as configManager from '@/backend/configManager/configManager';
+import { EnrichedTransaction, AccountToScrapeConfig, Config } from '@/backend/commonTypes';
 import * as bankScraper from '@/backend/import/bankScraper';
 import { ScaperScrapingResult, Transaction } from '@/backend/import/bankScraper';
 import * as categoryCalculation from '@/backend/import/categoryCalculationScript';
@@ -12,8 +11,6 @@ import {
 import { calculateTransactionHash } from '../transactions/transactions';
 import getChrome from './downloadChromium';
 
-type AccountToScrapeConfig = configManager.AccountToScrapeConfig;
-type Config = configManager.Config;
 type ScrapingConfig = Config['scraping'];
 
 const TRANSACTION_STATUS_COMPLETED = 'completed';
@@ -54,7 +51,7 @@ function emitChromeDownload(eventPublisher: EventPublisher, percent: number) {
   eventPublisher.emit(EventNames.DOWNLOAD_CHROME, new DownalodChromeEvent(percent));
 }
 
-export async function getFinancialAccountNumbers(config: configManager.Config) {
+export async function getFinancialAccountNumbers(config: Config) {
   const eventEmitter = new BudgetTrackingEventEmitter();
 
   const startDate = moment()
@@ -109,7 +106,7 @@ async function fetchTransactions(
 }
 
 // eslint-disable-next-line max-len
-async function postProcessTransactions(accountToScrape: configManager.AccountToScrapeConfig, scrapeResult: ScaperScrapingResult): Promise<EnrichedTransaction[]> {
+async function postProcessTransactions(accountToScrape: AccountToScrapeConfig, scrapeResult: ScaperScrapingResult): Promise<EnrichedTransaction[]> {
   if (scrapeResult.accounts) {
     let transactions = scrapeResult.accounts.flatMap((transactionAccount) => {
       return transactionAccount.txns.map((transaction) => enrichTransaction(transaction, accountToScrape.key, transactionAccount.accountNumber));

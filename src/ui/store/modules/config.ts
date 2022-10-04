@@ -2,7 +2,7 @@ import { defineModule } from 'direct-vuex';
 import { randomHex } from '@/backend/configManager/encryption/crypto';
 import {
   AccountToScrapeConfig, Config, OutputVendorConfig, OutputVendorName
-} from '@/backend/configManager/configManager';
+} from '@/backend/commonTypes';
 import { moduleActionContext } from '../index';
 
 export type GlobalConfig = {

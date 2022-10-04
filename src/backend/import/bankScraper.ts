@@ -1,5 +1,5 @@
 import { CompanyTypes, createScraper, SCRAPERS } from 'israeli-bank-scrapers-core';
-import { AccountToScrapeConfig } from '../configManager/configManager';
+import { AccountToScrapeConfig } from '@/backend/commonTypes';
 
 export { ScaperScrapingResult } from 'israeli-bank-scrapers-core/lib/scrapers/base-scraper';
 export { Transaction } from 'israeli-bank-scrapers-core/lib/transactions';
