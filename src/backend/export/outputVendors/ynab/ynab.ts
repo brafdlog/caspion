@@ -5,9 +5,8 @@ import {
   EventNames, EventPublisher, ExporterEvent
 } from '@/backend/eventEmitters/EventEmitter';
 import {
-  EnrichedTransaction, ExportTransactionsFunction, OutputVendor, OutputVendorName
+  EnrichedTransaction, ExportTransactionsFunction, OutputVendor, OutputVendorName, Config, YnabConfig
 } from '@/backend/commonTypes';
-import { Config, YnabConfig } from '../../../configManager/configManager';
 
 const INITIAL_YNAB_ACCESS_TOKEN = 'AABB';
 const YNAB_DATE_FORMAT = 'YYYY-MM-DD';

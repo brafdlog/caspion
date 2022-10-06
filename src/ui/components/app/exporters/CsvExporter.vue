@@ -29,10 +29,9 @@
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api';
-import { OutputVendorName } from '@/backend/commonTypes';
+import { CsvConfig, OutputVendorName } from '@/backend/commonTypes';
 import { legalPath, required } from '@/ui/components/shared/formValidations';
 import { ipcHandlers } from '@/handlers/';
-import { CsvConfig } from '@/backend/configManager/configManager';
 import { setupExporterConfigForm } from './exportersCommon';
 
 export default defineComponent({
