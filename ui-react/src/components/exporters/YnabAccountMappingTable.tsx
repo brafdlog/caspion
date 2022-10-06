@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import cellEditFactory from 'react-bootstrap-table2-editor';
 import BootstrapTable from 'react-bootstrap-table-next';
 import { YnabConfig } from "../../types";
+import { Button } from 'react-bootstrap';
 
 type AccountNumberToYnabAccountIdMappingObject = YnabConfig["options"]["accountNumbersToYnabAccountIds"];
 
@@ -11,14 +12,15 @@ type YnabAccountMappingTableProps = {
     onUpdate: (accountNumberToYnabIdMapping: AccountNumberToYnabAccountIdMappingObject) => void
 }
 
-type AccountMappingArray = { accountNumber: string, ynabAccountId: string }[];
+type AccountMappingArray = { accountNumber: string, ynabAccountId: string, index?: number }[];
 
 const YnabAccountMappingTable = ({ accountNumberToYnabIdMapping, onUpdate }: YnabAccountMappingTableProps) => {
-    const [accountMappingArray] = useState<AccountMappingArray>(accountMappingObjectToArray(accountNumberToYnabIdMapping))
+    const [accountMappingArray, setAccountMappingArray] = useState<AccountMappingArray>(accountMappingObjectToArray(accountNumberToYnabIdMapping))
 
     const columns = [{
         dataField: 'index',
         text: '#',
+        hidden: true
     }, {
         dataField: 'accountNumber',
         text: 'Account number',
@@ -38,8 +40,15 @@ const YnabAccountMappingTable = ({ accountNumberToYnabIdMapping, onUpdate }: Yna
         onUpdate(mappingObject);
     }
 
+    function addAccountMapping() {
+        setAccountMappingArray([...accountMappingArray, { accountNumber: '12345678', ynabAccountId: '##########', index: accountMappingArray.length }]);
+    }
+
     return (
-      <BootstrapTable keyField='index' data={accountMappingArray} columns={columns} cellEdit={ cellEdit } />
+        <>
+            <BootstrapTable keyField='index' data={accountMappingArray} columns={columns} cellEdit={ cellEdit } />
+            <Button variant="info" onClick={addAccountMapping}>+</Button>
+        </>
     );
 }
 
