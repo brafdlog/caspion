@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { toJS } from 'mobx';
 import styles from './EditYnabExporter.module.css';
 import { observer } from 'mobx-react-lite';
@@ -6,6 +6,7 @@ import { YnabConfig } from '../../types';
 import { useState } from 'react';
 import { Button, Card, Form, Image } from 'react-bootstrap';
 import YnabAccountMappingTable from './YnabAccountMappingTable';
+import { StoreContext } from '../../Store';
 
 type EditYnabExporterProps = {
     handleSave: (exporterConfig: YnabConfig) => Promise<void>;
@@ -15,6 +16,11 @@ type EditYnabExporterProps = {
 const EditYnabExporter = ({ handleSave, exporterConfig }: EditYnabExporterProps) => {
     const [ynabOptions, setYnabOptions] = useState<YnabConfig["options"]>(toJS<YnabConfig["options"]>(exporterConfig.options));
     const [active, setActive] = useState<boolean>(exporterConfig.active);
+    const store = useContext(StoreContext);
+
+    useEffect(() => {
+        store.fetchYnabAccountData();
+    }, []);
 
     const updateOptionsState = (optionUpdates: Partial<YnabConfig["options"]>) => {
         setYnabOptions({

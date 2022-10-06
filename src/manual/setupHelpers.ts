@@ -1,10 +1,10 @@
-import { YnabConfig } from '@/backend/commonTypes';
+import { FinancialAccountDetails, YnabAccountDetails, YnabConfig } from '@/backend/commonTypes';
 import { getConfig } from '@/backend/configManager/configManager';
 import { getYnabAccountDetails } from '@/backend/export/outputVendors/ynab/ynab';
 import { getFinancialAccountDetails } from '@/backend/import/importTransactions';
 import { configFilePath } from '@/app-globals';
 
-export async function getYnabAccountData(overrideYnabConfig?: YnabConfig) {
+export async function getYnabAccountData(overrideYnabConfig?: YnabConfig): Promise<{ ynabAccountData: YnabAccountDetails, financialAccountDetails: FinancialAccountDetails[] }> {
   const config = await getConfig(configFilePath);
   if (overrideYnabConfig) {
     config.outputVendors = { ...config.outputVendors, ynab: overrideYnabConfig };

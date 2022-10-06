@@ -1,6 +1,6 @@
 import { action, makeAutoObservable } from 'mobx';
 import { createContext } from 'react';
-import { updateConfig } from "./eventsBridge";
+import { updateConfig, getYnabAccountData } from "./eventsBridge";
 import {
   Account,
   AccountStatus,
@@ -13,19 +13,24 @@ import {
   Log
 } from './types';
 import accountMetadata from './accountMetadata';
+import { FinancialAccountDetails, YnabAccountDetails } from '../../src/backend/commonTypes';
 
 export default class Store {
   config?: Config;
   accountScrapingData: Map<string, { logs: Log[], status: AccountStatus }>;
+  ynabAccountData?: { ynabAccountData: YnabAccountDetails, financialAccountDetails: FinancialAccountDetails[] };
+  fetchingYnabAccountData: boolean;
 
   constructor() {
     this.accountScrapingData = new Map();
+    this.fetchingYnabAccountData = false;
     makeAutoObservable(this, {
       handleScrapingEvent: action,
       addImporter: action,
       updateImporter: action,
       deleteImporter: action,
-      clearScrapingStatus: action
+      clearScrapingStatus: action,
+      fetchYnabAccountData: action
     });
   }
 
@@ -171,6 +176,14 @@ export default class Store {
     if (!this.config) {
       throw new Error('Config not defined');
     }
+  }
+
+  async fetchYnabAccountData() {
+    console.log('Fetching ynab account data');
+    this.fetchingYnabAccountData = true;
+    this.ynabAccountData = await getYnabAccountData();
+    this.fetchingYnabAccountData = false;
+    console.log('Ynab account data ', this.ynabAccountData);
   }
 
 }

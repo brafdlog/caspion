@@ -5,21 +5,20 @@ import {
   EventNames, EventPublisher, ExporterEvent
 } from '@/backend/eventEmitters/EventEmitter';
 import {
-  EnrichedTransaction, ExportTransactionsFunction, OutputVendor, OutputVendorName, Config, YnabConfig
+  EnrichedTransaction,
+  ExportTransactionsFunction,
+  OutputVendor,
+  OutputVendorName,
+  Config,
+  YnabConfig,
+  YnabAccountDetails,
+  YnabFinancialAccount
 } from '@/backend/commonTypes';
 
 const INITIAL_YNAB_ACCESS_TOKEN = 'AABB';
 const YNAB_DATE_FORMAT = 'YYYY-MM-DD';
 const NOW = moment();
 const YNAB_ACCESS_TOKEN_LENGTH = 64;
-
-type YnabFinancialAccount = Pick<ynab.Account, 'id' | 'name' | 'type'> & { budgetId: string; active: boolean }
-
-interface YnabAccountDetails {
-  budgets: ynab.BudgetSummary[];
-  accounts: YnabFinancialAccount[];
-  categories: string[]
-}
 
 const categoriesMap: Map<string, Pick<ynab.Category, 'id' | 'name' | 'category_group_id'>> = new Map();
 const transactionsFromYnab: Map<Date, ynab.TransactionDetail[]> = new Map();

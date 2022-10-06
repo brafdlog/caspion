@@ -3,6 +3,7 @@ import { configFilePath } from '@/app-globals';
 import { getConfig } from '@/backend/configManager/configManager';
 import { scrapeAndUpdateOutputVendors } from '@/backend';
 import { BudgetTrackingEventEmitter } from '@/backend/eventEmitters/EventEmitter';
+import { getYnabAccountData } from '@/manual/setupHelpers';
 import { getConfigHandler, updateConfigHandler } from './configHandlers';
 import { checkForUpdate, downloadUpdate, quitAndInstall } from './updater';
 
@@ -15,7 +16,8 @@ const functions = {
   downloadUpdate,
   quitAndInstall,
   getConfig: getConfigHandler,
-  updateConfig: updateConfigHandler
+  updateConfig: updateConfigHandler,
+  getYnabAccountData
 };
 type Functions = typeof functions;
 
@@ -35,5 +37,9 @@ export const registerHandlers = () => {
     eventSubscriber.onAny((eventName, eventData) => {
       event.reply('scrapingProgress', JSON.stringify({ eventName, eventData }));
     });
+  });
+  ipcMain.on('getYnabAccountData', async (event) => {
+    const ynabAccountData = await getYnabAccountData();
+    event.reply(ynabAccountData);
   });
 };

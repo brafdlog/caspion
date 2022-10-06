@@ -1,5 +1,6 @@
 // import { EventPublisher } from '@/backend/eventEmitters/EventEmitter';
 import { CompanyTypes } from 'israeli-bank-scrapers-core';
+import { BudgetSummary, Account } from 'ynab';
 import { Transaction } from './import/bankScraper';
 import { Credentials } from './export/outputVendors/googleSheets/googleAuth';
 
@@ -88,4 +89,17 @@ export interface OutputVendor {
   name: OutputVendorName;
   init?: (outputVendorsConfig: Config['outputVendors']) => Promise<void>;
   exportTransactions: ExportTransactionsFunction;
+}
+
+export interface FinancialAccountDetails {
+  name: string;
+  accountNumber: string;
+}
+
+export type YnabFinancialAccount = Pick<Account, 'id' | 'name' | 'type'> & { budgetId: string; active: boolean }
+
+export interface YnabAccountDetails {
+  budgets: BudgetSummary[];
+  accounts: YnabFinancialAccount[];
+  categories: string[]
 }

@@ -14,6 +14,10 @@ export async function updateConfig(config: Config) {
     await electron.ipcRenderer.invoke('updateConfig', JSON.stringify(config));
 }
 
+export async function getYnabAccountData(): Promise<{ ynabAccountData: YnabAccountDetails, financialAccountDetails: FinancialAccountDetails[] }> {
+    return electron.ipcRenderer.invoke('getYnabAccountData');
+}
+
 export async function scrape(store) {
     await electron.ipcRenderer.send('scrape');
     if (!progressListenerDefined) {
