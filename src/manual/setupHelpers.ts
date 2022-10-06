@@ -1,10 +1,11 @@
-/* eslint-disable no-console */
-import { getConfig, YnabConfig } from '@/backend/configManager/configManager';
+import { YnabConfig } from '@/backend/commonTypes';
+import { getConfig } from '@/backend/configManager/configManager';
 import { getYnabAccountDetails } from '@/backend/export/outputVendors/ynab/ynab';
 import { getFinancialAccountDetails } from '@/backend/import/importTransactions';
+import { configFilePath } from '@/app-globals';
 
 export async function getYnabAccountData(overrideYnabConfig?: YnabConfig) {
-  const config = await getConfig();
+  const config = await getConfig(configFilePath);
   if (overrideYnabConfig) {
     config.outputVendors = { ...config.outputVendors, ynab: overrideYnabConfig };
   }

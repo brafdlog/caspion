@@ -1,10 +1,11 @@
 import _ from 'lodash';
 import moment from 'moment';
-import { userDataPath } from '@/app-globals';
+import { configFilePath, userDataPath } from '@/app-globals';
 import { EnrichedTransaction, AccountToScrapeConfig, Config } from '@/backend/commonTypes';
 import * as bankScraper from '@/backend/import/bankScraper';
 import { ScaperScrapingResult, Transaction } from '@/backend/import/bankScraper';
 import * as categoryCalculation from '@/backend/import/categoryCalculationScript';
+import { getConfig } from '@/backend/configManager/configManager';
 import {
   AccountStatus, BudgetTrackingEventEmitter, DownalodChromeEvent, EventNames, EventPublisher, ImporterEvent
 } from '../eventEmitters/EventEmitter';
@@ -52,6 +53,7 @@ function emitChromeDownload(eventPublisher: EventPublisher, percent: number) {
 }
 
 export async function getFinancialAccountDetails() {
+  const config = await getConfig(configFilePath);
   const eventEmitter = new BudgetTrackingEventEmitter();
 
   const startDate = moment()
