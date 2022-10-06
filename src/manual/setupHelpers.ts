@@ -1,22 +1,18 @@
 /* eslint-disable no-console */
-import { getConfig } from '@/backend/configManager/configManager';
-import { configFilePath } from '@/app-globals';
+import { getConfig, YnabConfig } from '@/backend/configManager/configManager';
 import { getYnabAccountDetails } from '@/backend/export/outputVendors/ynab/ynab';
-import { getFinancialAccountNumbers } from '@/backend/import/importTransactions';
+import { getFinancialAccountDetails } from '@/backend/import/importTransactions';
 
-export async function printYnabAccountData() {
-  const config = await getConfig(configFilePath);
-  const ynabAccountData = await getYnabAccountDetails(config.outputVendors);
-  const companyIdToAccountNumbers = await getFinancialAccountNumbers(config);
-  console.log();
-  console.log();
-  console.log('------YNAB Budgets------');
-  console.log(ynabAccountData.budgets);
-  console.log();
-  console.log('------YNAB Accounts------');
-  console.log(ynabAccountData.accounts);
-  console.log();
-  console.log('------Financial institutions account numbers------');
-  console.log(companyIdToAccountNumbers);
-  console.log();
+export async function getYnabAccountData(overrideYnabConfig?: YnabConfig) {
+  const config = await getConfig();
+  if (overrideYnabConfig) {
+    config.outputVendors = { ...config.outputVendors, ynab: overrideYnabConfig };
+  }
+  const ynabAccountDataPromise = getYnabAccountDetails(config.outputVendors);
+  const financialAccountDetailsPromise = getFinancialAccountDetails();
+  const [ynabAccountData, financialAccountDetails] = await Promise.all([ynabAccountDataPromise, financialAccountDetailsPromise]);
+  return {
+    ynabAccountData,
+    financialAccountDetails
+  };
 }

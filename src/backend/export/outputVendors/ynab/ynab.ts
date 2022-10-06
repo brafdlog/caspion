@@ -11,8 +11,9 @@ import {
 const INITIAL_YNAB_ACCESS_TOKEN = 'AABB';
 const YNAB_DATE_FORMAT = 'YYYY-MM-DD';
 const NOW = moment();
+const YNAB_ACCESS_TOKEN_LENGTH = 64;
 
-type YnabFinancialAccount = Pick<ynab.Account, 'id' | 'name' | 'type'> & { budgetName: string };
+type YnabFinancialAccount = Pick<ynab.Account, 'id' | 'name' | 'type'> & { budgetId: string; active: boolean }
 
 interface YnabAccountDetails {
   budgets: ynab.BudgetSummary[];
@@ -28,17 +29,12 @@ let ynabAPI: ynab.API | undefined;
 let ynabAccountDetails: YnabAccountDetails | undefined;
 
 export async function init(outputVendorsConfig: Config['outputVendors']) {
-  if (ynabConfig && ynabAPI) {
-    return;
-  }
-
   ynabConfig = outputVendorsConfig.ynab;
 
-  if (!ynabConfig?.active) {
-    return;
-  }
   verifyYnabAccessTokenWasDefined();
-  ynabAPI = new ynab.API(ynabConfig.options.accessToken);
+  if (ynabConfig) {
+    ynabAPI = new ynab.API(ynabConfig.options.accessToken);
+  }
 }
 
 const createTransactions: ExportTransactionsFunction = async ({ transactionsToCreate, startDate }, eventPublisher) => {
@@ -191,6 +187,25 @@ export async function getYnabAccountDetails(outputVendorsConfig: Config['outputV
   return ynabAccountDetails;
 }
 
+export async function getBudgets(accessToken): Promise<{ id: string; name: string; }[] | undefined> {
+  const localYnabApi = new ynab.API(accessToken);
+  const budgetsResponse = await localYnabApi.budgets.getBudgets();
+  return budgetsResponse?.data.budgets.map((budget) => ({ id: budget.id, name: budget.name }));
+}
+
+export async function isAccessTokenValid(accessToken) {
+  if (!accessToken || accessToken.length !== YNAB_ACCESS_TOKEN_LENGTH) {
+    return false;
+  }
+  try {
+    const localYnabApi = new ynab.API(accessToken);
+    await localYnabApi.budgets.getBudgets();
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
 async function getBudgetsAndAccountsData() {
   const budgetsResponse = await ynabAPI!.budgets.getBudgets();
   let { budgets } = budgetsResponse.data;
@@ -199,8 +214,10 @@ async function getBudgetsAndAccountsData() {
   await Promise.all(
     budgets.map(async (budget) => {
       const budgetAccountsResponse = await ynabAPI!.accounts.getAccounts(budget.id);
-      const budgetAccounts = budgetAccountsResponse.data.accounts.map(({ id, name, type }) => ({
-        id, name, type, budgetName: budget.name
+      const budgetAccounts = budgetAccountsResponse.data.accounts.map(({
+        id, name, type, deleted, closed
+      }) => ({
+        id, name, type, budgetId: budget.id, active: !deleted && !closed
       }));
       accounts.push(...budgetAccounts);
     })
