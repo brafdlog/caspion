@@ -98,7 +98,7 @@ export enum AccountStatus {
   ERROR = 'ERROR'
 }
 
-export class BudgetTrackingEvent {
+export type BudgetTrackingEvent = {
   message: string;
 
   vendorId?: CompanyTypes | OutputVendorName;

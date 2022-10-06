@@ -1,5 +1,4 @@
 import { CompanyTypes } from '@/backend';
-import { OutputVendorName } from '@/backend/configManager/configManager';
 import americanExpressLogo from './ui/assets/logos/americanExpress.jpeg';
 import beinleumiLogo from './ui/assets/logos/beinleumi.jpeg';
 import beyahadLogo from './ui/assets/logos/beyahadLogo.png';
@@ -20,6 +19,7 @@ import googleSheetsLogo from './ui/assets/logos/sheets.png';
 import visaCalLogo from './ui/assets/logos/visa-cal.jpeg';
 import yahavLogo from './ui/assets/logos/yahavLogo.jpg';
 import ynabLogo from './ui/assets/logos/ynab.jpeg';
+import { OutputVendorName } from './backend/commonTypes';
 
 export type AccountMetadata = {
   companyKey: string;
