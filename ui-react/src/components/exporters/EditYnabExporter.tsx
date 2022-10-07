@@ -58,10 +58,12 @@ const EditYnabExporter = ({ handleSave, exporterConfig }: EditYnabExporterProps)
                         </Form.Group>
                         <Form.Group controlId='budgetId' className='mb-3'>
                             <Form.Label>Budget id</Form.Label>
-                            <Form.Control value={ynabOptions.budgetId} onChange={(event) => handleOptionChangeEvent('budgetId', event)} />
+                            <Form.Select disabled={store.fetchingYnabAccountData} defaultValue={ynabOptions.budgetId} onChange={(event) => handleOptionChangeEvent('budgetId', event)}>
+                                {store.ynabAccountData?.ynabAccountData?.budgets.map(budget => <option key={budget.id} value={budget.id}>{budget.name}</option>)}
+                            </Form.Select>
                         </Form.Group>
                         <Form.Group controlId='accountNumbersToYnabAccountIds' className='mb-3'>
-                            <YnabAccountMappingTable accountNumberToYnabIdMapping={ynabOptions.accountNumbersToYnabAccountIds} onUpdate={handleAccountMappingChange} />
+                            <YnabAccountMappingTable accountNumberToYnabIdMapping={ynabOptions.accountNumbersToYnabAccountIds} onUpdate={handleAccountMappingChange} ynabAccountData={store.ynabAccountData}/>
                         </Form.Group>
                         <Form.Group controlId='exporterActive'>
                             <Form.Check

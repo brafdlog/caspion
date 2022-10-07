@@ -102,8 +102,21 @@ export interface FinancialAccountDetails {
 
 export type YnabFinancialAccount = Pick<Account, 'id' | 'name' | 'type'> & { budgetId: string; active: boolean }
 
+export enum FETCH_YNAB_ACCOUNT_DATA_STATUS {
+  SUCCESS = 'SUCCESS',
+  INVALID_ACCESS_TOKEN = 'INVALID_ACCESS_TOKEN',
+  INVALID_BUDGET_ID = 'INVALID_BUDGET_ID',
+  GENERAL_ERROR = 'GENERAL_ERROR'
+}
+
 export interface YnabAccountDetails {
   budgets: BudgetSummary[];
   accounts: YnabFinancialAccount[];
   categories?: string[]
+}
+
+export type YnabAccountDataType = {
+  ynabAccountData?: YnabAccountDetails,
+  financialAccountDetails?: FinancialAccountDetails[],
+  status: FETCH_YNAB_ACCOUNT_DATA_STATUS
 }

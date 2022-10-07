@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
-import cellEditFactory from 'react-bootstrap-table2-editor';
+import cellEditFactory, { Type } from 'react-bootstrap-table2-editor';
 import BootstrapTable from 'react-bootstrap-table-next';
 import { YnabConfig } from "../../types";
 import { Button } from 'react-bootstrap';
+import { YnabAccountDataType } from '../../../../src/backend/commonTypes';
+import { observer } from 'mobx-react-lite';
 
 type AccountNumberToYnabAccountIdMappingObject = YnabConfig["options"]["accountNumbersToYnabAccountIds"];
 
 type YnabAccountMappingTableProps = {
-    accountNumberToYnabIdMapping: AccountNumberToYnabAccountIdMappingObject,
-    onUpdate: (accountNumberToYnabIdMapping: AccountNumberToYnabAccountIdMappingObject) => void
+    accountNumberToYnabIdMapping: AccountNumberToYnabAccountIdMappingObject;
+    ynabAccountData?: YnabAccountDataType;
+    onUpdate: (accountNumberToYnabIdMapping: AccountNumberToYnabAccountIdMappingObject) => void;
 }
 
 type AccountMappingArray = { accountNumber: string, ynabAccountId: string, index?: number }[];
 
-const YnabAccountMappingTable = ({ accountNumberToYnabIdMapping, onUpdate }: YnabAccountMappingTableProps) => {
+const YnabAccountMappingTable = ({ accountNumberToYnabIdMapping, onUpdate, ynabAccountData }: YnabAccountMappingTableProps) => {
     const [accountMappingArray, setAccountMappingArray] = useState<AccountMappingArray>(accountMappingObjectToArray(accountNumberToYnabIdMapping))
 
     const columns = [{
@@ -30,6 +33,15 @@ const YnabAccountMappingTable = ({ accountNumberToYnabIdMapping, onUpdate }: Yna
         dataField: 'ynabAccountId',
         text: 'Ynab account id',
         editor: {
+            type: Type.SELECT,
+            getOptions: () => {
+                return ynabAccountData?.ynabAccountData?.accounts.map(ynabAccount => {
+                    return {
+                        label: ynabAccount.name,
+                        value: ynabAccount.id
+                    }
+                })
+            }
         }
     }];
 
@@ -70,4 +82,4 @@ function accountMappingArrayToObject(accountMappingArray: AccountMappingArray) {
     return mappingObject;
 }
 
-export default YnabAccountMappingTable;
+export default observer(YnabAccountMappingTable);

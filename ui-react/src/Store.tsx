@@ -13,12 +13,12 @@ import {
   Log
 } from './types';
 import accountMetadata from './accountMetadata';
-import { FinancialAccountDetails, YnabAccountDetails } from '../../src/backend/commonTypes';
+import { YnabAccountDataType } from '../../src/backend/commonTypes';
 
 export default class Store {
   config?: Config;
   accountScrapingData: Map<string, { logs: Log[], status: AccountStatus }>;
-  ynabAccountData?: { ynabAccountData: YnabAccountDetails, financialAccountDetails: FinancialAccountDetails[] };
+  ynabAccountData?: YnabAccountDataType;
   fetchingYnabAccountData: boolean;
 
   constructor() {
