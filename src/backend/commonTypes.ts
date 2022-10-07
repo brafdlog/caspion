@@ -4,7 +4,6 @@ import { BudgetSummary, Account } from 'ynab';
 import { Transaction } from 'israeli-bank-scrapers-core/lib/transactions';
 
 export type { ScaperScrapingResult } from 'israeli-bank-scrapers-core/lib/scrapers/base-scraper';
-
 export interface Config {
   outputVendors: {
     [OutputVendorName.GOOGLE_SHEETS]?: GoogleSheetsConfig;

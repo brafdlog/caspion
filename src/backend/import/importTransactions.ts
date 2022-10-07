@@ -2,10 +2,11 @@ import _ from 'lodash';
 import moment from 'moment';
 import { configFilePath, userDataPath } from '@/app-globals';
 import {
-  EnrichedTransaction, AccountToScrapeConfig, Config, FinancialAccountDetails
+  EnrichedTransaction, AccountToScrapeConfig, Config, FinancialAccountDetails,
+  ScaperScrapingResult
 } from '@/backend/commonTypes';
+import { Transaction } from 'israeli-bank-scrapers-core/lib/transactions';
 import * as bankScraper from '@/backend/import/bankScraper';
-import { ScaperScrapingResult, Transaction } from '@/backend/import/bankScraper';
 import * as categoryCalculation from '@/backend/import/categoryCalculationScript';
 import { getConfig } from '@/backend/configManager/configManager';
 import {

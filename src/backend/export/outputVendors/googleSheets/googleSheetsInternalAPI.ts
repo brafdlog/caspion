@@ -1,6 +1,6 @@
 import { drive_v3 as driveV3, google } from 'googleapis';
 import _ from 'lodash';
-import { OAuth2Client } from './googleAuth';
+import { OAuth2Client } from '@/backend/commonTypes';
 
 const sheets = google.sheets({ version: 'v4' });
 const drive = google.drive({ version: 'v3' });
