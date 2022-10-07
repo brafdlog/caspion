@@ -101,5 +101,5 @@ export type YnabFinancialAccount = Pick<Account, 'id' | 'name' | 'type'> & { bud
 export interface YnabAccountDetails {
   budgets: BudgetSummary[];
   accounts: YnabFinancialAccount[];
-  categories: string[]
+  categories?: string[]
 }

@@ -19,8 +19,10 @@ const EditYnabExporter = ({ handleSave, exporterConfig }: EditYnabExporterProps)
     const store = useContext(StoreContext);
 
     useEffect(() => {
-        store.fetchYnabAccountData();
-    }, []);
+        if (ynabOptions.accessToken) {
+            store.fetchYnabAccountData();
+        }
+    }, [ynabOptions.accessToken, store]);
 
     const updateOptionsState = (optionUpdates: Partial<YnabConfig["options"]>) => {
         setYnabOptions({

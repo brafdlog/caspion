@@ -18,7 +18,7 @@ import {
 const INITIAL_YNAB_ACCESS_TOKEN = 'AABB';
 const YNAB_DATE_FORMAT = 'YYYY-MM-DD';
 const NOW = moment();
-const YNAB_ACCESS_TOKEN_LENGTH = 64;
+const MIN_YNAB_ACCESS_TOKEN_LENGTH = 43;
 
 const categoriesMap: Map<string, Pick<ynab.Category, 'id' | 'name' | 'category_group_id'>> = new Map();
 const transactionsFromYnab: Map<Date, ynab.TransactionDetail[]> = new Map();
@@ -176,14 +176,28 @@ export async function getYnabAccountDetails(outputVendorsConfig: Config['outputV
   if (!ynabAccountDetails) {
     await init(outputVendorsConfig);
     const { budgets, accounts } = await getBudgetsAndAccountsData();
-    const categoryNames = await getYnabCategories();
+
+    const budgetIdToCheck = outputVendorsConfig.ynab?.options?.budgetId;
+    let categories: YnabAccountDetails['categories'];
+    if (doesBudgetIdExistInYnab(budgetIdToCheck)) {
+      categories = await getYnabCategories();
+    } else {
+      console.warn(`Budget id ${budgetIdToCheck} doesn't exist in ynab`);
+    }
     ynabAccountDetails = {
       budgets,
       accounts,
-      categories: categoryNames
+      categories
     };
   }
   return ynabAccountDetails;
+}
+
+function doesBudgetIdExistInYnab(budgetIdToCheck, budgets?: ynab.BudgetSummary[]): boolean {
+  if (!budgetIdToCheck) {
+    return false;
+  }
+  return !!budgets && !!budgets.find((budget) => budget.id === budgetIdToCheck);
 }
 
 export async function getBudgets(accessToken): Promise<{ id: string; name: string; }[] | undefined> {
@@ -193,7 +207,7 @@ export async function getBudgets(accessToken): Promise<{ id: string; name: strin
 }
 
 export async function isAccessTokenValid(accessToken) {
-  if (!accessToken || accessToken.length !== YNAB_ACCESS_TOKEN_LENGTH) {
+  if (!accessToken || accessToken.length !== MIN_YNAB_ACCESS_TOKEN_LENGTH) {
     return false;
   }
   try {
