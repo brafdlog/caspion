@@ -1,7 +1,9 @@
 import _ from 'lodash';
 import moment from 'moment';
 import { configFilePath, userDataPath } from '@/app-globals';
-import { EnrichedTransaction, AccountToScrapeConfig, Config, FinancialAccountDetails } from '@/backend/commonTypes';
+import {
+  EnrichedTransaction, AccountToScrapeConfig, Config, FinancialAccountDetails
+} from '@/backend/commonTypes';
 import * as bankScraper from '@/backend/import/bankScraper';
 import { ScaperScrapingResult, Transaction } from '@/backend/import/bankScraper';
 import * as categoryCalculation from '@/backend/import/categoryCalculationScript';

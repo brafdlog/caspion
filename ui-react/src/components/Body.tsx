@@ -1,18 +1,18 @@
 import styles from './Body.module.css';
 import {Account, Exporter, Importer, ModalStatus} from '../types';
 import { Button, Form, Modal } from 'react-bootstrap';
-import {useContext, useState} from 'react';
-import {observer} from 'mobx-react-lite';
-import {StoreContext} from '../Store';
+import { useContext, useState } from 'react';
+import { observer } from 'mobx-react-lite';
+import { StoreContext } from '../Store';
 import Container from 'react-bootstrap/Container';
 import Stack from 'react-bootstrap/Stack';
 import AccountsContainer from './accounts/AccountsContainer';
-import EditImporter from "./accounts/EditImporter";
-import CreateImporter from "./accounts/CreateImporter";
-import Importers from "./accounts/Importers";
-import Exporters from "./exporters/Exporters";
-import EditExporter from "./exporters/EditExporter";
-import { toggleUIVersion } from "../eventsBridge";
+import EditImporter from './accounts/EditImporter';
+import CreateImporter from './accounts/CreateImporter';
+import Importers from './accounts/Importers';
+import Exporters from './exporters/Exporters';
+import EditExporter from './exporters/EditExporter';
+import { toggleUIVersion } from '../eventsBridge';
 
 type BodyProps = {
   scrape
