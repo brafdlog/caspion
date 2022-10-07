@@ -22,6 +22,7 @@ function createWindow() {
     useContentSize: true,
     width: 1000,
     webPreferences: {
+      enableRemoteModule: true,
       nodeIntegration: (process.env.ELECTRON_NODE_INTEGRATION as unknown) as
         | boolean
         | undefined,
