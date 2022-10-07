@@ -1,5 +1,5 @@
 import styles from './Body.module.css';
-import {Account, Exporter, Importer, ModalStatus} from '../types';
+import { Account, Exporter, Importer, ModalStatus, OutputVendorName } from '../types';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { useContext, useState } from 'react';
 import { observer } from 'mobx-react-lite';
@@ -30,6 +30,9 @@ const Body = ({ scrape }: BodyProps) => {
     setCurrentAccount(account);
     setModalStatus(modalStatus);
   };
+
+  const wideModal = shouldShowWideModal(modalStatus, currentAccount);
+
   const newScraperClicked = () => {
     setModalStatus(ModalStatus.NewScraper);
   };
@@ -68,7 +71,7 @@ const Body = ({ scrape }: BodyProps) => {
             }
           </Stack>
         </div>
-        <Modal show={modalStatus !== ModalStatus.Hidden} onHide={closeModal}>
+        <Modal show={modalStatus !== ModalStatus.Hidden} onHide={closeModal} dialogClassName={wideModal ? styles.modalWide : ''}>
           <Modal.Header closeButton>
             <Modal.Title>{currentAccount && currentAccount.displayName}</Modal.Title>
           </Modal.Header>
@@ -92,5 +95,9 @@ const Body = ({ scrape }: BodyProps) => {
     </div>
   );
 };
+
+function shouldShowWideModal(modalStatus: ModalStatus, currentAccount?: Account) {
+  return modalStatus === ModalStatus.SettingsExporter && currentAccount && currentAccount.companyId === OutputVendorName.YNAB;
+}
 
 export default observer(Body);

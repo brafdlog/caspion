@@ -19,3 +19,8 @@
 
 .contentContainer {
 }
+
+.modalWide {
+    max-width: unset;
+    width: 70%;
+}
