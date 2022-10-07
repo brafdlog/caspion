@@ -1,9 +1,6 @@
 import { CompanyTypes, createScraper, SCRAPERS } from 'israeli-bank-scrapers-core';
 import { AccountToScrapeConfig } from '@/backend/commonTypes';
 
-export { ScaperScrapingResult } from 'israeli-bank-scrapers-core/lib/scrapers/base-scraper';
-export { Transaction } from 'israeli-bank-scrapers-core/lib/transactions';
-
 export const inputVendors = Object.keys(SCRAPERS)
   // Deprecated. see https://github.com/eshaham/israeli-bank-scrapers/blob/07ecd3de0c4aa051f119aa943493f0cda943158c/src/definitions.ts#L26-L29
   .filter((key) => key !== CompanyTypes.hapoalimBeOnline)

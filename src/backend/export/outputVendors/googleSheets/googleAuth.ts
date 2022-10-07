@@ -1,9 +1,6 @@
 import { Auth } from 'googleapis';
 import { homepage } from '../../../../../package.json';
 
-export type OAuth2Client = Auth.OAuth2Client;
-export type Credentials = Auth.Credentials;
-
 export const clientId = GOOGLE_CLIENT_ID;
 export const clientSecret = GOOGLE_CLIENT_SECRET;
 export const redirectUri = homepage;

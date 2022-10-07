@@ -1,8 +1,9 @@
-// import { EventPublisher } from '@/backend/eventEmitters/EventEmitter';
+import { Auth } from 'googleapis';
 import { CompanyTypes } from 'israeli-bank-scrapers-core';
 import { BudgetSummary, Account } from 'ynab';
-import { Transaction } from './import/bankScraper';
-import { Credentials } from './export/outputVendors/googleSheets/googleAuth';
+import { Transaction } from 'israeli-bank-scrapers-core/lib/transactions';
+
+export type { ScaperScrapingResult } from 'israeli-bank-scrapers-core/lib/scrapers/base-scraper';
 
 export interface Config {
   outputVendors: {
@@ -90,6 +91,9 @@ export interface OutputVendor {
   init?: (outputVendorsConfig: Config['outputVendors']) => Promise<void>;
   exportTransactions: ExportTransactionsFunction;
 }
+
+export type OAuth2Client = Auth.OAuth2Client;
+export type Credentials = Auth.Credentials;
 
 export interface FinancialAccountDetails {
   name: string;
