@@ -4,6 +4,7 @@ import * as configManager from '@/backend/configManager/configManager';
 import * as bankScraper from '@/backend/import/bankScraper';
 import { ScaperScrapingResult, Transaction } from '@/backend/import/bankScraper';
 import * as categoryCalculation from '@/backend/import/categoryCalculationScript';
+import { app } from 'electron';
 import _ from 'lodash';
 import moment from 'moment';
 import {
@@ -19,7 +20,7 @@ type ScrapingConfig = Config['scraping'];
 const TRANSACTION_STATUS_COMPLETED = 'completed';
 
 export async function scrapeFinancialAccountsAndFetchTransactions(scrapingConfig: ScrapingConfig, startDate: Date, eventPublisher: EventPublisher) {
-  const dowloadedChrome = await getChrome(userDataPath, (percent) => emitChromeDownload(eventPublisher, percent));
+  const dowloadedChrome = await getChrome(userDataPath(app), (percent) => emitChromeDownload(eventPublisher, percent));
 
   const scrapePromises = scrapingConfig.accountsToScrape
     .filter((accountToScrape) => accountToScrape.active !== false)

@@ -2,11 +2,16 @@ import { app, BrowserWindow } from 'electron';
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
-import logger from './logging/logger';
+import logger, { initLogger } from './logging/logger';
 import Sentry from './logging/sentry';
 import { registerHandlers } from './handlers';
+import { initDevFolder } from './app-globals';
 // import './store';
 
+require('@electron/remote/main').initialize();
+
+initLogger(app);
+initDevFolder(app);
 Sentry.initializeReporter();
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
@@ -23,6 +28,7 @@ function createWindow() {
     width: 1000,
     webPreferences: {
       enableRemoteModule: true,
+      contextIsolation: false,
       nodeIntegration: (process.env.ELECTRON_NODE_INTEGRATION as unknown) as
         | boolean
         | undefined,

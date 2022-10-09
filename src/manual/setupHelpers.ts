@@ -1,11 +1,12 @@
 /* eslint-disable no-console */
-import { getConfig } from '@/backend/configManager/configManager';
 import { configFilePath } from '@/app-globals';
+import { getConfig } from '@/backend/configManager/configManager';
 import { getYnabAccountDetails } from '@/backend/export/outputVendors/ynab/ynab';
 import { getFinancialAccountNumbers } from '@/backend/import/importTransactions';
+import { app } from 'electron';
 
 export async function printYnabAccountData() {
-  const config = await getConfig(configFilePath);
+  const config = await getConfig(configFilePath(app));
   const ynabAccountData = await getYnabAccountDetails(config.outputVendors);
   const companyIdToAccountNumbers = await getFinancialAccountNumbers(config);
   console.log();

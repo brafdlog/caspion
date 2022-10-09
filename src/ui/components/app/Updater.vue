@@ -59,11 +59,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from '@vue/composition-api';
 import { ipcHandlers } from '@/handlers';
 import { UpdateInfo } from '@/handlers/updater';
-import { App } from '@/app-globals';
-import { shell } from 'electron';
+import { app, shell } from '@electron/remote';
+import { defineComponent, ref } from '@vue/composition-api';
 import { repository } from '../../../../package.json';
 
 enum STATES {
@@ -75,7 +74,7 @@ enum STATES {
   READY_TO_INSTALL,
 }
 
-const currentVersion = App.getVersion();
+const currentVersion = app.getVersion();
 
 export default defineComponent({
   setup() {
