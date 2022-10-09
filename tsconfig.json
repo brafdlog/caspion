@@ -45,5 +45,8 @@
   "files": [
     "./src/types/shims-vue.d.ts",
     "./src/types/shims-tsx.d.ts"
-  ]
+  ],
+  "vueCompilerOptions": {
+    "target": 2
+  }
 }

@@ -7,6 +7,8 @@ import Sentry from './logging/sentry';
 import { registerHandlers } from './handlers';
 // import './store';
 
+require('@electron/remote/main').initialize();
+
 Sentry.initializeReporter();
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
@@ -23,6 +25,7 @@ function createWindow() {
     width: 1000,
     webPreferences: {
       enableRemoteModule: true,
+      contextIsolation: false,
       nodeIntegration: (process.env.ELECTRON_NODE_INTEGRATION as unknown) as
         | boolean
         | undefined,
