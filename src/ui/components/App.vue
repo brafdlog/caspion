@@ -60,6 +60,13 @@
       <v-btn
         text
         small
+        @click="() => openExternal(discordChannel)"
+      >
+        <span class="mr-2">Our Discord Channel</span>
+      </v-btn>
+      <v-btn
+        text
+        small
         @click="() => openExternal(appRepository)"
       >
         <span class="mr-2">Open in Github</span>
@@ -74,14 +81,14 @@
   </v-app>
 </template>
 
-<script>
+<script lang="ts">
 import { shell, ipcRenderer } from 'electron';
-import Importers from '@/ui/components/app/Importers';
-import Exporters from '@/ui/components/app/Exporters';
+import Importers from '@/ui/components/app/Importers.vue';
+import Exporters from '@/ui/components/app/Exporters.vue';
 import { trackPage } from '@/logging/analytics';
-import ReportProblemDialog from './app/ReportProblemDialog';
-import MainContent from './app/MainContent';
-import Updater from './app/Updater';
+import ReportProblemDialog from './app/ReportProblemDialog.vue';
+import MainContent from './app/MainContent.vue';
+import Updater from './app/Updater.vue';
 import { repository } from '../../../package.json';
 
 export default {
@@ -93,7 +100,8 @@ export default {
     return {
       reportProblemDialog: false,
       appRepository: repository,
-      appName: APP_NAME
+      appName: APP_NAME,
+      discordChannel: DISCORD_CHANNEL,
     };
   },
   mounted() {

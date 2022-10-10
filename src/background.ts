@@ -2,10 +2,15 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
-import logger from './logging/logger';
+import logger, { initLogger } from './logging/logger';
 import Sentry from './logging/sentry';
 import { registerHandlers } from './handlers';
+import { initDevFolder } from './app-globals';
 
+require('@electron/remote/main').initialize();
+
+initLogger(app);
+initDevFolder(app);
 Sentry.initializeReporter();
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
@@ -27,10 +32,11 @@ function createWindow() {
     useContentSize: true,
     width: 1152,
     webPreferences: {
+      enableRemoteModule: true,
+      contextIsolation: false,
       nodeIntegration: (process.env.ELECTRON_NODE_INTEGRATION as unknown) as
         | boolean
-        | undefined,
-      enableRemoteModule: true
+        | undefined
     },
   });
   loadUIIntoWindow();
@@ -50,6 +56,7 @@ function loadUIIntoWindow() {
   // Workaround from https://github.com/electron/electron/issues/19554
   // @ts-ignore
   const loadURL = (url) => setTimeout(() => mainWindow.loadURL(url), 100);
+
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     const uiDevUrl = useReactUI ? 'http://localhost:3000' : process.env.WEBPACK_DEV_SERVER_URL;
@@ -66,6 +73,13 @@ function loadUIIntoWindow() {
       loadURL('app://./index.html');
     }
   }
+
+  // initialize electron event handlers
+  registerHandlers();
+
+  mainWindow.on('closed', () => {
+    mainWindow = null;
+  });
 }
 
 // Quit when all windows are closed.

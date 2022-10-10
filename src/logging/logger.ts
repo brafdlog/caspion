@@ -2,19 +2,20 @@ import logger, { LogFunctions, LogLevel } from 'electron-log'; // eslint-disable
 import fs from 'fs';
 import { EOL } from 'os';
 import path from 'path';
-import { App } from '@/app-globals';
 
 export type Logger = LogFunctions
 export type Levels = LogLevel
 
-logger.info(`Welcome to ${App.getName()} log`);
-logger.info(`Version: ${App.getVersion()}`);
+export const initLogger = (app: Electron.App) => {
+  logger.info(`Welcome to ${app.getName()} log`);
+  logger.info(`Version: ${app.getVersion()}`);
 
-const onError = (error: Error) => {
-  logger.error(error.message || error);
-  if (error.stack) logger.debug(error.stack);
+  const onError = (error: Error) => {
+    logger.error(error.message || error);
+    if (error.stack) logger.debug(error.stack);
+  };
+  logger.catchErrors({ onError });
 };
-logger.catchErrors({ onError });
 
 export const getLastLines = (n: number) => {
   const lines = fs.readFileSync(logger.transports.file.getFile().path).toString().split(EOL);

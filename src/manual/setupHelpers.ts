@@ -1,11 +1,13 @@
+/* eslint-disable no-console */
 import { FETCH_YNAB_ACCOUNT_DATA_STATUS, OutputVendorName, YnabAccountDataType } from '@/backend/commonTypes';
-import { getConfig } from '@/backend/configManager/configManager';
 import { getYnabAccountDetails, isAccessTokenValid } from '@/backend/export/outputVendors/ynab/ynab';
 import { getFinancialAccountDetails } from '@/backend/import/importTransactions';
 import { configFilePath } from '@/app-globals';
+import { getConfig } from '@/backend/configManager/configManager';
+import { app } from 'electron';
 
 export async function getYnabAccountData(): Promise<YnabAccountDataType> {
-  const config = await getConfig(configFilePath);
+  const config = await getConfig(configFilePath(app));
 
   const accessTokenValid = await isAccessTokenValid(config.outputVendors[OutputVendorName.YNAB]?.options?.accessToken);
   if (!accessTokenValid) {

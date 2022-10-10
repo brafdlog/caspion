@@ -1,4 +1,4 @@
-import { ipcMain, dialog, ipcRenderer } from 'electron';
+import { ipcMain, dialog, ipcRenderer, app } from 'electron';
 import { configFilePath } from '@/app-globals';
 import { getConfig } from '@/backend/configManager/configManager';
 import { scrapeAndUpdateOutputVendors } from '@/backend';
@@ -31,7 +31,7 @@ export const registerHandlers = () => {
     ipcMain.handle(funcName, functions[funcName]);
   });
   ipcMain.on('scrape', async (event, _args) => {
-    const config = await getConfig(configFilePath);
+    const config = await getConfig(configFilePath(app));
     const eventSubscriber = new BudgetTrackingEventEmitter();
     scrapeAndUpdateOutputVendors(config, eventSubscriber);
     eventSubscriber.onAny((eventName, eventData) => {

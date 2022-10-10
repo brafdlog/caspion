@@ -7,6 +7,7 @@ declare global {
   const SEGMENT_WRITE_KEY: string
   const SOURCE_COMMIT_SHORT: string
   const APP_NAME: string
+  const DISCORD_CHANNEL: string
   namespace NodeJS {
     interface Global {
       logger: ElectronLog.ElectronLog & {
