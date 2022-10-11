@@ -81,7 +81,7 @@ const Body = ({ scrape }: BodyProps) => {
           </Modal.Header>
           <Modal.Body>
             { modalStatus === ModalStatus.Logs && currentAccount && currentAccount.logs.map((log, index) => <div key={index}>{log.message}</div>)}
-            { modalStatus === ModalStatus.Settings && currentAccount && <EditImporter handleSave={updateImporter} importer={currentAccount} handleDelete={deleteImporter} />}
+            { modalStatus === ModalStatus.ImporterSettings && currentAccount && <EditImporter handleSave={updateImporter} importer={currentAccount} handleDelete={deleteImporter} />}
             { modalStatus === ModalStatus.SettingsExporter && currentAccount && <EditExporter handleSave={updateExporter} exporter={currentAccount} handleDelete={deleteImporter} />}
             { modalStatus === ModalStatus.NewScraper && <CreateImporter handleSave={createImporter} />}
           </Modal.Body>

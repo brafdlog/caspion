@@ -144,7 +144,7 @@ export type AccountMetadata = {
 };
 
 export enum ModalStatus {
-  Settings,
+  ImporterSettings,
   SettingsExporter,
   Logs,
   Hidden,

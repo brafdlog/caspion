@@ -36,7 +36,7 @@ export function getActionButtonRelatedProps(isScraping, settingsModalStatus?: Mo
         modalStatus = ModalStatus.Logs;
     } else {
         actionButtonIcon = settingsIcon;
-        modalStatus = settingsModalStatus || ModalStatus.Settings;
+        modalStatus = settingsModalStatus || ModalStatus.ImporterSettings;
     }
     return {
         actionButtonIcon,
