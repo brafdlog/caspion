@@ -30,7 +30,8 @@ export default class Store {
       updateImporter: action,
       deleteImporter: action,
       clearScrapingStatus: action,
-      fetchYnabAccountData: action
+      fetchYnabAccountData: action,
+      toggleShowBrowser: action
     });
   }
 
@@ -176,6 +177,12 @@ export default class Store {
     if (!this.config) {
       throw new Error('Config not defined');
     }
+  }
+
+  async toggleShowBrowser() {
+    this.verifyConfigDefined();
+    this.config.scraping.showBrowser = !this.config.scraping.showBrowser;
+    await updateConfig(this.config);
   }
 
   async fetchYnabAccountData() {

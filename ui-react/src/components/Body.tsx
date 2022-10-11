@@ -55,6 +55,10 @@ const Body = ({ scrape }: BodyProps) => {
     await store.deleteImporter(importerId);
     closeModal();
   };
+
+  const toggleShowBrowser = async () => {
+    await store.toggleShowBrowser();
+  }
   return (
     <div>
       <Container className={styles.container}>
@@ -90,6 +94,12 @@ const Body = ({ scrape }: BodyProps) => {
             onClick={toggleUIVersion}
             label="ממשק חדש"
             defaultChecked
+        />
+        <Form.Check
+            type="switch"
+            label="הראה דפדפן"
+            onClick={toggleShowBrowser}
+            defaultChecked={config?.scraping?.showBrowser}
         />
       </Container>
     </div>
