@@ -15,6 +15,7 @@ export interface Config {
     numDaysBack: number;
     showBrowser: boolean;
     accountsToScrape: AccountToScrapeConfig[];
+    chromiumPath?: string;
   };
 }
 

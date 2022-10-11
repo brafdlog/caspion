@@ -21,13 +21,18 @@ type ScrapingConfig = Config['scraping'];
 const TRANSACTION_STATUS_COMPLETED = 'completed';
 
 export async function scrapeFinancialAccountsAndFetchTransactions(scrapingConfig: ScrapingConfig, startDate: Date, eventPublisher: EventPublisher) {
-  const dowloadedChrome = await getChrome(userDataPath(app), (percent) => emitChromeDownload(eventPublisher, percent));
+  let chromiumPath: string;
 
+  if (scrapingConfig.chromiumPath) {
+    chromiumPath = scrapingConfig.chromiumPath;
+  } else {
+    chromiumPath = await getChrome(userDataPath(app), (percent) => emitChromeDownload(eventPublisher, percent));
+  }
   const scrapePromises = scrapingConfig.accountsToScrape
     .filter((accountToScrape) => accountToScrape.active !== false)
     .map(async (accountToScrape) => ({
       id: accountToScrape.id,
-      transactions: await fetchTransactions(accountToScrape, startDate, scrapingConfig.showBrowser, eventPublisher, dowloadedChrome)
+      transactions: await fetchTransactions(accountToScrape, startDate, scrapingConfig.showBrowser, eventPublisher, chromiumPath)
     }));
 
   const promiseResults = await Promise.allSettled(scrapePromises);
