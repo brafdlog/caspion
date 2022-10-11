@@ -49,8 +49,8 @@ const skip = process.env.GITHUB_ACTIONS && process.platform === 'win32';
     expect(width).toBeGreaterThan(0);
     expect(height).toBeGreaterThan(0);
     // App is loaded properly
-    const appElement = await client.$('#app');
-    expect(await appElement.getHTML()).toMatch('Caspion');
+    const appElement = await client.$('.App');
+    expect(await appElement.getHTML()).toContain('כספיון');
   });
 
   // test.skip('Hide AddScraper components by default', async () => {
