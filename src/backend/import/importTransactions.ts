@@ -1,15 +1,14 @@
 import { configFilePath, userDataPath } from '@/app-globals';
 import {
-  EnrichedTransaction, AccountToScrapeConfig, Config, FinancialAccountDetails,
+  AccountToScrapeConfig, Config, EnrichedTransaction, FinancialAccountDetails,
   ScaperScrapingResult
 } from '@/backend/commonTypes';
-import { Transaction } from 'israeli-bank-scrapers-core/lib/transactions';
+import { getConfig } from '@/backend/configManager/configManager';
 import * as bankScraper from '@/backend/import/bankScraper';
 import * as categoryCalculation from '@/backend/import/categoryCalculationScript';
-import { app } from 'electron';
+import { Transaction } from 'israeli-bank-scrapers-core/lib/transactions';
 import _ from 'lodash';
 import moment from 'moment';
-import { getConfig } from '@/backend/configManager/configManager';
 import {
   AccountStatus, BudgetTrackingEventEmitter, DownalodChromeEvent, EventNames, EventPublisher, ImporterEvent
 } from '../eventEmitters/EventEmitter';
@@ -26,7 +25,7 @@ export async function scrapeFinancialAccountsAndFetchTransactions(scrapingConfig
   if (scrapingConfig.chromiumPath) {
     chromiumPath = scrapingConfig.chromiumPath;
   } else {
-    chromiumPath = await getChrome(userDataPath(app), (percent) => emitChromeDownload(eventPublisher, percent));
+    chromiumPath = await getChrome(userDataPath, (percent) => emitChromeDownload(eventPublisher, percent));
   }
   const scrapePromises = scrapingConfig.accountsToScrape
     .filter((accountToScrape) => accountToScrape.active !== false)
@@ -62,7 +61,7 @@ function emitChromeDownload(eventPublisher: EventPublisher, percent: number) {
 }
 
 export async function getFinancialAccountDetails(): Promise<FinancialAccountDetails[]> {
-  const config = await getConfig(configFilePath(app));
+  const config = await getConfig(configFilePath);
   const eventEmitter = new BudgetTrackingEventEmitter();
 
   const startDate = moment()

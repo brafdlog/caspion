@@ -61,7 +61,8 @@
 <script lang="ts">
 import { ipcHandlers } from '@/handlers';
 import { UpdateInfo } from '@/handlers/updater';
-import { app, shell } from '@electron/remote';
+import { App } from '@/app-globals';
+import { shell } from '@electron/remote';
 import { defineComponent, ref } from '@vue/composition-api';
 import { repository } from '../../../../package.json';
 
@@ -74,7 +75,7 @@ enum STATES {
   READY_TO_INSTALL,
 }
 
-const currentVersion = app.getVersion();
+const currentVersion = App.getVersion();
 
 export default defineComponent({
   setup() {

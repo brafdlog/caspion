@@ -1,16 +1,13 @@
+import * as remote from '@electron/remote/main';
 import { app, BrowserWindow, ipcMain } from 'electron';
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
-import logger, { initLogger } from './logging/logger';
-import Sentry from './logging/sentry';
 import { registerHandlers } from './handlers';
-import { initDevFolder } from './app-globals';
+import logger from './logging/logger';
+import Sentry from './logging/sentry';
 
-require('@electron/remote/main').initialize();
-
-initLogger(app);
-initDevFolder(app);
+remote.initialize();
 Sentry.initializeReporter();
 
 const isDevelopment = process.env.NODE_ENV !== 'production';

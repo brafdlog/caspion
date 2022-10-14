@@ -1,13 +1,14 @@
 import { mkdirSync } from 'fs';
 import path from 'path';
+import electron from './electron';
 
-export const initDevFolder = (app: Electron.App) => {
-  if (process.env.NODE_ENV !== 'production') {
-    const localUserData = path.resolve('userData');
-    mkdirSync(localUserData, { recursive: true });
-    app.setPath('userData', localUserData);
-  }
-};
+export const App: Electron.App = electron.app;
 
-export const userDataPath = (app: Electron.App) => app.getPath('userData');
-export const configFilePath = (app: Electron.App) => path.resolve(userDataPath(app), 'config.encrypt');
+if (process.env.NODE_ENV !== 'production') {
+  const localUserData = path.resolve('userData');
+  mkdirSync(localUserData, { recursive: true });
+  App.setPath('userData', localUserData);
+}
+
+export const userDataPath = App.getPath('userData');
+export const configFilePath = path.resolve(userDataPath, 'config.encrypt');

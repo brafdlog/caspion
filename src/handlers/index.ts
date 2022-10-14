@@ -1,9 +1,9 @@
-import { ipcMain, dialog, ipcRenderer, app } from 'electron';
 import { configFilePath } from '@/app-globals';
-import { getConfig } from '@/backend/configManager/configManager';
 import { scrapeAndUpdateOutputVendors } from '@/backend';
+import { getConfig } from '@/backend/configManager/configManager';
 import { BudgetTrackingEventEmitter } from '@/backend/eventEmitters/EventEmitter';
 import { getYnabAccountData } from '@/manual/setupHelpers';
+import { dialog, ipcMain, ipcRenderer } from 'electron';
 import { getConfigHandler, updateConfigHandler } from './configHandlers';
 import { checkForUpdate, downloadUpdate, quitAndInstall } from './updater';
 
@@ -31,7 +31,7 @@ export const registerHandlers = () => {
     ipcMain.handle(funcName, functions[funcName]);
   });
   ipcMain.on('scrape', async (event, _args) => {
-    const config = await getConfig(configFilePath(app));
+    const config = await getConfig(configFilePath);
     const eventSubscriber = new BudgetTrackingEventEmitter();
     scrapeAndUpdateOutputVendors(config, eventSubscriber);
     eventSubscriber.onAny((eventName, eventData) => {

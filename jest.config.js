@@ -12,7 +12,8 @@ module.exports = {
   ],
   moduleNameMapper: {
     '\\.css$': 'identity-obj-proxy',
-    electron: '<rootDir>/test/unit/mock/electron.ts',
+    '^@electron/remote$': '<rootDir>/test/unit/mock/electron.ts',
+    '^electron$': '<rootDir>/test/unit/mock/electron.ts',
     '^keytar$': '<rootDir>/test/unit/mock/keytar.ts',
   },
   transform: {
