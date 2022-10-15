@@ -73,10 +73,6 @@ function loadUIIntoWindow() {
 
   // initialize electron event handlers
   registerHandlers();
-
-  mainWindow.on('closed', () => {
-    mainWindow = null;
-  });
 }
 
 // Quit when all windows are closed.
