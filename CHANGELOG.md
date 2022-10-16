@@ -1,3 +1,10 @@
+# [0.2.0](https://github.com/brafdlog/caspion/compare/v0.1.2...v0.2.0) (2022-10-16)
+
+
+### Upgrade
+
+* electron version from v9 to v13 (#378) ([3895983](https://github.com/brafdlog/caspion/commit/3895983e09b01eaa40ae663cd3942cfbb61f1167)), closes [#378](https://github.com/brafdlog/caspion/issues/378)
+
 ## [0.1.2](https://github.com/brafdlog/caspion/compare/v0.1.1...v0.1.2) (2022-10-08)
 
 
