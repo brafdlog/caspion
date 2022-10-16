@@ -1,3 +1,17 @@
+# [0.2.0](https://github.com/brafdlog/caspion/compare/v0.1.2...v0.2.0) (2022-10-16)
+
+
+### Upgrade
+
+* electron version from v9 to v13 (#378) ([3895983](https://github.com/brafdlog/caspion/commit/3895983e09b01eaa40ae663cd3942cfbb61f1167)), closes [#378](https://github.com/brafdlog/caspion/issues/378)
+
+## [0.1.2](https://github.com/brafdlog/caspion/compare/v0.1.1...v0.1.2) (2022-10-08)
+
+
+### Deps
+
+* upgrade israeli-bank-scrapers to 2.2.0 (#379) ([098ab96](https://github.com/brafdlog/caspion/commit/098ab96027d4ef27de89b7f44110f09b40edf5ba)), closes [#379](https://github.com/brafdlog/caspion/issues/379)
+
 ## [0.1.1](https://github.com/brafdlog/caspion/compare/v0.1.0...v0.1.1) (2022-09-21)
 
 
