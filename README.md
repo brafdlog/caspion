@@ -25,7 +25,7 @@ If you want to ask questions, suggest features or report issues, join [our disco
 
 ## Running the app
 
-Download the latest version from [Releases](https://github.com/brafdlog/caspion/releases) page, or build it from source, with the instructions below.
+Download the latest version from [Releases](https://github.com/brafdlog/caspion/releases) page, or build it from source, with the instructions below. (Mac users, you may follow these [instructions](https://github.com/brafdlog/caspion/issues/276#issuecomment-1282111297)).
 
 ### Initial setup
 
