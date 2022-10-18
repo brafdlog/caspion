@@ -1,9 +1,9 @@
+import { dialog, ipcMain, ipcRenderer } from 'electron';
 import { configFilePath } from '@/app-globals';
 import { scrapeAndUpdateOutputVendors } from '@/backend';
 import { getConfig } from '@/backend/configManager/configManager';
 import { BudgetTrackingEventEmitter } from '@/backend/eventEmitters/EventEmitter';
 import { getYnabAccountData } from '@/manual/setupHelpers';
-import { dialog, ipcMain, ipcRenderer } from 'electron';
 import { getConfigHandler, updateConfigHandler } from './configHandlers';
 import { checkForUpdate, downloadUpdate, quitAndInstall } from './updater';
 

@@ -1,3 +1,6 @@
+import { Transaction } from 'israeli-bank-scrapers-core/lib/transactions';
+import _ from 'lodash';
+import moment from 'moment';
 import { configFilePath, userDataPath } from '@/app-globals';
 import {
   AccountToScrapeConfig, Config, EnrichedTransaction, FinancialAccountDetails,
@@ -6,9 +9,6 @@ import {
 import { getConfig } from '@/backend/configManager/configManager';
 import * as bankScraper from '@/backend/import/bankScraper';
 import * as categoryCalculation from '@/backend/import/categoryCalculationScript';
-import { Transaction } from 'israeli-bank-scrapers-core/lib/transactions';
-import _ from 'lodash';
-import moment from 'moment';
 import {
   AccountStatus, BudgetTrackingEventEmitter, DownalodChromeEvent, EventNames, EventPublisher, ImporterEvent
 } from '../eventEmitters/EventEmitter';

@@ -1,8 +1,8 @@
-import { App } from '@/app-globals';
 import logger, { LogFunctions, LogLevel } from 'electron-log'; // eslint-disable-line no-restricted-imports
 import fs from 'fs';
 import { EOL } from 'os';
 import path from 'path';
+import { App } from '@/app-globals';
 
 export type Logger = LogFunctions
 export type Levels = LogLevel
