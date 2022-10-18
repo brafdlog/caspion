@@ -21,6 +21,7 @@ export interface Config {
     numDaysBack: number;
     showBrowser: boolean;
     accountsToScrape: AccountToScrapeConfig[];
+    chromiumPath?: string;
   };
 }
 
@@ -148,5 +149,6 @@ export enum ModalStatus {
   SettingsExporter,
   Logs,
   Hidden,
-  NewScraper
+  NewScraper,
+  GeneralSettings
 }

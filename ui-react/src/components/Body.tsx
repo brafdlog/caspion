@@ -1,6 +1,7 @@
 import styles from './Body.module.css';
 import { Account, Exporter, Importer, ModalStatus, OutputVendorName } from '../types';
-import { Button, Form, Modal } from 'react-bootstrap';
+import settingsIcon from '../assets/gear.svg';
+import { Button, Image, Form, Modal } from 'react-bootstrap';
 import { useContext, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { StoreContext } from '../Store';
@@ -13,6 +14,7 @@ import Importers from './accounts/Importers';
 import Exporters from './exporters/Exporters';
 import EditExporter from './exporters/EditExporter';
 import { toggleUIVersion } from '../eventsBridge';
+import GeneralSettings from './GeneralSettings';
 
 type BodyProps = {
   scrape
@@ -56,9 +58,6 @@ const Body = ({ scrape }: BodyProps) => {
     closeModal();
   };
 
-  const toggleShowBrowser = async () => {
-    await store.toggleShowBrowser();
-  }
   return (
     <div>
       <Container className={styles.container}>
@@ -84,22 +83,18 @@ const Body = ({ scrape }: BodyProps) => {
             { modalStatus === ModalStatus.ImporterSettings && currentAccount && <EditImporter handleSave={updateImporter} importer={currentAccount} handleDelete={deleteImporter} />}
             { modalStatus === ModalStatus.SettingsExporter && currentAccount && <EditExporter handleSave={updateExporter} exporter={currentAccount} handleDelete={deleteImporter} />}
             { modalStatus === ModalStatus.NewScraper && <CreateImporter handleSave={createImporter} />}
+            { modalStatus === ModalStatus.GeneralSettings && <GeneralSettings /> }
           </Modal.Body>
         </Modal>
       </Container>
       <Container className={styles.buttonsContainer}>
         <Button className={styles.scrapeButton} onClick={scrape} disabled={store.isScraping}>הפעל</Button>
+        <Image src={settingsIcon} onClick={() => showModal(null, ModalStatus.GeneralSettings)} />
         <Form.Check
             type="switch"
             onClick={toggleUIVersion}
             label="ממשק חדש"
             defaultChecked
-        />
-        <Form.Check
-            type="switch"
-            label="הראה דפדפן"
-            onClick={toggleShowBrowser}
-            defaultChecked={config?.scraping?.showBrowser}
         />
       </Container>
     </div>

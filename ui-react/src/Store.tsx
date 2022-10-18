@@ -31,7 +31,8 @@ export default class Store {
       deleteImporter: action,
       clearScrapingStatus: action,
       fetchYnabAccountData: action,
-      toggleShowBrowser: action
+      toggleShowBrowser: action,
+      setNumDaysBack: action
     });
   }
 
@@ -182,6 +183,18 @@ export default class Store {
   async toggleShowBrowser() {
     this.verifyConfigDefined();
     this.config.scraping.showBrowser = !this.config.scraping.showBrowser;
+    await updateConfig(this.config);
+  }
+
+  async setNumDaysBack(numDaysBack: number) {
+    this.verifyConfigDefined();
+    this.config.scraping.numDaysBack = numDaysBack;
+    await updateConfig(this.config);
+  }
+
+  async setChromiumPath(chromiumPath?: string) {
+    this.verifyConfigDefined();
+    this.config.scraping.chromiumPath = chromiumPath;
     await updateConfig(this.config);
   }
 
