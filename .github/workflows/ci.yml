@@ -69,9 +69,9 @@ jobs:
       max-parallel: 1
       matrix:
         os:
-#        - windows-latest
+        - windows-latest
         # - ubuntu-latest
-         - macos-latest
+        - macos-latest
 
     steps:
     - uses: actions/checkout@v1
