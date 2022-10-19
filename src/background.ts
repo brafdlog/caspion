@@ -60,13 +60,12 @@ function loadUIIntoWindow() {
     loadURL(uiDevUrl);
     if (!process.env.IS_TEST) mainWindow.webContents.openDevTools();
   } else {
+    createProtocol('app');
     // Load the index.html when not in development
     // eslint-disable-next-line no-lonely-if
     if (useReactUI) {
-      mainWindow.loadFile('../ui-react/build/index.html');
+      loadURL('app://./react/index.html');
     } else {
-      // TODO remove when vue code is removed
-      createProtocol('app');
       loadURL('app://./index.html');
     }
   }
