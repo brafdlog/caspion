@@ -1,13 +1,30 @@
-const fs = require('fs-extra');
+const fse = require('fs-extra');
+const fs = require('fs');
 const path = require('path');
 
 const reactBuildDirPath = path.join(__dirname, 'build');
 const publicDirPath = path.join(__dirname, '..', 'public');
 const distReactPath = path.join(publicDirPath, 'react');
+const sourceIndexHtmlPath = path.join(reactBuildDirPath, 'index.html');
 
-// Cleanup the previous build
-fs.removeSync(distReactPath);
+async function copyReactArtifacts() {
+    await replaceAll(sourceIndexHtmlPath, '/static', '/react/static');
 
-fs.ensureDirSync(distReactPath);
+    // Cleanup the previous build
+    fse.removeSync(distReactPath);
 
-fs.copySync(reactBuildDirPath, distReactPath);
+    fse.ensureDirSync(distReactPath);
+    fse.copySync(reactBuildDirPath, distReactPath);
+}
+
+async function replaceAll(filePath, from, to) {
+    const fileContent = fs.readFileSync(filePath, 'utf8');
+    const result = fileContent.replaceAll(from, to);
+    fs.writeFileSync(filePath, result,'utf8');
+}
+
+copyReactArtifacts();
+
+
+
+
