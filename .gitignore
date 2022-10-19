@@ -93,3 +93,4 @@ googleApiToken.json
 /userData
 config.encrypt
 transaction.csv
+public/react

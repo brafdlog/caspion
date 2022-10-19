@@ -26,11 +26,13 @@
     "web-vitals": "^1.0.1"
   },
   "devDependencies": {
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "fs-extra": "^10.1.0"
   },
   "scripts": {
     "start": "cross-env SKIP_PREFLIGHT_CHECK=true BROWSER=none react-scripts start",
     "build": "cross-env SKIP_PREFLIGHT_CHECK=true react-scripts build",
+    "postbuild": "node copyReactArtifacts.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
