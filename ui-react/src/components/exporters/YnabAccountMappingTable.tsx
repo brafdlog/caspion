@@ -12,12 +12,13 @@ type AccountNumberToYnabAccountIdMappingObject = YnabConfig["options"]["accountN
 type YnabAccountMappingTableProps = {
     accountNumberToYnabIdMapping: AccountNumberToYnabAccountIdMappingObject;
     ynabAccountData?: YnabAccountDataType;
+    budgetId: string
     onUpdate: (accountNumberToYnabIdMapping: AccountNumberToYnabAccountIdMappingObject) => void;
 }
 
 type AccountMappingArray = { accountNumber: string, ynabAccountId: string, index?: number }[];
 
-const YnabAccountMappingTable = ({ accountNumberToYnabIdMapping, onUpdate, ynabAccountData }: YnabAccountMappingTableProps) => {
+const YnabAccountMappingTable = ({ accountNumberToYnabIdMapping, onUpdate, ynabAccountData, budgetId }: YnabAccountMappingTableProps) => {
     const [accountMappingArray, setAccountMappingArray] = useState<AccountMappingArray>(accountMappingObjectToArray(accountNumberToYnabIdMapping))
 
     const columns = [{
@@ -35,7 +36,9 @@ const YnabAccountMappingTable = ({ accountNumberToYnabIdMapping, onUpdate, ynabA
         editor: {
             type: Type.SELECT,
             getOptions: () => {
-                return ynabAccountData?.ynabAccountData?.accounts.map(ynabAccount => {
+                return ynabAccountData?.ynabAccountData?.accounts
+                    .filter(ynabAccount => ynabAccount.active && ynabAccount.budgetId === budgetId)
+                    .map(ynabAccount => {
                     return {
                         label: ynabAccount.name,
                         value: ynabAccount.id
