@@ -76,7 +76,6 @@ const Body = ({ scrape }: BodyProps) => {
         </div>
         <Modal show={modalStatus !== ModalStatus.Hidden} onHide={closeModal} dialogClassName={wideModal ? styles.modalWide : ''}>
           <Modal.Header closeButton>
-            <Modal.Title>{currentAccount && currentAccount.displayName}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             { modalStatus === ModalStatus.Logs && currentAccount && currentAccount.logs.map((log, index) => <div key={index}>{log.message}</div>)}
