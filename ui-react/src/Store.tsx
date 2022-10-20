@@ -13,7 +13,7 @@ import {
   Log
 } from './types';
 import accountMetadata from './accountMetadata';
-import { YnabAccountDataType } from '../../src/backend/commonTypes';
+import { YnabAccountDataType, YnabConfig } from '../../src/backend/commonTypes';
 
 export default class Store {
   config?: Config;
@@ -198,10 +198,10 @@ export default class Store {
     await updateConfig(this.config);
   }
 
-  async fetchYnabAccountData() {
+  async fetchYnabAccountData(ynabOptions: YnabConfig["options"]) {
     console.log('Fetching ynab account data');
     this.fetchingYnabAccountData = true;
-    this.ynabAccountData = await getYnabAccountData();
+    this.ynabAccountData = await getYnabAccountData(ynabOptions);
     this.fetchingYnabAccountData = false;
     console.log('Ynab account data ', this.ynabAccountData);
   }

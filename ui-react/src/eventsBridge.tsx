@@ -1,4 +1,4 @@
-import { BudgetTrackingEvent, Config } from './types';
+import { BudgetTrackingEvent, Config, YnabConfig } from './types';
 
 const electron = window.require('electron');
 
@@ -14,8 +14,8 @@ export async function updateConfig(config: Config) {
     await electron.ipcRenderer.invoke('updateConfig', JSON.stringify(config));
 }
 
-export async function getYnabAccountData(): Promise<{ ynabAccountData: YnabAccountDetails, financialAccountDetails: FinancialAccountDetails[] }> {
-    return electron.ipcRenderer.invoke('getYnabAccountData');
+export async function getYnabAccountData(ynabOptions: YnabConfig["options"]): Promise<{ ynabAccountData: YnabAccountDetails, financialAccountDetails: FinancialAccountDetails[] }> {
+    return electron.ipcRenderer.invoke('getYnabAccountData', ynabOptions);
 }
 
 export async function scrape(store) {

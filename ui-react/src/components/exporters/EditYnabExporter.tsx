@@ -13,16 +13,21 @@ type EditYnabExporterProps = {
     exporterConfig: YnabConfig;
 }
 
+const INVALID_ACCESS_TOKEN = 'INVALID_ACCESS_TOKEN';
+
 const EditYnabExporter = ({ handleSave, exporterConfig }: EditYnabExporterProps) => {
     const [ynabOptions, setYnabOptions] = useState<YnabConfig["options"]>(toJS<YnabConfig["options"]>(exporterConfig.options));
     const [active, setActive] = useState<boolean>(exporterConfig.active);
     const store = useContext(StoreContext);
 
+    const isLoading = !store.ynabAccountData || store.fetchingYnabAccountData;
+    const isValidAccessToken = !isLoading && store.ynabAccountData?.status !== INVALID_ACCESS_TOKEN;
+
     useEffect(() => {
         if (ynabOptions.accessToken) {
-            store.fetchYnabAccountData();
+            store.fetchYnabAccountData(ynabOptions);
         }
-    }, [ynabOptions.accessToken, store]);
+    }, [ynabOptions.budgetId, ynabOptions.accessToken, store]);
 
     const updateOptionsState = (optionUpdates: Partial<YnabConfig["options"]>) => {
         setYnabOptions({
@@ -56,15 +61,21 @@ const EditYnabExporter = ({ handleSave, exporterConfig }: EditYnabExporterProps)
                             <Form.Label>Ynab access token</Form.Label>
                             <Form.Control type='password' value={ynabOptions.accessToken} onChange={(event) => handleOptionChangeEvent('accessToken', event)} />
                         </Form.Group>
-                        <Form.Group controlId='budgetId' className='mb-3'>
-                            <Form.Label>Budget id</Form.Label>
-                            <Form.Select disabled={store.fetchingYnabAccountData} defaultValue={ynabOptions.budgetId} onChange={(event) => handleOptionChangeEvent('budgetId', event)}>
-                                {store.ynabAccountData?.ynabAccountData?.budgets.map(budget => <option key={budget.id} value={budget.id}>{budget.name}</option>)}
-                            </Form.Select>
-                        </Form.Group>
-                        <Form.Group controlId='accountNumbersToYnabAccountIds' className='mb-3'>
-                            <YnabAccountMappingTable accountNumberToYnabIdMapping={ynabOptions.accountNumbersToYnabAccountIds} onUpdate={handleAccountMappingChange} ynabAccountData={store.ynabAccountData}/>
-                        </Form.Group>
+                        {isValidAccessToken &&
+                            <Form.Group controlId='budgetId' className='mb-3'>
+                                <Form.Label>Budget id</Form.Label>
+                                <Form.Select disabled={store.fetchingYnabAccountData} defaultValue={ynabOptions.budgetId} onChange={(event) => handleOptionChangeEvent('budgetId', event)}>
+                                    {store.ynabAccountData?.ynabAccountData?.budgets.map(budget => <option key={budget.id} value={budget.id}>{budget.name}</option>)}
+                                </Form.Select>
+                            </Form.Group>
+                        }
+                        {!isLoading && !isValidAccessToken && <div>Invalid access token</div>}
+                        {isLoading && <div>Loading...</div>}
+                        { !isLoading && isValidAccessToken &&
+                            <Form.Group controlId='accountNumbersToYnabAccountIds' className='mb-3'>
+                                <YnabAccountMappingTable accountNumberToYnabIdMapping={ynabOptions.accountNumbersToYnabAccountIds} onUpdate={handleAccountMappingChange} ynabAccountData={store.ynabAccountData} budgetId={ynabOptions.budgetId} />
+                            </Form.Group>
+                        }
                         <Form.Group controlId='exporterActive'>
                             <Form.Check
                                 type='switch'

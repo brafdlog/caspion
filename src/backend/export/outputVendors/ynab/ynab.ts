@@ -25,7 +25,6 @@ const transactionsFromYnab: Map<Date, ynab.TransactionDetail[]> = new Map();
 
 let ynabConfig: YnabConfig | undefined;
 let ynabAPI: ynab.API | undefined;
-let ynabAccountDetails: YnabAccountDetails | undefined;
 
 export async function init(outputVendorsConfig: Config['outputVendors']) {
   ynabConfig = outputVendorsConfig.ynab;
@@ -181,25 +180,21 @@ function verifyYnabAccessTokenWasDefined() {
   }
 }
 
-export async function getYnabAccountDetails(outputVendorsConfig: Config['outputVendors']): Promise<YnabAccountDetails> {
-  if (!ynabAccountDetails) {
-    await init(outputVendorsConfig);
-    const { budgets, accounts } = await getBudgetsAndAccountsData();
+export async function getYnabAccountDetails(outputVendorsConfig: Config['outputVendors'], budgetIdToCheck: string): Promise<YnabAccountDetails> {
+  await init(outputVendorsConfig);
+  const { budgets, accounts } = await getBudgetsAndAccountsData();
 
-    const budgetIdToCheck = outputVendorsConfig.ynab?.options?.budgetId;
-    let categories: YnabAccountDetails['categories'];
-    if (doesBudgetIdExistInYnab(budgetIdToCheck)) {
-      categories = await getYnabCategories();
-    } else {
-      console.warn(`Budget id ${budgetIdToCheck} doesn't exist in ynab`);
-    }
-    ynabAccountDetails = {
-      budgets,
-      accounts,
-      categories
-    };
+  let categories: YnabAccountDetails['categories'];
+  if (doesBudgetIdExistInYnab(budgetIdToCheck)) {
+    categories = await getYnabCategories();
+  } else {
+    console.warn(`Budget id ${budgetIdToCheck} doesn't exist in ynab`);
   }
-  return ynabAccountDetails;
+  return {
+    budgets,
+    accounts,
+    categories
+  };
 }
 
 function doesBudgetIdExistInYnab(budgetIdToCheck, budgets?: ynab.BudgetSummary[]): boolean {

@@ -38,8 +38,8 @@ export const registerHandlers = () => {
       event.reply('scrapingProgress', JSON.stringify({ eventName, eventData }));
     });
   });
-  ipcMain.on('getYnabAccountData', async (event) => {
-    const ynabAccountData = await getYnabAccountData();
+  ipcMain.on('getYnabAccountData', async (event, _event, ynabExporterOptions) => {
+    const ynabAccountData = await getYnabAccountData(_event, ynabExporterOptions);
     event.reply(ynabAccountData);
   });
 };

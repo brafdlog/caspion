@@ -8,7 +8,7 @@ import { getYnabAccountDetails, isAccessTokenValid } from '@/backend/export/outp
 export async function getYnabAccountData(): Promise<YnabAccountDataType> {
   const config = await getConfig(configFilePath);
 
-  const accessTokenValid = await isAccessTokenValid(config.outputVendors[OutputVendorName.YNAB]?.options?.accessToken);
+  const accessTokenValid = await isAccessTokenValid(ynabOptions.accessToken);
   if (!accessTokenValid) {
     return {
       status: FETCH_YNAB_ACCOUNT_DATA_STATUS.INVALID_ACCESS_TOKEN
@@ -17,7 +17,7 @@ export async function getYnabAccountData(): Promise<YnabAccountDataType> {
   // const ynabAccountDataPromise = getYnabAccountDetails(config.outputVendors);
   // const financialAccountDetailsPromise = getFinancialAccountDetails();
   // const [ynabAccountData, financialAccountDetails] = await Promise.all([ynabAccountDataPromise, financialAccountDetailsPromise]);
-  const ynabAccountData = await getYnabAccountDetails(config.outputVendors);
+  const ynabAccountData = await getYnabAccountDetails(config.outputVendors, ynabOptions.budgetId);
   const financialAccountDetails = [];
 
   return {
