@@ -2,7 +2,7 @@ import { configFilePath } from '@/app-globals';
 import { getConfig, updateConfig } from '@/backend/configManager/configManager';
 
 export async function getConfigHandler(): Promise<string> {
-  const config = await getConfig(configFilePath);
+  const config = await getConfig();
   return JSON.stringify({ config });
 }
 

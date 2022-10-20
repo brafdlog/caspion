@@ -1,12 +1,11 @@
 /* eslint-disable no-console */
-import { configFilePath } from '@/app-globals';
-import { FETCH_YNAB_ACCOUNT_DATA_STATUS, OutputVendorName, YnabAccountDataType } from '@/backend/commonTypes';
+import { FETCH_YNAB_ACCOUNT_DATA_STATUS, YnabConfig, YnabAccountDataType } from '@/backend/commonTypes';
 import { getConfig } from '@/backend/configManager/configManager';
 import { getYnabAccountDetails, isAccessTokenValid } from '@/backend/export/outputVendors/ynab/ynab';
 // import { getFinancialAccountDetails } from '@/backend/import/importTransactions';
 
-export async function getYnabAccountData(): Promise<YnabAccountDataType> {
-  const config = await getConfig(configFilePath);
+export async function getYnabAccountData(_event, ynabOptions: YnabConfig['options']): Promise<YnabAccountDataType> {
+  const config = await getConfig();
 
   const accessTokenValid = await isAccessTokenValid(ynabOptions.accessToken);
   if (!accessTokenValid) {
