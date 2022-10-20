@@ -1,8 +1,8 @@
 // eslint-disable-next-line max-classes-per-file
+import { UnwrapRef } from '@vue/composition-api';
 import { Events } from '@/backend';
 import { AccountStatus, AccountType } from '@/backend/eventEmitters/EventEmitter';
 import { Levels } from '@/logging/logger';
-import { UnwrapRef } from '@vue/composition-api';
 
 export class AccountState {
   id: string;

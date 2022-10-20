@@ -41,7 +41,7 @@ module.exports = {
         map: [
           ['@', './src'],
         ],
-        extensions: ['.js', '.ts', '.vue'],
+        extensions: ['.js', '.ts', '.vue', '.tsx'],
       },
     },
   },

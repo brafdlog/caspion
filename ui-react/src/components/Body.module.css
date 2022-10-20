@@ -1,0 +1,26 @@
+.container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.buttonsContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.scrapeButton {
+    width: 75px;
+    margin-bottom: 15px;
+}
+
+.contentContainer {
+}
+
+.modalWide {
+    max-width: unset;
+    width: 70%;
+}

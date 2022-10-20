@@ -94,11 +94,11 @@
 
 <script>
 import { shell } from 'electron';
+import os from 'os';
+import { defineComponent } from '@vue/composition-api';
 import Sentry from '@/logging/sentry';
 import LogSheet from '@/ui/components/shared/LogSheet';
-import os from 'os';
 import logger, { getLastLines, getLogsFolder } from '@/logging/logger';
-import { defineComponent } from '@vue/composition-api';
 import { repository } from '../../../../package.json';
 
 const createGithubIssueLink = (title, details, log) => {

@@ -1,0 +1,19 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.title {
+    font-style: normal;
+    font-weight: 500;
+}
+
+.accountSelectionWrapper {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.accountWrapper {
+    margin-left: 15px;
+}

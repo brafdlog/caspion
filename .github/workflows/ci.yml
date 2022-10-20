@@ -66,12 +66,12 @@ jobs:
 
     # Platforms to build on/for
     strategy:
-      max-parallel: 1
+      max-parallel: 2
       matrix:
         os:
         - windows-latest
         # - ubuntu-latest
-        # - macos-latest
+        - macos-latest
 
     steps:
     - uses: actions/checkout@v1

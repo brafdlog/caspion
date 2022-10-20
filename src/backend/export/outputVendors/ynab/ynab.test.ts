@@ -1,6 +1,6 @@
 import { SaveTransaction, TransactionDetail } from 'ynab';
-import { EnrichedTransaction } from '@/backend/commonTypes';
 import { TransactionStatuses, TransactionTypes } from 'israeli-bank-scrapers-core/lib/transactions';
+import { EnrichedTransaction } from '@/backend/commonTypes';
 import * as ynab from './ynab';
 import ClearedEnum = SaveTransaction.ClearedEnum;
 

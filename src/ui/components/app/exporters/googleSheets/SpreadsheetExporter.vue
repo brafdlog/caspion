@@ -48,10 +48,9 @@
 </template>
 
 <script lang="ts">
-import { OutputVendorName } from '@/backend/commonTypes';
-import { GoogleSheetsConfig } from '@/backend/configManager/configManager';
-import { setupExporterConfigForm } from '@/ui/components/app/exporters/exportersCommon';
 import { ref, onMounted, defineComponent } from '@vue/composition-api';
+import { OutputVendorName, GoogleSheetsConfig } from '@/backend/commonTypes';
+import { setupExporterConfigForm } from '@/ui/components/app/exporters/exportersCommon';
 import { validateToken } from '@/backend/export/outputVendors/googleSheets/googleAuth';
 import { createSpreadsheet } from '@/backend/export/outputVendors/googleSheets/googleSheets';
 import ElectronLogin from './electronGoogleOAuth2Connector';

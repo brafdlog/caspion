@@ -1,6 +1,6 @@
 import { uniq } from 'lodash';
+import { Transaction } from 'israeli-bank-scrapers-core/lib/transactions';
 import { EnrichedTransaction } from '../commonTypes';
-import { Transaction } from '../import/bankScraper';
 import { compareObjectsByDate } from './dates';
 
 const unifyHash = (hash: string) => hash

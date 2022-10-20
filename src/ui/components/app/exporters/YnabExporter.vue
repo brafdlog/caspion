@@ -59,10 +59,10 @@
 </template>
 
 <script lang="ts">
+import { ref, defineComponent } from '@vue/composition-api';
 import { setupExporterConfigForm } from '@/ui/components/app/exporters/exportersCommon';
 import { OutputVendorName } from '@/backend/commonTypes';
 import YnabAccountMappingTable, { MappingTable } from '@/ui/components/app/exporters/YnabAccountMappingTable.vue';
-import { ref, defineComponent } from '@vue/composition-api';
 import { required } from '@/ui/components/shared/formValidations';
 
 export default defineComponent({

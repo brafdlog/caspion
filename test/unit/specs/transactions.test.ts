@@ -1,6 +1,6 @@
-import { TransactionStatuses, TransactionTypes } from 'israeli-bank-scrapers-core/lib/transactions';
-import { calculateTransactionHash, mergeTransactions } from '@/backend/transactions/transactions';
-import { Transaction } from '../../../src/backend/import/bankScraper';
+import { TransactionStatuses, TransactionTypes, Transaction } from 'israeli-bank-scrapers-core/lib/transactions';
+import { calculateTransactionHash, mergeTransactions } from '../../../src/backend/transactions/transactions';
+
 import { EnrichedTransaction } from '../../../src/backend/commonTypes';
 
 const TRANSACTION_1 = {

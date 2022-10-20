@@ -1,50 +1,45 @@
-import { app, BrowserWindow } from 'electron';
+import * as remote from '@electron/remote/main';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
+import { getConfig, updateConfig } from '@/backend/configManager/configManager';
+import { configFilePath } from '@/app-globals';
+import { registerHandlers } from './handlers';
 import logger from './logging/logger';
 import Sentry from './logging/sentry';
-import { registerHandlers } from './handlers';
-// import './store';
 
-require('@electron/remote/main').initialize();
-
+remote.initialize();
 Sentry.initializeReporter();
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
+
+async function toggleUseReactUI() {
+  const config = await getConfig();
+  config.useReactUI = !config.useReactUI;
+  await updateConfig(configFilePath, config);
+  await loadUIIntoWindow();
+}
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow: BrowserWindow | null;
 
-function createWindow() {
+async function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    height: 563,
+    height: 700,
     useContentSize: true,
-    width: 1000,
+    width: 1152,
     webPreferences: {
       enableRemoteModule: true,
       contextIsolation: false,
       nodeIntegration: (process.env.ELECTRON_NODE_INTEGRATION as unknown) as
         | boolean
-        | undefined,
+        | undefined
     },
   });
-
-  // Workaround from https://github.com/electron/electron/issues/19554
-  // @ts-ignore
-  const loadURL = (url) => setTimeout(() => mainWindow.loadURL(url), 100);
-
-  if (process.env.WEBPACK_DEV_SERVER_URL) {
-    // Load the url of the dev server if in development mode
-    loadURL(process.env.WEBPACK_DEV_SERVER_URL);
-    if (!process.env.IS_TEST) mainWindow.webContents.openDevTools();
-  } else {
-    createProtocol('app');
-    // Load the index.html when not in development
-    loadURL('app://./index.html');
-  }
+  await loadUIIntoWindow();
 
   // initialize electron event handlers
   registerHandlers();
@@ -52,6 +47,36 @@ function createWindow() {
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
+}
+
+async function loadUIIntoWindow() {
+  const { useReactUI } = await getConfig();
+
+  if (mainWindow == null) {
+    throw Error('Main window is null');
+  }
+  // Workaround from https://github.com/electron/electron/issues/19554
+  // @ts-ignore
+  const loadURL = (url) => setTimeout(() => mainWindow.loadURL(url), 100);
+
+  if (process.env.WEBPACK_DEV_SERVER_URL) {
+    // Load the url of the dev server if in development mode
+    const uiDevUrl = useReactUI ? 'http://localhost:3000' : process.env.WEBPACK_DEV_SERVER_URL;
+    loadURL(uiDevUrl);
+    if (!process.env.IS_TEST) mainWindow.webContents.openDevTools();
+  } else {
+    createProtocol('app');
+    // Load the index.html when not in development
+    // eslint-disable-next-line no-lonely-if
+    if (useReactUI) {
+      loadURL('app://./react/index.html');
+    } else {
+      loadURL('app://./index.html');
+    }
+  }
+
+  // initialize electron event handlers
+  registerHandlers();
 }
 
 // Quit when all windows are closed.
@@ -90,6 +115,10 @@ app.on('ready', async () => {
     }
   }
   createWindow();
+});
+
+ipcMain.on('toggleUiVersion', async (_event, _args) => {
+  toggleUseReactUI();
 });
 
 // Exit cleanly on request from parent process in development mode.

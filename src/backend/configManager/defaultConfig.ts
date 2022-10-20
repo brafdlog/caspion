@@ -1,4 +1,4 @@
-import { Config } from './configManager';
+import { Config } from '../commonTypes';
 
 const DEFAULT_CONFIG: Config = {
   scraping: {
@@ -23,11 +23,8 @@ const DEFAULT_CONFIG: Config = {
       active: false,
       options: {
         accessToken: 'YNAB_ACCESS_TOKEN_GOES_HERE',
-        budgetId: '########-####-####-####-############',
+        budgetId: '',
         accountNumbersToYnabAccountIds: {
-          1234: '########-####-####-####-############',
-          5678: '########-####-####-####-############',
-          4837: '########-####-####-####-############'
         }
       }
     },

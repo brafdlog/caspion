@@ -1,8 +1,8 @@
+import { computed, reactive, ref } from '@vue/composition-api';
+import { cloneDeep } from 'lodash';
 import { OutputVendorName } from '@/backend/commonTypes';
 import store from '@/ui/store';
 import { VForm } from '@/types/vuetify';
-import { computed, reactive, ref } from '@vue/composition-api';
-import { cloneDeep } from 'lodash';
 
 export function setupExporterConfigForm<T extends OutputVendorName>(exporterName: T) {
   const vForm = ref<VForm>();

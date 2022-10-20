@@ -47,9 +47,9 @@
 </template>
 
 <script lang="ts">
-import { required } from '@/ui/components/shared/formValidations';
 import { ref, defineComponent, PropType } from '@vue/composition-api';
 import { cloneDeep } from 'lodash';
+import { required } from '@/ui/components/shared/formValidations';
 
 export type MappingTable = {
   addItem: () => void

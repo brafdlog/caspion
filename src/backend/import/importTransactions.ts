@@ -1,31 +1,37 @@
-import { userDataPath } from '@/app-globals';
-import { EnrichedTransaction } from '@/backend/commonTypes';
-import * as configManager from '@/backend/configManager/configManager';
-import * as bankScraper from '@/backend/import/bankScraper';
-import { ScaperScrapingResult, Transaction } from '@/backend/import/bankScraper';
-import * as categoryCalculation from '@/backend/import/categoryCalculationScript';
+import { Transaction } from 'israeli-bank-scrapers-core/lib/transactions';
 import _ from 'lodash';
 import moment from 'moment';
+import { configFilePath, userDataPath } from '@/app-globals';
+import {
+  AccountToScrapeConfig, Config, EnrichedTransaction, FinancialAccountDetails,
+  ScaperScrapingResult
+} from '@/backend/commonTypes';
+import { getConfig } from '@/backend/configManager/configManager';
+import * as bankScraper from '@/backend/import/bankScraper';
+import * as categoryCalculation from '@/backend/import/categoryCalculationScript';
 import {
   AccountStatus, BudgetTrackingEventEmitter, DownalodChromeEvent, EventNames, EventPublisher, ImporterEvent
 } from '../eventEmitters/EventEmitter';
 import { calculateTransactionHash } from '../transactions/transactions';
 import getChrome from './downloadChromium';
 
-type AccountToScrapeConfig = configManager.AccountToScrapeConfig;
-type Config = configManager.Config;
 type ScrapingConfig = Config['scraping'];
 
 const TRANSACTION_STATUS_COMPLETED = 'completed';
 
 export async function scrapeFinancialAccountsAndFetchTransactions(scrapingConfig: ScrapingConfig, startDate: Date, eventPublisher: EventPublisher) {
-  const dowloadedChrome = await getChrome(userDataPath, (percent) => emitChromeDownload(eventPublisher, percent));
+  let chromiumPath: string;
 
+  if (scrapingConfig.chromiumPath) {
+    chromiumPath = scrapingConfig.chromiumPath;
+  } else {
+    chromiumPath = await getChrome(userDataPath, (percent) => emitChromeDownload(eventPublisher, percent));
+  }
   const scrapePromises = scrapingConfig.accountsToScrape
     .filter((accountToScrape) => accountToScrape.active !== false)
     .map(async (accountToScrape) => ({
       id: accountToScrape.id,
-      transactions: await fetchTransactions(accountToScrape, startDate, scrapingConfig.showBrowser, eventPublisher, dowloadedChrome)
+      transactions: await fetchTransactions(accountToScrape, startDate, scrapingConfig.showBrowser, eventPublisher, chromiumPath)
     }));
 
   const promiseResults = await Promise.allSettled(scrapePromises);
@@ -54,7 +60,8 @@ function emitChromeDownload(eventPublisher: EventPublisher, percent: number) {
   eventPublisher.emit(EventNames.DOWNLOAD_CHROME, new DownalodChromeEvent(percent));
 }
 
-export async function getFinancialAccountNumbers(config: configManager.Config) {
+export async function getFinancialAccountDetails(): Promise<FinancialAccountDetails[]> {
+  const config = await getConfig(configFilePath);
   const eventEmitter = new BudgetTrackingEventEmitter();
 
   const startDate = moment()
@@ -63,13 +70,13 @@ export async function getFinancialAccountNumbers(config: configManager.Config) {
     .toDate();
 
   const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config.scraping, startDate, eventEmitter);
-  const companyIdToAccountNumbers: Record<string, string[]> = {};
+  const financialAccountDetails: { name: string; accountNumber: string }[] = [];
   Object.keys(companyIdToTransactions).forEach((companyId) => {
     let accountNumbers = companyIdToTransactions[companyId].map((transaction) => transaction.accountNumber);
     accountNumbers = _.uniq(accountNumbers);
-    companyIdToAccountNumbers[companyId] = accountNumbers;
+    accountNumbers.forEach((accountNumber) => financialAccountDetails.push({ name: companyId, accountNumber }));
   });
-  return companyIdToAccountNumbers;
+  return financialAccountDetails;
 }
 
 async function fetchTransactions(
@@ -109,7 +116,7 @@ async function fetchTransactions(
 }
 
 // eslint-disable-next-line max-len
-async function postProcessTransactions(accountToScrape: configManager.AccountToScrapeConfig, scrapeResult: ScaperScrapingResult): Promise<EnrichedTransaction[]> {
+async function postProcessTransactions(accountToScrape: AccountToScrapeConfig, scrapeResult: ScaperScrapingResult): Promise<EnrichedTransaction[]> {
   if (scrapeResult.accounts) {
     let transactions = scrapeResult.accounts.flatMap((transactionAccount) => {
       return transactionAccount.txns.map((transaction) => enrichTransaction(transaction, accountToScrape.key, transactionAccount.accountNumber));

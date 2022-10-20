@@ -1,0 +1,28 @@
+.container {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    width: 200px;
+    padding: 4px 12px;
+    border: 1px dashed #DDCFCF;
+    box-sizing: border-box;
+    border-radius: 4px;
+    margin: 5px 0;
+}
+
+.container:hover {
+    cursor: pointer;
+}
+
+.nameWrapper {
+    display: flex;
+    justify-content: flex-start;
+    flex: 1;
+    margin-right: 7px;
+}
+
+.image {
+    margin-left: 5px;
+    height: 18px;
+    width: 18px;
+}

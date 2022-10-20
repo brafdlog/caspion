@@ -25,8 +25,9 @@ import {
   computed, ref, onMounted, defineComponent, PropType
 } from '@vue/composition-api';
 import { getAllSpreadsheets, Spreadsheet } from '@/backend/export/outputVendors/googleSheets/googleSheetsInternalAPI';
-import { Credentials, createClient } from '@/backend/export/outputVendors/googleSheets/googleAuth';
+import { createClient } from '@/backend/export/outputVendors/googleSheets/googleAuth';
 import { required } from '@/ui/components/shared/formValidations';
+import { Credentials } from '@/backend/commonTypes';
 
 export default defineComponent({
   props: {
