@@ -8,7 +8,9 @@ const distReactPath = path.join(publicDirPath, 'react');
 const sourceIndexHtmlPath = path.join(reactBuildDirPath, 'index.html');
 
 async function copyReactArtifacts() {
-    await replaceAll(sourceIndexHtmlPath, '/static', '/react/static');
+    console.log(`Copying react artifact from ${reactBuildDirPath} to ${distReactPath}`)
+
+    await fixReferencesToStaticFolder(sourceIndexHtmlPath);
 
     // Cleanup the previous build
     fse.removeSync(distReactPath);
@@ -17,9 +19,10 @@ async function copyReactArtifacts() {
     fse.copySync(reactBuildDirPath, distReactPath);
 }
 
-async function replaceAll(filePath, from, to) {
+async function fixReferencesToStaticFolder(filePath) {
+    console.log('Fixing references to static folder');
     const fileContent = fs.readFileSync(filePath, 'utf8');
-    const result = fileContent.replaceAll(from, to);
+    const result = fileContent.replace(/\/static/g, '/react/static');
     fs.writeFileSync(filePath, result,'utf8');
 }
 
