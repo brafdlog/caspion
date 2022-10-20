@@ -188,6 +188,7 @@ export async function getYnabAccountDetails(outputVendorsConfig: Config['outputV
   if (doesBudgetIdExistInYnab(budgetIdToCheck)) {
     categories = await getYnabCategories();
   } else {
+    // eslint-disable-next-line
     console.warn(`Budget id ${budgetIdToCheck} doesn't exist in ynab`);
   }
   return {

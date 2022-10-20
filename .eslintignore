@@ -55,3 +55,7 @@ src/originalBudgetTrackingApp/web
 src/originalBudgetTrackingApp/main*
 
 *.d.ts
+
+.eslintrc.js
+ui-react/node_modules/**
+ui-react/build/**

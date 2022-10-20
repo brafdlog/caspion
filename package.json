@@ -19,7 +19,7 @@
     "postinstall": "electron-builder install-app-deps && cd ui-react && yarn && cd ..",
     "postuninstall": "electron-builder install-app-deps",
     "prepare": "node scripts/copyCategoryCalculationScript.js",
-    "lint": "eslint --ext .js,.vue,.ts -f ./node_modules/eslint-friendly-formatter src test",
+    "lint": "eslint  -f ./node_modules/eslint-friendly-formatter src test ui-react",
     "lint:fix": "yarn lint --fix",
     "typeCheck": "tsc --noEmit",
     "unit": "vue-cli-service test:unit",

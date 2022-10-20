@@ -27,6 +27,7 @@ const EditYnabExporter = ({ handleSave, exporterConfig }: EditYnabExporterProps)
         if (ynabOptions.accessToken) {
             store.fetchYnabAccountData(ynabOptions);
         }
+        // eslint-disable-next-line
     }, [ynabOptions.budgetId, ynabOptions.accessToken, store]);
 
     const updateOptionsState = (optionUpdates: Partial<YnabConfig["options"]>) => {
