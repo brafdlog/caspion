@@ -3,6 +3,8 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
+import { getConfig, updateConfig } from '@/backend/configManager/configManager';
+import { configFilePath } from '@/app-globals';
 import { registerHandlers } from './handlers';
 import logger from './logging/logger';
 import Sentry from './logging/sentry';
@@ -11,18 +13,19 @@ remote.initialize();
 Sentry.initializeReporter();
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
-let useReactUI = true;
 
-function toggleUseReactUI() {
-  useReactUI = !useReactUI;
-  loadUIIntoWindow();
+async function toggleUseReactUI() {
+  const config = await getConfig();
+  config.useReactUI = !config.useReactUI;
+  await updateConfig(configFilePath, config);
+  await loadUIIntoWindow();
 }
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow: BrowserWindow | null;
 
-function createWindow() {
+async function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     height: 700,
@@ -36,7 +39,7 @@ function createWindow() {
         | undefined
     },
   });
-  loadUIIntoWindow();
+  await loadUIIntoWindow();
 
   // initialize electron event handlers
   registerHandlers();
@@ -46,7 +49,9 @@ function createWindow() {
   });
 }
 
-function loadUIIntoWindow() {
+async function loadUIIntoWindow() {
+  const { useReactUI } = await getConfig();
+
   if (mainWindow == null) {
     throw Error('Main window is null');
   }

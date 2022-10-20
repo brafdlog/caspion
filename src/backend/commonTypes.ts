@@ -16,7 +16,8 @@ export interface Config {
     showBrowser: boolean;
     accountsToScrape: AccountToScrapeConfig[];
     chromiumPath?: string;
-  };
+  },
+  useReactUI?: boolean
 }
 
 export enum OutputVendorName {
