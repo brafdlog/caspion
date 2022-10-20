@@ -94,3 +94,4 @@ googleApiToken.json
 config.encrypt
 transaction.csv
 public/react
+public/static
