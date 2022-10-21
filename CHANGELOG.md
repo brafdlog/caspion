@@ -1,3 +1,10 @@
+# [1.0.0](https://github.com/brafdlog/caspion/compare/v0.2.0...v1.0.0) (2022-10-21)
+
+
+### Breaking
+
+* Add React UI ([138a8d3](https://github.com/brafdlog/caspion/commit/138a8d3a430ebcdc74c18bfe20b268cc1f1c7eec))
+
 # [0.2.0](https://github.com/brafdlog/caspion/compare/v0.1.2...v0.2.0) (2022-10-16)
 
 
