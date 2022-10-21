@@ -50,7 +50,12 @@ async function createWindow() {
 }
 
 async function loadUIIntoWindow() {
-  const { useReactUI } = await getConfig();
+  let { useReactUI } = await getConfig();
+
+  // Default to showing react ui
+  if (useReactUI === undefined) {
+    useReactUI = true;
+  }
 
   if (mainWindow == null) {
     throw Error('Main window is null');
