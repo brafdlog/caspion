@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { toJS } from 'mobx';
+import Spinner from 'react-bootstrap/Spinner';
 import styles from './EditYnabExporter.module.css';
 import { observer } from 'mobx-react-lite';
 import { YnabConfig } from '../../types';
@@ -71,7 +72,7 @@ const EditYnabExporter = ({ handleSave, exporterConfig }: EditYnabExporterProps)
                             </Form.Group>
                         }
                         {!isLoading && !isValidAccessToken && <div>Invalid access token</div>}
-                        {isLoading && <div>Loading...</div>}
+                        {isLoading && <Spinner style={{ width: '20px', height: '20px' }} animation="border" variant="primary" />}
                         { !isLoading && isValidAccessToken &&
                             <Form.Group controlId='accountNumbersToYnabAccountIds' className='mb-3'>
                                 <YnabAccountMappingTable accountNumberToYnabIdMapping={ynabOptions.accountNumbersToYnabAccountIds} onUpdate={handleAccountMappingChange} ynabAccountData={store.ynabAccountData} budgetId={ynabOptions.budgetId} />
