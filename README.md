@@ -122,6 +122,7 @@ If you wish though to build/debug this from source, you will need to setup your 
   - Write down the generated `Client ID` & `Client Secret`
 
 Now that you have the keys above, store them as env variables:
+
 ```
 EXPORT GOOGLE_CLIENT_ID=XXXXX
 EXPORT GOOGLE_CLIENT_SECRET=YYYYYY
