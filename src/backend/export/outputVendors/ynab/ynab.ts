@@ -1,21 +1,18 @@
 import _ from 'lodash';
 import moment from 'moment/moment';
 import * as ynab from 'ynab';
+import { EventNames, EventPublisher, ExporterEvent } from '@/backend/eventEmitters/EventEmitter';
 import {
-  EventNames, EventPublisher, ExporterEvent
-} from '@/backend/eventEmitters/EventEmitter';
-import {
+  Config,
   EnrichedTransaction,
   ExportTransactionsFunction,
   OutputVendor,
   OutputVendorName,
-  Config,
-  YnabConfig,
   YnabAccountDetails,
+  YnabConfig,
   YnabFinancialAccount
 } from '@/backend/commonTypes';
 
-const INITIAL_YNAB_ACCESS_TOKEN = 'AABB';
 const YNAB_DATE_FORMAT = 'YYYY-MM-DD';
 const NOW = moment();
 const MIN_YNAB_ACCESS_TOKEN_LENGTH = 43;
@@ -28,10 +25,15 @@ let ynabAPI: ynab.API | undefined;
 
 export async function init(outputVendorsConfig: Config['outputVendors']) {
   ynabConfig = outputVendorsConfig.ynab;
+  initFromToken(outputVendorsConfig[OutputVendorName.YNAB]?.options.accessToken);
 
-  verifyYnabAccessTokenWasDefined();
-  if (ynabConfig) {
-    ynabAPI = new ynab.API(ynabConfig.options.accessToken);
+}
+
+async function initFromToken(accessToken?: string) {
+  if (accessToken) {
+    ynabAPI = new ynab.API(accessToken);
+  } else {
+    throw new Error('Tried to set falsy access token');
   }
 }
 
@@ -174,18 +176,15 @@ function normalizeWhitespace(str: string) {
   return str && str.trim().replace(/\s+/g, ' ');
 }
 
-function verifyYnabAccessTokenWasDefined() {
-  if (ynabConfig!.options.accessToken === INITIAL_YNAB_ACCESS_TOKEN) {
-    throw new Error('You need to set the ynab access token in the config');
-  }
-}
-
-export async function getYnabAccountDetails(outputVendorsConfig: Config['outputVendors'], budgetIdToCheck: string): Promise<YnabAccountDetails> {
-  await init(outputVendorsConfig);
+// eslint-disable-next-line max-len
+export async function getYnabAccountDetails(outputVendorsConfig: Config['outputVendors'], budgetIdToCheck: string, accessToken: string): Promise<YnabAccountDetails> {
+  await initFromToken(accessToken);
+  console.log('Getting budget and account data');
   const { budgets, accounts } = await getBudgetsAndAccountsData();
 
   let categories: YnabAccountDetails['categories'];
   if (doesBudgetIdExistInYnab(budgetIdToCheck)) {
+    console.log('Getting ynab categories');
     categories = await getYnabCategories();
   } else {
     // eslint-disable-next-line
@@ -218,6 +217,7 @@ export async function isAccessTokenValid(accessToken) {
   try {
     const localYnabApi = new ynab.API(accessToken);
     await localYnabApi.budgets.getBudgets();
+    ynabAPI = localYnabApi;
     return true;
   } catch (e) {
     return false;
@@ -226,6 +226,7 @@ export async function isAccessTokenValid(accessToken) {
 
 async function getBudgetsAndAccountsData() {
   const budgetsResponse = await ynabAPI!.budgets.getBudgets();
+  console.log('Got budgets from ynab');
   let { budgets } = budgetsResponse.data;
   budgets = budgets.map((budget) => ({ id: budget.id, name: budget.name }));
   const accounts: YnabFinancialAccount[] = [];
