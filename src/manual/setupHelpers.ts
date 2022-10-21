@@ -16,7 +16,7 @@ export async function getYnabAccountData(_event, ynabOptions: YnabConfig['option
   // const ynabAccountDataPromise = getYnabAccountDetails(config.outputVendors);
   // const financialAccountDetailsPromise = getFinancialAccountDetails();
   // const [ynabAccountData, financialAccountDetails] = await Promise.all([ynabAccountDataPromise, financialAccountDetailsPromise]);
-  const ynabAccountData = await getYnabAccountDetails(config.outputVendors, ynabOptions.budgetId);
+  const ynabAccountData = await getYnabAccountDetails(config.outputVendors, ynabOptions.budgetId, ynabOptions.accessToken);
   const financialAccountDetails = [];
 
   return {
