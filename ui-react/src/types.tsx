@@ -22,6 +22,7 @@ export interface Config {
     showBrowser: boolean;
     accountsToScrape: AccountToScrapeConfig[];
     chromiumPath?: string;
+    maxConcurrency?: number;
   };
 }
 

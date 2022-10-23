@@ -1,4 +1,5 @@
 import { Transaction } from 'israeli-bank-scrapers-core/lib/transactions';
+import Bottleneck from 'bottleneck';
 import _ from 'lodash';
 import moment from 'moment';
 import { configFilePath, userDataPath } from '@/app-globals';
@@ -27,11 +28,15 @@ export async function scrapeFinancialAccountsAndFetchTransactions(scrapingConfig
   } else {
     chromiumPath = await getChrome(userDataPath, (percent) => emitChromeDownload(eventPublisher, percent));
   }
+
+  const limiter = new Bottleneck({
+    maxConcurrent: scrapingConfig.maxConcurrency
+  });
   const scrapePromises = scrapingConfig.accountsToScrape
     .filter((accountToScrape) => accountToScrape.active !== false)
     .map(async (accountToScrape) => ({
       id: accountToScrape.id,
-      transactions: await fetchTransactions(accountToScrape, startDate, scrapingConfig.showBrowser, eventPublisher, chromiumPath)
+      transactions: await limiter.schedule(() => fetchTransactions(accountToScrape, startDate, scrapingConfig.showBrowser, eventPublisher, chromiumPath))
     }));
 
   const promiseResults = await Promise.allSettled(scrapePromises);

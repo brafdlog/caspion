@@ -25,6 +25,10 @@ function GeneralSettings() {
                             <Form.Control className={styles.input} defaultValue={store.config?.scraping.numDaysBack} onBlur={(event) => store.setNumDaysBack(event.target.value)}/>
                         </Form.Group>
                         <Form.Group>
+                            <Form.Label>כמה חשבונות לשלוף במקביל?</Form.Label>
+                            <Form.Control className={styles.input} defaultValue={store.config?.scraping.maxConcurrency} onBlur={(event) => store.setMaxConcurrency(event.target.value)}/>
+                        </Form.Group>
+                        <Form.Group>
                             <Form.Label>Chromium path</Form.Label>
                             <Form.Control className={styles.input} defaultValue={store.config?.scraping.chromiumPath} onBlur={(event) => store.setChromiumPath(event.target.value)}/>
                         </Form.Group>

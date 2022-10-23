@@ -28,7 +28,7 @@ jobs:
     if: needs.release.outputs.new_release_published == 'true'
     
     strategy:
-      max-parallel: 1
+      max-parallel: 3
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
     
