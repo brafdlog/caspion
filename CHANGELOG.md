@@ -1,3 +1,11 @@
+# [1.1.0](https://github.com/brafdlog/caspion/compare/v1.0.1...v1.1.0) (2022-10-23)
+
+
+### New
+
+* Allow limiting scraping concurrency ([f349be5](https://github.com/brafdlog/caspion/commit/f349be56ee4a9cd99ce7a6689c8b416000687b9c))
+* show spinner when loading ynab data ([4d732eb](https://github.com/brafdlog/caspion/commit/4d732eb9c5d09fa15703943ccb60b6641c51d377))
+
 ## [1.0.1](https://github.com/brafdlog/caspion/compare/v1.0.0...v1.0.1) (2022-10-21)
 
 
