@@ -1,6 +1,6 @@
 import Account from '../accounts/Account';
-import {Account as AccountType, ModalStatus} from "../../types";
-import {getActionButtonRelatedProps} from '../accounts/Importers';
+import { Account as AccountType } from "../../types";
+import { getActionButtons } from '../accounts/Importers';
 
 type ExporterProps = {
   exporters: AccountType[];
@@ -9,10 +9,9 @@ type ExporterProps = {
 }
 
 function Exporters({ exporters, isScraping, showModal }: ExporterProps) {
-    const { actionButtonIcon, modalStatus } = getActionButtonRelatedProps(isScraping, ModalStatus.SettingsExporter);
     return (
         <>
-            {exporters.map(exporter => <Account key={exporter.id} account={exporter} actionButtonIcon={actionButtonIcon} actionButtonClickHandler={() => showModal(exporter, modalStatus)} />)}
+            {exporters.map(exporter => <Account key={exporter.id} account={exporter} actionButtons={getActionButtons(showModal, exporter, isScraping)} />)}
         </>
     );
 }
