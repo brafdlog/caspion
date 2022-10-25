@@ -16,12 +16,14 @@ Internally it uses the [Israeli bank scrapers](https://github.com/eshaham/israel
 
 If you want to ask questions, suggest features or report issues, join [our discord channel](https://discord.gg/XWWg7xvJyS).
 
+## Note
+We are in transition to a new UI. Some features don't yet exist in the new UI and will be added overtime. You can still access the old UI by clicking on the switch next to ממשק חדש.
+
 ## Features
 
 - One click to fetch transactions from multiple Israeli banks and credit cards
 - Exporting transactions to *Google Sheets*, *YNAB*, *Excel (CSV)* or *JSON* file
 - A basic UI for configuration
-- A configuration for automatically classifying transactions to categories according to predefined patterns
 
 ## Running the app
 
@@ -95,13 +97,11 @@ YNAB is a budgeting software. If you want to manage your budget there and have y
   - Click on `New Token` and `generate`
   - On the top of the screen you will see the full token (the token with XXXX in it is not the full one).
   - Save this token in the YNAB settings in the app.
-- Set your **YNAB budget id**
-  - Find your YNAB budget id by going into your budget and taking it from the url: `https://app.youneedabudget.com/XXXXXX-XXXXXX-XXXXXX-XXXXX/budget`
-  - Set this budget id in the YNAB settings and save.
+- Choose your budget from the dropdown
 - Fill the table containing account number to ynab account id mapping
   - For each account you want to track add another row to the table
-  - To get the `ynab account id` of the account navigate to that account in ynab and get the account id from the url: `https://app.youneedabudget.com/akfkmksdcscd/accounts/XXXXXXXX-XXXX-XXXX-XXXX-XXXX`
   - The `account number` could be the credit card number, or the bank account number. To be sure, you can run the app so it exports transactions to a CSV and get the account number from there.
+  - Then choose the matching a ynab account from the dropdown
 - **Click on Save to save the configuration**
 
 ### Google Sheets integration setup - when building from source code (optional)
