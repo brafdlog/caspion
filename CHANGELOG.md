@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/brafdlog/caspion/compare/v1.1.0...v1.1.1) (2022-10-28)
+
+
+### Fix
+
+* Show logs icon even when scraping ends ([4ad3b60](https://github.com/brafdlog/caspion/commit/4ad3b603b556e61e80e3363a87d45c6eabbf4105))
+
 # [1.1.0](https://github.com/brafdlog/caspion/compare/v1.0.1...v1.1.0) (2022-10-23)
 
 
