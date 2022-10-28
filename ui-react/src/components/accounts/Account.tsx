@@ -3,14 +3,18 @@ import { Account as AccountType } from '../../types';
 import StatusIndicator from './StatusIndicator';
 import piggyBank from '../../assets/piggy-bank.svg';
 
+export type ActionButton = {
+    icon: string;
+    clickHandler: () => void;
+}
+
 type AccountProps = {
   account: AccountType;
-  actionButtonIcon?: string;
-  actionButtonClickHandler?: () => void
+  actionButtons?: ActionButton[]
 }
 
 export default function Account({
-  account, actionButtonIcon, actionButtonClickHandler
+  account, actionButtons
 }: AccountProps) {
   const containerStyles = [styles.container];
   if (!account.active) containerStyles.push(styles.notActive);
@@ -20,9 +24,9 @@ export default function Account({
       <div className={styles.nameWrapper}>
         <div className={styles.name}>{account.displayName}</div>
       </div>
-      {actionButtonIcon ?
-        <img className={styles.logsButton} src={actionButtonIcon} alt="action" onClick={actionButtonClickHandler} /> : null
-      }
+        {actionButtons && actionButtons.map(({ icon, clickHandler }) =>
+            <img className={styles.logsButton} src={icon} alt="action" onClick={clickHandler} key={icon} />)
+        }
       <StatusIndicator status={account.status} />
     </div>
   );
