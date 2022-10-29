@@ -13,6 +13,7 @@ import CreateImporter from './accounts/CreateImporter';
 import Importers from './accounts/Importers';
 import Exporters from './exporters/Exporters';
 import EditExporter from './exporters/EditExporter';
+import AccountLogs from './accounts/AccountLogs';
 import { toggleUIVersion } from '../eventsBridge';
 import GeneralSettings from './GeneralSettings';
 
@@ -78,7 +79,7 @@ const Body = ({ scrape }: BodyProps) => {
           <Modal.Header closeButton className={styles.modalHeader}>
           </Modal.Header>
           <Modal.Body>
-            { modalStatus === ModalStatus.Logs && currentAccount && currentAccount.logs.map((log, index) => <div key={index}>{log.message}</div>)}
+            { modalStatus === ModalStatus.Logs && currentAccount && <AccountLogs logs={currentAccount.logs} /> }
             { modalStatus === ModalStatus.ImporterSettings && currentAccount && <EditImporter handleSave={updateImporter} importer={currentAccount} handleDelete={deleteImporter} />}
             { modalStatus === ModalStatus.SettingsExporter && currentAccount && <EditExporter handleSave={updateExporter} exporter={currentAccount} handleDelete={deleteImporter} />}
             { modalStatus === ModalStatus.NewScraper && <CreateImporter handleSave={createImporter} />}
