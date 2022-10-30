@@ -1,3 +1,14 @@
+## [1.1.2](https://github.com/brafdlog/caspion/compare/v1.1.1...v1.1.2) (2022-10-30)
+
+
+### Deps
+
+* Update israeli bank scrapers to 3.0.0 ([0a0415b](https://github.com/brafdlog/caspion/commit/0a0415b6e4a362d5f792c3fa6b69847651793ceb))
+
+### Fix
+
+* Scraping error message now appears in account log ([0f21212](https://github.com/brafdlog/caspion/commit/0f21212fd1a6f7ae483467ea452d2233f822e413))
+
 ## [1.1.1](https://github.com/brafdlog/caspion/compare/v1.1.0...v1.1.1) (2022-10-28)
 
 
