@@ -4,14 +4,22 @@ import _ from 'lodash';
 import moment from 'moment';
 import { configFilePath, userDataPath } from '@/app-globals';
 import {
-  AccountToScrapeConfig, Config, EnrichedTransaction, FinancialAccountDetails,
+  AccountToScrapeConfig,
+  Config,
+  EnrichedTransaction,
+  FinancialAccountDetails,
   ScaperScrapingResult
 } from '@/backend/commonTypes';
 import { getConfig } from '@/backend/configManager/configManager';
 import * as bankScraper from '@/backend/import/bankScraper';
 import * as categoryCalculation from '@/backend/import/categoryCalculationScript';
 import {
-  AccountStatus, BudgetTrackingEventEmitter, DownalodChromeEvent, EventNames, EventPublisher, ImporterEvent
+  AccountStatus,
+  BudgetTrackingEventEmitter,
+  DownalodChromeEvent,
+  EventNames,
+  EventPublisher,
+  ImporterEvent
 } from '../eventEmitters/EventEmitter';
 import { calculateTransactionHash } from '../transactions/transactions';
 import getChrome from './downloadChromium';
@@ -97,15 +105,15 @@ async function fetchTransactions(
     const emitImporterProgressEvent = async (eventCompanyId: string, message: string) => {
       await eventPublisher.emit(EventNames.IMPORTER_PROGRESS, buildImporterEvent(account, { message }));
     };
-
+    const companyId = account.key;
     const scrapeResult = await bankScraper.scrape({
-      companyId: account.key,
+      companyId,
       credentials: account.loginFields,
       startDate,
       showBrowser,
     }, emitImporterProgressEvent, chromePath);
     if (!scrapeResult.success) {
-      throw new Error(scrapeResult.errorMessage || scrapeResult.errorType);
+      throw new Error(`${scrapeResult.errorType}: ${scrapeResult.errorMessage}`);
     }
 
     const transactions = await postProcessTransactions(account, scrapeResult);
@@ -114,7 +122,7 @@ async function fetchTransactions(
     return transactions;
   } catch (error) {
     await eventPublisher.emit(EventNames.IMPORTER_ERROR, buildImporterEvent(account, {
-      message: 'Importer error', error, status: AccountStatus.ERROR
+      message: error.message, error, status: AccountStatus.ERROR
     }));
     throw error;
   }
