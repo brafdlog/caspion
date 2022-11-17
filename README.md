@@ -1,3 +1,5 @@
+<img src="https://user-images.githubusercontent.com/7272927/202493905-9ae851ce-70fd-43bd-9dac-0bba75ef147e.svg" width="100" height="100">
+
 # Caspion - Automated expense tracking from Israeli banks and credit cards
 
 ![Build/Release](https://github.com/brafdlog/caspion/workflows/Build/Release/badge.svg?branch=master&event=push)
