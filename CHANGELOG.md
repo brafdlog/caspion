@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/brafdlog/caspion/compare/v1.1.2...v1.1.3) (2022-11-17)
+
+
+### Deps
+
+* upgrade israeli-bank-scrapers (#393) ([ee611ee](https://github.com/brafdlog/caspion/commit/ee611ee5d9f833975d75de669afea26d59a58109)), closes [#393](https://github.com/brafdlog/caspion/issues/393)
+
 ## [1.1.2](https://github.com/brafdlog/caspion/compare/v1.1.1...v1.1.2) (2022-10-30)
 
 
