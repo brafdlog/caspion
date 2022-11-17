@@ -28,7 +28,8 @@ export async function scrape({
     combineInstallments: false, // if set to true, all installment transactions will be combine into the first one
     showBrowser, // shows the browser while scraping, good for debugging (default false)
     verbose: false, // include more debug info about in the output
-    executablePath: chromePath
+    executablePath: chromePath,
+    defaultTimeout: 60000
   };
   const scraper = createScraper(options);
   scraper.onProgress((eventCompanyId: string, payload: { type: string }) => {
