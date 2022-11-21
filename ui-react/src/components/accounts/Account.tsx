@@ -1,3 +1,4 @@
+import Badge from 'react-bootstrap/Badge';
 import styles from './Account.module.css';
 import { Account as AccountType } from '../../types';
 import StatusIndicator from './StatusIndicator';
@@ -17,6 +18,8 @@ export default function Account({
   account, actionButtons
 }: AccountProps) {
   const containerStyles = [styles.container];
+
+  const badgeNumberLog = account.logs.find(log => log.originalEvent && log.originalEvent.exportedTransactionsNum > 0);
   if (!account.active) containerStyles.push(styles.notActive);
   return (
     <div className={containerStyles.join(' ')}>
@@ -28,6 +31,7 @@ export default function Account({
             <img className={styles.logsButton} src={icon} alt="action" onClick={clickHandler} key={icon} />)
         }
       <StatusIndicator status={account.status} />
+        { badgeNumberLog && <Badge className={styles.newTxnsIndicator} bg={'success'}>{badgeNumberLog.originalEvent.exportedTransactionsNum}</Badge>}
     </div>
   );
 }
