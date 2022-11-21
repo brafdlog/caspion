@@ -4,7 +4,7 @@ const globals = {
   FAQ_STRINGS_LIST: faq,
   GITHUB_REPO: 'brafdlog/caspion',
   BASE_URL: 'https://brafdlog.github.io',
-  BASE_PATH: '/caspion/',
+  BASE_PATH: '',
   TITLE: 'כספיון',
   DESCRIPTION: 'כספיון מרכז למקום אחד את כל פירוטי ההוצאות שלך',
 };
