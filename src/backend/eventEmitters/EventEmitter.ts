@@ -93,6 +93,15 @@ export class ExporterEvent extends BudgetTrackingEvent {
   }
 }
 
+export class ExporterEndEvent extends ExporterEvent {
+  exportedTransactionsNum: number;
+
+  constructor(exporterEventParams: ExporterEventParams & { exportedTransactionsNum: number }) {
+    super(exporterEventParams);
+    this.exportedTransactionsNum = exporterEventParams.exportedTransactionsNum;
+  }
+}
+
 export class DownalodChromeEvent extends BudgetTrackingEvent {
   percent: number;
 
@@ -115,7 +124,7 @@ export type EventDataMap = {
   [EventNames.EXPORTER_START]: ExporterEvent
   [EventNames.EXPORTER_PROGRESS]: ExporterEvent
   [EventNames.EXPORTER_ERROR]: ExporterEvent
-  [EventNames.EXPORTER_END]: ExporterEvent
+  [EventNames.EXPORTER_END]: ExporterEndEvent
   [EventNames.GENERAL_ERROR]: BudgetTrackingEvent
   [EventNames.LOG]: BudgetTrackingEvent
 };

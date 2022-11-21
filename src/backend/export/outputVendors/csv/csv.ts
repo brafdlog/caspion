@@ -85,6 +85,9 @@ const exportTransactions: ExportTransactionsFunction = async ({ transactionsToCr
   const mergedTransactions = mergeTransactions(savedTransactions, transactionsToCreate);
   const sorted = sortByDate(mergedTransactions);
   await writeCsvFile(filePath, serializeTransactions(sorted));
+  return {
+    exportedTransactionsNum: sorted.length
+  };
 };
 
 const parseTransactionsFile = async (filename: string) => {

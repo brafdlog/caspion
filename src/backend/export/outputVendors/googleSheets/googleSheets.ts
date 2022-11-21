@@ -45,7 +45,9 @@ const createTransactionsInGoogleSheets: ExportTransactionsFunction = async (
 
   if (transactionsToCreate.length === 0) {
     await emitProgressEvent(eventPublisher, transactions, 'All transactions already exist in google sheets');
-    return null;
+    return {
+      exportedTransactionsNum: 0
+    };
   }
 
   await emitProgressEvent(eventPublisher, transactions, `Creating ${transactionsToCreate.length} transactions in google sheets`);
@@ -66,10 +68,12 @@ const createTransactionsInGoogleSheets: ExportTransactionsFunction = async (
     transaction.status
   ]);
 
-  const spreadsheetAppendResult = await googleSheets.appendToSpreadsheet(
+  await googleSheets.appendToSpreadsheet(
     spreadsheetId, `${DEFAULT_SHEET_NAME}!A:A`, transactionsInSheetsFormat, oAuthClient
   );
-  return spreadsheetAppendResult.data;
+  return {
+    exportedTransactionsNum: transactionsToCreate.length
+  };
 };
 
 async function emitProgressEvent(eventPublisher: EventPublisher, allTransactions: EnrichedTransaction[], message: string) {

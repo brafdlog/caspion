@@ -83,10 +83,14 @@ export type ExportTransactionsParams = {
   outputVendorsConfig: Config['outputVendors'];
 }
 
+export type ExportTransactionsResult = {
+  exportedTransactionsNum: number
+}
+
 export type ExportTransactionsFunction = (
   exportTransactionsParams: ExportTransactionsParams,
   eventPublisher: any
-) => Promise<any>;
+) => Promise<ExportTransactionsResult>;
 
 export interface OutputVendor {
   name: OutputVendorName;

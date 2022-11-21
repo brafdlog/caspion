@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import {
-  AccountStatus, EventNames, EventPublisher, ExporterEvent
+  AccountStatus, EventNames, EventPublisher, ExporterEndEvent, ExporterEvent
 } from '@/backend/eventEmitters/EventEmitter';
 import { EnrichedTransaction, Config } from '@/backend/commonTypes';
 import outputVendors from '@/backend/export/outputVendors';
@@ -25,11 +25,13 @@ export async function createTransactionsInExternalVendors(
       await outputVendor.init?.(outputVendorsConfig);
       await eventPublisher.emit(EventNames.EXPORTER_START, new ExporterEvent({ message: 'Starting', ...baseEvent }));
       try {
-        const vendorResult = await outputVendor.exportTransactions({
+        const exportTransactionsResult = await outputVendor.exportTransactions({
           transactionsToCreate: allTransactions, startDate, outputVendorsConfig
         }, eventPublisher);
-        await eventPublisher.emit(EventNames.EXPORTER_END, new ExporterEvent({ message: 'Finished', ...baseEvent, status: AccountStatus.DONE }));
-        executionResult[outputVendor.name] = vendorResult;
+        await eventPublisher.emit(EventNames.EXPORTER_END, new ExporterEndEvent({
+          message: 'Finished', ...baseEvent, status: AccountStatus.DONE, exportedTransactionsNum: exportTransactionsResult.exportedTransactionsNum
+        }));
+        executionResult[outputVendor.name] = exportTransactionsResult;
       } catch (e) {
         await eventPublisher.emit(EventNames.EXPORTER_ERROR, new ExporterEvent({
           message: e.message, error: e, ...baseEvent
