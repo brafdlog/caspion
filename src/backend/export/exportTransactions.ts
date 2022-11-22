@@ -29,7 +29,10 @@ export async function createTransactionsInExternalVendors(
           transactionsToCreate: allTransactions, startDate, outputVendorsConfig
         }, eventPublisher);
         await eventPublisher.emit(EventNames.EXPORTER_END, new ExporterEndEvent({
-          message: 'Finished', ...baseEvent, status: AccountStatus.DONE, exportedTransactionsNum: exportTransactionsResult.exportedTransactionsNum
+          message: 'Finished',
+          ...baseEvent,
+          status: AccountStatus.DONE,
+          exportedTransactionsNum: exportTransactionsResult.exportedTransactionsNum
         }));
         executionResult[outputVendor.name] = exportTransactionsResult;
       } catch (e) {
