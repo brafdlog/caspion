@@ -50,14 +50,19 @@ const createTransactions: ExportTransactionsFunction = async ({ transactionsToCr
   transactionsThatDontExistInYnab = transactionsThatDontExistInYnab.filter((transaction) => moment(transaction.date, YNAB_DATE_FORMAT).isBefore(NOW));
   if (!transactionsThatDontExistInYnab.length) {
     await emitProgressEvent(eventPublisher, transactionsToCreate, 'All transactions already exist in ynab. Doing nothing.');
-    return null;
+    return {
+      exportedTransactionsNum: 0
+    };
   }
+
   await emitProgressEvent(eventPublisher, transactionsToCreate, `Creating ${transactionsThatDontExistInYnab.length} transactions in ynab`);
   try {
-    const transactionCreationResult = await ynabAPI!.transactions.createTransactions(ynabConfig.options.budgetId, {
+    await ynabAPI!.transactions.createTransactions(ynabConfig.options.budgetId, {
       transactions: transactionsThatDontExistInYnab
     });
-    return transactionCreationResult;
+    return {
+      exportedTransactionsNum: transactionsThatDontExistInYnab.length
+    };
   } catch (e) {
     await eventPublisher.emit(EventNames.EXPORTER_ERROR, new ExporterEvent({
       message: e.message, error: e, exporterName: ynabOutputVendor.name, allTransactions: transactionsToCreate

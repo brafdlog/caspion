@@ -106,7 +106,7 @@ export default class Store {
         }
         const accountScrapingData = this.accountScrapingData.get(accountId);
         if (accountScrapingData) {
-          accountScrapingData.logs.push({message: budgetTrackingEvent.message});
+          accountScrapingData.logs.push({message: budgetTrackingEvent.message, originalEvent: budgetTrackingEvent});
           accountScrapingData.status = budgetTrackingEvent.accountStatus;
         }
       }

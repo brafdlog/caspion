@@ -118,6 +118,7 @@ export type BudgetTrackingEvent = {
 
 export interface Log {
   message: string;
+  originalEvent?: BudgetTrackingEvent
 }
 
 export interface Account {
