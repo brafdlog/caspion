@@ -1,3 +1,11 @@
+# [1.2.0](https://github.com/brafdlog/caspion/compare/v1.1.3...v1.2.0) (2022-11-22)
+
+
+### New
+
+* increase default timeout to 60 seconds ([ef8f931](https://github.com/brafdlog/caspion/commit/ef8f9310ddc87e028037ce6ac729fdfe03a917cf))
+* Show badge of number of created txns ([88be256](https://github.com/brafdlog/caspion/commit/88be25602cdfd03fa0f565ccca67b6ad1b718abb))
+
 ## [1.1.3](https://github.com/brafdlog/caspion/compare/v1.1.2...v1.1.3) (2022-11-17)
 
 
