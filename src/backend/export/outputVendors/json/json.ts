@@ -23,7 +23,7 @@ const exportTransactions: ExportTransactionsFunction = async ({ transactionsToCr
   const sorted = sortByDate(mergedTransactions);
   await fs.writeFile(filePath, JSON.stringify(sorted, null, 4));
   return {
-    exportedTransactionsNum: sorted.length
+    exportedTransactionsNum: mergedTransactions.length - savedTransactions.length
   };
 };
 
