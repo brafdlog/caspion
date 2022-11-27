@@ -7,40 +7,15 @@
     >
       התקן עכשיו
     </a>
-    <div
-      v-if="showMoreDownloads"
-      class="mx-auto text-center"
-    >
-      <button @click="moreDownloads">
+    <div class="mx-auto text-center">
+      <a :href="releasesUrl">
         הורדות נוספות
-      </button>
-      <div
-        class="w-full text-gray-800"
-        :style="{ visibility: showDownloads ? 'visible' : 'hidden' }"
-      >
-        <span
-          v-for="obj in downloads"
-          :key="obj.name"
-        >
-          <a
-            class="no-underline hover:underline text-blue-600"
-            :href="obj.url"
-            :title="obj.name"
-          >{{ obj.extension }}</a>,
-        </span>
-        <a
-          class="font-bold hover:underline"
-          :href="releasesUrl"
-          target="_blank"
-        >עוד...</a>
-      </div>
+      </a>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-
 const getOS = () => {
   if (process.client) {
     // This script sets OSName variable as follows:
@@ -60,33 +35,14 @@ const getOS = () => {
 };
 
 const osToExtension = {
-  Linux: {
-    default: 'AppImage',
-    extensions: ['AppImage', 'deb'],
-  },
-  Windows: {
-    default: 'exe',
-    extensions: ['exe'],
-  },
-  MacOS: {
-    default: 'dmg',
-    extensions: ['dmg', 'zip'],
-  },
+  Linux: 'AppImage',
+  Windows: 'exe',
+  MacOS: 'dmg',
 };
-
-const excludeExtensions = ['blockmap', 'yml'];
-
-const isWithExtension = (extensions, name) => extensions.filter((ext) => name.toLowerCase().endsWith(ext.toLowerCase()))
-  .length > 0;
 
 export default {
   name: 'DownloadButton',
   props: {
-    showMoreDownloads: {
-      type: Boolean,
-      default: true,
-      required: false,
-    },
     buttonStyle: {
       type: String,
       default: '',
@@ -96,65 +52,16 @@ export default {
   data() {
     return {
       mainLink: '',
-      downloads: [],
-      os: 'Unknown',
       showDownloads: false,
       releasesUrl: `https://github.com/${GITHUB_REPO}/releases/latest`,
     };
   },
   created() {
-    this.os = getOS();
+    const extension = osToExtension[getOS()];
 
-    this.mainLink = osToExtension[this.os]?.default
-      ? `${this.releasesUrl}/download/caspion.${osToExtension[this.os]?.default}`
+    this.mainLink = extension
+      ? `${this.releasesUrl}/download/caspion.${extension}`
       : this.releasesUrl;
-
-    axios
-      .get(`https://api.github.com/repos/${GITHUB_REPO}/releases`)
-      .then((response) => response.data)
-      .then((releases) => releases
-        .sort((a, b) => new Date(b.published_at) - new Date(a.published_at))
-        .find((release) => !release.draft))
-      .then((release) => {
-        const osExtension = osToExtension[this.os];
-
-        const filteredAssets = osExtension && osExtension.extensions.length > 0
-          ? release.assets.filter((asset) => isWithExtension(osExtension.extensions, asset.name))
-          : release.assets;
-
-        this.downloads = filteredAssets
-          .filter((asset) => !isWithExtension(excludeExtensions, asset.name))
-          .map(({ name, browser_download_url: url }) => {
-            const splitted = name.split('.');
-            const extension = splitted[splitted.length - 1];
-            return {
-              name,
-              url,
-              extension,
-            };
-          });
-      });
-  },
-  methods: {
-    download() {
-      const defaultExt = osToExtension[this.os].default;
-      const download = this.downloads.find(({ name }) => name.toLowerCase().endsWith(defaultExt.toLowerCase()));
-      if (download) {
-        window.open(download.url);
-      } else {
-        this.openReleasesPage();
-      }
-    },
-    moreDownloads() {
-      if (this.downloads.length > 1) {
-        this.showDownloads = !this.showDownloads;
-      } else {
-        this.openReleasesPage();
-      }
-    },
-    openReleasesPage() {
-      window.open(this.releasesUrl, '_blank');
-    },
   },
 };
 </script>
