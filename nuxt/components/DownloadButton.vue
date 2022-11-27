@@ -1,12 +1,12 @@
 <template>
   <div>
-    <button
+    <a
       :class="buttonStyle"
-      class="mx-auto lg:mx-0 hover:underline font-bold rounded-full py-4 px-8"
-      @click="download"
+      class="mx-auto lg:mx-0 hover:underline font-bold rounded-full py-4 px-8 block"
+      :href="mainLink"
     >
       התקן עכשיו
-    </button>
+    </a>
     <div
       v-if="showMoreDownloads"
       class="mx-auto text-center"
@@ -95,14 +95,19 @@ export default {
   },
   data() {
     return {
+      mainLink: '',
       downloads: [],
       os: 'Unknown',
       showDownloads: false,
-      releasesUrl: `https://github.com/${GITHUB_REPO}/releases`,
+      releasesUrl: `https://github.com/${GITHUB_REPO}/releases/latest`,
     };
   },
   created() {
     this.os = getOS();
+
+    this.mainLink = osToExtension[this.os]?.default
+      ? `${this.releasesUrl}/download/caspion.${osToExtension[this.os]?.default}`
+      : this.releasesUrl;
 
     axios
       .get(`https://api.github.com/repos/${GITHUB_REPO}/releases`)
