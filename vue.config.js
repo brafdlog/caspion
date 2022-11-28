@@ -35,6 +35,8 @@ module.exports = {
             releaseType: 'release'
           }
         ],
+        // eslint-disable-next-line no-template-curly-in-string
+        artifactName: '${productName}.${ext}',
         dmg: {
           contents: [
             {

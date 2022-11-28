@@ -13,7 +13,7 @@ exports[`HeroContent renders properly 1`] = `
         בצורה מאובטחת, ללא צד שלישי ובפיקוח הקהילה
       </p>
       <div class=\\"mx-auto my-6\\">
-        <downloadbutton-stub showmoredownloads=\\"true\\" buttonstyle=\\"bg-white text-gray-800 shadow-lg\\"></downloadbutton-stub>
+        <downloadbutton-stub buttonstyle=\\"bg-white text-gray-800 shadow-lg\\"></downloadbutton-stub>
       </div>
     </div>
     <div class=\\"w-full md:w-3/5 py-6 md:pr-2 text-center\\"><img src=\\"~/assets/img/main-screenshot.png\\" alt=\\"\\" class=\\"w-full \\"></div>
