@@ -7,7 +7,7 @@
 		"dbaeumer.vscode-eslint",
 		"eamodio.gitlens",
 		"github.vscode-pull-request-github",
-		"octref.vetur"
+		"vue.volar"
 	],
 	// List of extensions recommended by VS Code that should not be recommended for users of this workspace.
 	"unwantedRecommendations": [
