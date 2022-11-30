@@ -17,6 +17,10 @@
     margin-bottom: 15px;
 }
 
+.customGap {
+  gap: 6rem;
+}
+
 .contentContainer {
 }
 
