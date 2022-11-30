@@ -1,3 +1,11 @@
+## [1.2.1](https://github.com/brafdlog/caspion/compare/v1.2.0...v1.2.1) (2022-11-30)
+
+
+### Fix
+
+* Keep the download URL consistent (#398) ([9f7a005](https://github.com/brafdlog/caspion/commit/9f7a005b88b0089b0e37966241061f17879e0ca1)), closes [#398](https://github.com/brafdlog/caspion/issues/398)
+* Keep the download URL consistent (#398) ([32213e4](https://github.com/brafdlog/caspion/commit/32213e42b2adaf030040944ff577e0ae306c6c92)), closes [#398](https://github.com/brafdlog/caspion/issues/398)
+
 # [1.2.0](https://github.com/brafdlog/caspion/compare/v1.1.3...v1.2.0) (2022-11-22)
 
 
