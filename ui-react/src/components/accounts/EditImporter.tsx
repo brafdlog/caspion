@@ -52,6 +52,7 @@ export default function EditImporter({
                     {IMPORTERS_LOGIN_FIELDS[importer.companyId].map(loginField => (
                         <Form.Group key={loginField} className={styles.formGroup} controlId={loginField}>
                             <Form.Control placeholder={LOGIN_FIELD_DISPLAY_NAMES[loginField]} type={loginField === 'password' ? 'password' : '' } value={loginFields[loginField]} onChange={(event) => onLoginFieldChanged(loginField, event.target.value)} required />
+                            <Form.Control.Feedback type="invalid">נא למלא פרטים</Form.Control.Feedback>
                         </Form.Group>
                     ))}
                     <Form.Check
