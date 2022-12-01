@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: deepakputhraya/action-pr-title@3864bebc79c5f829d25dd42d3c6579d040b0ef16
         name: Validate PR Title
-        continue-on-error: true
+        continue-on-error: false
         with:
           regex: '\w+:( [\w\.,]+)+( \(\w+ #\d+\))?' # Regex the title should match. "Level: message (optional #123)"
           allowed_prefixes: 'Breaking,Build,Chore,Fix,New,Update,Upgrade,Deps' # title should start with the given prefix
