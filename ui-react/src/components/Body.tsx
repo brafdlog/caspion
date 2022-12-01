@@ -63,7 +63,7 @@ const Body = ({ scrape }: BodyProps) => {
     <div>
       <Container className={styles.container}>
         <div className={styles.contentContainer}>
-          <Stack direction="horizontal" gap={5}>
+          <Stack direction="horizontal" className={styles.customGap}>
             {config && config.scraping &&
             <AccountsContainer title="בנקים וכרטיסי אשראי">
               <Importers accounts={store.importers} isScraping={isScraping} showModal={showModal} handleNewAccountClicked={newScraperClicked} />
