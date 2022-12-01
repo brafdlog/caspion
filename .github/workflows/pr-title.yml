@@ -31,14 +31,10 @@ jobs:
             Examples:
 
             ```
-            {% endraw %}
-
             Breaking: I broke something
             Fix: fix (fixes #1234)
             Update: some packages updates (refs #123)
             New: Added a new feature
-            {% raw %}
-
             ```
 
             See more in `release.config.js`.
