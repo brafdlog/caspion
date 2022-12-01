@@ -36,28 +36,26 @@ const accountMetadata: Record<CompanyTypes | OutputVendorName, AccountMetadata> 
   };
 });
 
-const PASSWORD_FIELD = 'password';
-
 export const IMPORTERS_LOGIN_FIELDS = {
-  [CompanyTypes.hapoalim]: ['userCode', PASSWORD_FIELD],
-  [CompanyTypes.hapoalimBeOnline]: ['userCode', PASSWORD_FIELD],
-  [CompanyTypes.leumi]: ['username', PASSWORD_FIELD],
-  [CompanyTypes.mizrahi]: ['username', PASSWORD_FIELD],
-  [CompanyTypes.discount]: ['id', PASSWORD_FIELD, 'num'],
-  [CompanyTypes.otsarHahayal]: ['username', PASSWORD_FIELD],
-  [CompanyTypes.leumiCard]: ['username', PASSWORD_FIELD],
-  [CompanyTypes.max]: ['username', PASSWORD_FIELD],
-  [CompanyTypes.visaCal]: ['username', PASSWORD_FIELD],
-  [CompanyTypes.isracard]: ['id', 'card6Digits', PASSWORD_FIELD],
-  [CompanyTypes.amex]: ['id', 'card6Digits', PASSWORD_FIELD],
-  [CompanyTypes.union]: ['username', PASSWORD_FIELD],
-  [CompanyTypes.beinleumi]: ['username', PASSWORD_FIELD],
-  [CompanyTypes.massad]: ['username', PASSWORD_FIELD]
+  [CompanyTypes.hapoalim]: ['userCode', 'password'],
+  [CompanyTypes.hapoalimBeOnline]: ['userCode', 'password'],
+  [CompanyTypes.leumi]: ['username', 'password'],
+  [CompanyTypes.mizrahi]: ['username', 'password'],
+  [CompanyTypes.discount]: ['id', 'password', 'num'],
+  [CompanyTypes.otsarHahayal]: ['username', 'password'],
+  [CompanyTypes.leumiCard]: ['username', 'password'],
+  [CompanyTypes.max]: ['username', 'password'],
+  [CompanyTypes.visaCal]: ['username', 'password'],
+  [CompanyTypes.isracard]: ['id', 'card6Digits', 'password'],
+  [CompanyTypes.amex]: ['id', 'card6Digits', 'password'],
+  [CompanyTypes.union]: ['username', 'password'],
+  [CompanyTypes.beinleumi]: ['username', 'password'],
+  [CompanyTypes.massad]: ['username', 'password']
 };
 
 export const LOGIN_FIELD_DISPLAY_NAMES = {
   'userCode': 'קוד משתמש',
-  [PASSWORD_FIELD]: 'סיסמא',
+  'password': 'סיסמא',
   username: 'שם משתמש',
   id: 'מספר זהות',
   num: 'קוד מזהה',
