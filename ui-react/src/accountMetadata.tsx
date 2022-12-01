@@ -63,6 +63,16 @@ export const LOGIN_FIELD_DISPLAY_NAMES = {
 
 };
 
+export const LOGIN_FIELD_MIN_LENGTH = {
+  'userCode': 3,
+  'password': 4,
+  username: 3,
+  id: 9,
+  num: 4,
+  card6Digits: 6,
+
+};
+
 export const importers: Account[] = [];
 
 for (const importerName in CompanyTypes) {
