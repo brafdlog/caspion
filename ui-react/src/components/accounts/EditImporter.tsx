@@ -17,12 +17,21 @@ export default function EditImporter({
 }: EditImporterProps) {
     const [loginFields, setLoginFields] = useState<Record<string, string>>(importer.loginFields || {});
     const [active, setActive] = useState<boolean>(importer.active);
-    const onSaveClicked = async () => {
-        await handleSave({
-            ...importer,
-            active,
-            loginFields
-        });
+    const [validated, setValidated] = useState(false);
+    const onSaveClicked = async (event) => {
+        const form = event.currentTarget
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        } else {
+            await handleSave({
+                ...importer,
+                active,
+                loginFields
+            });
+        }        
+        
+        setValidated(true);
     };
     const onLoginFieldChanged = (loginFieldName: string, value) => {
         setLoginFields({
@@ -39,10 +48,10 @@ export default function EditImporter({
         <Card className={styles.card}>
             <Image className={styles.logo} src={importer.logo} roundedCircle width={100} height={100} />
             <Card.Body className={styles.cardBody}>
-                <Form onSubmit={onSaveClicked}>
+                <Form noValidate validated={validated} onSubmit={onSaveClicked}>
                     {IMPORTERS_LOGIN_FIELDS[importer.companyId].map(loginField => (
                         <Form.Group key={loginField} className={styles.formGroup} controlId={loginField}>
-                            <Form.Control placeholder={LOGIN_FIELD_DISPLAY_NAMES[loginField]} type={loginField === 'password' ? 'password' : '' } value={loginFields[loginField]} onChange={(event) => onLoginFieldChanged(loginField, event.target.value)} />
+                            <Form.Control placeholder={LOGIN_FIELD_DISPLAY_NAMES[loginField]} type={loginField === 'password' ? 'password' : '' } value={loginFields[loginField]} onChange={(event) => onLoginFieldChanged(loginField, event.target.value)} required />
                         </Form.Group>
                     ))}
                     <Form.Check
