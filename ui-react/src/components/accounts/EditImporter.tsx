@@ -51,7 +51,7 @@ export default function EditImporter({
                 <Form noValidate validated={validated} onSubmit={onSaveClicked}>
                     {IMPORTERS_LOGIN_FIELDS[importer.companyId].map(loginField => (
                         <Form.Group key={loginField} className={styles.formGroup} controlId={loginField}>
-                            <Form.Control placeholder={LOGIN_FIELD_DISPLAY_NAMES[loginField]} type={loginField === 'password' ? 'password' : '' } value={loginFields[loginField]} onChange={(event) => onLoginFieldChanged(loginField, event.target.value)} required minLength={LOGIN_FIELD_MIN_LENGTH[loginField]} />
+                            <Form.Control placeholder={LOGIN_FIELD_DISPLAY_NAMES[loginField]} type={loginField === 'password' ? 'password' : '' } onChange={(event) => onLoginFieldChanged(loginField, event.target.value)} required minLength={LOGIN_FIELD_MIN_LENGTH[loginField]} />
                             <Form.Control.Feedback type="invalid">נא להכניס {LOGIN_FIELD_DISPLAY_NAMES[loginField]} עם לפחות {LOGIN_FIELD_MIN_LENGTH[loginField]} תוים</Form.Control.Feedback>
                         </Form.Group>
                     ))}
