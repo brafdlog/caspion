@@ -18,26 +18,36 @@ export default function EditImporter({
     const [loginFields, setLoginFields] = useState<Record<string, string>>(importer.loginFields || {});
     const [active, setActive] = useState<boolean>(importer.active);
     const [validated, setValidated] = useState(false);
-    const onSaveClicked = async (event) => {
-        const form = event.currentTarget
-        if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-        } else {
-            await handleSave({
-                ...importer,
-                active,
-                loginFields
-            });
-        }        
-        
-        setValidated(true);
+    const onSaveClicked = async () => {
+        await handleSave({
+            ...importer,
+            active,
+            loginFields
+        });
+    };
+    const checkFieldValidity = (loginFieldName: string, value) : boolean => {
+        return value.length >= LOGIN_FIELD_MIN_LENGTH[loginFieldName];
     };
     const onLoginFieldChanged = (loginFieldName: string, value) => {
         setLoginFields({
             ...loginFields,
             [loginFieldName]: value
         });
+
+        if (!checkFieldValidity(loginFieldName, value)) {
+            setValidated(false);
+            return;
+        }
+        
+        for (let fieldKey in loginFields) {
+            if (loginFieldName === fieldKey) continue
+
+            if (!checkFieldValidity(fieldKey, loginFields[fieldKey])) {
+                setValidated(false);
+                return;
+            }
+        }
+        setValidated(true);
     };
 
     const onActiveChanged = () => {
@@ -48,11 +58,10 @@ export default function EditImporter({
         <Card className={styles.card}>
             <Image className={styles.logo} src={importer.logo} roundedCircle width={100} height={100} />
             <Card.Body className={styles.cardBody}>
-                <Form noValidate validated={validated} onSubmit={onSaveClicked}>
+                <Form>
                     {IMPORTERS_LOGIN_FIELDS[importer.companyId].map(loginField => (
                         <Form.Group key={loginField} className={styles.formGroup} controlId={loginField}>
-                            <Form.Control placeholder={LOGIN_FIELD_DISPLAY_NAMES[loginField]} type={loginField === 'password' ? 'password' : '' } value={loginFields[loginField]} onChange={(event) => onLoginFieldChanged(loginField, event.target.value)} required minLength={LOGIN_FIELD_MIN_LENGTH[loginField]} />
-                            <Form.Control.Feedback type="invalid">נא להכניס {LOGIN_FIELD_DISPLAY_NAMES[loginField]} עם לפחות {LOGIN_FIELD_MIN_LENGTH[loginField]} תוים</Form.Control.Feedback>
+                            <Form.Control placeholder={LOGIN_FIELD_DISPLAY_NAMES[loginField]} type={loginField === 'password' ? 'password' : '' } value={loginFields[loginField]} onChange={(event) => onLoginFieldChanged(loginField, event.target.value)} />
                         </Form.Group>
                     ))}
                     <Form.Check
@@ -63,7 +72,7 @@ export default function EditImporter({
                     />
                     <div className={styles.actionButtonsWrapper}>
                         <Button variant="danger" onClick={() => handleDelete(importer.id)}>מחק</Button>
-                        <Button variant="primary" type="submit">שמור</Button>
+                        <Button variant="primary" onClick={onSaveClicked} disabled={!validated}>שמור</Button>
                     </div>
                 </Form>
             </Card.Body>
