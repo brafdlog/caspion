@@ -93,7 +93,7 @@ const Body = ({ scrape }: BodyProps) => {
         <Form.Check
             type="switch"
             onClick={toggleUIVersion}
-            label="ממשק ישן"
+            label="מעבר לממשק ישן"
             defaultChecked
         />
       </Container>
