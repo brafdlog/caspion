@@ -15,7 +15,7 @@ export default function EditImporter({
   handleDelete,
   importer
 }: EditImporterProps) {
-    const [loginFields, setLoginFields] = useState<Record<string, string>>(importer.loginFields || {username: '', password: '', userCode: '', id: '', num: '', card6Digits: ''});
+    const [loginFields, setLoginFields] = useState<Record<string, string>>(importer.loginFields || {});
     const [active, setActive] = useState<boolean>(importer.active);
     const [validated, setValidated] = useState(false);
     const onSaveClicked = async (event) => {
