@@ -5,7 +5,7 @@ import navEllipseIcon from "../../assets/navEllipse.svg"
 function NavButton({onClick, text}) {
   return (
     <div>
-     <img src={navEllipseIcon} alt='navEllipse' />
+     <img src={navEllipseIcon} alt='navEllipse' style={{cursor: "pointer"}}/>
       <Button variant="light" onClick={onClick} style={{backgroundColor:"transparent", borderWidth:0}}>{text}</Button> 
     </div>
   )

@@ -6,6 +6,7 @@ import { openExternal } from '../../eventsBridge';
 import { repository } from '../../../package.json';
 import { discordchannel } from '../../../package.json';
 import NavButton from './NavButton';
+import styles from './TopBar.module.css';
 
 function TopBar() {
 
@@ -22,7 +23,7 @@ const handleReportProblem = ()=>{
 }
 
   return (
-    <NavBar style={{borderBottom:"1px solid #C4C4C4" }}>
+    <NavBar className={styles.navBar}>
         <Container fluid>
             <NavBar.Brand><img src={logo} alt="כספיון" width={50} height={50} /> כספיון</NavBar.Brand>
             <Stack direction="horizontal" gap={5}>
