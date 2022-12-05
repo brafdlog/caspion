@@ -68,6 +68,7 @@ module.exports = {
     'semi': productionError,
     'padded-blocks': 'off',
     'no-return-assign': 'off',
+    'quote-props': ['error', 'consistent-as-needed'],
     'no-restricted-imports': ['error', {
       name: 'electron-log',
       importNames: ['default'],
