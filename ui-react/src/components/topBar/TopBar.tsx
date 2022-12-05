@@ -23,7 +23,7 @@ const handleReportProblem = ()=>{
 }
 
   return (
-    <NavBar className={styles.navBar}>
+    <NavBar className={styles.topNavBar} style={{borderBottom :"1px solid #C4C4C4"}}>
         <Container fluid>
             <NavBar.Brand><img src={logo} alt="כספיון" width={50} height={50} /> כספיון</NavBar.Brand>
             <Stack direction="horizontal" gap={5}>
