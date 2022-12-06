@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
+    "eslint-friendly-formatter": "^4.0.1",
     "fs-extra": "^10.1.0"
   },
   "scripts": {
@@ -34,7 +35,9 @@
     "build": "cross-env SKIP_PREFLIGHT_CHECK=true react-scripts build",
     "postbuild": "node copyReactArtifacts.js",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint -f ./node_modules/eslint-friendly-formatter src",
+    "lint:fix": "yarn lint --fix"
   },
   "eslintConfig": {
     "extends": [
