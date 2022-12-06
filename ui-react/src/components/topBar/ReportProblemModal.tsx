@@ -31,12 +31,16 @@ function ReportProblemModal({ showReportModal, handleCloseModal }) {
     if (!form.title || form.title === "") newErrors.title = "שדה חובה";
 
     if (validateEmail) {
-      if (!form.email || !/\S+@\S+\.\S+/.test(form.email))
+      if (!form.email || !isValidEmail(form.email))
         newErrors.email = "שדה מייל לא חוקי";
     }
 
     return newErrors;
   };
+
+  function isValidEmail(email) {
+    return /\S+@\S+\.\S+/.test(email);
+  }
 
   const openGithub = (e) => {
     e.preventDefault();
