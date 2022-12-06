@@ -16,6 +16,7 @@ function ReportProblemModal({ showReportModal, handleCloseModal }) {
     email: "",
     details: "",
   });
+
   const [errors, setErrors] = useState({});
 
   const setField = (field: string, value: string) => {
@@ -24,8 +25,27 @@ function ReportProblemModal({ showReportModal, handleCloseModal }) {
     if (!!errors[field]) setErrors({ ...errors, [field]: null });
   };
 
+  const validateForm = (validateEmail = true) => {
+    const newErrors = {};
+
+    if (!form.title || form.title === "") newErrors.title = "שדה חובה";
+
+    if (validateEmail) {
+      if (!form.email || !/\S+@\S+\.\S+/.test(form.email))
+        newErrors.email = "שדה מייל לא חוקי";
+    }
+
+    return newErrors;
+  };
+
   const openGithub = (e) => {
     e.preventDefault();
+
+    const formErrors = validateForm(false);
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
+      return;
+    }
 
     const url = createGithubIssueLink(
       form.title,
@@ -71,14 +91,20 @@ function ReportProblemModal({ showReportModal, handleCloseModal }) {
   const sendReport = (e) => {
     e.preventDefault();
 
-    const eventId = Sentry.userReportProblem(
-      form.title,
-      form.details,
-      form.attachedLogs ?? "",
-      form.email
-    );
+    const formErrors = validateForm(true);
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
+      return;
+    }
 
-    console.info(`Problem reported. Event ${eventId}`);
+    // const eventId = Sentry.userReportProblem(
+    //   form.title,
+    //   form.details,
+    //   form.attachedLogs ?? "",
+    //   form.email
+    // );
+
+    //console.info(`Problem reported. Event ${eventId}`);
   };
 
   const seeLogs = () => {};
@@ -110,8 +136,12 @@ function ReportProblemModal({ showReportModal, handleCloseModal }) {
                 aria-describedby="title"
                 required
                 value={form.title}
+                isInvalid={!!errors.title}
                 onChange={(e) => setField("title", e.target.value)}
               />
+              <Form.Control.Feedback type="invalid">
+                {errors.title}
+              </Form.Control.Feedback>
               <Form.Text muted>נא לתאר את הבאג במשפט אחד</Form.Text>
             </Form.Group>
 
@@ -125,9 +155,13 @@ function ReportProblemModal({ showReportModal, handleCloseModal }) {
               <Form.Control
                 type="text"
                 value={form.email}
+                isInvalid={!!errors.email}
                 aria-describedby="email"
                 onChange={(e) => setField("email", e.target.value)}
               />
+              <Form.Control.Feedback type="invalid">
+                {errors.email}
+              </Form.Control.Feedback>
               <Form.Text muted>
                 אנחנו זקוקים לכתובת המייל שלך על מנת ליצור איתך קשר במידה ונשלח
                 דוח
@@ -142,7 +176,7 @@ function ReportProblemModal({ showReportModal, handleCloseModal }) {
             value={form.details}
             onChange={(e) => setField("details", e.target.value)}
           />
-          <Form.Group className="mb-4">
+          <Form.Group className="mb-4" as={Col} md="2">
             <Form.Check type="checkbox" label="צירוף קבצי לוג" />(
             <Button variant="link" onClick={seeLogs}>
               צפיה בלוגים
@@ -171,7 +205,6 @@ function ReportProblemModal({ showReportModal, handleCloseModal }) {
               name="send-report"
               type="submit"
               onClick={sendReport}
-              disabled
             >
               שליחת דוח
             </Button>
