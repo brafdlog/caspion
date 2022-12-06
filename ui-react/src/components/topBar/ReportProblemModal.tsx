@@ -1,164 +1,185 @@
 import React, { useState } from "react";
-import NavBar from "react-bootstrap/Navbar";
-import {
-  Button,
-  Container,
-  Form,
-  Modal,
-  Row,
-  Col,
-  Stack,
-} from "react-bootstrap";
-import logo from "../../assets/logoFishOnly.svg";
+import { Button, Form, Modal, Row, Col, Stack } from "react-bootstrap";
 import { openExternal } from "../../eventsBridge";
 import { repository } from "../../../package.json";
-import { discordchannel } from "../../../package.json";
-import NavButton from "./NavButton";
-import styles from "./TopBar.module.css";
 import os from "os";
 
-function ReportProblemModal({showReportModal,handleCloseModal}) {
+interface ReportProblemForm {
+  title?: string;
+  email?: string;
+  details?: string;
+}
 
-    const [validated, setValidated] = useState(false);
+function ReportProblemModal({ showReportModal, handleCloseModal }) {
+  const [form, setForm] = useState<ReportProblemForm>({
+    title: "",
+    email: "",
+    details: "",
+  });
+  const [errors, setErrors] = useState({});
 
-    const openGithub = () => {
-        //this.validateEmail = false;
-        //if (this.$refs.form.validate()) {
-        const url = createGithubIssueLink(
-          this.formData.title,
-          this.formData.details,
-          this.formData.attachLogs ? this.raw : ""
-        );
-        console.info(`Open bug report url with title: ${this.formData.title}`);
-        openExternal(url);
-      };
-    
-      //TODO: SOURCE_COMMIT_SHORT should be taken from env file
-      const createGithubIssueLink = (
-        title: string | number | boolean,
-        details: any,
-        log: any
-      ) => {
-        const formattedDetails = details
-          ? `
+  const setField = (field: string, value: string) => {
+    setForm({ ...form, [field]: value });
+
+    if (!!errors[field]) setErrors({ ...errors, [field]: null });
+  };
+
+  const openGithub = (e) => {
+    e.preventDefault();
+
+    const url = createGithubIssueLink(
+      form.title,
+      form.details,
+      form.attachedLogs ?? ""
+    );
+    console.info(`Open bug report url with title: ${form.title}`);
+    openExternal(url);
+  };
+
+  //TODO: SOURCE_COMMIT_SHORT should be taken from env file
+  const createGithubIssueLink = (title: string, details: string, log: any) => {
+    const formattedDetails = details
+      ? `
         ## Details
         
         ${details}`
-          : "";
-    
-        const formattedLog = log
-          ? `
+      : "";
+
+    const formattedLog = log
+      ? `
         ## Log
         \`\`\`
         ${log}
         \`\`\``
-          : "";
-    
-        const sysInfo = `
+      : "";
+
+    const sysInfo = `
         ## System Info
         
          - Source Version: \`${"SOURCE_COMMIT_SHORT" || "unknown"}\`
          - OS: \`${os.platform()}${os.arch()}\`
          - OS Version: \`${os.release()}\`
         `;
-    
-        return `${`${repository}/issues/new?` +
-          `title=${encodeURIComponent(title)}` +
-          "&body="}${encodeURIComponent(
-          formattedDetails + formattedLog + sysInfo
-        )}`;
-      };
-    
-      const sendReport = () => {
-        this.validateEmail = true;
-        // if (this.$refs.form.validate()) {
-        //   const eventId = Sentry.userReportProblem(
-        //     this.formData.title,
-        //     this.formData.details,
-        //     this.formData.attachLogs ? this.raw : '',
-        //     this.formData.email,
-        //   );
-    
-        //   logger.info(`Problem reported. Event ${eventId}`);
-        //   this.dialog = false;
-        // }
-      };
-    
-      const handleSubmit = (event) => {
-        const form = event.currentTarget;
-        if (form.checkValidity() === false) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
-    
-        setValidated(true);
-      };
 
+    return `${`${repository}/issues/new?` +
+      `title=${encodeURIComponent(title)}` +
+      "&body="}${encodeURIComponent(
+      formattedDetails + formattedLog + sysInfo
+    )}`;
+  };
 
+  const sendReport = (e) => {
+    e.preventDefault();
+
+    const eventId = Sentry.userReportProblem(
+      form.title,
+      form.details,
+      form.attachedLogs ?? "",
+      form.email
+    );
+
+    console.info(`Problem reported. Event ${eventId}`);
+  };
+
+  const seeLogs = () => {};
 
   return (
     <Modal
-    show={showReportModal}
-    onHide={handleCloseModal}
-    size="lg"
-    aria-labelledby="contained-modal-title-vcenter"
-    centereddescribe
-    the
-  >
-    <Modal.Header closeButton>
-      <Modal.Title>דיווח על תקלה</Modal.Title>
-    </Modal.Header>
-    <Modal.Body>
-    <Form noValidate validated={validated} onSubmit={handleSubmit}>
-      <Row className="mb-3">
-        <Form.Group
-          as={Col}
-          md="6"
-          controlId="title"
-          className="position-relative"
-        >
-          <Form.Label htmlFor="title">Title</Form.Label>
-          <Form.Control type="text" id="title" aria-describedby="title" required />
-          <Form.Text id="title" muted>
-            Describe the bug in one sentence
-          </Form.Text>
-        </Form.Group>
+      show={showReportModal}
+      onHide={handleCloseModal}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centereddescribe
+      the
+    >
+      <Modal.Header closeButton>
+        <Modal.Title>דיווח על באג</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form>
+          <Row className="mb-3">
+            <Form.Group
+              as={Col}
+              md="6"
+              className="position-relative"
+              controlId="title"
+            >
+              <Form.Label>כותרת</Form.Label>
+              <Form.Control
+                type="text"
+                aria-describedby="title"
+                required
+                value={form.title}
+                onChange={(e) => setField("title", e.target.value)}
+              />
+              <Form.Text muted>נא לתאר את הבאג במשפט אחד</Form.Text>
+            </Form.Group>
 
-        <Form.Group
-          as={Col}
-          md="6"
-          controlId="email"
-          className="position-relative"
-        >
-          <Form.Label htmlFor="email">Email</Form.Label>
-          <Form.Control type="text" id="email" aria-describedby="email" />
-          <Form.Text id="email" muted>
-            We need your mail to contact you if you send a report
-          </Form.Text>
-        </Form.Group>
-      </Row>
-      <Form.Control
-        as="textarea"
-        aria-label="With textarea"
-        placeholder="Bug Details (אפשר לכתוב בעברית)"
-      />
-      </Form>
-      <div>*indicates required field</div>
-      <div>You can find the logs here: C:\git\caspion\userData\logs</div>
-    </Modal.Body>
-    <Modal.Footer>
-      <Button variant="secondary" onClick={handleCloseModal}>
-        Close
-      </Button>
-      <Button variant="primary" name="open-github" type="submit">
-        OPEN GITHUB ISSUE
-      </Button>
-      <Button variant="primary" name="send-report" type="submit">
-        SEND REPORT
-      </Button>
-    </Modal.Footer>
-  </Modal>
-  )
+            <Form.Group
+              as={Col}
+              md="6"
+              className="position-relative"
+              controlId="email"
+            >
+              <Form.Label>דוא"ל</Form.Label>
+              <Form.Control
+                type="text"
+                value={form.email}
+                aria-describedby="email"
+                onChange={(e) => setField("email", e.target.value)}
+              />
+              <Form.Text muted>
+                אנחנו זקוקים לכתובת המייל שלך על מנת ליצור איתך קשר במידה ונשלח
+                דוח
+              </Form.Text>
+            </Form.Group>
+          </Row>
+          <Form.Control
+            as="textarea"
+            aria-label="With textarea"
+            placeholder="פרטי הבאג"
+            className="mb-4"
+            value={form.details}
+            onChange={(e) => setField("details", e.target.value)}
+          />
+          <Form.Group className="mb-4">
+            <Form.Check type="checkbox" label="צירוף קבצי לוג" />(
+            <Button variant="link" onClick={seeLogs}>
+              צפיה בלוגים
+            </Button>
+            )
+          </Form.Group>
+
+          <div>*מורה על שדות חובה</div>
+          <div className="mb-4">
+            אפשר למצוא את הלוגים פה: C:\git\caspion\userData\logs
+          </div>
+          <Stack direction="horizontal" gap={3}>
+            <Button variant="light" onClick={handleCloseModal}>
+              סגור
+            </Button>
+            <Button
+              variant="dark"
+              name="open-github"
+              type="submit"
+              onClick={openGithub}
+            >
+              פתיחת תקלה ב-Github{" "}
+            </Button>
+            <Button
+              variant="dark"
+              name="send-report"
+              type="submit"
+              onClick={sendReport}
+              disabled
+            >
+              שליחת דוח
+            </Button>
+          </Stack>
+        </Form>
+      </Modal.Body>
+    </Modal>
+  );
 }
 
-export default ReportProblemModal
+export default ReportProblemModal;
