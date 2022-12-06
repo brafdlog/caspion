@@ -5,17 +5,17 @@
 import '@testing-library/jest-dom';
 
 const MOCK_ELECTRON = {
-    ipcRenderer: {
-        invoke: () => {},
-        send: () => {}
-    }
+  ipcRenderer: {
+    invoke: () => {},
+    send: () => {}
+  }
 };
 
 // @ts-ignore
 window.require = (name: string) => {
-    if (name === 'electron') {
-        return MOCK_ELECTRON;
-    } else {
-        throw new Error(`No mock for module ${name}`);
-    }
+  if (name === 'electron') {
+    return MOCK_ELECTRON;
+  }
+  throw new Error(`No mock for module ${name}`);
+
 };

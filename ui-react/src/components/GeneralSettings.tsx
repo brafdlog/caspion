@@ -1,15 +1,15 @@
-import styles from './GeneralSettings.module.css';
 import { Card, Form } from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
 import { useContext } from 'react';
+import styles from './GeneralSettings.module.css';
 import { StoreContext } from '../Store';
 
 function GeneralSettings() {
-    const store = useContext(StoreContext);
-    function toggleShowBrowser() {
-        store.toggleShowBrowser();
-    }
-    return (
+  const store = useContext(StoreContext);
+  function toggleShowBrowser() {
+    store.toggleShowBrowser();
+  }
+  return (
         <div className={styles.container}>
             <Card className={styles.card}>
                 <Card.Body className={styles.cardBody}>
@@ -36,7 +36,7 @@ function GeneralSettings() {
                 </Card.Body>
             </Card>
         </div>
-    );
+  );
 }
 
 export default observer(GeneralSettings);

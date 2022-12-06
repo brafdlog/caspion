@@ -1,6 +1,6 @@
 import { action, makeAutoObservable } from 'mobx';
 import { createContext } from 'react';
-import { updateConfig, getYnabAccountData } from "./eventsBridge";
+import { updateConfig, getYnabAccountData } from './eventsBridge';
 import {
   Account,
   AccountStatus,
@@ -17,8 +17,11 @@ import { YnabAccountDataType, YnabConfig } from '../../src/backend/commonTypes';
 
 export default class Store {
   config?: Config;
+
   accountScrapingData: Map<string, { logs: Log[], status: AccountStatus }>;
+
   ynabAccountData?: YnabAccountDataType;
+
   fetchingYnabAccountData: boolean;
 
   constructor() {
@@ -42,7 +45,7 @@ export default class Store {
 
   get importers(): Importer[] {
     if (!this.config) return [];
-    return this.config.scraping.accountsToScrape.map(accountToScrape => {
+    return this.config.scraping.accountsToScrape.map((accountToScrape) => {
       return {
         ...this.createAccountObject(accountToScrape.id, accountToScrape.key, AccountType.IMPORTER, accountToScrape.active),
         loginFields: accountToScrape.loginFields
@@ -52,8 +55,8 @@ export default class Store {
 
   get exporters(): Exporter[] {
     if (!this.config) return [];
-    const outputVendors = this.config.outputVendors;
-    return Object.keys(outputVendors).map(exporterKey => {
+    const { outputVendors } = this.config;
+    return Object.keys(outputVendors).map((exporterKey) => {
       const exporter = outputVendors[exporterKey];
       return {
         ...this.createAccountObject(exporterKey, exporterKey, AccountType.EXPORTER, exporter.active),
@@ -63,8 +66,8 @@ export default class Store {
   }
 
   get allAccounts(): Account[] {
-    const importers = this.importers;
-    const exporters = this.exporters;
+    const { importers } = this;
+    const { exporters } = this;
     return [
       ...importers,
       ...exporters
@@ -73,7 +76,7 @@ export default class Store {
 
   get allAccountsById(): Map<string, Account> {
     const accountsById = new Map<string, Account>();
-    this.allAccounts.forEach(account => {
+    this.allAccounts.forEach((account) => {
       accountsById.set(account.id, account);
     });
     return accountsById;
@@ -87,7 +90,7 @@ export default class Store {
   }
 
   get isScraping(): boolean {
-    return !!Array.from(this.accountScrapingData.values()).find(account => account.status === AccountStatus.IN_PROGRESS);
+    return !!Array.from(this.accountScrapingData.values()).find((account) => account.status === AccountStatus.IN_PROGRESS);
   }
 
   clearScrapingStatus() {
@@ -106,7 +109,7 @@ export default class Store {
         }
         const accountScrapingData = this.accountScrapingData.get(accountId);
         if (accountScrapingData) {
-          accountScrapingData.logs.push({message: budgetTrackingEvent.message, originalEvent: budgetTrackingEvent});
+          accountScrapingData.logs.push({ message: budgetTrackingEvent.message, originalEvent: budgetTrackingEvent });
           accountScrapingData.status = budgetTrackingEvent.accountStatus;
         }
       }
@@ -118,17 +121,17 @@ export default class Store {
     if (!metadata) {
       throw new Error(`No metadata found for companyId ${companyId}`);
     }
-      const accountScrapingData = this.accountScrapingData.get(companyId);
-      return {
-        id,
-        companyId,
-        displayName: metadata.companyName,
-        logo: metadata.logo,
-        type,
-        active,
-        status: accountScrapingData ? accountScrapingData.status : AccountStatus.IDLE,
-        logs: accountScrapingData ? accountScrapingData.logs : []
-      };
+    const accountScrapingData = this.accountScrapingData.get(companyId);
+    return {
+      id,
+      companyId,
+      displayName: metadata.companyName,
+      logo: metadata.logo,
+      type,
+      active,
+      status: accountScrapingData ? accountScrapingData.status : AccountStatus.IDLE,
+      logs: accountScrapingData ? accountScrapingData.logs : []
+    };
   }
 
   async addImporter(importerConfig: Importer) {
@@ -143,7 +146,7 @@ export default class Store {
 
   async updateImporter(id: string, updatedImporterConfig: Importer) {
     this.verifyConfigDefined();
-    const importerIndex = this.config.scraping.accountsToScrape.findIndex(importer => importer.id === id);
+    const importerIndex = this.config.scraping.accountsToScrape.findIndex((importer) => importer.id === id);
     if (importerIndex === -1) {
       throw new Error(`Cant update importer with id ${id}. No importer with that id found`);
     }
@@ -153,7 +156,7 @@ export default class Store {
 
   async deleteImporter(id: string) {
     this.verifyConfigDefined();
-    this.config.scraping.accountsToScrape = this.config.scraping.accountsToScrape.filter(importer => importer.id !== id);
+    this.config.scraping.accountsToScrape = this.config.scraping.accountsToScrape.filter((importer) => importer.id !== id);
     await updateConfig(this.config);
   }
 
@@ -164,14 +167,16 @@ export default class Store {
   }
 
   createAccountToScrapeConfigFromImporter(importerConfig: Importer): AccountToScrapeConfig {
-    return { id: importerConfig.id, active: importerConfig.active, key: importerConfig.companyId, loginFields: importerConfig.loginFields, name: importerConfig.displayName };
+    return {
+      id: importerConfig.id, active: importerConfig.active, key: importerConfig.companyId, loginFields: importerConfig.loginFields, name: importerConfig.displayName
+    };
   }
 
   createOutputVendorConfigFromExporter(exporterConfig: Exporter) {
     return {
       active: exporterConfig.active,
       options: exporterConfig.options
-    }
+    };
   }
 
   verifyConfigDefined() {
@@ -204,7 +209,7 @@ export default class Store {
     await updateConfig(this.config);
   }
 
-  async fetchYnabAccountData(ynabOptions: YnabConfig["options"]) {
+  async fetchYnabAccountData(ynabOptions: YnabConfig['options']) {
     console.log('Fetching ynab account data');
     this.fetchingYnabAccountData = true;
     this.ynabAccountData = await getYnabAccountData(ynabOptions);

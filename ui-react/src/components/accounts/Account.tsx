@@ -19,7 +19,7 @@ export default function Account({
 }: AccountProps) {
   const containerStyles = [styles.container];
 
-  const badgeNumberLog = account.logs.find(log => log.originalEvent && log.originalEvent.exportedTransactionsNum > 0);
+  const badgeNumberLog = account.logs.find((log) => log.originalEvent && log.originalEvent.exportedTransactionsNum > 0);
   if (!account.active) containerStyles.push(styles.notActive);
   return (
     <div className={containerStyles.join(' ')}>
@@ -27,8 +27,7 @@ export default function Account({
       <div className={styles.nameWrapper}>
         <div className={styles.name}>{account.displayName}</div>
       </div>
-        {actionButtons && actionButtons.map(({ icon, clickHandler }) =>
-            <img className={styles.logsButton} src={icon} alt="action" onClick={clickHandler} key={icon} />)
+        {actionButtons && actionButtons.map(({ icon, clickHandler }) => <img className={styles.logsButton} src={icon} alt="action" onClick={clickHandler} key={icon} />)
         }
       <StatusIndicator status={account.status} />
         { badgeNumberLog && <Badge className={styles.newTxnsIndicator} bg={'success'}>{badgeNumberLog.originalEvent.exportedTransactionsNum}</Badge>}

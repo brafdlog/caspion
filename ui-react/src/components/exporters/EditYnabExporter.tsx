@@ -1,11 +1,13 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { toJS } from 'mobx';
 import Spinner from 'react-bootstrap/Spinner';
-import styles from './EditYnabExporter.module.css';
 import { observer } from 'mobx-react-lite';
+import {
+  Button, Card, Form, Image
+} from 'react-bootstrap';
+import styles from './EditYnabExporter.module.css';
 import { YnabConfig } from '../../types';
-import { useState } from 'react';
-import { Button, Card, Form, Image } from 'react-bootstrap';
+
 import YnabAccountMappingTable from './YnabAccountMappingTable';
 import { StoreContext } from '../../Store';
 
@@ -17,43 +19,43 @@ type EditYnabExporterProps = {
 const INVALID_ACCESS_TOKEN = 'INVALID_ACCESS_TOKEN';
 
 const EditYnabExporter = ({ handleSave, exporterConfig }: EditYnabExporterProps) => {
-    const [ynabOptions, setYnabOptions] = useState<YnabConfig["options"]>(toJS<YnabConfig["options"]>(exporterConfig.options));
-    const [active, setActive] = useState<boolean>(exporterConfig.active);
-    const store = useContext(StoreContext);
+  const [ynabOptions, setYnabOptions] = useState<YnabConfig['options']>(toJS<YnabConfig['options']>(exporterConfig.options));
+  const [active, setActive] = useState<boolean>(exporterConfig.active);
+  const store = useContext(StoreContext);
 
-    const isLoading = !store.ynabAccountData || store.fetchingYnabAccountData;
-    const isValidAccessToken = !isLoading && store.ynabAccountData?.status !== INVALID_ACCESS_TOKEN;
+  const isLoading = !store.ynabAccountData || store.fetchingYnabAccountData;
+  const isValidAccessToken = !isLoading && store.ynabAccountData?.status !== INVALID_ACCESS_TOKEN;
 
-    useEffect(() => {
-        if (ynabOptions.accessToken) {
-            store.fetchYnabAccountData(ynabOptions);
-        }
-        // eslint-disable-next-line
+  useEffect(() => {
+    if (ynabOptions.accessToken) {
+      store.fetchYnabAccountData(ynabOptions);
+    }
+    // eslint-disable-next-line
     }, [ynabOptions.budgetId, ynabOptions.accessToken, store]);
 
-    const updateOptionsState = (optionUpdates: Partial<YnabConfig["options"]>) => {
-        setYnabOptions({
-            ...ynabOptions,
-            ...optionUpdates
-        });
-    }
-    const handleSaveClick = async () => {
-        await handleSave({
-            ...exporterConfig,
-            active,
-            options: ynabOptions
-        });
-    };
+  const updateOptionsState = (optionUpdates: Partial<YnabConfig['options']>) => {
+    setYnabOptions({
+      ...ynabOptions,
+      ...optionUpdates
+    });
+  };
+  const handleSaveClick = async () => {
+    await handleSave({
+      ...exporterConfig,
+      active,
+      options: ynabOptions
+    });
+  };
 
-    const handleOptionChangeEvent = (propertyName, event) => {
-        updateOptionsState({ [propertyName]: event.target.value });
-    }
+  const handleOptionChangeEvent = (propertyName, event) => {
+    updateOptionsState({ [propertyName]: event.target.value });
+  };
 
-    const handleAccountMappingChange = (updatedAccountMapping: YnabConfig["options"]["accountNumbersToYnabAccountIds"]) => {
-        updateOptionsState({ accountNumbersToYnabAccountIds: updatedAccountMapping });
-    }
+  const handleAccountMappingChange = (updatedAccountMapping: YnabConfig['options']['accountNumbersToYnabAccountIds']) => {
+    updateOptionsState({ accountNumbersToYnabAccountIds: updatedAccountMapping });
+  };
 
-    return (
+  return (
         <div className={styles.container}>
             <Card className={styles.card}>
                 <Image className={styles.logo} src={exporterConfig.logo} roundedCircle width={100} height={100} />
@@ -63,18 +65,18 @@ const EditYnabExporter = ({ handleSave, exporterConfig }: EditYnabExporterProps)
                             <Form.Label>Ynab access token</Form.Label>
                             <Form.Control type='password' value={ynabOptions.accessToken} onChange={(event) => handleOptionChangeEvent('accessToken', event)} />
                         </Form.Group>
-                        {isValidAccessToken &&
-                            <Form.Group controlId='budgetId' className='mb-3'>
+                        {isValidAccessToken
+                            && <Form.Group controlId='budgetId' className='mb-3'>
                                 <Form.Label>Budget id</Form.Label>
                                 <Form.Select disabled={store.fetchingYnabAccountData} defaultValue={ynabOptions.budgetId} onChange={(event) => handleOptionChangeEvent('budgetId', event)}>
-                                    {store.ynabAccountData?.ynabAccountData?.budgets.map(budget => <option key={budget.id} value={budget.id}>{budget.name}</option>)}
+                                    {store.ynabAccountData?.ynabAccountData?.budgets.map((budget) => <option key={budget.id} value={budget.id}>{budget.name}</option>)}
                                 </Form.Select>
                             </Form.Group>
                         }
                         {!isLoading && !isValidAccessToken && <div>Invalid access token</div>}
                         {isLoading && <Spinner style={{ width: '20px', height: '20px' }} animation="border" variant="primary" />}
-                        { !isLoading && isValidAccessToken &&
-                            <Form.Group controlId='accountNumbersToYnabAccountIds' className='mb-3'>
+                        { !isLoading && isValidAccessToken
+                            && <Form.Group controlId='accountNumbersToYnabAccountIds' className='mb-3'>
                                 <YnabAccountMappingTable accountNumberToYnabIdMapping={ynabOptions.accountNumbersToYnabAccountIds} onUpdate={handleAccountMappingChange} ynabAccountData={store.ynabAccountData} budgetId={ynabOptions.budgetId} />
                             </Form.Group>
                         }
@@ -93,7 +95,7 @@ const EditYnabExporter = ({ handleSave, exporterConfig }: EditYnabExporterProps)
                 </Card.Body>
             </Card>
         </div>
-    );
-}
+  );
+};
 
 export default observer(EditYnabExporter);

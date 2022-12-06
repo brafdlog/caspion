@@ -41,4 +41,3 @@ export const exporterIcons = {
   [OutputVendorName.JSON]: json,
   [OutputVendorName.GOOGLE_SHEETS]: googleSheets
 };
-

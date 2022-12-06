@@ -1,5 +1,5 @@
 import Account from '../accounts/Account';
-import { Account as AccountType } from "../../types";
+import { Account as AccountType } from '../../types';
 import { getActionButtons } from '../accounts/Importers';
 
 type ExporterProps = {
@@ -9,13 +9,11 @@ type ExporterProps = {
 }
 
 function Exporters({ exporters, isScraping, showModal }: ExporterProps) {
-    return (
+  return (
         <>
-            {exporters.map(exporter => <Account key={exporter.id} account={exporter} actionButtons={getActionButtons(showModal, exporter, isScraping)} />)}
+            {exporters.map((exporter) => <Account key={exporter.id} account={exporter} actionButtons={getActionButtons(showModal, exporter, isScraping)} />)}
         </>
-    );
+  );
 }
-
-
 
 export default Exporters;

@@ -1,19 +1,20 @@
 import React, { useEffect } from 'react';
-import { getConfig, scrape } from "../eventsBridge";
+import { getConfig, scrape } from '../eventsBridge';
 import Store, { StoreContext } from '../Store';
 import TopBar from './topBar/TopBar';
 import Body from './Body';
 import './App.css';
 
 const store = new Store();
-const boundScrape = async function() {
+const boundScrape = async function () {
   store.clearScrapingStatus();
   await scrape(store);
-}
+};
 
 function App() {
+  console.log('foo');
   useEffect(() => {
-    getConfig().then(config => {
+    getConfig().then((config) => {
       store.configuration = config;
     });
   }, []);

@@ -1,12 +1,16 @@
-import styles from './Body.module.css';
-import { Account, Exporter, Importer, ModalStatus, OutputVendorName } from '../types';
-import settingsIcon from '../assets/gear.svg';
-import { Button, Image, Form, Modal } from 'react-bootstrap';
+import {
+  Button, Image, Form, Modal
+} from 'react-bootstrap';
 import { useContext, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { StoreContext } from '../Store';
 import Container from 'react-bootstrap/Container';
 import Stack from 'react-bootstrap/Stack';
+import { StoreContext } from '../Store';
+import settingsIcon from '../assets/gear.svg';
+import {
+  Account, Exporter, Importer, ModalStatus, OutputVendorName
+} from '../types';
+import styles from './Body.module.css';
 import AccountsContainer from './accounts/AccountsContainer';
 import EditImporter from './accounts/EditImporter';
 import CreateImporter from './accounts/CreateImporter';
@@ -23,8 +27,8 @@ type BodyProps = {
 
 const Body = ({ scrape }: BodyProps) => {
   const store = useContext(StoreContext);
-  const config = store.config;
-  const isScraping = store.isScraping;
+  const { config } = store;
+  const { isScraping } = store;
   const [modalStatus, setModalStatus] = useState<ModalStatus>(ModalStatus.Hidden);
 
   const [currentAccount, setCurrentAccount] = useState<Account>();
@@ -64,12 +68,12 @@ const Body = ({ scrape }: BodyProps) => {
       <Container className={styles.container}>
         <div className={styles.contentContainer}>
           <Stack direction="horizontal" className={styles.customGap}>
-            {config && config.scraping &&
-            <AccountsContainer title="בנקים וכרטיסי אשראי">
+            {config && config.scraping
+            && <AccountsContainer title="בנקים וכרטיסי אשראי">
               <Importers accounts={store.importers} isScraping={isScraping} showModal={showModal} handleNewAccountClicked={newScraperClicked} />
             </AccountsContainer>}
-            {config && config.outputVendors &&
-            <AccountsContainer title="תוכנות ניהול תקציב" accounts={store.exporters} isScraping={isScraping} showModal={showModal} >
+            {config && config.outputVendors
+            && <AccountsContainer title="תוכנות ניהול תקציב" accounts={store.exporters} isScraping={isScraping} showModal={showModal} >
               <Exporters exporters={store.exporters} isScraping={isScraping} showModal={showModal} />
             </AccountsContainer>
             }

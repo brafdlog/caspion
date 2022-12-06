@@ -6,9 +6,9 @@ type AccountLogsProps = {
 }
 
 export default function AccountLogs({ logs }: AccountLogsProps) {
-    return (
+  return (
         <div className={styles.container}>
-            {logs.map((log, index) => <p key={index}>{log.message}</p> )}
+            {logs.map((log, index) => <p key={index}>{log.message}</p>)}
         </div>
-    );
+  );
 }

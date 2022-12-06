@@ -1,13 +1,15 @@
-import {Account, AccountMetadata, AccountType, CompanyTypes, OutputVendorName} from './types';
-import { exporterIcons, importerIcons } from './assets';
 import mapValues from 'lodash/mapValues';
+import {
+  Account, AccountMetadata, AccountType, CompanyTypes, OutputVendorName
+} from './types';
+import { exporterIcons, importerIcons } from './assets';
 
 const icons = {
   ...importerIcons,
   ...exporterIcons
 };
 
-const accountIdToDisplayName: Record<CompanyTypes | OutputVendorName, string> ={
+const accountIdToDisplayName: Record<CompanyTypes | OutputVendorName, string> = {
   [CompanyTypes.max]: 'Max',
   [CompanyTypes.amex]: 'אמריקן אקספרס',
   [CompanyTypes.beinleumi]: 'הבינלאומי',
@@ -56,7 +58,7 @@ export const IMPORTERS_LOGIN_FIELDS = {
 };
 
 export const LOGIN_FIELD_DISPLAY_NAMES = {
-  'userCode': 'קוד משתמש',
+  userCode: 'קוד משתמש',
   [PASSWORD_FIELD]: 'סיסמא',
   username: 'שם משתמש',
   id: 'מספר זהות',
