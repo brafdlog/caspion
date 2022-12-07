@@ -5,13 +5,21 @@ import { repository } from "../../../package.json";
 import os from "os";
 import LogsCanvas from "./LogsCanvas";
 
-interface ReportProblemForm {
+type ReportProblemForm = {
   title?: string;
   email?: string;
   details?: string;
-}
+};
 
-function ReportProblemModal({ show, handleCloseModal }) {
+type ReportProblemModalProps = {
+  show: boolean;
+  handleCloseModal: () => {};
+};
+
+function ReportProblemModal({
+  show,
+  handleCloseModal,
+}: ReportProblemModalProps) {
   const [form, setForm] = useState<ReportProblemForm>({
     title: "",
     email: "",

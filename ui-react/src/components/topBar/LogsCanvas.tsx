@@ -1,10 +1,14 @@
 import React from "react";
 import Offcanvas from "react-bootstrap/Offcanvas";
 
-function LogsCanvas({ show, handleClose }) {
+type LogsCanvasProps = {
+  show: boolean;
+  handleClose?: () => {};
+};
+
+export default function LogsCanvas({ show, handleClose }: LogsCanvasProps) {
   return (
     <Offcanvas
-      
       show={show}
       onHide={handleClose}
       placement="bottom"
@@ -19,5 +23,3 @@ function LogsCanvas({ show, handleClose }) {
     </Offcanvas>
   );
 }
-
-export default LogsCanvas;
