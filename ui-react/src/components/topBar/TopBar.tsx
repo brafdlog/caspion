@@ -11,6 +11,7 @@ import { discordchannel } from "../../../package.json";
 import NavButton from "./NavButton";
 import styles from "./TopBar.module.css";
 import ReportProblemModal from "./ReportProblemModal";
+import Image from 'react-bootstrap/Image'
 
 function TopBar() {
   const [showReportModal, setShowReportModal] = useState(false);
@@ -37,7 +38,7 @@ function TopBar() {
       >
         <Container fluid>
           <NavBar.Brand>
-            <img src={logo} alt="כספיון" width={50} height={50} /> כספיון
+            <Image src={logo} alt="כספיון" width={50} height={50} roundedCircle /> כספיון
           </NavBar.Brand>
           <Stack direction="horizontal" gap={5}>
             <NavButton onClick={handleReportProblem} text="דיווח על בעיה" />
