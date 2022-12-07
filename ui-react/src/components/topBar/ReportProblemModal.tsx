@@ -119,8 +119,7 @@ function ReportProblemModal({ showReportModal, handleCloseModal }) {
       onHide={handleCloseModal}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
-      centereddescribe
-      the
+      centered
     >
       <Modal.Header closeButton>
         <Modal.Title>דיווח על באג</Modal.Title>
