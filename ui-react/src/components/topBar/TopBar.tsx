@@ -46,7 +46,7 @@ function TopBar() {
           </Stack>
         </Container>
       </NavBar>
-      <ReportProblemModal showReportModal={showReportModal} handleCloseModal={handleCloseModal}/>
+      <ReportProblemModal show={showReportModal} handleCloseModal={handleCloseModal}/>
     </>
   );
 }
