@@ -1,7 +1,7 @@
 import styles from './EditImporter.module.css';
 import { Importer } from '../../types';
 import { IMPORTERS_LOGIN_FIELDS, LOGIN_FIELD_DISPLAY_NAMES, LOGIN_FIELD_MIN_LENGTH } from "../../accountMetadata";
-import { useState } from "react";
+import { useState, useStateCallback } from "react";
 import { Button, Card, Form, Image } from "react-bootstrap";
 
 type EditImporterProps = {
@@ -15,7 +15,7 @@ export default function EditImporter({
   handleDelete,
   importer
 }: EditImporterProps) {
-    const [loginFields, setLoginFields] = useState<Record<string, string>>(importer.loginFields || {});
+    const [loginFields, setLoginFields] = useStateCallback<Record<string, string>>(importer.loginFields || {});
     const [active, setActive] = useState<boolean>(importer.active);
     const [validated, setValidated] = useState(false);
     const onSaveClicked = async () => {
@@ -32,22 +32,9 @@ export default function EditImporter({
         setLoginFields({
             ...loginFields,
             [loginFieldName]: value
+        }, () => {
+            setValidated(Object.entries(loginFields).some(([key, value]) => !checkFieldValidity(key, value)))
         });
-
-        if (!checkFieldValidity(loginFieldName, value)) {
-            setValidated(false);
-            return;
-        }
-        
-        for (let fieldKey in loginFields) {
-            if (loginFieldName === fieldKey) continue
-
-            if (!checkFieldValidity(fieldKey, loginFields[fieldKey])) {
-                setValidated(false);
-                return;
-            }
-        }
-        setValidated(true);
     };
 
     const onActiveChanged = () => {
