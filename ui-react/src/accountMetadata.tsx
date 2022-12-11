@@ -36,32 +36,47 @@ const accountMetadata: Record<CompanyTypes | OutputVendorName, AccountMetadata> 
   };
 });
 
+const CARD_SIX_DIGITS_FIELD = 'card6Digits';
+const USERCODE_FIELD = 'userCode';
+const USERNAME_FIELD = 'username';
 const PASSWORD_FIELD = 'password';
+const NUM_FIELD = 'num';
+const ID_FIELD = 'id';
 
 export const IMPORTERS_LOGIN_FIELDS = {
-  [CompanyTypes.hapoalim]: ['userCode', PASSWORD_FIELD],
-  [CompanyTypes.hapoalimBeOnline]: ['userCode', PASSWORD_FIELD],
-  [CompanyTypes.leumi]: ['username', PASSWORD_FIELD],
-  [CompanyTypes.mizrahi]: ['username', PASSWORD_FIELD],
-  [CompanyTypes.discount]: ['id', PASSWORD_FIELD, 'num'],
-  [CompanyTypes.otsarHahayal]: ['username', PASSWORD_FIELD],
-  [CompanyTypes.leumiCard]: ['username', PASSWORD_FIELD],
-  [CompanyTypes.max]: ['username', PASSWORD_FIELD],
-  [CompanyTypes.visaCal]: ['username', PASSWORD_FIELD],
-  [CompanyTypes.isracard]: ['id', 'card6Digits', PASSWORD_FIELD],
-  [CompanyTypes.amex]: ['id', 'card6Digits', PASSWORD_FIELD],
-  [CompanyTypes.union]: ['username', PASSWORD_FIELD],
-  [CompanyTypes.beinleumi]: ['username', PASSWORD_FIELD],
-  [CompanyTypes.massad]: ['username', PASSWORD_FIELD]
+  [CompanyTypes.hapoalim]: [USERCODE_FIELD, PASSWORD_FIELD],
+  [CompanyTypes.hapoalimBeOnline]: [USERCODE_FIELD, PASSWORD_FIELD],
+  [CompanyTypes.leumi]: [USERNAME_FIELD, PASSWORD_FIELD],
+  [CompanyTypes.mizrahi]: [USERNAME_FIELD, PASSWORD_FIELD],
+  [CompanyTypes.discount]: [ID_FIELD, PASSWORD_FIELD, NUM_FIELD],
+  [CompanyTypes.otsarHahayal]: [USERNAME_FIELD, PASSWORD_FIELD],
+  [CompanyTypes.leumiCard]: [USERNAME_FIELD, PASSWORD_FIELD],
+  [CompanyTypes.max]: [USERNAME_FIELD, PASSWORD_FIELD],
+  [CompanyTypes.visaCal]: [USERNAME_FIELD, PASSWORD_FIELD],
+  [CompanyTypes.isracard]: [ID_FIELD, CARD_SIX_DIGITS_FIELD, PASSWORD_FIELD],
+  [CompanyTypes.amex]: [ID_FIELD, CARD_SIX_DIGITS_FIELD, PASSWORD_FIELD],
+  [CompanyTypes.union]: [USERNAME_FIELD, PASSWORD_FIELD],
+  [CompanyTypes.beinleumi]: [USERNAME_FIELD, PASSWORD_FIELD],
+  [CompanyTypes.massad]: [USERNAME_FIELD, PASSWORD_FIELD]
 };
 
 export const LOGIN_FIELD_DISPLAY_NAMES = {
-  'userCode': 'קוד משתמש',
+  [USERCODE_FIELD]: 'קוד משתמש',
   [PASSWORD_FIELD]: 'סיסמא',
-  username: 'שם משתמש',
-  id: 'מספר זהות',
-  num: 'קוד מזהה',
-  card6Digits: '6 ספרות של הכרטיס',
+  [USERNAME_FIELD]: 'שם משתמש',
+  [ID_FIELD]: 'מספר זהות',
+  [NUM_FIELD]: 'קוד מזהה',
+  [CARD_SIX_DIGITS_FIELD]: '6 ספרות של הכרטיס',
+
+};
+
+export const LOGIN_FIELD_MIN_LENGTH = {
+  [USERCODE_FIELD]: 3,
+  [PASSWORD_FIELD]: 4,
+  [USERNAME_FIELD]: 3,
+  [ID_FIELD]: 9,
+  [NUM_FIELD]: 4,
+  [CARD_SIX_DIGITS_FIELD]: 6,
 
 };
 

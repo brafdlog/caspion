@@ -1,6 +1,6 @@
 import styles from './EditImporter.module.css';
 import { Importer } from '../../types';
-import { IMPORTERS_LOGIN_FIELDS, LOGIN_FIELD_DISPLAY_NAMES } from "../../accountMetadata";
+import { IMPORTERS_LOGIN_FIELDS, LOGIN_FIELD_DISPLAY_NAMES, LOGIN_FIELD_MIN_LENGTH } from "../../accountMetadata";
 import { useState } from "react";
 import { Button, Card, Form, Image } from "react-bootstrap";
 
@@ -17,6 +17,7 @@ export default function EditImporter({
 }: EditImporterProps) {
     const [loginFields, setLoginFields] = useState<Record<string, string>>(importer.loginFields || {});
     const [active, setActive] = useState<boolean>(importer.active);
+    const [validated, setValidated] = useState(false);
     const onSaveClicked = async () => {
         await handleSave({
             ...importer,
@@ -24,10 +25,15 @@ export default function EditImporter({
             loginFields
         });
     };
+    const checkFieldValidity = (loginFieldName: string, value) : boolean => {
+        return value.length >= LOGIN_FIELD_MIN_LENGTH[loginFieldName];
+    };
     const onLoginFieldChanged = (loginFieldName: string, value) => {
-        setLoginFields({
-            ...loginFields,
-            [loginFieldName]: value
+        setLoginFields((prevLoginFields) => {
+            const nextLoginFields = {...prevLoginFields, [loginFieldName]: value};
+
+            setValidated(Object.entries(nextLoginFields).every(([key, value]) => checkFieldValidity(key, value)))
+            return nextLoginFields;
         });
     };
 
@@ -51,11 +57,11 @@ export default function EditImporter({
                         label="פעיל"
                         checked={active}
                     />
+                    <div className={styles.actionButtonsWrapper}>
+                        <Button variant="danger" onClick={() => handleDelete(importer.id)}>מחק</Button>
+                        <Button variant="primary" onClick={onSaveClicked} disabled={!validated}>שמור</Button>
+                    </div>
                 </Form>
-                <div className={styles.actionButtonsWrapper}>
-                    <Button variant="danger" onClick={() => handleDelete(importer.id)}>מחק</Button>
-                    <Button variant="primary" onClick={onSaveClicked}>שמור</Button>
-                </div>
             </Card.Body>
         </Card>
     </div>
