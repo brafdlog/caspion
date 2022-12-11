@@ -12,7 +12,6 @@ const boundScrape = async () => {
 };
 
 function App() {
-  console.log('foo');
   useEffect(() => {
     getConfig().then((config) => {
       store.configuration = config;
