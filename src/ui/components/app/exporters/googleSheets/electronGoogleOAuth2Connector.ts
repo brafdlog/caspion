@@ -1,4 +1,4 @@
-import ElectronGoogleOAuth2 from '@getstation/electron-google-oauth2';
+import ElectronGoogleOAuth2 from 'electron-google-oauth2';
 import {
   clientId, clientSecret, redirectUri, scopes
 } from '@/backend/export/outputVendors/googleSheets/googleAuth';
