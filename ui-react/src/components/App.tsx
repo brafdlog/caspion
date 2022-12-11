@@ -6,7 +6,7 @@ import Body from './Body';
 import './App.css';
 
 const store = new Store();
-const boundScrape = async function () {
+const boundScrape = async () => {
   store.clearScrapingStatus();
   await scrape(store);
 };

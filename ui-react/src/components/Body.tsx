@@ -1,24 +1,24 @@
-import {
-  Button, Image, Form, Modal
-} from 'react-bootstrap';
-import { useContext, useState } from 'react';
 import { observer } from 'mobx-react-lite';
+import React, { useContext, useState } from 'react';
+import {
+  Button, Form, Image, Modal
+} from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Stack from 'react-bootstrap/Stack';
-import { StoreContext } from '../Store';
 import settingsIcon from '../assets/gear.svg';
+import { toggleUIVersion } from '../eventsBridge';
+import { StoreContext } from '../Store';
 import {
   Account, Exporter, Importer, ModalStatus, OutputVendorName
 } from '../types';
-import styles from './Body.module.css';
-import AccountsContainer from './accounts/AccountsContainer';
-import EditImporter from './accounts/EditImporter';
-import CreateImporter from './accounts/CreateImporter';
-import Importers from './accounts/Importers';
-import Exporters from './exporters/Exporters';
-import EditExporter from './exporters/EditExporter';
 import AccountLogs from './accounts/AccountLogs';
-import { toggleUIVersion } from '../eventsBridge';
+import AccountsContainer from './accounts/AccountsContainer';
+import CreateImporter from './accounts/CreateImporter';
+import EditImporter from './accounts/EditImporter';
+import Importers from './accounts/Importers';
+import styles from './Body.module.css';
+import EditExporter from './exporters/EditExporter';
+import Exporters from './exporters/Exporters';
 import GeneralSettings from './GeneralSettings';
 
 type BodyProps = {
@@ -33,9 +33,9 @@ const Body = ({ scrape }: BodyProps) => {
 
   const [currentAccount, setCurrentAccount] = useState<Account>();
   const closeModal = () => setModalStatus(ModalStatus.Hidden);
-  const showModal = (account: Account, modalStatus: ModalStatus) => {
+  const showModal = (account: Account, status: ModalStatus) => {
     setCurrentAccount(account);
-    setModalStatus(modalStatus);
+    setModalStatus(status);
   };
 
   const wideModal = shouldShowWideModal(modalStatus, currentAccount);
@@ -69,13 +69,13 @@ const Body = ({ scrape }: BodyProps) => {
         <div className={styles.contentContainer}>
           <Stack direction="horizontal" className={styles.customGap}>
             {config && config.scraping
-            && <AccountsContainer title="בנקים וכרטיסי אשראי">
-              <Importers accounts={store.importers} isScraping={isScraping} showModal={showModal} handleNewAccountClicked={newScraperClicked} />
-            </AccountsContainer>}
+              && <AccountsContainer title="בנקים וכרטיסי אשראי">
+                <Importers accounts={store.importers} isScraping={isScraping} showModal={showModal} handleNewAccountClicked={newScraperClicked} />
+              </AccountsContainer>}
             {config && config.outputVendors
-            && <AccountsContainer title="תוכנות ניהול תקציב" accounts={store.exporters} isScraping={isScraping} showModal={showModal} >
-              <Exporters exporters={store.exporters} isScraping={isScraping} showModal={showModal} />
-            </AccountsContainer>
+              && <AccountsContainer title="תוכנות ניהול תקציב" accounts={store.exporters} isScraping={isScraping} showModal={showModal} >
+                <Exporters exporters={store.exporters} isScraping={isScraping} showModal={showModal} />
+              </AccountsContainer>
             }
           </Stack>
         </div>
@@ -83,11 +83,17 @@ const Body = ({ scrape }: BodyProps) => {
           <Modal.Header closeButton className={styles.modalHeader}>
           </Modal.Header>
           <Modal.Body>
-            { modalStatus === ModalStatus.Logs && currentAccount && <AccountLogs logs={currentAccount.logs} /> }
-            { modalStatus === ModalStatus.ImporterSettings && currentAccount && <EditImporter handleSave={updateImporter} importer={currentAccount} handleDelete={deleteImporter} />}
-            { modalStatus === ModalStatus.SettingsExporter && currentAccount && <EditExporter handleSave={updateExporter} exporter={currentAccount} handleDelete={deleteImporter} />}
-            { modalStatus === ModalStatus.NewScraper && <CreateImporter handleSave={createImporter} />}
-            { modalStatus === ModalStatus.GeneralSettings && <GeneralSettings /> }
+            {modalStatus === ModalStatus.Logs && currentAccount && <AccountLogs logs={currentAccount.logs} />}
+            {
+              modalStatus === ModalStatus.ImporterSettings && currentAccount
+              && <EditImporter handleSave={updateImporter} importer={currentAccount} handleDelete={deleteImporter} />
+            }
+            {
+              modalStatus === ModalStatus.SettingsExporter && currentAccount
+              && <EditExporter handleSave={updateExporter} exporter={currentAccount} handleDelete={deleteImporter} />
+            }
+            {modalStatus === ModalStatus.NewScraper && <CreateImporter handleSave={createImporter} />}
+            {modalStatus === ModalStatus.GeneralSettings && <GeneralSettings />}
           </Modal.Body>
         </Modal>
       </Container>
@@ -95,10 +101,10 @@ const Body = ({ scrape }: BodyProps) => {
         <Button className={styles.scrapeButton} onClick={scrape} disabled={store.isScraping}>הפעל</Button>
         <Image src={settingsIcon} onClick={() => showModal(null, ModalStatus.GeneralSettings)} />
         <Form.Check
-            type="switch"
-            onClick={toggleUIVersion}
-            label="ממשק חדש"
-            defaultChecked
+          type="switch"
+          onClick={toggleUIVersion}
+          label="ממשק חדש"
+          defaultChecked
         />
       </Container>
     </div>

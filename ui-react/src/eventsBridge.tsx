@@ -14,7 +14,8 @@ export async function updateConfig(config: Config) {
   await electron.ipcRenderer.invoke('updateConfig', JSON.stringify(config));
 }
 
-export async function getYnabAccountData(ynabOptions: YnabConfig['options']): Promise<{ ynabAccountData: YnabAccountDetails, financialAccountDetails: FinancialAccountDetails[] }> {
+export async function getYnabAccountData(ynabOptions: YnabConfig['options']):
+  Promise<{ ynabAccountData: YnabAccountDetails, financialAccountDetails: FinancialAccountDetails[] }> {
   return electron.ipcRenderer.invoke('getYnabAccountData', ynabOptions);
 }
 

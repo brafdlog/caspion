@@ -1,5 +1,6 @@
-import styles from './AccountLogs.css';
+import React from 'react';
 import { Log } from '../../types';
+import styles from './AccountLogs.css';
 
 type AccountLogsProps = {
     logs: Log[]

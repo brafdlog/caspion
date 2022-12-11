@@ -1,10 +1,11 @@
+import React from 'react';
 import logsIcon from '../../assets/card-text.svg';
 import settingsIcon from '../../assets/gear.svg';
-import Account, { ActionButton } from './Account';
-import NewAccount from './NewAccount';
 import {
   Account as AccountType, AccountStatus, AccountType as TypeOfAccount, ModalStatus
 } from '../../types';
+import Account, { ActionButton } from './Account';
+import NewAccount from './NewAccount';
 
 type ImportersProps = {
     accounts: AccountType[];
