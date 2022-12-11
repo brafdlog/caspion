@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { action, makeAutoObservable } from 'mobx';
 import { createContext } from 'react';
 import { updateConfig, getYnabAccountData } from './eventsBridge';
