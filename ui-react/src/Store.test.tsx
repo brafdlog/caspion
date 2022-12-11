@@ -12,14 +12,14 @@ describe('Store', () => {
   });
   describe('Properties and getters', () => {
     test('basic', () => {
-      const store = new Store();
-      expect(store.config).not.toBeDefined();
+      const basicStore = new Store();
+      expect(basicStore.config).not.toBeDefined();
 
-      store.configuration = dummyConfig;
+      basicStore.configuration = dummyConfig;
 
-      expect(store.config).toMatchObject(dummyConfig);
+      expect(basicStore.config).toMatchObject(dummyConfig);
 
-      expect(store.settings).toMatchSnapshot();
+      expect(basicStore.settings).toMatchSnapshot();
     });
 
     test('importers', () => {
