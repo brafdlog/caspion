@@ -139,7 +139,7 @@ export default class Store {
     if (!accountMetadata[importerConfig.companyId]) {
       throw new Error(`Company id ${importerConfig.companyId} is not a valid company id`);
     }
-    const accountToScrapeConfig: AccountToScrapeConfig = this.createAccountToScrapeConfigFromImporter(importerConfig);
+    const accountToScrapeConfig: AccountToScrapeConfig = createAccountToScrapeConfigFromImporter(importerConfig);
     this.config.scraping.accountsToScrape.push(accountToScrapeConfig);
     await updateConfig(this.config);
   }
@@ -150,7 +150,7 @@ export default class Store {
     if (importerIndex === -1) {
       throw new Error(`Cant update importer with id ${id}. No importer with that id found`);
     }
-    this.config.scraping.accountsToScrape[importerIndex] = this.createAccountToScrapeConfigFromImporter(updatedImporterConfig);
+    this.config.scraping.accountsToScrape[importerIndex] = createAccountToScrapeConfigFromImporter(updatedImporterConfig);
     await updateConfig(this.config);
   }
 
@@ -162,21 +162,8 @@ export default class Store {
 
   async updateExporter(updatedExporterConfig: Exporter) {
     this.verifyConfigDefined();
-    this.config.outputVendors[updatedExporterConfig.companyId] = this.createOutputVendorConfigFromExporter(updatedExporterConfig);
+    this.config.outputVendors[updatedExporterConfig.companyId] = createOutputVendorConfigFromExporter(updatedExporterConfig);
     await updateConfig(this.config);
-  }
-
-  createAccountToScrapeConfigFromImporter(importerConfig: Importer): AccountToScrapeConfig {
-    return {
-      id: importerConfig.id, active: importerConfig.active, key: importerConfig.companyId, loginFields: importerConfig.loginFields, name: importerConfig.displayName
-    };
-  }
-
-  createOutputVendorConfigFromExporter(exporterConfig: Exporter) {
-    return {
-      active: exporterConfig.active,
-      options: exporterConfig.options
-    };
   }
 
   verifyConfigDefined() {
@@ -218,5 +205,18 @@ export default class Store {
   }
 
 }
+
+const createAccountToScrapeConfigFromImporter = (importerConfig: Importer): AccountToScrapeConfig => ({
+  id: importerConfig.id,
+  active: importerConfig.active,
+  key: importerConfig.companyId,
+  loginFields: importerConfig.loginFields,
+  name: importerConfig.displayName
+});
+
+const createOutputVendorConfigFromExporter = (exporterConfig: Exporter) => ({
+  active: exporterConfig.active,
+  options: exporterConfig.options
+});
 
 export const StoreContext = createContext<Store>(null);
