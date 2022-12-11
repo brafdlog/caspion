@@ -29,11 +29,11 @@ export default function EditImporter({
         return value.length >= LOGIN_FIELD_MIN_LENGTH[loginFieldName];
     };
     const onLoginFieldChanged = (loginFieldName: string, value) => {
-        setLoginFields((loginFields) => {
-            const updatedLoginFields = {...loginFields, [loginFieldName]: value};
+        setLoginFields((prevLoginFields) => {
+            const nextLoginFields = {...prevLoginFields, [loginFieldName]: value};
 
-            setValidated(Object.entries(updatedLoginFields).every(([key, value]) => checkFieldValidity(key, value)))
-            return updatedLoginFields;
+            setValidated(Object.entries(nextLoginFields).every(([key, value]) => checkFieldValidity(key, value)))
+            return nextLoginFields;
         });
     };
 
