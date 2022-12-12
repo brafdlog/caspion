@@ -1,8 +1,10 @@
-import styles from './EditFileExporter.module.css';
-import {observer} from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite';
+import React, { useState } from 'react';
+import {
+  Button, Card, Form, Image
+} from 'react-bootstrap';
 import { Exporter } from '../../types';
-import { useState } from "react";
-import {Button, Card, Form, Image} from "react-bootstrap";
+import styles from './EditFileExporter.module.css';
 
 type EditFileExporterProps = {
     handleSave: (exporter: Exporter) => Promise<void>;
@@ -10,37 +12,37 @@ type EditFileExporterProps = {
 }
 
 const EditFileExporter = ({
-      handleSave,
-      exporter
-  }: EditFileExporterProps) => {
-    const [exporterConfig, setExporterConfig] = useState<Exporter>(exporter);
+  handleSave,
+  exporter
+}: EditFileExporterProps) => {
+  const [exporterConfig, setExporterConfig] = useState<Exporter>(exporter);
 
-    const handleActiveChange = () => {
-        setExporterConfig({
-            ...exporterConfig,
-            active: !exporterConfig.active
-        });
-    }
-    const updateOption = (optionUpdates) => {
-        setExporterConfig({
-            ...exporterConfig,
-            options: {
-                ...exporterConfig.options,
-                ...optionUpdates
-            }
-        });
-    }
+  const handleActiveChange = () => {
+    setExporterConfig({
+      ...exporterConfig,
+      active: !exporterConfig.active
+    });
+  };
+  const updateOption = (optionUpdates) => {
+    setExporterConfig({
+      ...exporterConfig,
+      options: {
+        ...exporterConfig.options,
+        ...optionUpdates
+      }
+    });
+  };
 
-    const handleChooseFile = (event) => {
-        updateOption({
-            filePath: event.currentTarget.value
-        });
-    }
-    const handleSaveClick = async () => {
-        await handleSave(exporterConfig);
-    };
+  const handleChooseFile = (event) => {
+    updateOption({
+      filePath: event.currentTarget.value
+    });
+  };
+  const handleSaveClick = async () => {
+    await handleSave(exporterConfig);
+  };
 
-    return (
+  return (
         <div className={styles.container}>
             <Card className={styles.card}>
                 <Image className={styles.logo} src={exporterConfig.logo} roundedCircle width={100} height={100} />
@@ -65,7 +67,7 @@ const EditFileExporter = ({
                 </Card.Body>
             </Card>
         </div>
-    );
-}
+  );
+};
 
 export default observer(EditFileExporter);

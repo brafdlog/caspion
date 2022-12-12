@@ -1,13 +1,15 @@
-import {Account, AccountMetadata, AccountType, CompanyTypes, OutputVendorName} from './types';
-import { exporterIcons, importerIcons } from './assets';
 import mapValues from 'lodash/mapValues';
+import {
+  Account, AccountMetadata, AccountType, CompanyTypes, OutputVendorName
+} from './types';
+import { exporterIcons, importerIcons } from './assets';
 
 const icons = {
   ...importerIcons,
   ...exporterIcons
 };
 
-const accountIdToDisplayName: Record<CompanyTypes | OutputVendorName, string> ={
+const accountIdToDisplayName: Record<CompanyTypes | OutputVendorName, string> = {
   [CompanyTypes.max]: 'Max',
   [CompanyTypes.amex]: 'אמריקן אקספרס',
   [CompanyTypes.beinleumi]: 'הבינלאומי',
@@ -80,21 +82,19 @@ export const LOGIN_FIELD_MIN_LENGTH = {
 
 };
 
-export const importers: Account[] = [];
+export const importers: Account[] = Object.values(CompanyTypes).map((importerName) => {
+  const { companyId, companyName, logo } = accountMetadata[importerName];
 
-for (const importerName in CompanyTypes) {
-  const metadata = accountMetadata[importerName];
-  const importer : Account = {
+  const importer: Account = {
     id: importerName,
-    companyId: metadata.companyId,
-    displayName: metadata.companyName,
-    logo: metadata.logo,
+    companyId,
+    displayName: companyName,
+    logo,
     type: AccountType.IMPORTER,
     active: true,
     logs: []
   };
-
-  importers.push(importer);
-}
+  return importer;
+});
 
 export default accountMetadata;
