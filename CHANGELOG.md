@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/brafdlog/caspion/compare/v1.2.1...v1.2.2) (2022-12-11)
+
+
+### Fix
+
+* Validate New Account Details (fixes #405) (#406) ([9049be2](https://github.com/brafdlog/caspion/commit/9049be2a5b576c8b8d1b298ce7ed7a514e52ff37)), closes [#405](https://github.com/brafdlog/caspion/issues/405) [#406](https://github.com/brafdlog/caspion/issues/406)
+
 ## [1.2.1](https://github.com/brafdlog/caspion/compare/v1.2.0...v1.2.1) (2022-11-30)
 
 
