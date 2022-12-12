@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/brafdlog/caspion/compare/v1.3.0...v1.4.0) (2022-12-12)
+
+
+### Chore
+
+* Make ESLint work for React UI (#411) ([ffa2406](https://github.com/brafdlog/caspion/commit/ffa2406db90cc184e1c1b221b25c1e00d6b780aa)), closes [#411](https://github.com/brafdlog/caspion/issues/411)
+
 # [1.3.0](https://github.com/brafdlog/caspion/compare/v1.2.2...v1.3.0) (2022-12-12)
 
 
