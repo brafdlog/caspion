@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/brafdlog/caspion/compare/v1.2.2...v1.3.0) (2022-12-12)
+
+
+### Upgrade
+
+* Dependabot alerts (#416) ([4a81a64](https://github.com/brafdlog/caspion/commit/4a81a64c33c251a0e281a82c3b5e3786bad79925)), closes [#416](https://github.com/brafdlog/caspion/issues/416)
+
 ## [1.2.2](https://github.com/brafdlog/caspion/compare/v1.2.1...v1.2.2) (2022-12-11)
 
 
