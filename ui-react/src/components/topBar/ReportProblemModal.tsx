@@ -4,6 +4,7 @@ import { openExternal } from "../../eventsBridge";
 import { repository } from "../../../package.json";
 import os from "os";
 import LogsCanvas from "./LogsCanvas";
+import {isValidEmail} from "../../utils/validations"
 
 type ReportProblemForm = {
   title?: string;
@@ -13,12 +14,12 @@ type ReportProblemForm = {
 
 type ReportProblemModalProps = {
   show: boolean;
-  handleCloseModal: () => {};
+  onClose: () => {};
 };
 
 function ReportProblemModal({
   show,
-  handleCloseModal,
+  onClose,
 }: ReportProblemModalProps) {
   const [form, setForm] = useState<ReportProblemForm>({
     title: "",
@@ -48,9 +49,7 @@ function ReportProblemModal({
     return newErrors;
   };
 
-  function isValidEmail(email) {
-    return /\S+@\S+\.\S+/.test(email);
-  }
+
 
   const openGithub = (e) => {
     e.preventDefault();
@@ -126,7 +125,7 @@ function ReportProblemModal({
   };
 
   const onHide = () => {
-    handleCloseModal();
+    onClose();
 
     setForm({
       title: "",
@@ -217,7 +216,7 @@ function ReportProblemModal({
               אפשר למצוא את הלוגים פה: C:\git\caspion\userData\logs
             </div>
             <Stack direction="horizontal" gap={3}>
-              <Button variant="light" onClick={handleCloseModal}>
+              <Button variant="light" onClick={onClose}>
                 סגור
               </Button>
               <Button
