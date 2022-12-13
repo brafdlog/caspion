@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/brafdlog/caspion/compare/v1.4.0...v1.5.0) (2022-12-13)
+
+
+### Chore
+
+* use electron-google-oauth2 from @baruchiro (#417) ([848d45e](https://github.com/brafdlog/caspion/commit/848d45ef8d1bd77503131f23581f41ea4d4e8fb1)), closes [#417](https://github.com/brafdlog/caspion/issues/417)
+
 # [1.4.0](https://github.com/brafdlog/caspion/compare/v1.3.0...v1.4.0) (2022-12-12)
 
 
