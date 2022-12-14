@@ -21,14 +21,17 @@ function TopBar() {
       >
         <Container fluid>
           <NavBar.Brand>
-            <Image
-              src={logo}
-              alt="כספיון"
-              width={50}
-              height={50}
-              roundedCircle
-            />{" "}
-            כספיון
+            <Stack direction="horizontal" gap={3}>
+              <div
+                style={{
+                  backgroundImage: `url(${logo})`,
+                  width: 50,
+                  height: 50,
+                  borderRadius: "50%",
+                }}
+              ></div>
+              כספיון
+            </Stack>
           </NavBar.Brand>
           <Stack direction="horizontal" gap={5}>
             <NavButton onClick={() => setShow(true)} text="דיווח על בעיה" />
