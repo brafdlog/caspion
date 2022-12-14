@@ -4,7 +4,7 @@ import { openExternal } from "../../eventsBridge";
 import { repository } from "../../../package.json";
 import os from "os";
 import LogsCanvas from "./LogsCanvas";
-import {isValidEmail} from "../../utils/validations"
+import { isValidEmail } from "../../utils/validations";
 
 type ReportProblemForm = {
   title?: string;
@@ -17,10 +17,7 @@ type ReportProblemModalProps = {
   onClose: () => {};
 };
 
-function ReportProblemModal({
-  show,
-  onClose,
-}: ReportProblemModalProps) {
+function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
   const [form, setForm] = useState<ReportProblemForm>({
     title: "",
     email: "",
@@ -31,7 +28,7 @@ function ReportProblemModal({
   const [showLogs, setShowLogs] = useState(false);
 
   const setField = (field: string, value: string) => {
-    setForm({ ...form, [field]: value });
+    setForm((prevForm) => ({ ...prevForm, [field]: value }));
 
     if (!!errors[field]) setErrors({ ...errors, [field]: null });
   };
@@ -48,8 +45,6 @@ function ReportProblemModal({
 
     return newErrors;
   };
-
-
 
   const openGithub = (e) => {
     e.preventDefault();
