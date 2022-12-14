@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/brafdlog/caspion/compare/v1.5.0...v1.6.0) (2022-12-14)
+
+
+### Chore
+
+* upgrade Electron (#419) ([378de73](https://github.com/brafdlog/caspion/commit/378de73ab21767c495140d90f809e340a8804b02)), closes [#419](https://github.com/brafdlog/caspion/issues/419)
+
 # [1.5.0](https://github.com/brafdlog/caspion/compare/v1.4.0...v1.5.0) (2022-12-13)
 
 
