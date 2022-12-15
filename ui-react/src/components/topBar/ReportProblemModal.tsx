@@ -5,6 +5,7 @@ import { repository } from "../../../package.json";
 import os from "os";
 import LogsCanvas from "./LogsCanvas";
 import { isValidEmail } from "../../utils/validations";
+import { getZIndexes } from "../../utils/zIndexesManager";
 
 type ReportProblemForm = {
   title?: string;
@@ -14,7 +15,7 @@ type ReportProblemForm = {
 
 type ReportProblemModalProps = {
   show: boolean;
-  onClose: () => {};
+  onClose: () => void;
 };
 
 function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
@@ -139,6 +140,7 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
         centered
         backdrop="static"
         keyboard={false}
+        style={{ zIndex: getZIndexes().modal }}
       >
         <Modal.Header closeButton>
           <Modal.Title>דיווח על באג</Modal.Title>

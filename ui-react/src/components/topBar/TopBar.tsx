@@ -8,7 +8,6 @@ import { discordchannel } from "../../../package.json";
 import NavButton from "./NavButton";
 import styles from "./TopBar.module.css";
 import ReportProblemModal from "./ReportProblemModal";
-import Image from "react-bootstrap/Image";
 
 function TopBar() {
   const [show, setShow] = useState(false);

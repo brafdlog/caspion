@@ -1,9 +1,10 @@
 import React from "react";
 import Offcanvas from "react-bootstrap/Offcanvas";
+import { getZIndexes } from "../../utils/zIndexesManager";
 
 type LogsCanvasProps = {
   show: boolean;
-  handleClose?: () => {};
+  handleClose?: () => void;
 };
 
 export default function LogsCanvas({ show, handleClose }: LogsCanvasProps) {
@@ -12,7 +13,7 @@ export default function LogsCanvas({ show, handleClose }: LogsCanvasProps) {
       show={show}
       onHide={handleClose}
       placement="bottom"
-      style={{ zIndex: 9999 }}
+      style={{ zIndex: getZIndexes().offcanvas }}
     >
       <Offcanvas.Header closeButton>
         <Offcanvas.Title>לוגים:</Offcanvas.Title>
