@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/brafdlog/caspion/compare/v1.6.0...v1.6.1) (2022-12-17)
+
+
+### Fix
+
+* trigger release ([1774316](https://github.com/brafdlog/caspion/commit/1774316fb631286fc2a14f0b19fc03d774bc1819))
+
 # [1.6.0](https://github.com/brafdlog/caspion/compare/v1.5.0...v1.6.0) (2022-12-14)
 
 
