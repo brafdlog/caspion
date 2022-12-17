@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import {
   Button, Card, Form, Image
 } from 'react-bootstrap';
-import { IMPORTERS_LOGIN_FIELDS, LOGIN_FIELD_DISPLAY_NAMES, LOGIN_FIELD_MIN_LENGTH } from '../../accountMetadata';
 import { Importer } from '../../types';
+import { IMPORTERS_LOGIN_FIELDS, LOGIN_FIELD_DISPLAY_NAMES, LOGIN_FIELD_MIN_LENGTH } from '../../accountMetadata';
 import styles from './EditImporter.module.css';
 
 type EditImporterProps = {
