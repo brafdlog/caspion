@@ -1,12 +1,15 @@
+const maxZIndexUsedByReactBootsrap = 10000;
 
-export let zIndexes:any;
+type ZIndexLayers = "modal" | "offcanvas";
 
-const makeZIndexes = (layers: string[]) =>
-  layers.reduce((prevValue, layerName, index) => {
-     //@ts-ignore
-    prevValue[layerName] = (index + 1) * 10000;
+export let zIndexes: Record<ZIndexLayers, number>;
+
+const makeZIndexes = <T extends ZIndexLayers>(layers: T[]) => {
+  return layers.reduce((prevValue, layerName, index) => {
+    prevValue[layerName] = (index + 1) * maxZIndexUsedByReactBootsrap;
     return prevValue;
-  }, {});
+  }, {} as Record<T, number>);
+};
 
 export const getZIndexes = () => {
   if (!zIndexes) {
