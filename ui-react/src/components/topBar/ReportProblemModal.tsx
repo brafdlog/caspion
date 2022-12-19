@@ -3,7 +3,7 @@ import { Button, Form, Modal, Row, Col, Stack } from "react-bootstrap";
 import { openExternal } from "../../eventsBridge";
 import { repository } from "../../../package.json";
 import os from "os";
-import LogsCanvas from "./LogsCanvas";
+// import LogsCanvas from "./LogsCanvas";
 import { isValidEmail } from "../../utils/validations";
 import { getZIndexes } from "../../utils/zIndexesManager";
 
@@ -26,7 +26,7 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
   });
 
   const [errors, setErrors] = useState({});
-  const [showLogs, setShowLogs] = useState(false);
+  // const [showLogs, setShowLogs] = useState(false);
 
   const setField = (field: string, value: string) => {
     setForm((prevForm) => ({ ...prevForm, [field]: value }));
@@ -116,9 +116,9 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
     //console.info(`Problem reported. Event ${eventId}`);
   };
 
-  const seeLogs = () => {
-    setShowLogs(true);
-  };
+  // const seeLogs = () => {
+  //   setShowLogs(true);
+  // };
 
   const onHide = () => {
     onClose();
@@ -200,18 +200,18 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
               value={form.details}
               onChange={(e) => setField("details", e.target.value)}
             />
-            <Form.Group className="mb-4" as={Col} md="2">
+            {/* <Form.Group className="mb-4" as={Col} md="2">
               <Form.Check type="checkbox" label="צירוף קבצי לוג" />(
               <Button variant="link" onClick={seeLogs}>
                 צפיה בלוגים
               </Button>
               )
-            </Form.Group>
+            </Form.Group> */}
 
-            <div>*מורה על שדות חובה</div>
-            <div className="mb-4">
+            {/* <div className="mb-4">*מורה על שדות חובה</div> */}
+            {/* <div className="mb-4">
               אפשר למצוא את הלוגים פה: C:\git\caspion\userData\logs
-            </div>
+            </div> */}
             <Stack direction="horizontal" gap={3}>
               <Button variant="light" onClick={onClose}>
                 סגור
@@ -236,7 +236,7 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
           </Form>
         </Modal.Body>
       </Modal>
-      <LogsCanvas show={showLogs} handleClose={() => setShowLogs(false)} />
+      {/* <LogsCanvas show={showLogs} handleClose={() => setShowLogs(false)} /> */}
     </>
   );
 }
