@@ -18,6 +18,11 @@ type ReportProblemModalProps = {
   onClose: () => void;
 };
 
+type ValidationError = {
+  title?: string;
+  email?: string;
+};
+
 function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
   const [form, setForm] = useState<ReportProblemForm>({
     title: "",
@@ -25,7 +30,7 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
     details: "",
   });
 
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<ValidationError>({});
   // const [showLogs, setShowLogs] = useState(false);
 
   const setField = (field: string, value: string) => {
@@ -35,7 +40,7 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
   };
 
   const validateForm = (validateEmail = true) => {
-    const newErrors = {};
+    const newErrors: ValidationError = {};
 
     if (!form.title || form.title === "") newErrors.title = "שדה חובה";
 
