@@ -102,14 +102,14 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
     )}`;
   };
 
-  const sendReport = (e) => {
-    e.preventDefault();
+  // const sendReport = (e) => {
+  //   e.preventDefault();
 
-    const formErrors = validateForm(true);
-    if (Object.keys(formErrors).length > 0) {
-      setErrors(formErrors);
-      return;
-    }
+  //   const formErrors = validateForm(true);
+  //   if (Object.keys(formErrors).length > 0) {
+  //     setErrors(formErrors);
+  //     return;
+  //   }
 
     // const eventId = Sentry.userReportProblem(
     //   form.title,
@@ -119,7 +119,7 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
     // );
 
     //console.info(`Problem reported. Event ${eventId}`);
-  };
+  //};
 
   // const seeLogs = () => {
   //   setShowLogs(true);
@@ -229,14 +229,14 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
               >
                 פתיחת תקלה ב-Github{" "}
               </Button>
-              <Button
+              {/* <Button
                 variant="dark"
                 name="send-report"
                 type="submit"
                 onClick={sendReport}
               >
                 שליחת דוח
-              </Button>
+              </Button> */}
             </Stack>
           </Form>
         </Modal.Body>
