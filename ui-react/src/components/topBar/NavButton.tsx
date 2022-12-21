@@ -1,21 +1,26 @@
-import React from "react";
-import { Button, Stack } from "react-bootstrap";
-import navEllipseIcon from "../../assets/navEllipse.svg";
+import React from 'react';
+import { Button, Stack } from 'react-bootstrap';
+import navEllipseIcon from '../../assets/navEllipse.svg';
 
-function NavButton({ onClick, text }) {
+type NavButtonProps = {
+  text: string;
+  onClick: () => void;
+};
+
+function NavButton({ onClick, text }: NavButtonProps) {
   return (
     <Button
       variant="light"
       onClick={onClick}
-      style={{ backgroundColor: "transparent", borderWidth: 0 }}
+      style={{ backgroundColor: 'transparent', borderWidth: 0 }}
     >
       <Stack direction="horizontal">
         <div
           style={{
-            cursor: "pointer",
+            cursor: 'pointer',
             backgroundImage: `url(${navEllipseIcon})`,
             backgroundPosition: 'center',
-            backgroundRepeat  : 'no-repeat',
+            backgroundRepeat: 'no-repeat',
             width: 50,
             height: 50,
           }}
