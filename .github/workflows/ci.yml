@@ -14,10 +14,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 14.x
-      - name: lint
-        run: |
-          yarn
-          yarn lint
+      - run: yarn
+      - run: yarn lint
       - name: Type check
         run: |
           yarn typeCheck
