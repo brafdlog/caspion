@@ -11,6 +11,7 @@ type ReportProblemForm = {
   title?: string;
   email?: string;
   details?: string;
+  attachedLogs?: string;
 };
 
 type ReportProblemModalProps = {
@@ -62,8 +63,8 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
     }
 
     const url = createGithubIssueLink(
-      form.title,
-      form.details,
+      form.title ?? "",
+      form.details ?? "",
       form.attachedLogs ?? ""
     );
     console.info(`Open bug report url with title: ${form.title}`);
@@ -71,7 +72,11 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
   };
 
   //TODO: SOURCE_COMMIT_SHORT should be taken from env file
-  const createGithubIssueLink = (title: string, details: string, log: any) => {
+  const createGithubIssueLink = (
+    title: string,
+    details: string,
+    log: string
+  ) => {
     const formattedDetails = details
       ? `
         ## Details
@@ -111,14 +116,14 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
   //     return;
   //   }
 
-    // const eventId = Sentry.userReportProblem(
-    //   form.title,
-    //   form.details,
-    //   form.attachedLogs ?? "",
-    //   form.email
-    // );
+  // const eventId = Sentry.userReportProblem(
+  //   form.title,
+  //   form.details,
+  //   form.attachedLogs ?? "",
+  //   form.email
+  // );
 
-    //console.info(`Problem reported. Event ${eventId}`);
+  //console.info(`Problem reported. Event ${eventId}`);
   //};
 
   // const seeLogs = () => {
