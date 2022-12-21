@@ -2,9 +2,9 @@ import 'bootstrap/dist/css/bootstrap.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.module.css';
+import { configure } from 'mobx';
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
-import { configure } from 'mobx';
 
 configureMobxLinting();
 
@@ -22,10 +22,10 @@ reportWebVitals();
 
 function configureMobxLinting() {
   configure({
-    enforceActions: "always",
+    enforceActions: 'always',
     computedRequiresReaction: true,
     reactionRequiresObservable: true,
     observableRequiresReaction: true,
     disableErrorBoundaries: true
-});
+  });
 }

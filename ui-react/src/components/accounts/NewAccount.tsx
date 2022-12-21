@@ -1,5 +1,6 @@
-import styles from './NewAccount.module.css';
+import React from 'react';
 import plusCircle from '../../assets/plus-circle.svg';
+import styles from './NewAccount.module.css';
 
 type NewAccountProps = {
   onClick: () => void
