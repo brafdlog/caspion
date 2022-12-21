@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import NavBar from "react-bootstrap/Navbar";
-import { Container, Stack } from "react-bootstrap";
-import logo from "../../assets/logoFishOnly.svg";
-import { openExternal } from "../../eventsBridge";
-import { repository } from "../../../package.json";
-import { discordchannel } from "../../../package.json";
-import NavButton from "./NavButton";
-import styles from "./TopBar.module.css";
-import ReportProblemModal from "./ReportProblemModal";
+import React, { useState } from 'react';
+import NavBar from 'react-bootstrap/Navbar';
+import { Container, Stack } from 'react-bootstrap';
+import logo from '../../assets/logoFishOnly.svg';
+import { openExternal } from '../../eventsBridge';
+import { repository, discordchannel } from '../../../package.json';
+
+import NavButton from './NavButton';
+import styles from './TopBar.module.css';
+import ReportProblemModal from './ReportProblemModal';
 
 function TopBar() {
   const [show, setShow] = useState(false);
@@ -16,7 +16,7 @@ function TopBar() {
     <>
       <NavBar
         className={styles.topNavBar}
-        style={{ borderBottom: "1px solid #C4C4C4" }}
+        style={{ borderBottom: '1px solid #C4C4C4' }}
       >
         <Container fluid>
           <NavBar.Brand>
@@ -26,7 +26,7 @@ function TopBar() {
                   backgroundImage: `url(${logo})`,
                   width: 50,
                   height: 50,
-                  borderRadius: "50%",
+                  borderRadius: '50%',
                 }}
               ></div>
               כספיון

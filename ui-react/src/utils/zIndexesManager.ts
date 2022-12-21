@@ -1,8 +1,8 @@
 const maxZIndexUsedByReactBootstrap = 10000;
 
-type ZIndexLayers = "modal" | "offcanvas";
+type ZIndexLayers = 'modal' | 'offcanvas';
 
-export let zIndexes: Record<ZIndexLayers, number>;
+let zIndexes: Record<ZIndexLayers, number>;
 
 const makeZIndexes = (layers: ZIndexLayers[]) => {
   return layers.reduce((prevValue, layerName, index) => {
@@ -13,7 +13,7 @@ const makeZIndexes = (layers: ZIndexLayers[]) => {
 
 export const getZIndexes = () => {
   if (!zIndexes) {
-    zIndexes = makeZIndexes(["modal", "offcanvas"]);
+    zIndexes = makeZIndexes(['modal', 'offcanvas']);
   }
 
   return zIndexes;
