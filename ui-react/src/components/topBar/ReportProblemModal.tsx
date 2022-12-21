@@ -1,11 +1,13 @@
-import React, { useState } from "react";
-import { Button, Form, Modal, Row, Col, Stack } from "react-bootstrap";
-import { openExternal } from "../../eventsBridge";
-import { repository } from "../../../package.json";
-import os from "os";
+import React, { useState } from 'react';
+import {
+  Button, Form, Modal, Row, Col, Stack
+} from 'react-bootstrap';
+import os from 'os';
+import { openExternal } from '../../eventsBridge';
+import { repository } from '../../../package.json';
 // import LogsCanvas from "./LogsCanvas";
-import { isValidEmail } from "../../utils/validations";
-import { getZIndexes } from "../../utils/zIndexesManager";
+import { isValidEmail } from '../../utils/validations';
+import { getZIndexes } from '../../utils/zIndexesManager';
 
 type ReportProblemForm = {
   title?: string;
@@ -26,9 +28,9 @@ type ValidationError = {
 
 function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
   const [form, setForm] = useState<ReportProblemForm>({
-    title: "",
-    email: "",
-    details: "",
+    title: '',
+    email: '',
+    details: '',
   });
 
   const [errors, setErrors] = useState<ValidationError>({});
@@ -37,17 +39,16 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
   const setField = (field: string, value: string) => {
     setForm((prevForm) => ({ ...prevForm, [field]: value }));
 
-    if (!!errors[field]) setErrors({ ...errors, [field]: null });
+    if (errors[field]) setErrors({ ...errors, [field]: null });
   };
 
   const validateForm = (validateEmail = true) => {
     const newErrors: ValidationError = {};
 
-    if (!form.title || form.title === "") newErrors.title = "שדה חובה";
+    if (!form.title || form.title === '') newErrors.title = 'שדה חובה';
 
     if (validateEmail) {
-      if (!form.email || !isValidEmail(form.email))
-        newErrors.email = "שדה מייל לא חוקי";
+      if (!form.email || !isValidEmail(form.email)) { newErrors.email = 'שדה מייל לא חוקי'; }
     }
 
     return newErrors;
@@ -63,15 +64,15 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
     }
 
     const url = createGithubIssueLink(
-      form.title ?? "",
-      form.details ?? "",
-      form.attachedLogs ?? ""
+      form.title ?? '',
+      form.details ?? '',
+      form.attachedLogs ?? ''
     );
     console.info(`Open bug report url with title: ${form.title}`);
     openExternal(url);
   };
 
-  //TODO: SOURCE_COMMIT_SHORT should be taken from env file
+  // TODO: SOURCE_COMMIT_SHORT should be taken from env file
   const createGithubIssueLink = (
     title: string,
     details: string,
@@ -82,7 +83,7 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
         ## Details
         
         ${details}`
-      : "";
+      : '';
 
     const formattedLog = log
       ? `
@@ -90,19 +91,19 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
         \`\`\`
         ${log}
         \`\`\``
-      : "";
+      : '';
 
     const sysInfo = `
         ## System Info
         
-         - Source Version: \`${"SOURCE_COMMIT_SHORT" || "unknown"}\`
+         - Source Version: \`${'SOURCE_COMMIT_SHORT' || 'unknown'}\`
          - OS: \`${os.platform()}${os.arch()}\`
          - OS Version: \`${os.release()}\`
         `;
 
-    return `${`${repository}/issues/new?` +
-      `title=${encodeURIComponent(title)}` +
-      "&body="}${encodeURIComponent(
+    return `${`${repository}/issues/new?`
+      + `title=${encodeURIComponent(title)}`
+      + '&body='}${encodeURIComponent(
       formattedDetails + formattedLog + sysInfo
     )}`;
   };
@@ -123,8 +124,8 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
   //   form.email
   // );
 
-  //console.info(`Problem reported. Event ${eventId}`);
-  //};
+  // console.info(`Problem reported. Event ${eventId}`);
+  // };
 
   // const seeLogs = () => {
   //   setShowLogs(true);
@@ -134,9 +135,9 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
     onClose();
 
     setForm({
-      title: "",
-      email: "",
-      details: "",
+      title: '',
+      email: '',
+      details: '',
     });
   };
 
@@ -171,7 +172,7 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
                   required
                   value={form.title}
                   isInvalid={!!errors.title}
-                  onChange={(e) => setField("title", e.target.value)}
+                  onChange={(e) => setField('title', e.target.value)}
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.title}
@@ -185,13 +186,13 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
                 className="position-relative"
                 controlId="email"
               >
-                <Form.Label>דוא"ל</Form.Label>
+                <Form.Label>דוא&quot;ל</Form.Label>
                 <Form.Control
                   type="text"
                   value={form.email}
                   isInvalid={!!errors.email}
                   aria-describedby="email"
-                  onChange={(e) => setField("email", e.target.value)}
+                  onChange={(e) => setField('email', e.target.value)}
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.email}
@@ -208,7 +209,7 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
               placeholder="פרטי הבאג"
               className="mb-4"
               value={form.details}
-              onChange={(e) => setField("details", e.target.value)}
+              onChange={(e) => setField('details', e.target.value)}
             />
             {/* <Form.Group className="mb-4" as={Col} md="2">
               <Form.Check type="checkbox" label="צירוף קבצי לוג" />(
@@ -232,7 +233,7 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
                 type="submit"
                 onClick={openGithub}
               >
-                פתיחת תקלה ב-Github{" "}
+                פתיחת תקלה ב-Github{' '}
               </Button>
               {/* <Button
                 variant="dark"
