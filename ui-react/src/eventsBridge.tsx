@@ -33,9 +33,9 @@ export async function scrape(store) {
 }
 
 export async function toggleUIVersion() {
-    await electron.ipcRenderer.send('toggleUiVersion');
+  await electron.ipcRenderer.send('toggleUiVersion');
 }
 
 export async function openExternal(url: string) {
-    await electron.shell.openExternal(url);
+  await electron.shell.openExternal(url);
 }

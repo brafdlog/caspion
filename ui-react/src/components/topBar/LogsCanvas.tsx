@@ -1,6 +1,6 @@
-import React from "react";
-import Offcanvas from "react-bootstrap/Offcanvas";
-import { getZIndexes } from "../../utils/zIndexesManager";
+import React from 'react';
+import Offcanvas from 'react-bootstrap/Offcanvas';
+import { getZIndexes } from '../../utils/zIndexesManager';
 
 type LogsCanvasProps = {
   show: boolean;
