@@ -32,7 +32,6 @@ async function createWindow() {
     useContentSize: true,
     width: 1152,
     webPreferences: {
-      enableRemoteModule: true,
       contextIsolation: false,
       nodeIntegration: (process.env.ELECTRON_NODE_INTEGRATION as unknown) as
         | boolean
@@ -60,6 +59,8 @@ async function loadUIIntoWindow() {
   if (mainWindow == null) {
     throw Error('Main window is null');
   }
+  // TODO: Remove this when we remove the Vue UI
+  if (!useReactUI) remote.enable(mainWindow.webContents);
   // Workaround from https://github.com/electron/electron/issues/19554
   // @ts-ignore
   const loadURL = (url) => setTimeout(() => mainWindow.loadURL(url), 100);

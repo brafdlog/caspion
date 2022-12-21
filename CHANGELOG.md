@@ -1,3 +1,45 @@
+## [1.6.1](https://github.com/brafdlog/caspion/compare/v1.6.0...v1.6.1) (2022-12-17)
+
+
+### Fix
+
+* trigger release ([1774316](https://github.com/brafdlog/caspion/commit/1774316fb631286fc2a14f0b19fc03d774bc1819))
+
+# [1.6.0](https://github.com/brafdlog/caspion/compare/v1.5.0...v1.6.0) (2022-12-14)
+
+
+### Chore
+
+* upgrade Electron (#419) ([378de73](https://github.com/brafdlog/caspion/commit/378de73ab21767c495140d90f809e340a8804b02)), closes [#419](https://github.com/brafdlog/caspion/issues/419)
+
+# [1.5.0](https://github.com/brafdlog/caspion/compare/v1.4.0...v1.5.0) (2022-12-13)
+
+
+### Chore
+
+* use electron-google-oauth2 from @baruchiro (#417) ([848d45e](https://github.com/brafdlog/caspion/commit/848d45ef8d1bd77503131f23581f41ea4d4e8fb1)), closes [#417](https://github.com/brafdlog/caspion/issues/417)
+
+# [1.4.0](https://github.com/brafdlog/caspion/compare/v1.3.0...v1.4.0) (2022-12-12)
+
+
+### Chore
+
+* Make ESLint work for React UI (#411) ([ffa2406](https://github.com/brafdlog/caspion/commit/ffa2406db90cc184e1c1b221b25c1e00d6b780aa)), closes [#411](https://github.com/brafdlog/caspion/issues/411)
+
+# [1.3.0](https://github.com/brafdlog/caspion/compare/v1.2.2...v1.3.0) (2022-12-12)
+
+
+### Upgrade
+
+* Dependabot alerts (#416) ([4a81a64](https://github.com/brafdlog/caspion/commit/4a81a64c33c251a0e281a82c3b5e3786bad79925)), closes [#416](https://github.com/brafdlog/caspion/issues/416)
+
+## [1.2.2](https://github.com/brafdlog/caspion/compare/v1.2.1...v1.2.2) (2022-12-11)
+
+
+### Fix
+
+* Validate New Account Details (fixes #405) (#406) ([9049be2](https://github.com/brafdlog/caspion/commit/9049be2a5b576c8b8d1b298ce7ed7a514e52ff37)), closes [#405](https://github.com/brafdlog/caspion/issues/405) [#406](https://github.com/brafdlog/caspion/issues/406)
+
 ## [1.2.1](https://github.com/brafdlog/caspion/compare/v1.2.0...v1.2.1) (2022-11-30)
 
 
