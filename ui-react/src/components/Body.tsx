@@ -65,7 +65,7 @@ const Body = ({ scrape }: BodyProps) => {
 
   return (
     <div>
-      <Container className={styles.container}>
+      <Container className={styles.container} >
         <div className={styles.contentContainer}>
           <Stack direction="horizontal" className={styles.customGap}>
             {config && config.scraping
@@ -98,13 +98,13 @@ const Body = ({ scrape }: BodyProps) => {
         </Modal>
       </Container>
       <Container className={styles.buttonsContainer}>
-        <Button className={styles.scrapeButton} onClick={scrape} disabled={store.isScraping}>הפעל</Button>
+        <Button variant="dark" size="lg" className={styles.scrapeButton} onClick={scrape} disabled={store.isScraping}>הפעל</Button>
         <Image src={settingsIcon} onClick={() => showModal(null, ModalStatus.GeneralSettings)} />
         <Form.Check
-          type="switch"
-          onClick={toggleUIVersion}
-          label="ממשק חדש"
-          defaultChecked
+            type="switch"
+            onClick={toggleUIVersion}
+            label="מעבר לממשק ישן"
+            defaultChecked
         />
       </Container>
     </div>
