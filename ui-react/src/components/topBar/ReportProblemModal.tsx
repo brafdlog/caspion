@@ -68,7 +68,6 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
       form.details ?? '',
       form.attachedLogs ?? ''
     );
-    console.info(`Open bug report url with title: ${form.title}`);
     openExternal(url);
   };
 
