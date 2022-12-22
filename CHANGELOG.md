@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/brafdlog/caspion/compare/v1.6.1...v1.7.0) (2022-12-22)
+
+
+### New
+
+* Topbar and Report Problem in the new UI (#408) ([afda79f](https://github.com/brafdlog/caspion/commit/afda79f765f68b8693e386182a1d4eccc8d88562)), closes [#408](https://github.com/brafdlog/caspion/issues/408)
+
 ## [1.6.1](https://github.com/brafdlog/caspion/compare/v1.6.0...v1.6.1) (2022-12-17)
 
 
