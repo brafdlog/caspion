@@ -152,7 +152,7 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
       }
     );
 
-    console.info(`Problem reported. Event ${eventId}`);
+    // console.info(`Problem reported. Event ${eventId}`);
   };
 
   const seeLogs = () => {
