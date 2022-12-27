@@ -37,7 +37,7 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
 
   useEffect(async () => {
     const version = await sourceCommitShort();
-    const logInfo = await getLogsInfo(10);
+    const logInfo = await getLogsInfo();
 
     setLogsFolder(logInfo.logsFolder);
     // TODO: num of lines in the getLastLines not working so I slice the result for now
