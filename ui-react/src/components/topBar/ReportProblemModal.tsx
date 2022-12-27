@@ -4,18 +4,21 @@ import {
 } from 'react-bootstrap';
 import os from 'os';
 import {
-  getLogsFolder, openExternal, sentryUserReportProblem, sourceCommitShort
+  getLogsFolder, openExternal, sentryUserReportProblem, sourceCommitShort,
+  getLastLines
 } from '../../eventsBridge';
 import { repository } from '../../../package.json';
 import LogsCanvas from './LogsCanvas';
 import { isValidEmail } from '../../utils/validations';
 import { getZIndexes } from '../../utils/zIndexesManager';
 
+const LOG_MAX_SIZE = 5000;
+
 type ReportProblemForm = {
   title?: string;
   email?: string;
   details?: string;
-  attachedLogs?: string;
+  attachedLogs: boolean;
 };
 
 type ReportProblemModalProps = {
@@ -34,17 +37,27 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
   const [sourceVersion, setSourceVersion] = useState<string>();
 
   useEffect(async () => {
-    const lines = await getLogsFolder();
-    setLogsFolder(lines);
+    const logFolder = await getLogsFolder();
     const version = await sourceCommitShort();
+    const lines = await getLastLines(10);
+
+    setLogsFolder(logFolder);
     setSourceVersion(version);
+    // TODO: num of lines in the getLastLines not working so I slice the result for now
+    setLastLines(lines.slice(0, LOG_MAX_SIZE));
+  }, []);
+
+  const [lastLines, setLastLines] = useState<string>();
+
+  useEffect(async () => {
+
   }, []);
 
   const [form, setForm] = useState<ReportProblemForm>({
     title: '',
     email: '',
     details: '',
-    attachedLogs: ''
+    attachedLogs: true
   });
 
   const [errors, setErrors] = useState<ValidationError>({});
@@ -80,7 +93,7 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
     const url = createGithubIssueLink(
       form.title ?? '',
       form.details ?? '',
-      form.attachedLogs ?? ''
+      form.attachedLogs ? lastLines : ''
     );
     openExternal(url);
   };
@@ -97,11 +110,12 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
         ${details}`
       : '';
 
+    // if the log too big it makes an error
     const formattedLog = log
       ? `
         ## Log
         \`\`\`
-        ${log}
+        ${log} 
         \`\`\``
       : '';
 
@@ -226,7 +240,9 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
               onChange={(e) => setField('details', e.target.value)}
             />
              <Form.Group className="mb-4" as={Col} md="2">
-              <Form.Check type="checkbox" label="צירוף קבצי לוג" />(
+              <Form.Check value={form.attachedLogs} type="checkbox" label="צירוף קבצי לוג"
+                checked={form.attachedLogs === true}
+                          onChange={(e) => setForm((prevForm) => ({ ...prevForm, attachedLogs: e.target.checked }))}/>(
               <Button variant="link" onClick={seeLogs}>
                 צפיה בלוגים
               </Button>
@@ -260,7 +276,7 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
           </Form>
         </Modal.Body>
       </Modal>
-      <LogsCanvas show={showLogs} handleClose={() => setShowLogs(false)} />
+      <LogsCanvas show={showLogs} handleClose={() => setShowLogs(false)} lastLines={lastLines} />
     </>
   );
 }

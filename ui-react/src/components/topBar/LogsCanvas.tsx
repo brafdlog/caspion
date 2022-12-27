@@ -1,21 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import { getLastLines } from '../../eventsBridge';
 import { getZIndexes } from '../../utils/zIndexesManager';
 
 type LogsCanvasProps = {
   show: boolean;
   handleClose?: () => void;
+  lastLines: string;
 };
 
-export default function LogsCanvas({ show, handleClose }: LogsCanvasProps) {
-
-  const [lastLines, setLastLines] = useState<string>();
-
-  useEffect(async () => {
-    const lines = await getLastLines(3);
-    setLastLines(lines);
-  }, []);
+export default function LogsCanvas({ show, handleClose, lastLines }: LogsCanvasProps) {
 
   return (
     <Offcanvas
