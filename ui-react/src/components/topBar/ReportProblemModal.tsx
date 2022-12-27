@@ -146,8 +146,8 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
     const eventId = await sentryUserReportProblem(
       {
         title: form.title,
-        details: form.details,
-        attachedLogs: form.attachedLogs ?? '',
+        body: form.details,
+        logs: form.attachedLogs ?? '',
         email: form.email
       }
     );
