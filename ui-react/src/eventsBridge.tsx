@@ -40,12 +40,8 @@ export async function openExternal(url: string) {
   await electron.shell.openExternal(url);
 }
 
-export async function getLastLines(numberOfLines: number) {
-  return electron.ipcRenderer.invoke('getLastLines', numberOfLines);
-}
-
-export async function getLogsFolder() {
-  return electron.ipcRenderer.invoke('getLogsFolder');
+export async function getLogsInfo(numOfLines: number) {
+  return electron.ipcRenderer.invoke('getLogsInfo', numOfLines);
 }
 
 export async function sentryUserReportProblem(reportProblem) {

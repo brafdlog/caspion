@@ -4,8 +4,7 @@ import {
 } from 'react-bootstrap';
 import os from 'os';
 import {
-  getLogsFolder, openExternal, sentryUserReportProblem, sourceCommitShort,
-  getLastLines
+  getLogsInfo, openExternal, sentryUserReportProblem, sourceCommitShort,
 } from '../../eventsBridge';
 import { repository } from '../../../package.json';
 import LogsCanvas from './LogsCanvas';
@@ -37,14 +36,13 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
   const [sourceVersion, setSourceVersion] = useState<string>();
 
   useEffect(async () => {
-    const logFolder = await getLogsFolder();
     const version = await sourceCommitShort();
-    const lines = await getLastLines(10);
+    const logInfo = await getLogsInfo(10);
 
-    setLogsFolder(logFolder);
-    setSourceVersion(version);
+    setLogsFolder(logInfo.logsFolder);
     // TODO: num of lines in the getLastLines not working so I slice the result for now
-    setLastLines(lines.slice(0, LOG_MAX_SIZE));
+    setLastLines(logInfo.lastLines?.slice(0, LOG_MAX_SIZE));
+    setSourceVersion(version);
   }, []);
 
   const [lastLines, setLastLines] = useState<string>();
@@ -143,7 +141,7 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
       return;
     }
 
-    const eventId = await sentryUserReportProblem(
+    sentryUserReportProblem(
       {
         title: form.title,
         body: form.details,
@@ -151,8 +149,6 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
         email: form.email
       }
     );
-
-    // console.info(`Problem reported. Event ${eventId}`);
   };
 
   const seeLogs = () => {
