@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
+import { getLastLines } from '../../eventsBridge';
 import { getZIndexes } from '../../utils/zIndexesManager';
 
 type LogsCanvasProps = {
@@ -8,6 +9,14 @@ type LogsCanvasProps = {
 };
 
 export default function LogsCanvas({ show, handleClose }: LogsCanvasProps) {
+
+  const [lastLines, setLastLines] = useState<string>();
+
+  useEffect(async () => {
+    const lines = await getLastLines(3);
+    setLastLines(lines);
+  }, []);
+
   return (
     <Offcanvas
       show={show}
@@ -18,8 +27,8 @@ export default function LogsCanvas({ show, handleClose }: LogsCanvasProps) {
       <Offcanvas.Header closeButton>
         <Offcanvas.Title>לוגים:</Offcanvas.Title>
       </Offcanvas.Header>
-      <Offcanvas.Body>
-        [2022-12-07 12:34:27.432] [info] Welcome to caspion log
+      <Offcanvas.Body dir="ltr">
+        {lastLines}
       </Offcanvas.Body>
     </Offcanvas>
   );
