@@ -11,7 +11,7 @@ import LogsCanvas from './LogsCanvas';
 import { isValidEmail } from '../../utils/validations';
 import { getZIndexes } from '../../utils/zIndexesManager';
 
-const LOG_MAX_SIZE = 5000;
+const NUM_OF_LAST_LINES = 10;
 
 type ReportProblemForm = {
   title?: string;
@@ -37,11 +37,11 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
 
   useEffect(async () => {
     const version = await sourceCommitShort();
-    const logInfo = await getLogsInfo();
+    const logInfo = await getLogsInfo(NUM_OF_LAST_LINES);
 
     setLogsFolder(logInfo.logsFolder);
     // TODO: num of lines in the getLastLines not working so I slice the result for now
-    setLastLines(logInfo.lastLines?.slice(0, LOG_MAX_SIZE));
+    setLastLines(logInfo.lastLines);
     setSourceVersion(version);
   }, []);
 
