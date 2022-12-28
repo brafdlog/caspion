@@ -47,10 +47,6 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
 
   const [lastLines, setLastLines] = useState<string>();
 
-  useEffect(async () => {
-
-  }, []);
-
   const [form, setForm] = useState<ReportProblemForm>({
     title: '',
     email: '',
@@ -178,7 +174,9 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
         style={{ zIndex: getZIndexes().modal }}
       >
         <Modal.Header closeButton>
+        <div className="row justify-content-center">
           <Modal.Title>דיווח על באג</Modal.Title>
+          </div>
         </Modal.Header>
         <Modal.Body>
           <Form>

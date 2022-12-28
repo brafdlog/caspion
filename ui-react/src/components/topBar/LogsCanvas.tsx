@@ -10,6 +10,8 @@ type LogsCanvasProps = {
 
 export default function LogsCanvas({ show, handleClose, lastLines }: LogsCanvasProps) {
 
+  const splitted = lastLines?.split('\r\n');
+
   return (
     <Offcanvas
       show={show}
@@ -21,7 +23,7 @@ export default function LogsCanvas({ show, handleClose, lastLines }: LogsCanvasP
         <Offcanvas.Title>לוגים:</Offcanvas.Title>
       </Offcanvas.Header>
       <Offcanvas.Body dir="ltr">
-        {lastLines}
+        {splitted?.map((line, index) => (<div key={index}>{line}</div>))}
       </Offcanvas.Body>
     </Offcanvas>
   );
