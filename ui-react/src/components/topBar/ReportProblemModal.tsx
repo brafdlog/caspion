@@ -40,7 +40,6 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
     const logInfo = await getLogsInfo(NUM_OF_LAST_LINES);
 
     setLogsFolder(logInfo.logsFolder);
-    // TODO: num of lines in the getLastLines not working so I slice the result for now
     setLastLines(logInfo.lastLines);
     setSourceVersion(version);
   }, []);
