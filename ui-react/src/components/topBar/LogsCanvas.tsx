@@ -10,7 +10,7 @@ type LogsCanvasProps = {
 
 export default function LogsCanvas({ show, handleClose, lastLines }: LogsCanvasProps) {
 
-  const splitted = lastLines?.split('\r\n');
+  const splitted = lastLines?.split('\n');
 
   return (
     <Offcanvas
