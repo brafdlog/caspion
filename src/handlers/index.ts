@@ -7,6 +7,7 @@ import Sentry from '../logging/sentry';
 import { getConfigHandler, updateConfigHandler } from './configHandlers';
 import { checkForUpdate, downloadUpdate, quitAndInstall } from './updater';
 import { getLogsInfoHandler } from './logsHandlers';
+import { googleLoginHandler, validateTokenHandler } from './googleAuthHandlers';
 
 const functions = {
   showSaveDialog: async () => {
@@ -19,7 +20,10 @@ const functions = {
   getConfig: getConfigHandler,
   updateConfig: updateConfigHandler,
   getYnabAccountData,
+  electronGoogleLogin: googleLoginHandler,
+  validateToken: validateTokenHandler,
   getLogsInfo: getLogsInfoHandler,
+
   sourceCommitShort: async () => {
     return SOURCE_COMMIT_SHORT;
   },

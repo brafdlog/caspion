@@ -1,0 +1,13 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form {
+  direction: ltr;
+}
+
+.card {
+  align-items: center;
+}

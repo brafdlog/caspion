@@ -51,3 +51,11 @@ export async function sentryUserReportProblem(reportProblem) {
 export async function sourceCommitShort() {
   return electron.ipcRenderer.invoke('sourceCommitShort');
 }
+
+export async function googleLogin() {
+  return electron.ipcRenderer.invoke('electronGoogleLogin');
+}
+
+export async function validateToken(credentials) {
+  return electron.ipcRenderer.invoke('validateToken', credentials);
+}
