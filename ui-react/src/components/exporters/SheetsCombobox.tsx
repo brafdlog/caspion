@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Form } from 'react-bootstrap';
 import { getAllSpreadsheets } from '../../eventsBridge';
+import { Credentials } from '../../types';
 
-const SheetsCombobox = (credentials: any, value: string) => {
+interface SheetsComboboxProps {
+  value: string;
+  credentials: Credentials;
+}
+
+const SheetsCombobox = ({ credentials, value }:SheetsComboboxProps) => {
 
   const [userSpreadsheets, setUserSpreadsheets] = useState([]);
   const [spreadsheet, setSpreadsheet] = useState<string>(value);
