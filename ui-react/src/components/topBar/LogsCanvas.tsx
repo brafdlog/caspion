@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { getZIndexes } from '../../utils/zIndexesManager';
 
 type LogsCanvasProps = {
   show: boolean;
   handleClose?: () => void;
+  lastLines: string;
 };
 
-export default function LogsCanvas({ show, handleClose }: LogsCanvasProps) {
+export default function LogsCanvas({ show, handleClose, lastLines }: LogsCanvasProps) {
+
+  const splitted = lastLines?.split('\n');
+
   return (
     <Offcanvas
       show={show}
@@ -18,8 +22,8 @@ export default function LogsCanvas({ show, handleClose }: LogsCanvasProps) {
       <Offcanvas.Header closeButton>
         <Offcanvas.Title>לוגים:</Offcanvas.Title>
       </Offcanvas.Header>
-      <Offcanvas.Body>
-        [2022-12-07 12:34:27.432] [info] Welcome to caspion log
+      <Offcanvas.Body dir="ltr">
+        {splitted?.map((line, index) => (<div key={index}>{line}</div>))}
       </Offcanvas.Body>
     </Offcanvas>
   );

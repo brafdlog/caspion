@@ -1,19 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Button, Form, Modal, Row, Col, Stack
 } from 'react-bootstrap';
 import os from 'os';
-import { openExternal } from '../../eventsBridge';
+import {
+  getLogsInfo, openExternal, sentryUserReportProblem, sourceCommitShort,
+} from '../../eventsBridge';
 import { repository } from '../../../package.json';
-// import LogsCanvas from "./LogsCanvas";
+import LogsCanvas from './LogsCanvas';
 import { isValidEmail } from '../../utils/validations';
 import { getZIndexes } from '../../utils/zIndexesManager';
+
+const NUM_OF_LAST_LINES = 10;
 
 type ReportProblemForm = {
   title?: string;
   email?: string;
   details?: string;
-  attachedLogs?: string;
+  attachedLogs: boolean;
 };
 
 type ReportProblemModalProps = {
@@ -27,14 +31,30 @@ type ValidationError = {
 };
 
 function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
+
+  const [logsFolder, setLogsFolder] = useState<string>();
+  const [sourceVersion, setSourceVersion] = useState<string>();
+
+  useEffect(async () => {
+    const version = await sourceCommitShort();
+    const logInfo = await getLogsInfo(NUM_OF_LAST_LINES);
+
+    setLogsFolder(logInfo.logsFolder);
+    setLastLines(logInfo.lastLines);
+    setSourceVersion(version);
+  }, []);
+
+  const [lastLines, setLastLines] = useState<string>();
+
   const [form, setForm] = useState<ReportProblemForm>({
     title: '',
     email: '',
     details: '',
+    attachedLogs: true
   });
 
   const [errors, setErrors] = useState<ValidationError>({});
-  // const [showLogs, setShowLogs] = useState(false);
+  const [showLogs, setShowLogs] = useState(false);
 
   const setField = (field: string, value: string) => {
     setForm((prevForm) => ({ ...prevForm, [field]: value }));
@@ -66,12 +86,11 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
     const url = createGithubIssueLink(
       form.title ?? '',
       form.details ?? '',
-      form.attachedLogs ?? ''
+      form.attachedLogs ? lastLines : ''
     );
     openExternal(url);
   };
 
-  // TODO: SOURCE_COMMIT_SHORT should be taken from env file
   const createGithubIssueLink = (
     title: string,
     details: string,
@@ -84,18 +103,19 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
         ${details}`
       : '';
 
+    // if the log too big it makes an error
     const formattedLog = log
       ? `
         ## Log
         \`\`\`
-        ${log}
+        ${log} 
         \`\`\``
       : '';
 
     const sysInfo = `
         ## System Info
         
-         - Source Version: \`${'SOURCE_COMMIT_SHORT' || 'unknown'}\`
+         - Source Version: \`${sourceVersion || 'unknown'}\`
          - OS: \`${os.platform()}${os.arch()}\`
          - OS Version: \`${os.release()}\`
         `;
@@ -107,28 +127,28 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
     )}`;
   };
 
-  // const sendReport = (e) => {
-  //   e.preventDefault();
+  const sendReport = async (e) => {
+    e.preventDefault();
 
-  //   const formErrors = validateForm(true);
-  //   if (Object.keys(formErrors).length > 0) {
-  //     setErrors(formErrors);
-  //     return;
-  //   }
+    const formErrors = validateForm(true);
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
+      return;
+    }
 
-  // const eventId = Sentry.userReportProblem(
-  //   form.title,
-  //   form.details,
-  //   form.attachedLogs ?? "",
-  //   form.email
-  // );
+    sentryUserReportProblem(
+      {
+        title: form.title,
+        body: form.details,
+        logs: form.attachedLogs ?? '',
+        email: form.email
+      }
+    );
+  };
 
-  // console.info(`Problem reported. Event ${eventId}`);
-  // };
-
-  // const seeLogs = () => {
-  //   setShowLogs(true);
-  // };
+  const seeLogs = () => {
+    setShowLogs(true);
+  };
 
   const onHide = () => {
     onClose();
@@ -153,7 +173,9 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
         style={{ zIndex: getZIndexes().modal }}
       >
         <Modal.Header closeButton>
+        <div className="row justify-content-center">
           <Modal.Title>דיווח על באג</Modal.Title>
+          </div>
         </Modal.Header>
         <Modal.Body>
           <Form>
@@ -210,18 +232,19 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
               value={form.details}
               onChange={(e) => setField('details', e.target.value)}
             />
-            {/* <Form.Group className="mb-4" as={Col} md="2">
-              <Form.Check type="checkbox" label="צירוף קבצי לוג" />(
+             <Form.Group className="mb-4" as={Col} md="2">
+              <Form.Check value={form.attachedLogs} type="checkbox" label="צירוף קבצי לוג"
+                checked={form.attachedLogs === true}
+                          onChange={(e) => setForm((prevForm) => ({ ...prevForm, attachedLogs: e.target.checked }))}/>(
               <Button variant="link" onClick={seeLogs}>
                 צפיה בלוגים
               </Button>
               )
-            </Form.Group> */}
+            </Form.Group>
 
-            {/* <div className="mb-4">*מורה על שדות חובה</div> */}
-            {/* <div className="mb-4">
-              אפשר למצוא את הלוגים פה: C:\git\caspion\userData\logs
-            </div> */}
+            <div className="mb-4">
+              אפשר למצוא את הלוגים פה: {logsFolder}
+            </div>
             <Stack direction="horizontal" gap={3}>
               <Button variant="light" onClick={onClose}>
                 סגור
@@ -234,19 +257,19 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
               >
                 פתיחת תקלה ב-Github{' '}
               </Button>
-              {/* <Button
+              <Button
                 variant="dark"
                 name="send-report"
                 type="submit"
                 onClick={sendReport}
               >
                 שליחת דוח
-              </Button> */}
+              </Button>
             </Stack>
           </Form>
         </Modal.Body>
       </Modal>
-      {/* <LogsCanvas show={showLogs} handleClose={() => setShowLogs(false)} /> */}
+      <LogsCanvas show={showLogs} handleClose={() => setShowLogs(false)} lastLines={lastLines} />
     </>
   );
 }

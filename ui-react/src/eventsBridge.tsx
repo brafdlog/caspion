@@ -39,3 +39,15 @@ export async function toggleUIVersion() {
 export async function openExternal(url: string) {
   await electron.shell.openExternal(url);
 }
+
+export async function getLogsInfo(numOfLastLines:number) {
+  return electron.ipcRenderer.invoke('getLogsInfo', numOfLastLines);
+}
+
+export async function sentryUserReportProblem(reportProblem) {
+  return electron.ipcRenderer.invoke('sentryUserReportProblem', reportProblem);
+}
+
+export async function sourceCommitShort() {
+  return electron.ipcRenderer.invoke('sourceCommitShort');
+}

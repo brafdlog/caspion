@@ -3,8 +3,10 @@ import { scrapeAndUpdateOutputVendors } from '@/backend';
 import { getConfig } from '@/backend/configManager/configManager';
 import { BudgetTrackingEventEmitter } from '@/backend/eventEmitters/EventEmitter';
 import { getYnabAccountData } from '@/manual/setupHelpers';
+import Sentry from '../logging/sentry';
 import { getConfigHandler, updateConfigHandler } from './configHandlers';
 import { checkForUpdate, downloadUpdate, quitAndInstall } from './updater';
+import { getLogsInfoHandler } from './logsHandlers';
 
 const functions = {
   showSaveDialog: async () => {
@@ -16,8 +18,14 @@ const functions = {
   quitAndInstall,
   getConfig: getConfigHandler,
   updateConfig: updateConfigHandler,
-  getYnabAccountData
+  getYnabAccountData,
+  getLogsInfo: getLogsInfoHandler,
+  sourceCommitShort: async () => {
+    return SOURCE_COMMIT_SHORT;
+  },
+  sentryUserReportProblem: Sentry.userReportProblem,
 };
+
 type Functions = typeof functions;
 
 export const ipcHandlers = Object.keys(functions).reduce((acc, funcName) => {
