@@ -59,3 +59,11 @@ export async function googleLogin() {
 export async function validateToken(credentials) {
   return electron.ipcRenderer.invoke('validateToken', credentials);
 }
+
+export async function getAllSpreadsheets(credentials) {
+  return electron.ipcRenderer.invoke('getAllSpreadsheets', credentials);
+}
+
+export async function createSpreadsheet(spreadsheetId, credentials) {
+  return electron.ipcRenderer.invoke('createSpreadsheet', { spreadsheetId, credentials });
+}

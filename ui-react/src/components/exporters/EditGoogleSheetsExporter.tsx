@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react';
 import {
   Alert, Button, Card, Form
 } from 'react-bootstrap';
-import { googleLogin, validateToken } from '../../eventsBridge';
-import { Exporter, OutputVendorName } from '../../types';
+import { Prev } from 'react-bootstrap/esm/PageItem';
+import { googleLogin, validateToken, createSpreadsheet } from '../../eventsBridge';
+import {
+  Credentials, Exporter, GoogleSheetsConfig, OutputVendorName
+} from '../../types';
 import SheetsCombobox from './SheetsCombobox';
 import styles from './EditGoogleSheetsExporter.module.css';
 
@@ -28,25 +31,29 @@ function EditGoogleSheetsExporter({
   const [readyToSave, setReadyToSave] = useState(false);
 
   // const dataToReturn = setupExporterConfigForm(OutputVendorName.GOOGLE_SHEETS);
-  //  const exporter = ref(dataToReturn.exporter as GoogleSheetsConfig);
+  const [exporterConfig, setExporterConfig] = useState<GoogleSheetsConfig>(exporter as GoogleSheetsConfig);
 
-  useEffect(async () => {
+  useEffect(() => {
+
+    const validate = async () => {
+      // const valid = await validateToken(exporterConfig?.options?.credentials);
+      // setStatus(valid ? Status.LOGGED_IN : Status.LOGIN);
+    };
+
     try {
-      // exporter.options.credentials = await googleLogin();
-      const credentials = await googleLogin();
-      const valid = await validateToken(credentials);
-      setStatus(valid ? Status.LOGGED_IN : Status.LOGIN);
+      validate();
     } catch (ex) {
       setStatus(Status.ERROR);
       SetErrorMessage(ex.message);
     }
-  }, []);
+  }, [exporterConfig.options.credentials]);
 
   const login = async () => {
     try {
       setStatus(Status.LOADING);
 
-      // exporter.options.credentials = await ElectronLogin(googleAuthData);
+      const credentials = await googleLogin();
+      setExporterConfig((prevExport) => ({ ...prevExport, options: { ...prevExport.options, credentials } }));
 
       setStatus(Status.LOGGED_IN);
     } catch (ex) {
@@ -56,13 +63,14 @@ function EditGoogleSheetsExporter({
   };
 
   const save = async () => {
-    // const isNewSheet = exporter.options.spreadsheetId.length < 30;
-    // if (isNewSheet) {
-    //   setStatus(Status.LOADING);
-    //  const spreadsheetId = await createSpreadsheet(exporter.options.spreadsheetId, exporter.options.credentials);
-    //   exporter.options.spreadsheetId = spreadsheetId;
-    //   setStatus(Status.LOGGED_IN);
-    // }
+    const isNewSheet = exporterConfig.options.spreadsheetId.length < 30;
+    if (isNewSheet) {
+      setStatus(Status.LOADING);
+      const spreadsheetId = await createSpreadsheet(exporterConfig.options.spreadsheetId, exporterConfig.options.credentials);
+      setExporterConfig((prevExport) => ({ ...prevExport, options: { ...prevExport.options, spreadsheetId } }));
+
+      setStatus(Status.LOGGED_IN);
+    }
     // return dataToReturn.submit();
   };
 
@@ -82,7 +90,7 @@ function EditGoogleSheetsExporter({
             <Card.Body className={styles.cardBody}>
               <Form className={styles.form}>
                 <Form.Check type="checkbox" label="Active" className='mb-3'/>
-                <SheetsCombobox />
+                <SheetsCombobox credentials={exporterConfig?.options?.credentials}/>
                 <Button disabled={!readyToSave} variant="dark" onClick={save} className='mt-3'>
                   Save
                 </Button>

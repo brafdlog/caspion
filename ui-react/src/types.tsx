@@ -81,7 +81,7 @@ export interface Credentials {
 export interface GoogleSheetsConfig extends OutputVendorConfigBase {
   options: {
     credentials: Credentials;
-        spreadsheetId: string;
+    spreadsheetId: string;
   }
 }
 
