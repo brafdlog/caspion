@@ -3,9 +3,16 @@ import {
   Alert, Button, Card, Form
 } from 'react-bootstrap';
 import { Prev } from 'react-bootstrap/esm/PageItem';
-import { googleLogin, validateToken, createSpreadsheet } from '../../eventsBridge';
 import {
-  Credentials, Exporter, GoogleSheetsConfig, OutputVendorName
+  googleLogin,
+  validateToken,
+  createSpreadsheet,
+} from '../../eventsBridge';
+import {
+  Credentials,
+  Exporter,
+  GoogleSheetsConfig,
+  OutputVendorName,
 } from '../../types';
 import SheetsCombobox from './SheetsCombobox';
 import styles from './EditGoogleSheetsExporter.module.css';
@@ -31,10 +38,11 @@ function EditGoogleSheetsExporter({
   const [readyToSave, setReadyToSave] = useState(false);
 
   // const dataToReturn = setupExporterConfigForm(OutputVendorName.GOOGLE_SHEETS);
-  const [exporterConfig, setExporterConfig] = useState<GoogleSheetsConfig>(exporter as GoogleSheetsConfig);
+  const [exporterConfig, setExporterConfig] = useState<GoogleSheetsConfig>(
+    exporter as GoogleSheetsConfig
+  );
 
   useEffect(() => {
-
     const validate = async () => {
       // const valid = await validateToken(exporterConfig?.options?.credentials);
       // setStatus(valid ? Status.LOGGED_IN : Status.LOGIN);
@@ -53,7 +61,10 @@ function EditGoogleSheetsExporter({
       setStatus(Status.LOADING);
 
       const credentials = await googleLogin();
-      setExporterConfig((prevExport) => ({ ...prevExport, options: { ...prevExport.options, credentials } }));
+      setExporterConfig((prevExport) => ({
+        ...prevExport,
+        options: { ...prevExport.options, credentials },
+      }));
 
       setStatus(Status.LOGGED_IN);
     } catch (ex) {
@@ -66,12 +77,25 @@ function EditGoogleSheetsExporter({
     const isNewSheet = exporterConfig.options.spreadsheetId.length < 30;
     if (isNewSheet) {
       setStatus(Status.LOADING);
-      const spreadsheetId = await createSpreadsheet(exporterConfig.options.spreadsheetId, exporterConfig.options.credentials);
-      setExporterConfig((prevExport) => ({ ...prevExport, options: { ...prevExport.options, spreadsheetId } }));
+      const spreadsheetId = await createSpreadsheet(
+        exporterConfig.options.spreadsheetId,
+        exporterConfig.options.credentials
+      );
+      setExporterConfig((prevExport) => ({
+        ...prevExport,
+        options: { ...prevExport.options, spreadsheetId },
+      }));
 
       setStatus(Status.LOGGED_IN);
     }
     // return dataToReturn.submit();
+  };
+
+  const handleActiveChange = (e) => {
+    setExporterConfig((prevExport) => ({
+      ...prevExport,
+      active: e.target.checked
+    }));
   };
 
   return (
@@ -89,9 +113,22 @@ function EditGoogleSheetsExporter({
           <Card className={styles.card}>
             <Card.Body className={styles.cardBody}>
               <Form className={styles.form}>
-                <Form.Check type="checkbox" label="Active" className='mb-3'/>
-                <SheetsCombobox credentials={exporterConfig?.options?.credentials}/>
-                <Button disabled={!readyToSave} variant="dark" onClick={save} className='mt-3'>
+                <Form.Check
+                  type="checkbox"
+                  checked={exporterConfig?.active}
+                  onChange={handleActiveChange}
+                  label="Active"
+                  className="mb-3"
+                />
+                <SheetsCombobox
+                  credentials={exporterConfig?.options?.credentials}
+                />
+                <Button
+                  disabled={!readyToSave}
+                  variant="dark"
+                  onClick={save}
+                  className="mt-3"
+                >
                   Save
                 </Button>
               </Form>
