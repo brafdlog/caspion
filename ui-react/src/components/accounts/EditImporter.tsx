@@ -27,21 +27,30 @@ export default function EditImporter({
       loginFields
     });
   };
+
   const checkFieldValidity = (loginFieldName: string, value): boolean => {
     return value.length >= LOGIN_FIELD_MIN_LENGTH[loginFieldName];
   };
+
+  const checkFieldsValidity = (fieldsToCheck) => {
+    setValidated(Object.entries(fieldsToCheck).every(([key, value]) => checkFieldValidity(key, value)));
+  };
+
   const onLoginFieldChanged = (loginFieldName: string, loginFieldValue) => {
     setLoginFields((prevLoginFields) => {
       const nextLoginFields = { ...prevLoginFields, [loginFieldName]: loginFieldValue };
 
-      setValidated(Object.entries(nextLoginFields).every(([key, value]) => checkFieldValidity(key, value)));
+      checkFieldsValidity(nextLoginFields);
+
       return nextLoginFields;
     });
   };
 
   const onActiveChanged = () => {
-    setActive(!active);
+    setActive((prevActive) => !prevActive);
+    checkFieldsValidity(loginFields);
   };
+
   return (
     <div className={styles.container}>
       <Card className={styles.card}>
