@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Form } from 'react-bootstrap';
 import { getAllSpreadsheets } from '../../eventsBridge';
-import { Credentials } from '../../types';
+import { GoogleSheetsCredentials } from '../../types';
 
 interface SheetsComboboxProps {
   value: string;
-  credentials: Credentials;
+  credentials: GoogleSheetsCredentials;
 }
 
 const SheetsCombobox = ({ credentials, value }:SheetsComboboxProps) => {
