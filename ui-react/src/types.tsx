@@ -46,7 +46,7 @@ export interface JsonConfig extends OutputVendorConfigBase {
   }
 }
 
-export interface Credentials {
+export interface GoogleSheetsCredentials {
   /**
    * This field is only present if the access_type parameter was set to offline in the authentication request. For details, see Refresh tokens.
    */

@@ -69,7 +69,7 @@ function EditGoogleSheetsExporter({
       setStatus(Status.LOGGED_IN);
     } catch (ex) {
       setStatus(Status.ERROR);
-      SetErrorMessage(ex.message ?? ex);
+      SetErrorMessage(ex);
     }
   };
 

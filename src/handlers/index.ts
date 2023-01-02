@@ -8,7 +8,7 @@ import { getConfigHandler, updateConfigHandler } from './configHandlers';
 import { checkForUpdate, downloadUpdate, quitAndInstall } from './updater';
 import { getLogsInfoHandler } from './logsHandlers';
 import {
-  googleLoginHandler, validateTokenHandler, getAllSpreadsheetsHandler, createSpreadsheetHandler
+  googleLoginHandler, validateGoogleTokenHandler, getAllSpreadsheetsHandler, createSpreadsheetHandler
 } from './googleAuthHandlers';
 
 const functions = {
@@ -23,7 +23,7 @@ const functions = {
   updateConfig: updateConfigHandler,
   getYnabAccountData,
   electronGoogleLogin: googleLoginHandler,
-  validateToken: validateTokenHandler,
+  validateGoogleToken: validateGoogleTokenHandler,
   getLogsInfo: getLogsInfoHandler,
   getAllSpreadsheets: getAllSpreadsheetsHandler,
   createSpreadsheet: createSpreadsheetHandler,

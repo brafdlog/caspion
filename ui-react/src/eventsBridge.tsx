@@ -56,8 +56,8 @@ export async function googleLogin() {
   return electron.ipcRenderer.invoke('electronGoogleLogin');
 }
 
-export async function validateToken(credentials) {
-  return electron.ipcRenderer.invoke('validateToken', credentials);
+export async function validateGoogleToken(credentials) {
+  return electron.ipcRenderer.invoke('validateGoogleToken', credentials);
 }
 
 export async function getAllSpreadsheets(credentials) {

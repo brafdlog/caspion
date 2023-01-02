@@ -18,7 +18,7 @@ export const googleLoginHandler = () => {
   return electronGoogleOAuth2.openAuthWindowAndGetTokens();
 };
 
-export const validateTokenHandler = async (event, credentials: any) => {
+export const validateGoogleTokenHandler = async (event, credentials: any) => {
   const isValid = await validateToken(credentials);
   return isValid;
 };
