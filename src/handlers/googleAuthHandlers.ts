@@ -18,17 +18,20 @@ export const googleLoginHandler = () => {
   return electronGoogleOAuth2.openAuthWindowAndGetTokens();
 };
 
-export const validateGoogleTokenHandler = async (event, credentials: any) => {
-  const isValid = await validateToken(credentials);
+export const validateGoogleTokenHandler = async (event, credentials) => {
+  const googleCredentials = JSON.parse(credentials);
+  const isValid = await validateToken(googleCredentials);
   return isValid;
 };
 
 export const getAllSpreadsheetsHandler = async (event, credentials) => {
-  const userSpreadsheets = await getAllSpreadsheets(createClient(credentials));
+  const googleCredentials = JSON.parse(credentials);
+  const userSpreadsheets = await getAllSpreadsheets(createClient(googleCredentials));
   return userSpreadsheets;
 };
 
 export const createSpreadsheetHandler = async (event, { spreadsheetTitle, credentials }) => {
-  const spreadsheet = createSpreadsheet(spreadsheetTitle, credentials);
+  const googleCredentials = JSON.parse(credentials);
+  const spreadsheet = createSpreadsheet(spreadsheetTitle, googleCredentials);
   return spreadsheet;
 };

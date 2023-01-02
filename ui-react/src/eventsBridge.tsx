@@ -57,13 +57,13 @@ export async function googleLogin() {
 }
 
 export async function validateGoogleToken(credentials) {
-  return electron.ipcRenderer.invoke('validateGoogleToken', credentials);
+  return electron.ipcRenderer.invoke('validateGoogleToken', JSON.stringify(credentials));
 }
 
 export async function getAllSpreadsheets(credentials) {
-  return electron.ipcRenderer.invoke('getAllSpreadsheets', credentials);
+  return electron.ipcRenderer.invoke('getAllSpreadsheets', JSON.stringify(credentials));
 }
 
 export async function createSpreadsheet(spreadsheetId, credentials) {
-  return electron.ipcRenderer.invoke('createSpreadsheet', { spreadsheetId, credentials });
+  return electron.ipcRenderer.invoke('createSpreadsheet', { spreadsheetId, credentials: JSON.stringify(credentials) });
 }

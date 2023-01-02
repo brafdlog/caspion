@@ -1,7 +1,7 @@
 /// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Types common with the electron code
 
-import { type } from 'os';
+import { Credentials } from 'google-auth-library/build/src/auth/credentials';
 
 /// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export enum OutputVendorName {
@@ -44,38 +44,6 @@ export interface JsonConfig extends OutputVendorConfigBase {
   options: {
     filePath: string;
   }
-}
-
-export interface GoogleSheetsCredentials {
-  /**
-   * This field is only present if the access_type parameter was set to offline in the authentication request. For details, see Refresh tokens.
-   */
-  // eslint-disable-next-line camelcase
-  refresh_token?: string | null;
-  /**
-   * The time in ms at which this token is thought to expire.
-   */
-  // eslint-disable-next-line camelcase
-  expiry_date?: number | null;
-  /**
-   * A token that can be sent to a Google API.
-   */
-  // eslint-disable-next-line camelcase
-  access_token?: string | null;
-  /**
-   * Identifies the type of token returned. At this time, this field always has the value Bearer.
-   */
-  // eslint-disable-next-line camelcase
-  token_type?: string | null;
-  /**
-   * A JWT that contains identity information about the user that is digitally signed by Google.
-   */
-  // eslint-disable-next-line camelcase
-  id_token?: string | null;
-  /**
-   * The scopes of access granted by the access_token expressed as a list of space-delimited, case-sensitive strings.
-   */
-  scope?: string;
 }
 
 export interface GoogleSheetsConfig extends OutputVendorConfigBase {

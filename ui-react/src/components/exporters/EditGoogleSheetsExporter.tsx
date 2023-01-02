@@ -1,21 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { observer } from 'mobx-react-lite';
 import {
   Alert, Button, Card, Form
 } from 'react-bootstrap';
-import { Prev } from 'react-bootstrap/esm/PageItem';
+import { Credentials } from 'google-auth-library/build/src/auth/credentials';
 import {
   googleLogin,
-  validateToken,
+  validateGoogleToken,
   createSpreadsheet,
 } from '../../eventsBridge';
 import {
-  Credentials,
   Exporter,
   GoogleSheetsConfig,
   OutputVendorName,
 } from '../../types';
 import SheetsCombobox from './SheetsCombobox';
 import styles from './EditGoogleSheetsExporter.module.css';
+import { StoreContext } from '../../Store';
 
 enum Status {
   LOADING,
@@ -42,14 +43,19 @@ function EditGoogleSheetsExporter({
     exporter as GoogleSheetsConfig
   );
 
+  const store = useContext(StoreContext);
+
   useEffect(() => {
     const validate = async () => {
-      // const valid = await validateToken(exporterConfig?.options?.credentials);
-      // setStatus(valid ? Status.LOGGED_IN : Status.LOGIN);
+      const valid = await validateGoogleToken(exporterConfig?.options?.credentials);
+      setStatus(valid ? Status.LOGGED_IN : Status.LOGIN);
     };
 
     try {
-      validate();
+      // eslint-disable-next-line camelcase
+      if (exporterConfig?.options?.credentials?.id_token !== '') {
+        validate();
+      }
     } catch (ex) {
       setStatus(Status.ERROR);
       SetErrorMessage(ex.message);
@@ -60,11 +66,14 @@ function EditGoogleSheetsExporter({
     try {
       setStatus(Status.LOADING);
 
-      const credentials = await googleLogin();
-      setExporterConfig((prevExport) => ({
-        ...prevExport,
-        options: { ...prevExport.options, credentials },
-      }));
+      const credentials: Credentials = await googleLogin();
+
+      const updatedExporter = {
+        ...exporter,
+        options: { ...exporter.options, credentials: { ...credentials } },
+      };
+
+      await store.updateExporter(updatedExporter);
 
       setStatus(Status.LOGGED_IN);
     } catch (ex) {
@@ -100,7 +109,7 @@ function EditGoogleSheetsExporter({
 
   return (
     <div className={styles.container}>
-      {status === Status.LOADING && (
+      {status === Status.LOGIN && (
         <Button variant="dark" onClick={login}>
           Login to Google
         </Button>
@@ -122,6 +131,7 @@ function EditGoogleSheetsExporter({
                 />
                 <SheetsCombobox
                   credentials={exporterConfig?.options?.credentials}
+                  value={exporterConfig.options.spreadsheetId}
                 />
                 <Button
                   disabled={!readyToSave}
@@ -141,4 +151,4 @@ function EditGoogleSheetsExporter({
   );
 }
 
-export default EditGoogleSheetsExporter;
+export default observer(EditGoogleSheetsExporter);
