@@ -13,13 +13,14 @@ interface ScrapeParameters {
   companyId: AccountToScrapeConfig['key'];
   credentials: AccountToScrapeConfig['loginFields'];
   startDate: Date;
-  showBrowser?: boolean
+  showBrowser?: boolean,
+  timeout:number
 }
 
 type EmitProgressEventFunction = (eventCompanyId: string, message: string) => Promise<void>;
 
 export async function scrape({
-  companyId, credentials, startDate, showBrowser = false
+  companyId, credentials, startDate, timeout, showBrowser = false
 }: ScrapeParameters, emitProgressEvent: EmitProgressEventFunction, chromePath: string) {
 
   const options = {
@@ -29,7 +30,7 @@ export async function scrape({
     showBrowser, // shows the browser while scraping, good for debugging (default false)
     verbose: false, // include more debug info about in the output
     executablePath: chromePath,
-    defaultTimeout: 60000
+    timeout
   };
   const scraper = createScraper(options);
   scraper.onProgress((eventCompanyId: string, payload: { type: string }) => {

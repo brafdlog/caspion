@@ -17,6 +17,7 @@ export interface Config {
     accountsToScrape: AccountToScrapeConfig[];
     chromiumPath?: string;
     maxConcurrency?: number;
+    timeout:number;
   },
   useReactUI?: boolean
 }
