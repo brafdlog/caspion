@@ -99,7 +99,7 @@ async function fetchTransactions(
   showBrowser: boolean,
   eventPublisher: EventPublisher,
   chromePath: string,
-  timeout:number
+  timeout: number
 ) {
   try {
     await eventPublisher.emit(EventNames.IMPORTER_START, buildImporterEvent(account, { message: 'Importer start' }));
