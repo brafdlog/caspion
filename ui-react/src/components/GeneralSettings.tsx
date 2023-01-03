@@ -1,3 +1,4 @@
+import { time } from 'console';
 import { observer } from 'mobx-react-lite';
 import React, { useContext } from 'react';
 import { Card, Form } from 'react-bootstrap';
@@ -6,9 +7,19 @@ import styles from './GeneralSettings.module.css';
 
 function GeneralSettings() {
   const store = useContext(StoreContext);
+
   function toggleShowBrowser() {
     store.toggleShowBrowser();
   }
+
+  const handleTimeoutChanged = (timeout: string) => {
+
+    const numberTimeout = Number(timeout);
+    if (numberTimeout) {
+      store.setTimeout(numberTimeout);
+    }
+  };
+
   return (
         <div className={styles.container}>
             <Card className={styles.card}>
@@ -40,6 +51,13 @@ function GeneralSettings() {
                                 className={styles.input}
                                 defaultValue={store.config?.scraping.chromiumPath}
                                 onBlur={(event) => store.setChromiumPath(event.target.value)} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>כמה זמן לחכות לשליפה? (millisec)</Form.Label>
+                            <Form.Control
+                                className={styles.input}
+                                defaultValue={store.config?.scraping.timeout}
+                                onBlur={(event) => handleTimeoutChanged(event.target.value)} />
                         </Form.Group>
                     </Form>
                 </Card.Body>

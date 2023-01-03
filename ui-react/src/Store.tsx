@@ -185,6 +185,12 @@ export default class Store {
     await updateConfig(this.config);
   }
 
+  async setTimeout(timeout: number) {
+    this.verifyConfigDefined();
+    this.config.scraping.timeout = timeout;
+    await updateConfig(this.config);
+  }
+
   async setMaxConcurrency(maxConcurrency: number) {
     this.verifyConfigDefined();
     this.config.scraping.maxConcurrency = maxConcurrency;
