@@ -87,7 +87,7 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
     const url = createGithubIssueLink(
       form.title ?? '',
       form.details ?? '',
-      form.attachedLogs ? lastLines : ''
+      form.attachedLogs ? (lastLines ?? '') : ''
     );
     openExternal(url);
   };
@@ -116,7 +116,7 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
     const sysInfo = `
         ## System Info
         
-         - Source Version: \`${sourceVersion || 'unknown'}\`
+         - Source Version: \`${store.appInfo.sourceCommitShort || 'unknown'}\`
          - OS: \`${os.platform()}${os.arch()}\`
          - OS Version: \`${os.release()}\`
         `;
