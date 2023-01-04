@@ -56,13 +56,11 @@ function CheckForUpdates() {
   return (
     <>
     {updateState === UPDATE_STATES.LOADING && (
-       <Spinner animation="border" role="status">
-          <span className="visually-hidden">Loading...</span>
-       </Spinner>
+       <Spinner animation="border" role="status"/>
     )}
     {updateState === UPDATE_STATES.INIT && (
       <Button variant="dark" size="sm" className='mt-2' onClick={checkForUpdates}>
-        בדוק עדכונים
+        בדיקת עדכונים
       </Button>
     )}
     {updateState === UPDATE_STATES.NO_NEW_VERSION && (
