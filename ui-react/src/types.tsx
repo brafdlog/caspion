@@ -24,6 +24,13 @@ export interface Config {
   };
 }
 
+export interface AppInfo {
+  sourceCommitShort: string,
+  repository: string,
+  discordChanel: string,
+  currentVersion: string
+}
+
 export type OutputVendorConfigs = Exclude<Config['outputVendors'][OutputVendorName], undefined>
 export type OutputVendorConfig<T extends OutputVendorName> = Exclude<Config['outputVendors'][T], undefined>
 

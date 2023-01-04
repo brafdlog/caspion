@@ -7,6 +7,7 @@ import {
   AccountStatus,
   AccountToScrapeConfig,
   AccountType,
+  AppInfo,
   BudgetTrackingEvent,
   Config,
   Exporter,
@@ -24,6 +25,8 @@ export default class Store {
   ynabAccountData?: YnabAccountDataType;
 
   fetchingYnabAccountData: boolean;
+
+  appInfo: AppInfo;
 
   constructor() {
     this.accountScrapingData = new Map();

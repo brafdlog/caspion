@@ -20,6 +20,7 @@ import styles from './Body.module.css';
 import EditExporter from './exporters/EditExporter';
 import Exporters from './exporters/Exporters';
 import GeneralSettings from './GeneralSettings';
+import CheckForUpdates from './CheckForUpdates';
 
 type BodyProps = {
   scrape
@@ -64,7 +65,7 @@ const Body = ({ scrape }: BodyProps) => {
   };
 
   return (
-    <div>
+    <Container className={styles.root} >
       <Container className={styles.container} >
         <div className={styles.contentContainer}>
           <Stack direction="horizontal" className={styles.customGap}>
@@ -107,7 +108,10 @@ const Body = ({ scrape }: BodyProps) => {
             defaultChecked
         />
       </Container>
-    </div>
+      <Container className={styles.checkUpdatesContainer}>
+      <CheckForUpdates/>
+      </Container>
+      </Container>
   );
 };
 

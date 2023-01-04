@@ -48,6 +48,14 @@ export async function sentryUserReportProblem(reportProblem) {
   return electron.ipcRenderer.invoke('sentryUserReportProblem', reportProblem);
 }
 
-export async function sourceCommitShort() {
-  return electron.ipcRenderer.invoke('sourceCommitShort');
+export async function checkForUpdate() {
+  return electron.ipcRenderer.invoke('checkForUpdate');
+}
+
+export async function getAppInfo() {
+  return electron.ipcRenderer.invoke('getAppInfo');
+}
+
+export async function downloadUpdate() {
+  return electron.ipcRenderer.invoke('downloadUpdate');
 }

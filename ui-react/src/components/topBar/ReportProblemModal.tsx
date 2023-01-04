@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   Button, Form, Modal, Row, Col, Stack
 } from 'react-bootstrap';
 import os from 'os';
 import {
-  getLogsInfo, openExternal, sentryUserReportProblem, sourceCommitShort,
+  getLogsInfo, openExternal, sentryUserReportProblem
 } from '../../eventsBridge';
-import { repository } from '../../../package.json';
 import LogsCanvas from './LogsCanvas';
 import { isValidEmail } from '../../utils/validations';
 import { getZIndexes } from '../../utils/zIndexesManager';
+import { StoreContext } from '../../Store';
 
 const NUM_OF_LAST_LINES = 10;
 
@@ -33,15 +33,16 @@ type ValidationError = {
 function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
 
   const [logsFolder, setLogsFolder] = useState<string>();
-  const [sourceVersion, setSourceVersion] = useState<string>();
+  const store = useContext(StoreContext);
 
-  useEffect(async () => {
-    const version = await sourceCommitShort();
-    const logInfo = await getLogsInfo(NUM_OF_LAST_LINES);
+  useEffect(() => {
+    const fetchData = async () => {
+      const logInfo = await getLogsInfo(NUM_OF_LAST_LINES);
+      setLogsFolder(logInfo.logsFolder);
+      setLastLines(logInfo.lastLines);
+    };
 
-    setLogsFolder(logInfo.logsFolder);
-    setLastLines(logInfo.lastLines);
-    setSourceVersion(version);
+    fetchData();
   }, []);
 
   const [lastLines, setLastLines] = useState<string>();
@@ -120,7 +121,7 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
          - OS Version: \`${os.release()}\`
         `;
 
-    return `${`${repository}/issues/new?`
+    return `${`${store.appInfo.repository}/issues/new?`
       + `title=${encodeURIComponent(title)}`
       + '&body='}${encodeURIComponent(
       formattedDetails + formattedLog + sysInfo
@@ -157,6 +158,7 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
       title: '',
       email: '',
       details: '',
+      attachedLogs: false
     });
   };
 
