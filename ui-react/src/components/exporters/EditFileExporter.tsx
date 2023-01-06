@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import {
   Button, Card, Form, Image
 } from 'react-bootstrap';
+import { showSaveDialog } from '../../eventsBridge';
 import { Exporter } from '../../types';
 import styles from './EditFileExporter.module.css';
 
@@ -42,6 +43,13 @@ const EditFileExporter = ({
     await handleSave(exporterConfig);
   };
 
+  const selectFolderDialog = async () => {
+    const filePath = await showSaveDialog();
+    if (filePath) {
+      updateOption({ filePath });
+    }
+  };
+
   return (
         <div className={styles.container}>
             <Card className={styles.card}>
@@ -50,7 +58,8 @@ const EditFileExporter = ({
                     <Form>
                         <Form.Group controlId="formFile" className="mb-3">
                             <Form.Label>לאיזה קובץ לכתוב את הטרנזאקציות?</Form.Label>
-                            <Form.Control value={exporterConfig.options.filePath} onChange={handleChooseFile} />
+                            <Form.Control contentEditable={false}
+                            value={exporterConfig.options.filePath} onClick={selectFolderDialog} onChange={handleChooseFile} />
                         </Form.Group>
                         <Form.Group controlId='exporterActive'>
                             <Form.Check
