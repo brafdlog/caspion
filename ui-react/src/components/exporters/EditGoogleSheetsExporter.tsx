@@ -34,7 +34,7 @@ function EditGoogleSheetsExporter({
   exporter,
   handleSave,
 }: EditGoogleSheetsExporterProps) {
-  const [status, setStatus] = useState<Status>(Status.LOADING);
+  const [status, setStatus] = useState<Status>(Status.LOGIN);
   const [errorMessage, SetErrorMessage] = useState();
   const [readyToSave, setReadyToSave] = useState(false);
 
@@ -47,6 +47,7 @@ function EditGoogleSheetsExporter({
 
   useEffect(() => {
     const validate = async () => {
+      // eslint-disable-next-line camelcase
       const valid = await validateGoogleToken(exporterConfig?.options?.credentials);
       setStatus(valid ? Status.LOGGED_IN : Status.LOGIN);
     };
@@ -88,11 +89,13 @@ function EditGoogleSheetsExporter({
   };
 
   const save = async () => {
+    // Todo: the line below was copied from the VUE code, should be refactored
     const isNewSheet = exporterConfig.options.spreadsheetId.length < 30;
     if (isNewSheet) {
       setStatus(Status.LOADING);
+      const title = exporterConfig.options.spreadsheetId;
       const spreadsheetId = await createSpreadsheet(
-        exporterConfig.options.spreadsheetId,
+        title,
         exporterConfig.options.credentials
       );
       setExporterConfig((prevExport) => ({
@@ -100,9 +103,12 @@ function EditGoogleSheetsExporter({
         options: { ...prevExport.options, spreadsheetId },
       }));
 
+      const updatedExporter = { ...exporter };
+
+      await store.updateExporter(updatedExporter);
+
       setStatus(Status.LOGGED_IN);
     }
-    // return dataToReturn.submit();
   };
 
   const handleActiveChange = (e) => {
@@ -110,6 +116,12 @@ function EditGoogleSheetsExporter({
       ...prevExport,
       active: e.target.checked
     }));
+
+    setReadyToSave(true);
+  };
+
+  const handleSheetChanged = () => {
+    setReadyToSave(true);
   };
 
   return (
@@ -137,6 +149,7 @@ function EditGoogleSheetsExporter({
                 <SheetsCombobox
                   credentials={exporterConfig?.options?.credentials}
                   value={exporterConfig.options.spreadsheetId}
+                  changed={handleSheetChanged}
                 />
                 <Button
                   disabled={!readyToSave}

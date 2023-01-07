@@ -7,9 +7,10 @@ import { getAllSpreadsheets } from '../../eventsBridge';
 interface SheetsComboboxProps {
   value: string;
   credentials: Credentials;
+  changed: () => void;
 }
 
-const SheetsCombobox = ({ credentials, value }:SheetsComboboxProps) => {
+const SheetsCombobox = ({ credentials, value, changed }:SheetsComboboxProps) => {
 
   const [userSpreadsheets, setUserSpreadsheets] = useState([]);
   const [spreadsheet, setSpreadsheet] = useState<string>(value);
@@ -18,8 +19,8 @@ const SheetsCombobox = ({ credentials, value }:SheetsComboboxProps) => {
   useEffect(() => {
 
     const getUserSpreadsheets = async () => {
-      const spreadsheets = await getAllSpreadsheets(credentials);
-      setUserSpreadsheets(spreadsheets);
+      const data = await getAllSpreadsheets(credentials);
+      setUserSpreadsheets(data);
     };
 
     getUserSpreadsheets();
@@ -35,6 +36,7 @@ const SheetsCombobox = ({ credentials, value }:SheetsComboboxProps) => {
 
   const handleChange = (event) => {
     setSpreadsheet(event.target.value);
+    changed();
   };
 
   return (
