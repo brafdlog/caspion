@@ -19,6 +19,7 @@ export interface Config {
     [OutputVendorName.CSV]?: CsvConfig;
   };
   scraping: {
+    timeout: number;
     numDaysBack: number;
     showBrowser: boolean;
     accountsToScrape: AccountToScrapeConfig[];
