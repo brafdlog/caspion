@@ -1,11 +1,12 @@
+import { Credentials } from 'google-auth-library/build/src/auth/credentials';
 import React, { useEffect, useState } from 'react';
 import { Alert, Form } from 'react-bootstrap';
+import { observer } from 'mobx-react-lite';
 import { getAllSpreadsheets } from '../../eventsBridge';
-import { GoogleSheetsCredentials } from '../../types';
 
 interface SheetsComboboxProps {
   value: string;
-  credentials: GoogleSheetsCredentials;
+  credentials: Credentials;
 }
 
 const SheetsCombobox = ({ credentials, value }:SheetsComboboxProps) => {
@@ -50,4 +51,4 @@ const SheetsCombobox = ({ credentials, value }:SheetsComboboxProps) => {
   );
 };
 
-export default SheetsCombobox;
+export default observer(SheetsCombobox);

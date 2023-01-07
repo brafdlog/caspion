@@ -75,6 +75,11 @@ function EditGoogleSheetsExporter({
 
       await store.updateExporter(updatedExporter);
 
+      setExporterConfig((prevExport) => ({
+        ...prevExport,
+        options: { ...prevExport.options, credentials },
+      }));
+
       setStatus(Status.LOGGED_IN);
     } catch (ex) {
       setStatus(Status.ERROR);

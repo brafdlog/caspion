@@ -67,3 +67,9 @@ export async function getAllSpreadsheets(credentials) {
 export async function createSpreadsheet(spreadsheetId, credentials) {
   return electron.ipcRenderer.invoke('createSpreadsheet', { spreadsheetId, credentials: JSON.stringify(credentials) });
 }
+export async function listenToServerLogs() {
+  electron.ipcRenderer.on('log', (event, logMessage) => {
+    const message = JSON.parse(logMessage);
+    console.log(message);
+  });
+}
