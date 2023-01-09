@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import {
-  Alert, Button, Card, Form
+  Alert, Button, Card, Form, FormLabel
 } from 'react-bootstrap';
 import { Credentials } from 'google-auth-library/build/src/auth/credentials';
 import {
@@ -89,7 +89,6 @@ function EditGoogleSheetsExporter({
   };
 
   const save = async () => {
-    // Todo: the line below was copied from the VUE code, should be refactored
     const isNewSheet = exporterConfig.options.spreadsheetId.length < 30;
     if (isNewSheet) {
       setStatus(Status.LOADING);
@@ -103,9 +102,7 @@ function EditGoogleSheetsExporter({
         options: { ...prevExport.options, spreadsheetId },
       }));
 
-      const updatedExporter = { ...exporter };
-
-      await store.updateExporter(updatedExporter);
+      await store.updateExporter(exporter);
 
       setStatus(Status.LOGGED_IN);
     }
@@ -124,11 +121,19 @@ function EditGoogleSheetsExporter({
     setReadyToSave(true);
   };
 
+  const newFile = (e) => {
+    setExporterConfig((prevExport) => ({
+      ...prevExport,
+      options: { ...prevExport.options, spreadsheetId: e.target.value }
+    }));
+    setReadyToSave(true);
+  };
+
   return (
     <div className={styles.container}>
       {status === Status.LOGIN && (
         <Button variant="dark" onClick={login}>
-          Login to Google
+          כניסה עם Google
         </Button>
       )}
       {status === Status.ERROR && (
@@ -146,6 +151,9 @@ function EditGoogleSheetsExporter({
                   label="Active"
                   className="mb-3"
                 />
+             <FormLabel>הוספת קובץ חדש:</FormLabel>
+             <Form.Control type='text' onChange={newFile} className='mb-4'/>
+             <FormLabel>בחירת קובץ קיים:</FormLabel>
                 <SheetsCombobox
                   credentials={exporterConfig?.options?.credentials}
                   value={exporterConfig.options.spreadsheetId}
@@ -157,7 +165,7 @@ function EditGoogleSheetsExporter({
                   onClick={save}
                   className="mt-3"
                 >
-                  Save
+                  שמירה
                 </Button>
               </Form>
             </Card.Body>
@@ -165,7 +173,6 @@ function EditGoogleSheetsExporter({
         </>
       )}
     </div>
-    // <p>ההגדרות של גוגל שיטס עוד לא זמינות בממשק החדש. נא לעבור לממשק הישן כדי להגדיר</p>
   );
 }
 
