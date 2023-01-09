@@ -129,5 +129,8 @@
     "vue-jest": "4.0.0-beta.5",
     "vue-template-compiler": "^2.6.11",
     "vuetify-loader": "^1.4.4"
+  },
+  "resolutions": {
+    "electron-builder": "^23.0.0"
   }
 }
