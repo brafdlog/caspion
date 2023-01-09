@@ -2,7 +2,7 @@ import React from 'react';
 import { Exporter, OutputVendorName, YnabConfig } from '../../types';
 import EditFileExporter from './EditFileExporter';
 import EditYnabExporter from './EditYnabExporter';
-import EditGoogleSheetsExporter from './EditGoogleSheetsExporter';
+import EditGoogleSheetsExporter from './googleSheets/EditGoogleSheetsExporter';
 
 type EditExporterProps = {
     handleSave: (exporterConfig: Exporter | YnabConfig) => Promise<void>;

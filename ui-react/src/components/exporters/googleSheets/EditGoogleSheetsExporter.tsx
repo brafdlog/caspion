@@ -8,15 +8,15 @@ import {
   googleLogin,
   validateGoogleToken,
   createSpreadsheet,
-} from '../../eventsBridge';
+} from '../../../eventsBridge';
 import {
   Exporter,
   GoogleSheetsConfig,
   OutputVendorName,
-} from '../../types';
+} from '../../../types';
 import SheetsCombobox from './SheetsCombobox';
 import styles from './EditGoogleSheetsExporter.module.css';
-import { StoreContext } from '../../Store';
+import { StoreContext } from '../../../Store';
 
 enum Status {
   LOADING,

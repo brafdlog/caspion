@@ -2,7 +2,7 @@ import { Credentials } from 'google-auth-library/build/src/auth/credentials';
 import React, { useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
-import { getAllSpreadsheets } from '../../eventsBridge';
+import { getAllSpreadsheets } from '../../../eventsBridge';
 
 interface SheetsComboboxProps {
   value: string;
