@@ -51,3 +51,7 @@ export async function sentryUserReportProblem(reportProblem) {
 export async function sourceCommitShort() {
   return electron.ipcRenderer.invoke('sourceCommitShort');
 }
+
+export async function showSaveDialog() {
+  return electron.ipcRenderer.invoke('showSaveDialog');
+}
