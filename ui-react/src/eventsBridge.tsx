@@ -70,6 +70,5 @@ export async function createSpreadsheet(spreadsheetTitle, credentials) {
 export async function listenToServerLogs() {
   electron.ipcRenderer.on('log', (event, logMessage) => {
     const message = JSON.parse(logMessage);
-    console.log(message);
   });
 }
