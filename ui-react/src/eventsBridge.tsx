@@ -70,5 +70,7 @@ export async function createSpreadsheet(spreadsheetTitle, credentials) {
 export async function listenToServerLogs() {
   electron.ipcRenderer.on('log', (event, logMessage) => {
     const message = JSON.parse(logMessage);
+    // eslint-disable-next-line no-console
+    console.log(message);
   });
 }
