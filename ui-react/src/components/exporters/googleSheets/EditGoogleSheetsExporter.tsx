@@ -106,6 +106,8 @@ function EditGoogleSheetsExporter({
 
       setStatus(Status.LOGGED_IN);
     }
+
+    setReadyToSave(false);
   };
 
   const handleActiveChange = (e) => {
