@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/brafdlog/caspion/compare/v1.8.0...v1.9.0) (2023-01-10)
+
+
+### New
+
+* Add file picker to the export file input (#435) ([d53c8f5](https://github.com/brafdlog/caspion/commit/d53c8f58cd9410e683748b23abaa206156f36a5d)), closes [#435](https://github.com/brafdlog/caspion/issues/435)
+
 # [1.8.0](https://github.com/brafdlog/caspion/compare/v1.7.0...v1.8.0) (2023-01-10)
 
 
