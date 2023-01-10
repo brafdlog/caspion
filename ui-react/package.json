@@ -49,6 +49,7 @@
     ],
     "rules": {
       "no-console": "off"
+    }
   },
   "browserslist": {
     "production": [
