@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/brafdlog/caspion/compare/v1.7.0...v1.8.0) (2023-01-10)
+
+
+### Chore
+
+* upgrade MacOS build to include Python (#438) ([e4b639c](https://github.com/brafdlog/caspion/commit/e4b639c570b621d26c729afca3bfc4513c6e9fc0)), closes [#438](https://github.com/brafdlog/caspion/issues/438)
+
 # [1.7.0](https://github.com/brafdlog/caspion/compare/v1.6.1...v1.7.0) (2022-12-22)
 
 
