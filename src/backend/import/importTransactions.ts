@@ -44,7 +44,8 @@ export async function scrapeFinancialAccountsAndFetchTransactions(scrapingConfig
     .filter((accountToScrape) => accountToScrape.active !== false)
     .map(async (accountToScrape) => ({
       id: accountToScrape.id,
-      transactions: await limiter.schedule(() => fetchTransactions(accountToScrape, startDate, scrapingConfig.showBrowser, eventPublisher, chromiumPath))
+      transactions: await limiter
+        .schedule(() => fetchTransactions(accountToScrape, startDate, scrapingConfig.showBrowser, eventPublisher, chromiumPath, scrapingConfig.timeout))
     }));
 
   const promiseResults = await Promise.allSettled(scrapePromises);
@@ -97,7 +98,8 @@ async function fetchTransactions(
   startDate: Date,
   showBrowser: boolean,
   eventPublisher: EventPublisher,
-  chromePath: string
+  chromePath: string,
+  timeout: number
 ) {
   try {
     await eventPublisher.emit(EventNames.IMPORTER_START, buildImporterEvent(account, { message: 'Importer start' }));
@@ -111,6 +113,7 @@ async function fetchTransactions(
       credentials: account.loginFields,
       startDate,
       showBrowser,
+      timeout,
     }, emitImporterProgressEvent, chromePath);
     if (!scrapeResult.success) {
       throw new Error(`${scrapeResult.errorType}: ${scrapeResult.errorMessage}`);
