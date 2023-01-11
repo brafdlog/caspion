@@ -49,7 +49,7 @@
     "electron-updater": "^5.2.4",
     "emittery": "^0.10.0",
     "googleapis": "^87.0.0",
-    "israeli-bank-scrapers-core": "3.3.0",
+    "israeli-bank-scrapers-core": "3.4.0",
     "keytar": "^7.4.0",
     "lodash": "^4.17.15",
     "moment": "^2.29.4",
