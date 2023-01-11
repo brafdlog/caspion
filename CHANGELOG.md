@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/brafdlog/caspion/compare/v1.9.1...v1.10.0) (2023-01-11)
+
+
+### New
+
+* Implement check for updates (#434) ([7518bcd](https://github.com/brafdlog/caspion/commit/7518bcde68df483dce02429b3cf43de24bfd8261)), closes [#434](https://github.com/brafdlog/caspion/issues/434)
+
 ## [1.9.1](https://github.com/brafdlog/caspion/compare/v1.9.0...v1.9.1) (2023-01-11)
 
 
