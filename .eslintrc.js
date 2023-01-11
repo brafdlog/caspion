@@ -54,7 +54,7 @@ module.exports = {
     'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
     // allow debugger during development
     'no-debugger': productionError,
-    'no-console': productionError,
+    'no-console': 'off',
     'linebreak-style': process.platform === 'win32' ? 0 : 2,
     'no-use-before-define': 'off',
     'max-len': ['error', { code: 160 }],

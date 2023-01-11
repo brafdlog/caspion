@@ -3,10 +3,12 @@ import { scrapeAndUpdateOutputVendors } from '@/backend';
 import { getConfig } from '@/backend/configManager/configManager';
 import { BudgetTrackingEventEmitter } from '@/backend/eventEmitters/EventEmitter';
 import { getYnabAccountData } from '@/manual/setupHelpers';
+import { App } from '@/app-globals';
 import Sentry from '../logging/sentry';
 import { getConfigHandler, updateConfigHandler } from './configHandlers';
 import { checkForUpdate, downloadUpdate, quitAndInstall } from './updater';
 import { getLogsInfoHandler } from './logsHandlers';
+import { repository } from '../../package.json';
 
 const functions = {
   showSaveDialog: async () => {
@@ -20,8 +22,13 @@ const functions = {
   updateConfig: updateConfigHandler,
   getYnabAccountData,
   getLogsInfo: getLogsInfoHandler,
-  sourceCommitShort: async () => {
-    return SOURCE_COMMIT_SHORT;
+  getAppInfo: async () => {
+    return {
+      sourceCommitShort: SOURCE_COMMIT_SHORT,
+      repository,
+      discordChanel: DISCORD_CHANNEL,
+      currentVersion: App.getVersion()
+    };
   },
   sentryUserReportProblem: Sentry.userReportProblem,
 };

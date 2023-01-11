@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { getConfig, scrape } from '../eventsBridge';
+import { getAppInfo, getConfig, scrape } from '../eventsBridge';
 import Store, { StoreContext } from '../Store';
 import TopBar from './topBar/TopBar';
 import Body from './Body';
@@ -15,6 +15,9 @@ function App() {
   useEffect(() => {
     getConfig().then((config) => {
       store.configuration = config;
+    });
+    getAppInfo().then((appInfo) => {
+      store.appInfo = appInfo;
     });
   }, []);
 

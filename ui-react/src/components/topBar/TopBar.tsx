@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import NavBar from 'react-bootstrap/Navbar';
 import { Container, Stack } from 'react-bootstrap';
 import logo from '../../assets/logoFishOnly.svg';
 import { openExternal } from '../../eventsBridge';
-import { repository, discordchannel } from '../../../package.json';
 
 import NavButton from './NavButton';
 import styles from './TopBar.module.css';
 import ReportProblemModal from './ReportProblemModal';
+import { StoreContext } from '../../Store';
 
 function TopBar() {
   const [show, setShow] = useState(false);
+  const store = useContext(StoreContext);
 
   return (
     <>
@@ -35,11 +36,11 @@ function TopBar() {
           <Stack direction="horizontal" gap={5}>
             <NavButton onClick={() => setShow(true)} text="דיווח על בעיה" />
             <NavButton
-              onClick={() => openExternal(discordchannel)}
+              onClick={() => openExternal(store.appInfo?.discordChanel)}
               text="ערוץ הדיסקורד שלנו"
             />
             <NavButton
-              onClick={() => openExternal(repository)}
+              onClick={() => openExternal(store.appInfo?.repository)}
               text="לפתוח ב-Github"
             />
           </Stack>

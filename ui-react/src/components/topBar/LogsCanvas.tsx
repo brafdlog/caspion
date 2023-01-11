@@ -5,7 +5,7 @@ import { getZIndexes } from '../../utils/zIndexesManager';
 type LogsCanvasProps = {
   show: boolean;
   handleClose?: () => void;
-  lastLines: string;
+  lastLines?: string;
 };
 
 export default function LogsCanvas({ show, handleClose, lastLines }: LogsCanvasProps) {
