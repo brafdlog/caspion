@@ -32,6 +32,7 @@ function CheckForUpdates() {
       setUpdateInfo(info);
       setUpdateState(info ? UPDATE_STATES.NEW_VERSION_AVAILABLE : UPDATE_STATES.NO_NEW_VERSION);
     } catch (error) {
+      console.error(error);
       setUpdateState(UPDATE_STATES.ERROR);
     }
   };
@@ -42,6 +43,7 @@ function CheckForUpdates() {
       await downloadUpdate();
       setUpdateState(UPDATE_STATES.READY_TO_INSTALL);
     } catch (error) {
+      console.error(error);
       setUpdateState(UPDATE_STATES.ERROR);
     }
   };

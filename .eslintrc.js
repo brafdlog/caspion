@@ -48,6 +48,7 @@ module.exports = {
 
   rules: {
     // 'no-param-reassign': ['error', { ignorePropertyModificationsFor: ['state'] }],
+    "no-console": 'off',
     'no-param-reassign': 'off',
     'no-shadow': ['error', { allow: ['state'] }],
     'import/extensions': ['off'],
