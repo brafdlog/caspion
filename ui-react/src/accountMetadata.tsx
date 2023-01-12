@@ -84,7 +84,7 @@ export const LOGIN_FIELD_MIN_LENGTH = {
   [ID_FIELD]: 9,
   [NUM_FIELD]: 4,
   [CARD_SIX_DIGITS_FIELD]: 6,
-
+  [NATIONAL_ID_FIELD]: 5,
 };
 
 export const importers: Account[] = Object.values(CompanyTypes).map((importerName) => {
