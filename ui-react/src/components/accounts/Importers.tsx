@@ -1,6 +1,7 @@
 import React from 'react';
 import logsIcon from '../../assets/card-text.svg';
 import settingsIcon from '../../assets/gear.svg';
+import resultsIcon from '../../assets/results.svg';
 import {
   Account as AccountType, AccountStatus, AccountType as TypeOfAccount, ModalStatus
 } from '../../types';
@@ -32,15 +33,23 @@ function Importers({
   );
 }
 
-export function getActionButtons(showModal, account: AccountType, isScraping): ActionButton[] {
+export function getActionButtons(showModal, account: AccountType, isScraping, includeOpenResults = false): ActionButton[] {
   const logsActionButton = {
     icon: logsIcon,
+    tooltipText: 'לוגים',
     clickHandler: () => showModal(account, ModalStatus.Logs)
   };
 
   const accountSettingsActionButton = {
     icon: settingsIcon,
+    tooltipText: 'הגדרות',
     clickHandler: () => showModal(account, account.type === TypeOfAccount.IMPORTER ? ModalStatus.ImporterSettings : ModalStatus.SettingsExporter)
+  };
+
+  const openResults = {
+    icon: resultsIcon,
+    tooltipText: 'פתיחת תוצאות',
+    clickHandler: () => {}
   };
 
   const actionButtons: ActionButton[] = [];
@@ -53,6 +62,10 @@ export function getActionButtons(showModal, account: AccountType, isScraping): A
 
   if (!isScraping) {
     actionButtons.push(accountSettingsActionButton);
+  }
+
+  if (includeOpenResults) {
+    actionButtons.push(openResults);
   }
 
   return actionButtons;
