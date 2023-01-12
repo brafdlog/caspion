@@ -91,7 +91,9 @@ export enum CompanyTypes {
   discount = 'discount',
   mizrahi = 'mizrahi',
   leumi = 'leumi',
-  massad = 'massad'
+  massad = 'massad',
+  yahav = 'yahav',
+  beyahadBishvilha = 'beyahadBishvilha',
 }
 
 export enum AccountType {
