@@ -19,8 +19,7 @@ function Exporters({ exporters, isScraping, showModal }: ExporterProps) {
           actionButtons={getActionButtons(
             showModal,
             exporter,
-            isScraping,
-            true
+            isScraping
           )}
         />
       ))}
