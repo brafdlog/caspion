@@ -1,7 +1,9 @@
-import React from 'react';
+import { observer } from 'mobx-react-lite';
+import React, { useContext } from 'react';
 import logsIcon from '../../assets/card-text.svg';
 import settingsIcon from '../../assets/gear.svg';
 import resultsIcon from '../../assets/results.svg';
+import { StoreContext } from '../../Store';
 import {
   Account as AccountType,
   AccountStatus,
@@ -53,6 +55,8 @@ export function getActionButtons(
     clickHandler: () => showModal(account, ModalStatus.Logs),
   };
 
+  const store = useContext(StoreContext);
+
   const accountSettingsActionButton = {
     icon: settingsIcon,
     tooltipText: 'הגדרות',
@@ -67,7 +71,7 @@ export function getActionButtons(
   const openResults = {
     icon: resultsIcon,
     tooltipText: 'פתיחת תוצאות',
-    clickHandler: () => {},
+    clickHandler: () => { store.config?.outputVendors[account.companyId]?.openResults(); },
   };
 
   const actionButtons: ActionButton[] = [];
@@ -90,4 +94,4 @@ export function getActionButtons(
   return actionButtons;
 }
 
-export default Importers;
+export default observer(Importers);

@@ -40,6 +40,10 @@ export async function openExternal(url: string) {
   await electron.shell.openExternal(url);
 }
 
+export async function openItem(filePath: string) {
+  await electron.shell.openPath(filePath);
+}
+
 export async function getLogsInfo(numOfLastLines:number) {
   return electron.ipcRenderer.invoke('getLogsInfo', numOfLastLines);
 }

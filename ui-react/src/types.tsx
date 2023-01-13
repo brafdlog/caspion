@@ -37,6 +37,7 @@ export type OutputVendorConfig<T extends OutputVendorName> = Exclude<Config['out
 
 interface OutputVendorConfigBase {
   active: boolean;
+  openResults: () => void;
 }
 
 export interface CsvConfig extends OutputVendorConfigBase {
