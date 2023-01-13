@@ -74,7 +74,7 @@ export const LOGIN_FIELD_DISPLAY_NAMES = {
   [ID_FIELD]: 'מספר זהות',
   [NUM_FIELD]: 'קוד מזהה',
   [CARD_SIX_DIGITS_FIELD]: '6 ספרות של הכרטיס',
-  [NATIONAL_ID_FIELD]: 'זהות לאומית',
+  [NATIONAL_ID_FIELD]: 'תעודת זהות',
 };
 
 export const LOGIN_FIELD_MIN_LENGTH = {
@@ -84,7 +84,7 @@ export const LOGIN_FIELD_MIN_LENGTH = {
   [ID_FIELD]: 9,
   [NUM_FIELD]: 4,
   [CARD_SIX_DIGITS_FIELD]: 6,
-  [NATIONAL_ID_FIELD]: 5,
+  [NATIONAL_ID_FIELD]: 9,
 };
 
 export const importers: Account[] = Object.values(CompanyTypes).map((importerName) => {
