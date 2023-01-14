@@ -46,7 +46,7 @@ export default class Store {
     });
   }
 
-setOpenResults =() => {
+setOpenResultsFunction =() => {
 
   if (this.config === undefined || !this.config.outputVendors) return;
 
@@ -55,39 +55,33 @@ setOpenResults =() => {
   } = this.config.outputVendors;
 
   if (csv) {
-    console.log(JSON.stringify(csv));
     csv.openResults = () => {
       openItem(csv.options.filePath);
     };
   }
 
   if (json) {
-    console.log(JSON.stringify(json));
     json.openResults = () => {
       openItem(json.options.filePath);
     };
   }
 
   if (ynab) {
-    console.log(JSON.stringify(ynab));
     ynab.openResults = () => {
-      // openItem();
-      // todo:implement
+      openExternal('https://app.youneedabudget.com/'); // todo: set specific url
     };
   }
 
   if (googleSheets) {
-    console.log(JSON.stringify(googleSheets));
     googleSheets.openResults = () => {
-      // openExternal('https://drive.google.com/drive/my-drive');
-      // todo:implement
+      openExternal(`https://docs.google.com/spreadsheets/d/${googleSheets.options.spreadsheetId}/edit`);
     };
   }
 }
 
 set configuration(config: Config) {
   this.config = config;
-  this.setOpenResults();
+  this.setOpenResultsFunction();
 }
 
 get importers(): Importer[] {
