@@ -1,3 +1,4 @@
+
 import { observer } from 'mobx-react-lite';
 import React, { useContext } from 'react';
 import logsIcon from '../../assets/card-text.svg';
@@ -78,6 +79,12 @@ export function getActionButtons(
 
   const shouldLog = account.status !== AccountStatus.PENDING
     && account.status !== AccountStatus.IDLE;
+
+  const openResults = {
+    icon: resultsIcon,
+    tooltipText: 'פתיחת תוצאות',
+    clickHandler: () => { store.config?.outputVendors[account.companyId]?.openResults(); },
+  };
 
   if (shouldLog) {
     actionButtons.push(logsActionButton);

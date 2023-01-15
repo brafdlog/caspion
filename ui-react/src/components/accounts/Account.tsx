@@ -9,7 +9,7 @@ export type ActionButton = {
   icon: string;
   tooltipText: string;
   clickHandler: () => void
-};
+}
 
 type AccountProps = {
   account: AccountType;
@@ -29,17 +29,10 @@ export default function Account({
       <div className={styles.nameWrapper}>
         <div className={styles.name}>{account.displayName}</div>
       </div>
-      {actionButtons
-        && actionButtons.map(({ icon, clickHandler, tooltipText }) => (
-          <img
-            className={styles.logsButton}
-            src={icon}
-            alt="action"
-            onClick={clickHandler}
-            key={icon}
-            title={tooltipText}
-          />
-        ))}
+      {
+        actionButtons && actionButtons.map(({ icon, clickHandler, tooltipText }) => <img className={styles.logsButton}
+        src={icon} alt="action" onClick={clickHandler} key={icon} title={tooltipText}/>)
+      }
       <StatusIndicator status={account.status} />
       {badgeNumberLog && (
         <Badge className={styles.newTxnsIndicator} bg={'success'}>
