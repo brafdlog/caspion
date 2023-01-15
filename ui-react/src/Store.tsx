@@ -14,8 +14,7 @@ import {
   Config,
   Exporter,
   Importer,
-  Log,
-  OutputVendorName
+  Log
 } from './types';
 import accountMetadata from './accountMetadata';
 import { YnabAccountDataType, YnabConfig } from '../../src/backend/commonTypes';
