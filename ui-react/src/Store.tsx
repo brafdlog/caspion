@@ -45,7 +45,7 @@ export default class Store {
     });
   }
 
-  setOpenResultsFunction =() => {
+  setOpenResultsFunction = () => {
 
     if (this.config === undefined || !this.config.outputVendors) return;
 
