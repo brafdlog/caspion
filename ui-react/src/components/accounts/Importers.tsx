@@ -46,9 +46,9 @@ export function getActionButtons(showModal, account: AccountType, isScraping,): 
 
   const accountSettingsActionButton = {
     icon: settingsIcon,
-    tooltipText: 'הגדרות',
     clickHandler: () => showModal(account, account.type === TypeOfAccount.IMPORTER
       ? ModalStatus.ImporterSettings : ModalStatus.SettingsExporter),
+    tooltipText: 'הגדרות'
   };
 
   const actionButtons: ActionButton[] = [];
