@@ -68,13 +68,15 @@ setOpenResultsFunction =() => {
 
   if (ynab) {
     ynab.openResults = () => {
-      openExternal('https://app.youneedabudget.com/'); // todo: set specific url
+      const url = `https://app.youneedabudget.com/${ynab.options.budgetId}`;
+      openExternal(url);
     };
   }
 
   if (googleSheets) {
     googleSheets.openResults = () => {
-      openExternal(`https://docs.google.com/spreadsheets/d/${googleSheets.options.spreadsheetId}/edit`);
+      const url = `https://docs.google.com/spreadsheets/d/${googleSheets.options.spreadsheetId}/edit`;
+      openExternal(url);
     };
   }
 }
