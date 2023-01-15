@@ -35,10 +35,8 @@ export default function Account({
         alt="action" onClick={clickHandler} key={icon} title={tooltipText}/>)
       }
       <StatusIndicator status={account.status} />
-      {badgeNumberLog && (
-        <Badge className={styles.newTxnsIndicator} bg={'success'}>
-          {badgeNumberLog.originalEvent.exportedTransactionsNum}
-        </Badge>
+      {badgeNumberLog && (<Badge className={styles.newTxnsIndicator} bg={'success'}>
+          {badgeNumberLog.originalEvent.exportedTransactionsNum}</Badge>
       )}
     </div>
   );
