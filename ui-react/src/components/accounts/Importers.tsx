@@ -22,15 +22,15 @@ function Importers({
 }: ImportersProps) {
   return (
     <>
-      {accounts.map((account) => {
-        return (<Account key={account.id} account={account} actionButtons=
-          {getActionButtons(showModal, account, isScraping)}
-          />
-        );
-      })}
-      {handleNewAccountClicked ? (
-        <NewAccount onClick={handleNewAccountClicked} />
-      ) : null}
+        {
+            accounts.map((account) => {
+              return <Account key={account.id} account={account} actionButtons={getActionButtons(showModal, account, isScraping)} />;
+            })
+        }
+        {handleNewAccountClicked ? (
+            <NewAccount onClick={handleNewAccountClicked} />
+        ) : null
+        }
     </>
   );
 }
