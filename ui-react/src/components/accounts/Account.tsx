@@ -13,8 +13,8 @@ export type ActionButton = {
 
 type AccountProps = {
   account: AccountType;
-  actionButtons?: ActionButton[];
-};
+  actionButtons?: ActionButton[]
+}
 
 export default function Account({
   account, actionButtons
@@ -30,8 +30,9 @@ export default function Account({
         <div className={styles.name}>{account.displayName}</div>
       </div>
       {
-        actionButtons && actionButtons.map(({ icon, clickHandler, tooltipText }) => <img className={styles.logsButton}
-        src={icon} alt="action" onClick={clickHandler} key={icon} title={tooltipText}/>)
+        actionButtons
+        && actionButtons.map(({ icon, clickHandler, tooltipText }) => <img className={styles.logsButton} src={icon}
+        alt="action" onClick={clickHandler} key={icon} title={tooltipText}/>)
       }
       <StatusIndicator status={account.status} />
       {badgeNumberLog && (
