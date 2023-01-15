@@ -8,7 +8,7 @@ import StatusIndicator from './StatusIndicator';
 export type ActionButton = {
   icon: string;
   tooltipText: string;
-  clickHandler: () => void;
+  clickHandler: () => void
 };
 
 type AccountProps = {
@@ -16,21 +16,16 @@ type AccountProps = {
   actionButtons?: ActionButton[];
 };
 
-export default function Account({ account, actionButtons }: AccountProps) {
+export default function Account({
+  account, actionButtons
+}: AccountProps) {
   const containerStyles = [styles.container];
 
-  const badgeNumberLog = account.logs.find(
-    (log) => log.originalEvent && log.originalEvent.exportedTransactionsNum > 0
-  );
+  const badgeNumberLog = account.logs.find((log) => log.originalEvent && log.originalEvent.exportedTransactionsNum > 0);
   if (!account.active) containerStyles.push(styles.notActive);
   return (
     <div className={containerStyles.join(' ')}>
-      <img
-        src={account.logo || piggyBank}
-        alt={account.displayName}
-        height={29}
-        width={29}
-      />
+      <img src={account.logo || piggyBank} alt={account.displayName} height={29} width={29} />
       <div className={styles.nameWrapper}>
         <div className={styles.name}>{account.displayName}</div>
       </div>
