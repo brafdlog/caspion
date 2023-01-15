@@ -1,4 +1,3 @@
-
 import { observer } from 'mobx-react-lite';
 import React, { useContext } from 'react';
 import logsIcon from '../../assets/card-text.svg';
@@ -6,10 +5,7 @@ import settingsIcon from '../../assets/gear.svg';
 import resultsIcon from '../../assets/results.svg';
 import { StoreContext } from '../../Store';
 import {
-  Account as AccountType,
-  AccountStatus,
-  AccountType as TypeOfAccount,
-  ModalStatus,
+  Account as AccountType, AccountStatus, AccountType as TypeOfAccount, ModalStatus,
 } from '../../types';
 import Account, { ActionButton } from './Account';
 import NewAccount from './NewAccount';
@@ -22,19 +18,13 @@ type ImportersProps = {
 };
 
 function Importers({
-  accounts,
-  isScraping,
-  showModal,
-  handleNewAccountClicked,
+  accounts, isScraping, showModal, handleNewAccountClicked
 }: ImportersProps) {
   return (
     <>
       {accounts.map((account) => {
-        return (
-          <Account
-            key={account.id}
-            account={account}
-            actionButtons={getActionButtons(showModal, account, isScraping)}
+        return (<Account key={account.id} account={account} actionButtons=
+          {getActionButtons(showModal, account, isScraping)}
           />
         );
       })}
@@ -45,11 +35,7 @@ function Importers({
   );
 }
 
-export function getActionButtons(
-  showModal,
-  account: AccountType,
-  isScraping,
-): ActionButton[] {
+export function getActionButtons(showModal, account: AccountType, isScraping,): ActionButton[] {
   const logsActionButton = {
     icon: logsIcon,
     tooltipText: 'לוגים',
@@ -61,24 +47,13 @@ export function getActionButtons(
   const accountSettingsActionButton = {
     icon: settingsIcon,
     tooltipText: 'הגדרות',
-    clickHandler: () => showModal(
-      account,
-      account.type === TypeOfAccount.IMPORTER
-        ? ModalStatus.ImporterSettings
-        : ModalStatus.SettingsExporter
-    ),
-  };
-
-  const openResults = {
-    icon: resultsIcon,
-    tooltipText: 'פתיחת תוצאות',
-    clickHandler: () => { store.config?.outputVendors[account.companyId]?.openResults(); },
+    clickHandler: () => showModal(account, account.type === TypeOfAccount.IMPORTER
+      ? ModalStatus.ImporterSettings : ModalStatus.SettingsExporter),
   };
 
   const actionButtons: ActionButton[] = [];
 
-  const shouldLog = account.status !== AccountStatus.PENDING
-    && account.status !== AccountStatus.IDLE;
+  const shouldLog = account.status !== AccountStatus.PENDING && account.status !== AccountStatus.IDLE;
 
   const openResults = {
     icon: resultsIcon,
