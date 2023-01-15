@@ -5,16 +5,16 @@ import settingsIcon from '../../assets/gear.svg';
 import resultsIcon from '../../assets/results.svg';
 import { StoreContext } from '../../Store';
 import {
-  Account as AccountType, AccountStatus, AccountType as TypeOfAccount, ModalStatus,
+  Account as AccountType, AccountStatus, AccountType as TypeOfAccount, ModalStatus
 } from '../../types';
 import Account, { ActionButton } from './Account';
 import NewAccount from './NewAccount';
 
 type ImportersProps = {
-  accounts: AccountType[];
-  isScraping: boolean;
-  showModal: (AccountType, ModalStatus) => void;
-  handleNewAccountClicked?: () => void;
+   accounts: AccountType[];
+   isScraping: boolean;
+   showModal: (AccountType, ModalStatus) => void;
+   handleNewAccountClicked?: () => void
 };
 
 function Importers({
