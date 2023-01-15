@@ -11,10 +11,10 @@ import Account, { ActionButton } from './Account';
 import NewAccount from './NewAccount';
 
 type ImportersProps = {
-   accounts: AccountType[];
-   isScraping: boolean;
-   showModal: (AccountType, ModalStatus) => void;
-   handleNewAccountClicked?: () => void
+    accounts: AccountType[];
+    isScraping: boolean;
+    showModal: (AccountType, ModalStatus) => void;
+    handleNewAccountClicked?: () => void
 };
 
 function Importers({
