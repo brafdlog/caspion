@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import logsIcon from '../../assets/card-text.svg';
 import settingsIcon from '../../assets/gear.svg';
+import resultsIcon from '../../assets/results.svg';
+import { StoreContext } from '../../Store';
 import {
   Account as AccountType, AccountStatus, AccountType as TypeOfAccount, ModalStatus
 } from '../../types';
@@ -38,6 +40,8 @@ export function getActionButtons(showModal, account: AccountType, isScraping): A
     clickHandler: () => showModal(account, ModalStatus.Logs)
   };
 
+  const store = useContext(StoreContext);
+
   const accountSettingsActionButton = {
     icon: settingsIcon,
     clickHandler: () => showModal(account, account.type === TypeOfAccount.IMPORTER ? ModalStatus.ImporterSettings : ModalStatus.SettingsExporter)
@@ -47,12 +51,22 @@ export function getActionButtons(showModal, account: AccountType, isScraping): A
 
   const shouldLog = account.status !== AccountStatus.PENDING && account.status !== AccountStatus.IDLE;
 
+  const openResults = {
+    icon: resultsIcon,
+    tooltipText: 'פתיחת תוצאות',
+    clickHandler: () => { store.config?.outputVendors[account.companyId]?.openResults(); },
+  };
+
   if (shouldLog) {
     actionButtons.push(logsActionButton);
   }
 
   if (!isScraping) {
     actionButtons.push(accountSettingsActionButton);
+  }
+
+  if (account.type === TypeOfAccount.EXPORTER) {
+    actionButtons.push(openResults);
   }
 
   return actionButtons;

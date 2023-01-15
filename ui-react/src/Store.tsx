@@ -1,7 +1,9 @@
 /* eslint-disable no-console */
 import { action, makeAutoObservable } from 'mobx';
 import { createContext } from 'react';
-import { updateConfig, getYnabAccountData } from './eventsBridge';
+import {
+  updateConfig, getYnabAccountData, openItem, openExternal
+} from './eventsBridge';
 import {
   Account,
   AccountStatus,
@@ -43,8 +45,44 @@ export default class Store {
     });
   }
 
+  setOpenResultsFunction =() => {
+
+    if (this.config === undefined || !this.config.outputVendors) return;
+
+    const {
+      csv, json, ynab, googleSheets
+    } = this.config.outputVendors;
+
+    if (csv) {
+      csv.openResults = () => {
+        openItem(csv.options.filePath);
+      };
+    }
+
+    if (json) {
+      json.openResults = () => {
+        openItem(json.options.filePath);
+      };
+    }
+
+    if (ynab) {
+      ynab.openResults = () => {
+        const url = `https://app.youneedabudget.com/${ynab.options.budgetId}`;
+        openExternal(url);
+      };
+    }
+
+    if (googleSheets) {
+      googleSheets.openResults = () => {
+        const url = `https://docs.google.com/spreadsheets/d/${googleSheets.options.spreadsheetId}/edit`;
+        openExternal(url);
+      };
+    }
+  }
+
   set configuration(config: Config) {
     this.config = config;
+    this.setOpenResultsFunction();
   }
 
   get importers(): Importer[] {
