@@ -35,7 +35,7 @@ function Importers({
   );
 }
 
-export function getActionButtons(showModal, account: AccountType, isScraping,): ActionButton[] {
+export function getActionButtons(showModal, account: AccountType, isScraping): ActionButton[] {
   const logsActionButton = {
     icon: logsIcon,
     tooltipText: 'לוגים',
