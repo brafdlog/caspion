@@ -15,7 +15,7 @@ type ImportersProps = {
     isScraping: boolean;
     showModal: (AccountType, ModalStatus) => void;
     handleNewAccountClicked?: () => void
-};
+}
 
 function Importers({
   accounts, isScraping, showModal, handleNewAccountClicked
