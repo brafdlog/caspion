@@ -47,7 +47,7 @@ export default class Store {
 
   setOpenResultsFunction = () => {
 
-    if (this.config === undefined || !this.config.outputVendors) return;
+    if (!this.config?.outputVendors) return;
 
     const {
       csv, json, ynab, googleSheets
