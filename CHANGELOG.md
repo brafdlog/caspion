@@ -1,3 +1,11 @@
+# [1.10.0](https://github.com/brafdlog/caspion/compare/v1.9.1...v1.10.0) (2023-01-17)
+
+
+### New
+
+* Add yahav and beyahadBishvilha  (#444) ([4732740](https://github.com/brafdlog/caspion/commit/47327405feb85cd8532eb1ef19680baa0808e3d0)), closes [#444](https://github.com/brafdlog/caspion/issues/444)
+* Implement check for updates (#434) ([7518bcd](https://github.com/brafdlog/caspion/commit/7518bcde68df483dce02429b3cf43de24bfd8261)), closes [#434](https://github.com/brafdlog/caspion/issues/434)
+
 # [1.10.0](https://github.com/brafdlog/caspion/compare/v1.9.1...v1.10.0) (2023-01-11)
 
 
