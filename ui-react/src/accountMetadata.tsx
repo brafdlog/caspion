@@ -23,6 +23,8 @@ const accountIdToDisplayName: Record<CompanyTypes | OutputVendorName, string> = 
   [CompanyTypes.hapoalim]: 'הפועלים',
   [CompanyTypes.visaCal]: 'ויזה כאל',
   [CompanyTypes.discount]: 'דיסקונט',
+  [CompanyTypes.yahav]: 'יהב',
+  [CompanyTypes.beyahadBishvilha]: 'ביחד בשבילך',
   [CompanyTypes.massad]: 'מסד',
   [OutputVendorName.CSV]: 'אקסל',
   [OutputVendorName.GOOGLE_SHEETS]: 'Google Sheets',
@@ -44,6 +46,7 @@ const USERNAME_FIELD = 'username';
 const PASSWORD_FIELD = 'password';
 const NUM_FIELD = 'num';
 const ID_FIELD = 'id';
+const NATIONAL_ID_FIELD = 'nationalID';
 
 export const IMPORTERS_LOGIN_FIELDS = {
   [CompanyTypes.hapoalim]: [USERCODE_FIELD, PASSWORD_FIELD],
@@ -59,7 +62,9 @@ export const IMPORTERS_LOGIN_FIELDS = {
   [CompanyTypes.amex]: [ID_FIELD, CARD_SIX_DIGITS_FIELD, PASSWORD_FIELD],
   [CompanyTypes.union]: [USERNAME_FIELD, PASSWORD_FIELD],
   [CompanyTypes.beinleumi]: [USERNAME_FIELD, PASSWORD_FIELD],
-  [CompanyTypes.massad]: [USERNAME_FIELD, PASSWORD_FIELD]
+  [CompanyTypes.massad]: [USERNAME_FIELD, PASSWORD_FIELD],
+  [CompanyTypes.yahav]: [USERNAME_FIELD, PASSWORD_FIELD, NATIONAL_ID_FIELD],
+  [CompanyTypes.beyahadBishvilha]: [USERNAME_FIELD, PASSWORD_FIELD]
 };
 
 export const LOGIN_FIELD_DISPLAY_NAMES = {
@@ -69,7 +74,7 @@ export const LOGIN_FIELD_DISPLAY_NAMES = {
   [ID_FIELD]: 'מספר זהות',
   [NUM_FIELD]: 'קוד מזהה',
   [CARD_SIX_DIGITS_FIELD]: '6 ספרות של הכרטיס',
-
+  [NATIONAL_ID_FIELD]: 'תעודת זהות',
 };
 
 export const LOGIN_FIELD_MIN_LENGTH = {
@@ -79,7 +84,7 @@ export const LOGIN_FIELD_MIN_LENGTH = {
   [ID_FIELD]: 9,
   [NUM_FIELD]: 4,
   [CARD_SIX_DIGITS_FIELD]: 6,
-
+  [NATIONAL_ID_FIELD]: 9,
 };
 
 export const importers: Account[] = Object.values(CompanyTypes).map((importerName) => {
