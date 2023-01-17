@@ -55,10 +55,10 @@ export function getActionButtons(showModal, account: AccountType, isScraping): A
 
   const shouldLog = account.status !== AccountStatus.PENDING && account.status !== AccountStatus.IDLE;
 
-  const openResults = {
+  const openResultsButton = {
     icon: resultsIcon,
     tooltipText: 'פתיחת תוצאות',
-    clickHandler: () => { store.config?.outputVendors[account.companyId]?.openResults(); },
+    clickHandler: () => { store.openResults(account.companyId); },
   };
 
   if (shouldLog) {
@@ -70,7 +70,7 @@ export function getActionButtons(showModal, account: AccountType, isScraping): A
   }
 
   if (account.type === TypeOfAccount.EXPORTER) {
-    actionButtons.push(openResults);
+    actionButtons.push(openResultsButton);
   }
 
   return actionButtons;

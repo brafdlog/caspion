@@ -37,7 +37,6 @@ export type OutputVendorConfig<T extends OutputVendorName> = Exclude<Config['out
 
 interface OutputVendorConfigBase {
   active: boolean;
-  openResults: () => void;
 }
 
 export interface CsvConfig extends OutputVendorConfigBase {
@@ -160,4 +159,14 @@ export enum ModalStatus {
   Hidden,
   NewScraper,
   GeneralSettings
+}
+
+export enum ExporterResultType {
+  WEBSITE_URL,
+  FILE
+}
+
+export interface ExportResultMetadata {
+  resultType: ExporterResultType;
+  getResultUri(exporter: Exporter): string;
 }

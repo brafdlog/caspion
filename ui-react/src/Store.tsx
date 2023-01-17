@@ -13,10 +13,11 @@ import {
   BudgetTrackingEvent,
   Config,
   Exporter,
+  ExporterResultType,
   Importer,
   Log
 } from './types';
-import accountMetadata from './accountMetadata';
+import accountMetadata, { exporterUIHandlers } from './accountMetadata';
 import { YnabAccountDataType, YnabConfig } from '../../src/backend/commonTypes';
 
 export default class Store {
@@ -45,44 +46,8 @@ export default class Store {
     });
   }
 
-  setOpenResultsFunction = () => {
-
-    if (!this.config?.outputVendors) return;
-
-    const {
-      csv, json, ynab, googleSheets
-    } = this.config.outputVendors;
-
-    if (csv) {
-      csv.openResults = () => {
-        openItem(csv.options.filePath);
-      };
-    }
-
-    if (json) {
-      json.openResults = () => {
-        openItem(json.options.filePath);
-      };
-    }
-
-    if (ynab) {
-      ynab.openResults = () => {
-        const url = `https://app.youneedabudget.com/${ynab.options.budgetId}`;
-        openExternal(url);
-      };
-    }
-
-    if (googleSheets) {
-      googleSheets.openResults = () => {
-        const url = `https://docs.google.com/spreadsheets/d/${googleSheets.options.spreadsheetId}/edit`;
-        openExternal(url);
-      };
-    }
-  }
-
   set configuration(config: Config) {
     this.config = config;
-    this.setOpenResultsFunction();
   }
 
   get importers(): Importer[] {
@@ -133,6 +98,17 @@ export default class Store {
 
   get isScraping(): boolean {
     return !!Array.from(this.accountScrapingData.values()).find((account) => account.status === AccountStatus.IN_PROGRESS);
+  }
+
+  openResults(exporterName: string) {
+    const config = this.config?.outputVendors[exporterName];
+    const { resultType, getResultUri } = exporterUIHandlers[exporterName];
+    const uri = getResultUri(config);
+    if (resultType === ExporterResultType.WEBSITE_URL) {
+      openExternal(uri);
+    } else {
+      openItem(uri);
+    }
   }
 
   clearScrapingStatus() {

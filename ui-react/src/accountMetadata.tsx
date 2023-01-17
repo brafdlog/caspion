@@ -1,6 +1,7 @@
 import mapValues from 'lodash/mapValues';
 import {
-  Account, AccountMetadata, AccountType, CompanyTypes, OutputVendorName
+  Account, AccountMetadata, AccountType, CompanyTypes, Exporter, ExporterResultType,
+  ExportResultMetadata, GoogleSheetsConfig, JsonConfig, OutputVendorName, YnabConfig, CsvConfig
 } from './types';
 import { exporterIcons, importerIcons } from './assets';
 
@@ -96,5 +97,32 @@ export const importers: Account[] = Object.values(CompanyTypes).map((importerNam
   };
   return importer;
 });
+
+export const exporterUIHandlers : Record<OutputVendorName, ExportResultMetadata> = {
+  [OutputVendorName.YNAB]: {
+    resultType: ExporterResultType.WEBSITE_URL,
+    getResultUri(exporter: Exporter): string {
+      return `https://app.youneedabudget.com/${(exporter as YnabConfig).options.budgetId}`;
+    }
+  },
+  [OutputVendorName.GOOGLE_SHEETS]: {
+    resultType: ExporterResultType.WEBSITE_URL,
+    getResultUri(exporter: Exporter): string {
+      return `https://docs.google.com/spreadsheets/d/${(exporter as GoogleSheetsConfig).options.spreadsheetId}/edit`;
+    }
+  },
+  [OutputVendorName.CSV]: {
+    resultType: ExporterResultType.WEBSITE_URL,
+    getResultUri(exporter: Exporter): string {
+      return (exporter as CsvConfig).options.filePath;
+    }
+  },
+  [OutputVendorName.JSON]: {
+    resultType: ExporterResultType.WEBSITE_URL,
+    getResultUri(exporter: Exporter): string {
+      return (exporter as JsonConfig).options.filePath;
+    }
+  }
+};
 
 export default accountMetadata;
