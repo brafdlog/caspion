@@ -35,12 +35,12 @@ function Importers({
 export function getActionButtons(showModal, account: AccountType, isScraping): ActionButton[] {
   const logsActionButton = {
     icon: logsIcon,
-    clickHandler: () => showModal(account, ModalStatus.Logs)
+    clickHandler: () => showModal(account, ModalStatus.LOGS)
   };
 
   const accountSettingsActionButton = {
     icon: settingsIcon,
-    clickHandler: () => showModal(account, account.type === TypeOfAccount.IMPORTER ? ModalStatus.ImporterSettings : ModalStatus.SettingsExporter)
+    clickHandler: () => showModal(account, account.type === TypeOfAccount.IMPORTER ? ModalStatus.IMPORTER_SETTINGS : ModalStatus.EXPORTER_SETTINGS)
   };
 
   const actionButtons: ActionButton[] = [];

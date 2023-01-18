@@ -54,7 +54,7 @@ describe('Store', () => {
       test('addImporter', () => {
         const accountToAdd: Importer = {
           id: 'moshe',
-          companyId: CompanyTypes.hapoalim,
+          companyId: CompanyTypes.HAPOALIM,
           displayName: 'פועלים',
           loginFields: {
             username: 'david'

@@ -78,20 +78,20 @@ export interface AccountToScrapeConfig {
 }
 
 export enum CompanyTypes {
-  hapoalim = 'hapoalim',
-  hapoalimBeOnline = 'hapoalimBeOnline',
-  beinleumi = 'beinleumi',
-  union = 'union',
-  amex = 'amex',
-  isracard = 'isracard',
-  visaCal = 'visaCal',
-  max = 'max',
-  leumiCard = 'leumiCard',
-  otsarHahayal = 'otsarHahayal',
-  discount = 'discount',
-  mizrahi = 'mizrahi',
-  leumi = 'leumi',
-  massad = 'massad'
+  HAPOALIM = 'hapoalim',
+  HAPOALIM_BE_ONLINE = 'hapoalimBeOnline',
+  BEINLEUMI = 'beinleumi',
+  UNION = 'union',
+  AMEX = 'amex',
+  ISRACARD = 'isracard',
+  VISACAL = 'visaCal',
+  MAX = 'max',
+  LEUMI_CARD = 'leumiCard',
+  OTSAR_HAHAYAL = 'otsarHahayal',
+  DISCOUNT = 'discount',
+  MIZRAHI = 'mizrahi',
+  LEUMI = 'leumi',
+  MASSAD = 'massad'
 }
 
 export enum AccountType {
@@ -99,11 +99,11 @@ export enum AccountType {
 }
 
 export enum AccountStatus {
-  IDLE = 'IDLE',
-  PENDING = 'PENDING',
-  IN_PROGRESS = 'IN_PROGRESS',
-  DONE = 'DONE',
-  ERROR = 'ERROR'
+  IDLE = 'idle',
+  PENDING = 'pending',
+  IN_PROGRESS = 'inProgress',
+  DONE = 'done',
+  ERROR = 'error'
 }
 
 export type BudgetTrackingEvent = {
@@ -153,10 +153,10 @@ export type AccountMetadata = {
 };
 
 export enum ModalStatus {
-  ImporterSettings,
-  SettingsExporter,
-  Logs,
-  Hidden,
-  NewScraper,
-  GeneralSettings
+  IMPORTER_SETTINGS,
+  EXPORTER_SETTINGS,
+  LOGS,
+  HIDDEN,
+  NEW_SCRAPER,
+  GENERAL_SETTINGS
 }
