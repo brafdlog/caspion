@@ -7,7 +7,8 @@ import StatusIndicator from './StatusIndicator';
 
 export type ActionButton = {
   icon: string;
-  clickHandler: () => void;
+  tooltipText: string;
+  clickHandler: () => void
 }
 
 type AccountProps = {
@@ -30,10 +31,13 @@ export default function Account({
       </div>
       {
         actionButtons
-        && actionButtons.map(({ icon, clickHandler }) => <img className={styles.logsButton} src={icon} alt="action" onClick={clickHandler} key={icon} />)
+        && actionButtons.map(({ icon, clickHandler, tooltipText }) => <img className={styles.logsButton} src={icon}
+        alt="action" onClick={clickHandler} key={icon} title={tooltipText}/>)
       }
       <StatusIndicator status={account.status} />
-      {badgeNumberLog && <Badge className={styles.newTxnsIndicator} bg={'success'}>{badgeNumberLog.originalEvent.exportedTransactionsNum}</Badge>}
+      {badgeNumberLog && (<Badge className={styles.newTxnsIndicator} bg={'success'}>
+          {badgeNumberLog.originalEvent.exportedTransactionsNum}</Badge>
+      )}
     </div>
   );
 }

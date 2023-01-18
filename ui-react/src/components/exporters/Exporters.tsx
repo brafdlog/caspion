@@ -11,9 +11,10 @@ type ExporterProps = {
 
 function Exporters({ exporters, isScraping, showModal }: ExporterProps) {
   return (
-        <>
-            {exporters.map((exporter) => <Account key={exporter.id} account={exporter} actionButtons={getActionButtons(showModal, exporter, isScraping)} />)}
-        </>
+    <>
+      {exporters.map((exporter) => (<Account key={exporter.id} account={exporter} actionButtons=
+      {getActionButtons(showModal, exporter, isScraping)} />))}
+    </>
   );
 }
 

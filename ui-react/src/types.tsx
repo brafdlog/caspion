@@ -162,3 +162,13 @@ export enum ModalStatus {
   NewScraper,
   GeneralSettings
 }
+
+export enum ExporterResultType {
+  WEBSITE_URL,
+  FILE
+}
+
+export interface ExportResultMetadata {
+  resultType: ExporterResultType;
+  getResultUri(exporter: Exporter): string;
+}

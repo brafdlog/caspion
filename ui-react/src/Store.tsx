@@ -1,7 +1,9 @@
 /* eslint-disable no-console */
 import { action, makeAutoObservable } from 'mobx';
 import { createContext } from 'react';
-import { updateConfig, getYnabAccountData } from './eventsBridge';
+import {
+  updateConfig, getYnabAccountData, openItem, openExternal
+} from './eventsBridge';
 import {
   Account,
   AccountStatus,
@@ -11,10 +13,11 @@ import {
   BudgetTrackingEvent,
   Config,
   Exporter,
+  ExporterResultType,
   Importer,
   Log
 } from './types';
-import accountMetadata from './accountMetadata';
+import accountMetadata, { exporterUIHandlers } from './accountMetadata';
 import { YnabAccountDataType, YnabConfig } from '../../src/backend/commonTypes';
 
 export default class Store {
@@ -95,6 +98,17 @@ export default class Store {
 
   get isScraping(): boolean {
     return !!Array.from(this.accountScrapingData.values()).find((account) => account.status === AccountStatus.IN_PROGRESS);
+  }
+
+  openResults(exporterName: string) {
+    const config = this.config?.outputVendors[exporterName];
+    const { resultType, getResultUri } = exporterUIHandlers[exporterName];
+    const uri = getResultUri(config);
+    if (resultType === ExporterResultType.WEBSITE_URL) {
+      openExternal(uri);
+    } else {
+      openItem(uri);
+    }
   }
 
   clearScrapingStatus() {
