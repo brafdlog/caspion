@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/brafdlog/caspion/compare/v1.10.0...v1.11.0) (2023-01-18)
+
+
+### New
+
+* button for opening exporter destination (#445) ([3d7ae22](https://github.com/brafdlog/caspion/commit/3d7ae22b929bab3d252b4741664538aee573f5b4)), closes [#445](https://github.com/brafdlog/caspion/issues/445)
+
 # [1.10.0](https://github.com/brafdlog/caspion/compare/v1.9.1...v1.10.0) (2023-01-17)
 
 
