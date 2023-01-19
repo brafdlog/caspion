@@ -67,3 +67,8 @@ export async function downloadUpdate() {
 export async function showSaveDialog() {
   return electron.ipcRenderer.invoke('showSaveDialog');
 }
+
+export async function quitAndInstall() {
+  return electron.ipcRenderer.invoke('quitAndInstall');
+}
+
