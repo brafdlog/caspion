@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Button, ProgressBar, Spinner } from 'react-bootstrap';
 import {
-  checkForUpdate, getAppInfo, openExternal, downloadUpdate,quitAndInstall
+  checkForUpdate, getAppInfo, openExternal, downloadUpdate, quitAndInstall
 } from '../eventsBridge';
 import { StoreContext } from '../Store';
 import { styles } from './CheckForUpdates.module.css';
