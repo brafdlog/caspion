@@ -1,3 +1,10 @@
+## [1.11.1](https://github.com/brafdlog/caspion/compare/v1.11.0...v1.11.1) (2023-01-22)
+
+
+### Fix
+
+* Add "quit and install" button (#449) ([0a1079a](https://github.com/brafdlog/caspion/commit/0a1079a1f8842cfde00a265b7b3b832d5c8d15e4)), closes [#449](https://github.com/brafdlog/caspion/issues/449)
+
 # [1.11.0](https://github.com/brafdlog/caspion/compare/v1.10.0...v1.11.0) (2023-01-18)
 
 
