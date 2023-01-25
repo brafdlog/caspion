@@ -11,7 +11,7 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "bootstrap": "^5.1.2",
-    "electron": "^15.1.1",
+    "electron": "^18.3.7",
     "lodash": "^4.17.21",
     "mobx": "^6.3.3",
     "mobx-react-lite": "^3.2.1",
