@@ -1,3 +1,32 @@
+## [1.11.2](https://github.com/brafdlog/caspion/compare/v1.11.1...v1.11.2) (2023-01-25)
+
+
+### Deps
+
+* upgrade israeli-bank-scrapers to 3.6.0 (#451) ([48e5a31](https://github.com/brafdlog/caspion/commit/48e5a31d7233bb0d486497394a2cbaa7651b1fb0)), closes [#451](https://github.com/brafdlog/caspion/issues/451)
+
+## [1.11.1](https://github.com/brafdlog/caspion/compare/v1.11.0...v1.11.1) (2023-01-22)
+
+
+### Fix
+
+* Add "quit and install" button (#449) ([0a1079a](https://github.com/brafdlog/caspion/commit/0a1079a1f8842cfde00a265b7b3b832d5c8d15e4)), closes [#449](https://github.com/brafdlog/caspion/issues/449)
+
+# [1.11.0](https://github.com/brafdlog/caspion/compare/v1.10.0...v1.11.0) (2023-01-18)
+
+
+### New
+
+* button for opening exporter destination (#445) ([3d7ae22](https://github.com/brafdlog/caspion/commit/3d7ae22b929bab3d252b4741664538aee573f5b4)), closes [#445](https://github.com/brafdlog/caspion/issues/445)
+
+# [1.10.0](https://github.com/brafdlog/caspion/compare/v1.9.1...v1.10.0) (2023-01-17)
+
+
+### New
+
+* Add yahav and beyahadBishvilha  (#444) ([4732740](https://github.com/brafdlog/caspion/commit/47327405feb85cd8532eb1ef19680baa0808e3d0)), closes [#444](https://github.com/brafdlog/caspion/issues/444)
+* Implement check for updates (#434) ([7518bcd](https://github.com/brafdlog/caspion/commit/7518bcde68df483dce02429b3cf43de24bfd8261)), closes [#434](https://github.com/brafdlog/caspion/issues/434)
+
 # [1.10.0](https://github.com/brafdlog/caspion/compare/v1.9.1...v1.10.0) (2023-01-11)
 
 

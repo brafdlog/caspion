@@ -1,6 +1,9 @@
-import React from 'react';
+import { observer } from 'mobx-react-lite';
+import React, { useContext } from 'react';
 import logsIcon from '../../assets/card-text.svg';
 import settingsIcon from '../../assets/gear.svg';
+import resultsIcon from '../../assets/results.svg';
+import { StoreContext } from '../../Store';
 import {
   Account as AccountType, AccountStatus, AccountType as TypeOfAccount, ModalStatus
 } from '../../types';
@@ -36,16 +39,27 @@ export function getActionButtons(showModal, account: AccountType, isScraping): A
   const logsActionButton = {
     icon: logsIcon,
     clickHandler: () => showModal(account, ModalStatus.LOGS)
+    tooltipText: 'לוגים',
   };
+
+  const store = useContext(StoreContext);
 
   const accountSettingsActionButton = {
     icon: settingsIcon,
-    clickHandler: () => showModal(account, account.type === TypeOfAccount.IMPORTER ? ModalStatus.IMPORTER_SETTINGS : ModalStatus.EXPORTER_SETTINGS)
+    clickHandler: () => showModal(account, account.type === TypeOfAccount.IMPORTER
+      ? ModalStatus.IMPORTER_SETTINGS : ModalStatus.EXPORTER_SETTINGS),
+    tooltipText: 'הגדרות'
   };
 
   const actionButtons: ActionButton[] = [];
 
   const shouldLog = account.status !== AccountStatus.PENDING && account.status !== AccountStatus.IDLE;
+
+  const openResultsButton = {
+    icon: resultsIcon,
+    tooltipText: 'פתיחת תוצאות',
+    clickHandler: () => { store.openResults(account.companyId); },
+  };
 
   if (shouldLog) {
     actionButtons.push(logsActionButton);
@@ -55,7 +69,11 @@ export function getActionButtons(showModal, account: AccountType, isScraping): A
     actionButtons.push(accountSettingsActionButton);
   }
 
+  if (account.type === TypeOfAccount.EXPORTER) {
+    actionButtons.push(openResultsButton);
+  }
+
   return actionButtons;
 }
 
-export default Importers;
+export default observer(Importers);

@@ -1,6 +1,7 @@
 import mapValues from 'lodash/mapValues';
 import {
-  Account, AccountMetadata, AccountType, CompanyTypes, OutputVendorName
+  Account, AccountMetadata, AccountType, CompanyTypes, Exporter, ExporterResultType,
+  ExportResultMetadata, GoogleSheetsConfig, JsonConfig, OutputVendorName, YnabConfig, CsvConfig
 } from './types';
 import { exporterIcons, importerIcons } from './assets';
 
@@ -23,6 +24,8 @@ const accountIdToDisplayName: Record<CompanyTypes | OutputVendorName, string> = 
   [CompanyTypes.HAPOALIM]: 'הפועלים',
   [CompanyTypes.VISACAL]: 'ויזה כאל',
   [CompanyTypes.DISCOUNT]: 'דיסקונט',
+  [CompanyTypes.YAHAV]: 'יהב',
+  [CompanyTypes.BEYAHAD_BISHVILHA]: 'ביחד בשבילך',
   [CompanyTypes.MASSAD]: 'מסד',
   [OutputVendorName.CSV]: 'אקסל',
   [OutputVendorName.GOOGLE_SHEETS]: 'Google Sheets',
@@ -44,6 +47,7 @@ const USERNAME_FIELD = 'username';
 const PASSWORD_FIELD = 'password';
 const NUM_FIELD = 'num';
 const ID_FIELD = 'id';
+const NATIONAL_ID_FIELD = 'nationalID';
 
 export const IMPORTERS_LOGIN_FIELDS = {
   [CompanyTypes.HAPOALIM]: [USERCODE_FIELD, PASSWORD_FIELD],
@@ -60,6 +64,8 @@ export const IMPORTERS_LOGIN_FIELDS = {
   [CompanyTypes.UNION]: [USERNAME_FIELD, PASSWORD_FIELD],
   [CompanyTypes.BEINLEUMI]: [USERNAME_FIELD, PASSWORD_FIELD],
   [CompanyTypes.MASSAD]: [USERNAME_FIELD, PASSWORD_FIELD]
+  [CompanyTypes.YAHAV]: [USERNAME_FIELD, PASSWORD_FIELD, NATIONAL_ID_FIELD],
+  [CompanyTypes.BEYAHAD_BISHVILHA]: [USERNAME_FIELD, PASSWORD_FIELD]
 };
 
 export const LOGIN_FIELD_DISPLAY_NAMES = {
@@ -69,7 +75,7 @@ export const LOGIN_FIELD_DISPLAY_NAMES = {
   [ID_FIELD]: 'מספר זהות',
   [NUM_FIELD]: 'קוד מזהה',
   [CARD_SIX_DIGITS_FIELD]: '6 ספרות של הכרטיס',
-
+  [NATIONAL_ID_FIELD]: 'תעודת זהות',
 };
 
 export const LOGIN_FIELD_MIN_LENGTH = {
@@ -79,7 +85,7 @@ export const LOGIN_FIELD_MIN_LENGTH = {
   [ID_FIELD]: 9,
   [NUM_FIELD]: 4,
   [CARD_SIX_DIGITS_FIELD]: 6,
-
+  [NATIONAL_ID_FIELD]: 9,
 };
 
 export const importers: Account[] = Object.values(CompanyTypes).map((importerName) => {
@@ -96,5 +102,32 @@ export const importers: Account[] = Object.values(CompanyTypes).map((importerNam
   };
   return importer;
 });
+
+export const exporterUIHandlers : Record<OutputVendorName, ExportResultMetadata> = {
+  [OutputVendorName.YNAB]: {
+    resultType: ExporterResultType.WEBSITE_URL,
+    getResultUri(exporter: Exporter): string {
+      return `https://app.youneedabudget.com/${(exporter as YnabConfig).options.budgetId}`;
+    }
+  },
+  [OutputVendorName.GOOGLE_SHEETS]: {
+    resultType: ExporterResultType.WEBSITE_URL,
+    getResultUri(exporter: Exporter): string {
+      return `https://docs.google.com/spreadsheets/d/${(exporter as GoogleSheetsConfig).options.spreadsheetId}/edit`;
+    }
+  },
+  [OutputVendorName.CSV]: {
+    resultType: ExporterResultType.WEBSITE_URL,
+    getResultUri(exporter: Exporter): string {
+      return (exporter as CsvConfig).options.filePath;
+    }
+  },
+  [OutputVendorName.JSON]: {
+    resultType: ExporterResultType.WEBSITE_URL,
+    getResultUri(exporter: Exporter): string {
+      return (exporter as JsonConfig).options.filePath;
+    }
+  }
+};
 
 export default accountMetadata;

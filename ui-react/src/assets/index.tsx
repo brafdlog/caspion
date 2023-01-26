@@ -17,6 +17,8 @@ import otsarHahayal from './importers/otsarHahayal.jpeg';
 import mizrahi from './importers/mizrahi.png';
 import leumi from './importers/leumi.png';
 import massad from './importers/massad.png';
+import yahav from './importers/yahavLogo.jpg';
+import beyahadBishvilha from './importers/beyahadLogo.png';
 
 export const importerIcons = {
   discount,
@@ -32,7 +34,9 @@ export const importerIcons = {
   otsarHahayal,
   mizrahi,
   leumi,
-  massad
+  massad,
+  yahav,
+  beyahadBishvilha
 };
 
 export const exporterIcons = {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Button, ProgressBar, Spinner } from 'react-bootstrap';
 import {
-  checkForUpdate, getAppInfo, openExternal, downloadUpdate
+  checkForUpdate, getAppInfo, openExternal, downloadUpdate, quitAndInstall
 } from '../eventsBridge';
 import { StoreContext } from '../Store';
 import { styles } from './CheckForUpdates.module.css';
@@ -80,7 +80,12 @@ function CheckForUpdates() {
             לפתוח השוואה
           </Button>
         </div>
-     ) }
+     )}
+    {updateState === UPDATE_STATES.READY_TO_INSTALL && (
+       <Button variant="dark" size="sm" className='m-2' onClick={quitAndInstall}>
+        יציאה והתקנה
+       </Button>
+    )}
     </>
   );
 }

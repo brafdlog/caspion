@@ -40,6 +40,10 @@ export async function openExternal(url: string) {
   await electron.shell.openExternal(url);
 }
 
+export async function openItem(filePath: string) {
+  await electron.shell.openPath(filePath);
+}
+
 export async function getLogsInfo(numOfLastLines:number) {
   return electron.ipcRenderer.invoke('getLogsInfo', numOfLastLines);
 }
@@ -62,4 +66,8 @@ export async function downloadUpdate() {
 
 export async function showSaveDialog() {
   return electron.ipcRenderer.invoke('showSaveDialog');
+}
+
+export async function quitAndInstall() {
+  return electron.ipcRenderer.invoke('quitAndInstall');
 }

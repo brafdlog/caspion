@@ -92,6 +92,8 @@ export enum CompanyTypes {
   MIZRAHI = 'mizrahi',
   LEUMI = 'leumi',
   MASSAD = 'massad'
+  YAHAV = 'yahav',
+  BEYAHAD_BISHVILHA = 'beyahadBishvilha',
 }
 
 export enum AccountType {
@@ -159,4 +161,14 @@ export enum ModalStatus {
   HIDDEN,
   NEW_SCRAPER,
   GENERAL_SETTINGS
+}
+
+export enum ExporterResultType {
+  WEBSITE_URL,
+  FILE
+}
+
+export interface ExportResultMetadata {
+  resultType: ExporterResultType;
+  getResultUri(exporter: Exporter): string;
 }
