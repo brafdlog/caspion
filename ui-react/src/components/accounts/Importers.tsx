@@ -38,7 +38,7 @@ function Importers({
 export function getActionButtons(showModal, account: AccountType, isScraping): ActionButton[] {
   const logsActionButton = {
     icon: logsIcon,
-    clickHandler: () => showModal(account, ModalStatus.LOGS)
+    clickHandler: () => showModal(account, ModalStatus.LOGS),
     tooltipText: 'לוגים',
   };
 

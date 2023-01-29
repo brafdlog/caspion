@@ -91,7 +91,7 @@ export enum CompanyTypes {
   DISCOUNT = 'discount',
   MIZRAHI = 'mizrahi',
   LEUMI = 'leumi',
-  MASSAD = 'massad'
+  MASSAD = 'massad',
   YAHAV = 'yahav',
   BEYAHAD_BISHVILHA = 'beyahadBishvilha',
 }
