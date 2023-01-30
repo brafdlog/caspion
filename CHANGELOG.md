@@ -1,3 +1,10 @@
+## [1.11.3](https://github.com/brafdlog/caspion/compare/v1.11.2...v1.11.3) (2023-01-30)
+
+
+### Fix
+
+* Enums naming convention in all project (#448) ([fd073d7](https://github.com/brafdlog/caspion/commit/fd073d7383cba5c69c9216ca1b4d187be23e6037)), closes [#448](https://github.com/brafdlog/caspion/issues/448)
+
 ## [1.11.2](https://github.com/brafdlog/caspion/compare/v1.11.1...v1.11.2) (2023-01-25)
 
 
