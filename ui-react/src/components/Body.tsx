@@ -30,10 +30,10 @@ const Body = ({ scrape }: BodyProps) => {
   const store = useContext(StoreContext);
   const { config } = store;
   const { isScraping } = store;
-  const [modalStatus, setModalStatus] = useState<ModalStatus>(ModalStatus.Hidden);
+  const [modalStatus, setModalStatus] = useState<ModalStatus>(ModalStatus.HIDDEN);
 
   const [currentAccount, setCurrentAccount] = useState<Account>();
-  const closeModal = () => setModalStatus(ModalStatus.Hidden);
+  const closeModal = () => setModalStatus(ModalStatus.HIDDEN);
   const showModal = (account: Account, status: ModalStatus) => {
     setCurrentAccount(account);
     setModalStatus(status);
@@ -42,7 +42,7 @@ const Body = ({ scrape }: BodyProps) => {
   const wideModal = shouldShowWideModal(modalStatus, currentAccount);
 
   const newScraperClicked = () => {
-    setModalStatus(ModalStatus.NewScraper);
+    setModalStatus(ModalStatus.NEW_SCRAPER);
   };
 
   const createImporter = async (importer: Importer) => {
@@ -80,27 +80,27 @@ const Body = ({ scrape }: BodyProps) => {
             }
           </Stack>
         </div>
-        <Modal show={modalStatus !== ModalStatus.Hidden} onHide={closeModal} dialogClassName={wideModal ? styles.modalWide : ''}>
+        <Modal show={modalStatus !== ModalStatus.HIDDEN} onHide={closeModal} dialogClassName={wideModal ? styles.modalWide : ''}>
           <Modal.Header closeButton className={styles.modalHeader}>
           </Modal.Header>
           <Modal.Body>
-            {modalStatus === ModalStatus.Logs && currentAccount && <AccountLogs logs={currentAccount.logs} />}
+            {modalStatus === ModalStatus.LOGS && currentAccount && <AccountLogs logs={currentAccount.logs} />}
             {
-              modalStatus === ModalStatus.ImporterSettings && currentAccount
+              modalStatus === ModalStatus.IMPORTER_SETTINGS && currentAccount
               && <EditImporter handleSave={updateImporter} importer={currentAccount} handleDelete={deleteImporter} />
             }
             {
-              modalStatus === ModalStatus.SettingsExporter && currentAccount
+              modalStatus === ModalStatus.EXPORTER_SETTINGS && currentAccount
               && <EditExporter handleSave={updateExporter} exporter={currentAccount} handleDelete={deleteImporter} />
             }
-            {modalStatus === ModalStatus.NewScraper && <CreateImporter handleSave={createImporter} />}
-            {modalStatus === ModalStatus.GeneralSettings && <GeneralSettings />}
+            {modalStatus === ModalStatus.NEW_SCRAPER && <CreateImporter handleSave={createImporter} />}
+            {modalStatus === ModalStatus.GENERAL_SETTINGS && <GeneralSettings />}
           </Modal.Body>
         </Modal>
       </Container>
       <Container className={styles.buttonsContainer}>
         <Button variant="dark" size="lg" className={styles.scrapeButton} onClick={scrape} disabled={store.isScraping}>הפעל</Button>
-        <Image src={settingsIcon} onClick={() => showModal(null, ModalStatus.GeneralSettings)} />
+        <Image src={settingsIcon} onClick={() => showModal(null, ModalStatus.GENERAL_SETTINGS)} />
         <Form.Check
             type="switch"
             onClick={toggleUIVersion}
@@ -116,7 +116,7 @@ const Body = ({ scrape }: BodyProps) => {
 };
 
 function shouldShowWideModal(modalStatus: ModalStatus, currentAccount?: Account) {
-  return modalStatus === ModalStatus.SettingsExporter && currentAccount && currentAccount.companyId === OutputVendorName.YNAB;
+  return modalStatus === ModalStatus.EXPORTER_SETTINGS && currentAccount && currentAccount.companyId === OutputVendorName.YNAB;
 }
 
 export default observer(Body);

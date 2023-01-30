@@ -38,8 +38,8 @@ function Importers({
 export function getActionButtons(showModal, account: AccountType, isScraping): ActionButton[] {
   const logsActionButton = {
     icon: logsIcon,
+    clickHandler: () => showModal(account, ModalStatus.LOGS),
     tooltipText: 'לוגים',
-    clickHandler: () => showModal(account, ModalStatus.Logs),
   };
 
   const store = useContext(StoreContext);
@@ -47,7 +47,7 @@ export function getActionButtons(showModal, account: AccountType, isScraping): A
   const accountSettingsActionButton = {
     icon: settingsIcon,
     clickHandler: () => showModal(account, account.type === TypeOfAccount.IMPORTER
-      ? ModalStatus.ImporterSettings : ModalStatus.SettingsExporter),
+      ? ModalStatus.IMPORTER_SETTINGS : ModalStatus.EXPORTER_SETTINGS),
     tooltipText: 'הגדרות'
   };
 
