@@ -1,3 +1,11 @@
+## [1.11.4](https://github.com/brafdlog/caspion/compare/v1.11.3...v1.11.4) (2023-02-01)
+
+
+### Fix
+
+* Scraping indication not shown correctly ([e468fbf](https://github.com/brafdlog/caspion/commit/e468fbf70da43da82ea4052ab12c41b7160a7cc4))
+* Scraping indication not shown correctly (#455) ([af0b803](https://github.com/brafdlog/caspion/commit/af0b80331e39ae61eb1396117e590b5e63b41237)), closes [#455](https://github.com/brafdlog/caspion/issues/455) [#454](https://github.com/brafdlog/caspion/issues/454)
+
 ## [1.11.3](https://github.com/brafdlog/caspion/compare/v1.11.2...v1.11.3) (2023-01-30)
 
 
