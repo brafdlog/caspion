@@ -1,9 +1,9 @@
 import { Auth } from 'googleapis';
-import { CompanyTypes } from 'israeli-bank-scrapers-core';
+import { CompanyTypes, ScraperCredentials } from 'israeli-bank-scrapers-core';
 import { BudgetSummary, Account } from 'ynab';
 import { Transaction } from 'israeli-bank-scrapers-core/lib/transactions';
 
-export type { ScaperScrapingResult } from 'israeli-bank-scrapers-core/lib/scrapers/base-scraper';
+export type { ScaperScrapingResult } from 'israeli-bank-scrapers-core';
 export interface Config {
   outputVendors: {
     [OutputVendorName.GOOGLE_SHEETS]?: GoogleSheetsConfig;
@@ -68,7 +68,7 @@ export interface AccountToScrapeConfig {
   id: string;
   key: CompanyTypes;
   name: string;
-  loginFields: Record<string, string>;
+  loginFields: ScraperCredentials;
   active?: boolean;
 }
 

@@ -19,6 +19,7 @@ import googleSheetsLogo from './ui/assets/logos/sheets.png';
 import visaCalLogo from './ui/assets/logos/visa-cal.jpeg';
 import yahavLogo from './ui/assets/logos/yahavLogo.jpg';
 import ynabLogo from './ui/assets/logos/ynab.jpeg';
+import oneZeroLogo from './ui/assets/logos/oneZero.jpeg';
 import { OutputVendorName } from './backend/commonTypes';
 
 export type AccountMetadata = {
@@ -113,6 +114,11 @@ const ACCOUNT_METADATA: AccountsMetadata = {
       companyKey: CompanyTypes.beyahadBishvilha,
       companyName: 'ביחד בשבילך',
       logo: beyahadLogo
+    },
+    [CompanyTypes.oneZero]: {
+      companyKey: CompanyTypes.oneZero,
+      companyName: 'ONE ZERO',
+      logo: oneZeroLogo
     }
   },
   exporters: {
