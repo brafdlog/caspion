@@ -1,20 +1,27 @@
 name: Release
 
 on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Exsiting version to publish files. If not provided, will create a new release."
+        required: false
+        type: string
   push:
     branches:
-    - master
+      - master
     paths-ignore:
-    - "nuxt/**"
+      - "nuxt/**"
 
 jobs:
   release:
+    if: inputs.version == ''
     runs-on: ubuntu-latest
 
     outputs:
       new_release_version: ${{ steps.semantic.outputs.new_release_version }}
       new_release_published: ${{ steps.semantic.outputs.new_release_published }}
-  
+
     steps:
       - uses: actions/checkout@v3
       - run: yarn
@@ -22,44 +29,44 @@ jobs:
         id: semantic
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  
+
   publish:
     needs: [release]
-    if: needs.release.outputs.new_release_published == 'true'
-    
+    if: needs.release.outputs.new_release_published == 'true' || inputs.version != ''
+
     strategy:
       max-parallel: 3
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
-    
+
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Install Node.js, NPM and Yarn
-      uses: actions/setup-node@v1
-      with:
-        node-version: 14.x
-    - name: Install Snapcraft
-      uses: samuelmeuli/action-snapcraft@06f69b882c878790b568f0247d623eaa49de2f3d
-      # Only install Snapcraft  on Ubuntu
-      if: startsWith(matrix.os, 'ubuntu')
-      continue-on-error: true
-      with:
-        # Log in to  Snap Store
-        snapcraft_token: ${{ secrets.snapcraft_token }}
-    - name: set version
-      run: yarn version --no-git-tag-version --new-version ${{ needs.release.outputs.new_release_version }}
-    - run: yarn
-    - name: Build & release Electron app
-      shell: bash
-      env:
-        GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-        GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        NODE_OPTIONS: --max-old-space-size=4096
-        SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
-        SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-        PUBLISH_PARAM: ${{ needs.release.outputs.new_release_published == 'true' && 'always' || 'never' }}
-      run: |
-        yarn build --publish $PUBLISH_PARAM
+      - uses: actions/checkout@v3
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - name: Install Snapcraft
+        uses: samuelmeuli/action-snapcraft@06f69b882c878790b568f0247d623eaa49de2f3d
+        # Only install Snapcraft  on Ubuntu
+        if: startsWith(matrix.os, 'ubuntu')
+        continue-on-error: true
+        with:
+          # Log in to  Snap Store
+          snapcraft_token: ${{ secrets.snapcraft_token }}
+      - name: set version
+        run: yarn version --no-git-tag-version --new-version ${{ needs.release.outputs.new_release_version }}
+      - run: yarn
+      - name: Build & release Electron app
+        shell: bash
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_OPTIONS: --max-old-space-size=4096
+          SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          PUBLISH_PARAM: ${{ needs.release.outputs.new_release_published == 'true' && 'always' || 'never' }}
+        run: |
+          yarn build --publish $PUBLISH_PARAM
