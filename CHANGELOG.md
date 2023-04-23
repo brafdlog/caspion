@@ -1,3 +1,10 @@
+## [1.11.7](https://github.com/brafdlog/caspion/compare/v1.11.6...v1.11.7) (2023-04-23)
+
+
+### Deps
+
+* dependabot upgrades (#472) ([c6a14d1](https://github.com/brafdlog/caspion/commit/c6a14d1329a857f597200cdcd13e7e1600f392a3)), closes [#472](https://github.com/brafdlog/caspion/issues/472)
+
 ## [1.11.6](https://github.com/brafdlog/caspion/compare/v1.11.5...v1.11.6) (2023-04-23)
 
 
