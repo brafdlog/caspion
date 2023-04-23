@@ -15,7 +15,6 @@ on:
 
 jobs:
   release:
-    if: inputs.version == ''
     runs-on: ubuntu-latest
 
     outputs:
@@ -27,12 +26,16 @@ jobs:
       - run: yarn
       - uses: cycjimmy/semantic-release-action@8f6ceb9d5aae5578b1dcda6af00008235204e7fa
         id: semantic
+        if: inputs.version == ''
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publish:
     needs: [release]
     if: needs.release.outputs.new_release_published == 'true' || inputs.version != ''
+    env:
+      NEW_RELEASE_PUBLISHED: ${{ inputs.version && 'true' || needs.release.outputs.new_release_published }}
+      NEW_RELEASE_VERSION: ${{ needs.release.outputs.new_release_version || inputs.version }}
 
     strategy:
       max-parallel: 3
@@ -56,7 +59,7 @@ jobs:
           # Log in to  Snap Store
           snapcraft_token: ${{ secrets.snapcraft_token }}
       - name: set version
-        run: yarn version --no-git-tag-version --new-version ${{ needs.release.outputs.new_release_version }}
+        run: yarn version --no-git-tag-version --new-version ${{ env.NEW_RELEASE_VERSION }}
       - run: yarn
       - name: Build & release Electron app
         shell: bash
@@ -67,6 +70,6 @@ jobs:
           NODE_OPTIONS: --max-old-space-size=4096
           SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-          PUBLISH_PARAM: ${{ needs.release.outputs.new_release_published == 'true' && 'always' || 'never' }}
+          PUBLISH_PARAM: ${{ env.NEW_RELEASE_PUBLISHED == 'true' && 'always' || 'never' }}
         run: |
           yarn build --publish $PUBLISH_PARAM
