@@ -1,3 +1,10 @@
+## [1.11.5](https://github.com/brafdlog/caspion/compare/v1.11.4...v1.11.5) (2023-04-23)
+
+
+### Fix
+
+* Visa cal scraper not working (#467) ([f2779d6](https://github.com/brafdlog/caspion/commit/f2779d6b2668a2dc3862cba363239fde20f8e4fe)), closes [#467](https://github.com/brafdlog/caspion/issues/467)
+
 ## [1.11.4](https://github.com/brafdlog/caspion/compare/v1.11.3...v1.11.4) (2023-02-01)
 
 
