@@ -1,3 +1,11 @@
+## [1.11.10](https://github.com/brafdlog/caspion/compare/v1.11.9...v1.11.10) (2023-05-30)
+
+
+### Fix
+
+* Ensure consistent dates for G-Sheets export (#480) ([46af5cd](https://github.com/brafdlog/caspion/commit/46af5cdb10b9d69ca28d521c408fa4de5c22794e)), closes [#480](https://github.com/brafdlog/caspion/issues/480)
+* register a second handler (fixes #478) (#479) ([77a59e2](https://github.com/brafdlog/caspion/commit/77a59e248a37ccaff214598a3ecab5ba5fcd640d)), closes [#478](https://github.com/brafdlog/caspion/issues/478) [#479](https://github.com/brafdlog/caspion/issues/479) [#478](https://github.com/brafdlog/caspion/issues/478)
+
 ## [1.11.9](https://github.com/brafdlog/caspion/compare/v1.11.8...v1.11.9) (2023-05-21)
 
 
