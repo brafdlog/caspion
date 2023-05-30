@@ -42,8 +42,11 @@ export const ipcHandlers = Object.keys(functions).reduce((acc, funcName) => {
 
 export const registerHandlers = () => {
   Object.keys(functions).forEach((funcName) => {
+    ipcMain.removeHandler(funcName);
     ipcMain.handle(funcName, functions[funcName]);
   });
+
+  ipcMain.removeAllListeners('scrape');
   ipcMain.on('scrape', async (event, _args) => {
     const config = await getConfig();
     const eventSubscriber = new BudgetTrackingEventEmitter();
@@ -52,6 +55,8 @@ export const registerHandlers = () => {
       event.reply('scrapingProgress', JSON.stringify({ eventName, eventData }));
     });
   });
+
+  ipcMain.removeAllListeners('getYnabAccountData');
   ipcMain.on('getYnabAccountData', async (event, _event, ynabExporterOptions) => {
     const ynabAccountData = await getYnabAccountData(_event, ynabExporterOptions);
     event.reply(ynabAccountData);
