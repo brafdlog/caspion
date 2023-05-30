@@ -9,7 +9,7 @@ import { createClient } from './googleAuth';
 import * as googleSheets from './googleSheetsInternalAPI';
 import { appendToSpreadsheet } from './googleSheetsInternalAPI';
 
-const GOOGLE_SHEETS_DATE_FORMAT = 'DD/MM/YYYY';
+const GOOGLE_SHEETS_DATE_FORMAT = 'YYYY-MM-DD';
 const DEFAULT_SHEET_NAME = '_caspion';
 const COLUMN_HEADERS = [
   'תאריך',
