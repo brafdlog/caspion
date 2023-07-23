@@ -7,7 +7,8 @@ const unifyHash = (hash: string) => hash
   .replace(/`/g, "'")
   .replace(/00\dZ/, '000Z') // Leumi: Last part of the date is sometimes 000Z, 002Z, 003Z...
   // eslint-disable-next-line no-control-regex
-  .replace(/[\u0000-\u001F\u007F-\u009F\u200E]/g, ''); // Special characters
+  .replace(/[\u0000-\u001F\u007F-\u009F\u200E]/g, '') // Special characters
+  .replace('‏', ''); // Special character
 
 const transactionArrayToUnifyHash = (transactions: EnrichedTransaction[]) => transactions.reduce((acc, enrichedTransaction) => {
   acc[unifyHash(enrichedTransaction.hash)] = enrichedTransaction;
