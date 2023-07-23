@@ -1,3 +1,10 @@
+## [1.11.13](https://github.com/brafdlog/caspion/compare/v1.11.12...v1.11.13) (2023-07-23)
+
+
+### Fix
+
+* remove another special character to the hash (#494) ([7df0fdf](https://github.com/brafdlog/caspion/commit/7df0fdf55be59b00948209a5d08eced4b5e46b2e)), closes [#494](https://github.com/brafdlog/caspion/issues/494)
+
 ## [1.11.12](https://github.com/brafdlog/caspion/compare/v1.11.11...v1.11.12) (2023-07-16)
 
 
