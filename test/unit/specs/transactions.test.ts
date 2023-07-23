@@ -48,7 +48,8 @@ describe('Transactions', () => {
     [{ ...TRANSACTION_1, processedDate: '2020-06-01T21:00:00.002Z' }, TRANSACTION_1_HASH],
     [{ ...TRANSACTION_1, date: '2020-03-24T22:00:00.002Z' }, TRANSACTION_1_HASH],
     [{ ...TRANSACTION_2, description: 'מי גבעתיים בע`מ' }, TRANSACTION_2_HASH],
-    [{ ...TRANSACTION_2, description: "מי גבעתיים\u200E בע'מ" }, TRANSACTION_2_HASH]
+    [{ ...TRANSACTION_2, description: "מי גבעתיים\u200E בע'מ" }, TRANSACTION_2_HASH],
+    [{ ...TRANSACTION_2, description: "‏מי גבעתיים בע'מ" }, TRANSACTION_2_HASH]
   ])('Transaction hash', (transaction, expectedHash) => {
     expect(calculateTransactionHash(transaction, companyId, accountNumber)).toEqual(expectedHash);
   });
