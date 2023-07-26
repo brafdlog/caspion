@@ -85,6 +85,6 @@ jobs:
       - name: notify Discord
         if: env.NEW_RELEASE_PUBLISHED == 'true'
         env:
-          msg: 'Yay! 🎉 \n Version ${{ env.NEW_RELEASE_VERSION }} was released! \n Check it out in: https://github.com/brafdlog/caspion/releases/tag/${{ env.NEW_RELEASE_VERSION }}'
+          msg: 'Yay! 🎉 \n Version ${{ env.NEW_RELEASE_VERSION }} was released! \n Check it out in: https://github.com/brafdlog/caspion/releases/tag/v${{ env.NEW_RELEASE_VERSION }}'
         run: |
           curl -X POST -H "Content-Type: application/json" -d "{\"content\": \"$msg\"}" ${{ secrets.DISCORD_WEBHOOK }}
