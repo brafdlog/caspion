@@ -1,3 +1,10 @@
+# [1.12.0](https://github.com/brafdlog/caspion/compare/v1.11.13...v1.12.0) (2023-07-26)
+
+
+### Chore
+
+* send new release to Discord (#495) ([9327f11](https://github.com/brafdlog/caspion/commit/9327f11dfd6688fdca0bb805f2876879cbe51b67)), closes [#495](https://github.com/brafdlog/caspion/issues/495)
+
 ## [1.11.13](https://github.com/brafdlog/caspion/compare/v1.11.12...v1.11.13) (2023-07-23)
 
 
