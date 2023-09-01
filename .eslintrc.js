@@ -21,7 +21,7 @@ module.exports = {
     node: true
   },
 
-  extends: ['airbnb-base', 'plugin:vue/recommended', '@vue/typescript'],
+  extends: ['airbnb-base', 'plugin:vue/recommended', '@vue/typescript',"prettier"],
 
   globals: {
     __static: 'writable',
