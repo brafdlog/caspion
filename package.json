@@ -34,6 +34,15 @@
       "pre-push": "yarn lint && yarn typeCheck"
     }
   },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  },
+
+
+
+
+
+  
   "dependencies": {
     "@electron/remote": "^2.0.8",
     "@sentry/electron": "^2.5.0",
@@ -52,6 +61,7 @@
     "googleapis": "^87.0.0",
     "israeli-bank-scrapers-core": "3.10.3",
     "keytar": "^7.4.0",
+    "lint-staged": "^14.0.1",
     "lodash": "^4.17.15",
     "moment": "^2.29.4",
     "node-machine-id": "^1.1.12",
