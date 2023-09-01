@@ -18,31 +18,19 @@
     "prebuild": "cd ui-react && yarn && yarn build",
     "postinstall": "electron-builder install-app-deps && cd ui-react && yarn && cd ..",
     "postuninstall": "electron-builder install-app-deps",
-    "prepare": "node scripts/copyCategoryCalculationScript.js",
+    "prepare": "node scripts/copyCategoryCalculationScript.js && husky install",
     "lint:backend": "eslint -f ./node_modules/eslint-friendly-formatter src test",
     "lint:react": "cd ui-react && yarn lint",
     "lint": "yarn lint:backend && yarn lint:react",
     "lint:fix": "yarn lint --fix && yarn lint:react --fix",
-    "format": "prettier . --write",
     "typeCheck": "tsc --noEmit",
     "unit": "vue-cli-service test:unit",
     "e2e": "vue-cli-service test:unit --config='test/e2e/jest.e2e.config.js'",
     "test": "yarn unit && yarn e2e"
   },
-  "husky": {
-    "hooks": {
-      "pre-push": "yarn lint && yarn typeCheck"
-    }
-  },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
   },
-
-
-
-
-
-  
   "dependencies": {
     "@electron/remote": "^2.0.8",
     "@sentry/electron": "^2.5.0",
@@ -120,7 +108,7 @@
     "eslint-plugin-promise": "^4.3.1",
     "eslint-plugin-standard": "^5.0.0",
     "eslint-plugin-vue": "^7.8.0",
-    "husky": "^4.2.5",
+    "husky": "^8.0.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^26.4.2",
     "jest-circus": "^26.4.2",
