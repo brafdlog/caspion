@@ -1,3 +1,10 @@
+# [1.13.0](https://github.com/brafdlog/caspion/compare/v1.12.1...v1.13.0) (2023-09-06)
+
+
+### Build
+
+* upgrade actions versions (#498) ([9933912](https://github.com/brafdlog/caspion/commit/9933912484c7d064264a0db304ab18074b1f00df)), closes [#498](https://github.com/brafdlog/caspion/issues/498)
+
 # [1.12.0](https://github.com/brafdlog/caspion/compare/v1.11.13...v1.12.0) (2023-07-26)
 
 
