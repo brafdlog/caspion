@@ -22,7 +22,7 @@ jobs:
       new_release_published: ${{ steps.semantic.outputs.new_release_published }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: yarn
       - uses: cycjimmy/semantic-release-action@8f6ceb9d5aae5578b1dcda6af00008235204e7fa
         id: semantic
@@ -45,9 +45,9 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install Node.js, NPM and Yarn
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: 14.x
       - name: Install Snapcraft
@@ -73,7 +73,7 @@ jobs:
           PUBLISH_PARAM: ${{ env.NEW_RELEASE_PUBLISHED == 'true' && 'always' || 'never' }}
         run: |
           yarn build --publish $PUBLISH_PARAM
-  
+
   notify:
     needs: [release, publish]
     if: needs.release.outputs.new_release_published == 'true' || inputs.version != ''
