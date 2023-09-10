@@ -1,3 +1,10 @@
+## [1.13.1](https://github.com/brafdlog/caspion/compare/v1.13.0...v1.13.1) (2023-09-10)
+
+
+### Deps
+
+* add prettier config & adapt eslint config (#497) ([6896315](https://github.com/brafdlog/caspion/commit/6896315374bf98d51e20ce2fcaa36ea478656bf0)), closes [#497](https://github.com/brafdlog/caspion/issues/497)
+
 # [1.13.0](https://github.com/brafdlog/caspion/compare/v1.12.1...v1.13.0) (2023-09-06)
 
 
