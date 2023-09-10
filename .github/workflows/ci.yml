@@ -28,7 +28,10 @@ jobs:
     strategy:
       matrix:
         node-version: [14.x]
-        os: [ubuntu-latest, windows-latest]
+        os:
+          - windows-latest
+          - ubuntu-latest
+          - macos-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -64,7 +67,7 @@ jobs:
       matrix:
         os:
           - windows-latest
-          # - ubuntu-latest
+          - ubuntu-latest
           - macos-latest
 
     steps:
