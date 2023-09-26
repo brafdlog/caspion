@@ -4,14 +4,14 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Exsiting version to publish files. If not provided, will create a new release."
+        description: 'Exsiting version to publish files. If not provided, will create a new release.'
         required: false
         type: string
   push:
     branches:
       - master
     paths-ignore:
-      - "nuxt/**"
+      - 'nuxt/**'
 
 jobs:
   release:
@@ -23,7 +23,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - run: yarn
+      - run: yarn --network-timeout 100000
       - uses: cycjimmy/semantic-release-action@8f6ceb9d5aae5578b1dcda6af00008235204e7fa
         id: semantic
         if: inputs.version == ''
@@ -50,6 +50,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 14.x
+          cache: 'yarn'
+          cache-dependency-path: 'yarn.lock'
       - name: Install Snapcraft
         uses: samuelmeuli/action-snapcraft@06f69b882c878790b568f0247d623eaa49de2f3d
         # Only install Snapcraft  on Ubuntu
@@ -60,7 +62,7 @@ jobs:
           snapcraft_token: ${{ secrets.snapcraft_token }}
       - name: set version
         run: yarn version --no-git-tag-version --new-version ${{ env.NEW_RELEASE_VERSION }}
-      - run: yarn
+      - run: yarn --network-timeout 100000
       - name: Build & release Electron app
         shell: bash
         env:

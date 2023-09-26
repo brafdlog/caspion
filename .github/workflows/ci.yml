@@ -3,7 +3,7 @@ name: Node CI
 on:
   pull_request:
     paths-ignore:
-      - "nuxt/**"
+      - 'nuxt/**'
 
 jobs:
   lint:
@@ -14,7 +14,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 14.x
-      - run: yarn
+          cache: 'yarn'
+          cache-dependency-path: 'yarn.lock'
+      - run: yarn --network-timeout 100000
       - run: yarn lint
       - name: Type check
         run: |
@@ -41,6 +43,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+          cache-dependency-path: 'yarn.lock'
       - name: Install xvfb
         if: matrix.os == 'ubuntu-latest'
         run: |
@@ -48,7 +52,7 @@ jobs:
           sudo apt install -y xvfb graphicsmagick
           npm install -g xvfb-maybe
           Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-      - run: yarn
+      - run: yarn --network-timeout 100000
       - run: yarn unit
       - run: yarn e2e
       - name: Upload screenshots
@@ -78,7 +82,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 14.x
-      - run: yarn
+          cache: 'yarn'
+          cache-dependency-path: 'yarn.lock'
+      - run: yarn --network-timeout 100000
       - name: Build Electron app
         shell: bash
         env:
