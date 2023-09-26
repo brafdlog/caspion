@@ -16,7 +16,7 @@ jobs:
           node-version: 14.x
           cache: 'yarn'
           cache-dependency-path: 'yarn.lock'
-      - run: yarn
+      - run: yarn --network-timeout 100000
       - run: yarn lint
       - name: Type check
         run: |
@@ -50,7 +50,7 @@ jobs:
           sudo apt install -y xvfb graphicsmagick
           npm install -g xvfb-maybe
           Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-      - run: yarn
+      - run: yarn --network-timeout 100000
       - run: yarn unit
       - run: yarn e2e
       - name: Upload screenshots
@@ -82,7 +82,7 @@ jobs:
           node-version: 14.x
           cache: 'yarn'
           cache-dependency-path: 'yarn.lock'
-      - run: yarn
+      - run: yarn --network-timeout 100000
       - name: Build Electron app
         shell: bash
         env:

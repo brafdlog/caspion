@@ -23,7 +23,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - run: yarn
+      - run: yarn --network-timeout 100000
       - uses: cycjimmy/semantic-release-action@8f6ceb9d5aae5578b1dcda6af00008235204e7fa
         id: semantic
         if: inputs.version == ''
@@ -62,7 +62,7 @@ jobs:
           snapcraft_token: ${{ secrets.snapcraft_token }}
       - name: set version
         run: yarn version --no-git-tag-version --new-version ${{ env.NEW_RELEASE_VERSION }}
-      - run: yarn
+      - run: yarn --network-timeout 100000
       - name: Build & release Electron app
         shell: bash
         env:
