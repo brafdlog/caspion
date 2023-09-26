@@ -4,14 +4,14 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Exsiting version to publish files. If not provided, will create a new release."
+        description: 'Exsiting version to publish files. If not provided, will create a new release.'
         required: false
         type: string
   push:
     branches:
       - master
     paths-ignore:
-      - "nuxt/**"
+      - 'nuxt/**'
 
 jobs:
   release:
@@ -50,6 +50,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 14.x
+          cache: 'yarn'
+          cache-dependency-path: 'yarn.lock'
       - name: Install Snapcraft
         uses: samuelmeuli/action-snapcraft@06f69b882c878790b568f0247d623eaa49de2f3d
         # Only install Snapcraft  on Ubuntu

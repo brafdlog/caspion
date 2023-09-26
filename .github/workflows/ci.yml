@@ -3,7 +3,7 @@ name: Node CI
 on:
   pull_request:
     paths-ignore:
-      - "nuxt/**"
+      - 'nuxt/**'
 
 jobs:
   lint:
@@ -14,6 +14,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 14.x
+          cache: 'yarn'
+          cache-dependency-path: 'yarn.lock'
       - run: yarn
       - run: yarn lint
       - name: Type check
@@ -39,6 +41,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+          cache-dependency-path: 'yarn.lock'
       - name: Install xvfb
         if: matrix.os == 'ubuntu-latest'
         run: |
@@ -76,6 +80,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 14.x
+          cache: 'yarn'
+          cache-dependency-path: 'yarn.lock'
       - run: yarn
       - name: Build Electron app
         shell: bash
