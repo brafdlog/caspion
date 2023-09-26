@@ -24,6 +24,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       DISPLAY: :99.0
+      GOOGLE_CLIENT_ID: ''
+      GOOGLE_CLIENT_SECRET: ''
 
     strategy:
       matrix:
