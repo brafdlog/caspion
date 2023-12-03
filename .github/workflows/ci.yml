@@ -3,18 +3,25 @@ name: Node CI
 on:
   pull_request:
     paths-ignore:
-      - "nuxt/**"
+      - 'nuxt/**'
 
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: Use Node.js 14.x
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      # https://github.com/nodejs/node-gyp/issues/2869
+      - name: Use Python 3.11
+        uses: actions/setup-python@v4
         with:
-          node-version: 14.x
-      - run: yarn
+          python-version: '3.11'
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: 'yarn'
+          cache-dependency-path: 'yarn.lock'
+      - run: yarn --network-timeout 100000
       - run: yarn lint
       - name: Type check
         run: |
@@ -24,42 +31,50 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       DISPLAY: :99.0
+      GOOGLE_CLIENT_ID: ''
+      GOOGLE_CLIENT_SECRET: ''
 
     strategy:
       matrix:
-        node-version: [14.x]
-        os: [ubuntu-latest, windows-latest]
+        node-version: [16.x]
+        os:
+          - windows-latest
+          - ubuntu-latest
+          - macos-latest
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Install xvfb
-      if: matrix.os == 'ubuntu-latest'
-      run: |
-        sudo apt update
-        sudo apt install -y xvfb graphicsmagick
-        npm install -g xvfb-maybe
-        Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-    - name: yarn install
-      run: yarn
-    - name: yarn unit
-      run: yarn unit
-    - name: yarn e2e
-      run: yarn e2e
-    - name: Upload screenshots
-      if: failure()
-      uses: actions/upload-artifact@v1.0.0
-      with:
-        # Artifact name
-        name: ${{ matrix.os }}-screenshots
-        # Directory containing files to upload
-        path: screenshots
+      - uses: actions/checkout@v4
+      # https://github.com/nodejs/node-gyp/issues/2869
+      - name: Use Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+          cache-dependency-path: 'yarn.lock'
+      - name: Install xvfb
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt update
+          sudo apt install -y xvfb graphicsmagick
+          npm install -g xvfb-maybe
+          Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+      - run: yarn --network-timeout 100000
+      - run: yarn unit
+      - run: yarn e2e
+      - name: Upload screenshots
+        if: failure()
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          # Artifact name
+          name: ${{ matrix.os }}-screenshots
+          # Directory containing files to upload
+          path: screenshots
 
   build:
-
     runs-on: ${{ matrix.os }}
 
     # Platforms to build on/for
@@ -67,33 +82,38 @@ jobs:
       max-parallel: 2
       matrix:
         os:
-        - windows-latest
-        # - ubuntu-latest
-        - macos-latest
+          - windows-latest
+          - ubuntu-latest
+          - macos-latest
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Install Node.js, NPM and Yarn
-      uses: actions/setup-node@v1
-      with:
-        node-version: 14.x
-    - name: Build Electron app
-      shell: bash
-      env:
-        GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-        GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        NODE_OPTIONS: --max-old-space-size=4096
-        SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
-        SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-      run: |
-        yarn
-        yarn build --publish never
-    - name: Upload artifact
-      uses: actions/upload-artifact@v1.0.0
-      with:
-        # Artifact name
-        name: ${{ matrix.os }}-artifact
-        # Directory containing files to upload
-        path: dist_electron
-
+      - uses: actions/checkout@v4
+      # https://github.com/nodejs/node-gyp/issues/2869
+      - name: Use Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: 'yarn'
+          cache-dependency-path: 'yarn.lock'
+      - run: yarn --network-timeout 100000
+      - name: Build Electron app
+        shell: bash
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_OPTIONS: --max-old-space-size=4096
+          SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+        run: yarn build --publish never
+      - name: Upload artifact
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          # Artifact name
+          name: ${{ matrix.os }}-artifact
+          # Directory containing files to upload
+          path: dist_electron

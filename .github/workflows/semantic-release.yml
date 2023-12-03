@@ -4,14 +4,14 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Exsiting version to publish files. If not provided, will create a new release."
+        description: 'Exsiting version to publish files. If not provided, will create a new release.'
         required: false
         type: string
   push:
     branches:
       - master
     paths-ignore:
-      - "nuxt/**"
+      - 'nuxt/**'
 
 jobs:
   release:
@@ -22,8 +22,19 @@ jobs:
       new_release_published: ${{ steps.semantic.outputs.new_release_published }}
 
     steps:
-      - uses: actions/checkout@v3
-      - run: yarn
+      - uses: actions/checkout@v4
+      # https://github.com/nodejs/node-gyp/issues/2869
+      - name: Use Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: 'yarn'
+          cache-dependency-path: 'yarn.lock'
+      - run: yarn --network-timeout 100000
       - uses: cycjimmy/semantic-release-action@8f6ceb9d5aae5578b1dcda6af00008235204e7fa
         id: semantic
         if: inputs.version == ''
@@ -45,11 +56,18 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Install Node.js, NPM and Yarn
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      # https://github.com/nodejs/node-gyp/issues/2869
+      - name: Use Python 3.11
+        uses: actions/setup-python@v4
         with:
-          node-version: 14.x
+          python-version: '3.11'
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: 'yarn'
+          cache-dependency-path: 'yarn.lock'
       - name: Install Snapcraft
         uses: samuelmeuli/action-snapcraft@06f69b882c878790b568f0247d623eaa49de2f3d
         # Only install Snapcraft  on Ubuntu
@@ -60,7 +78,7 @@ jobs:
           snapcraft_token: ${{ secrets.snapcraft_token }}
       - name: set version
         run: yarn version --no-git-tag-version --new-version ${{ env.NEW_RELEASE_VERSION }}
-      - run: yarn
+      - run: yarn --network-timeout 100000
       - name: Build & release Electron app
         shell: bash
         env:
@@ -73,7 +91,7 @@ jobs:
           PUBLISH_PARAM: ${{ env.NEW_RELEASE_PUBLISHED == 'true' && 'always' || 'never' }}
         run: |
           yarn build --publish $PUBLISH_PARAM
-  
+
   notify:
     needs: [release, publish]
     if: needs.release.outputs.new_release_published == 'true' || inputs.version != ''

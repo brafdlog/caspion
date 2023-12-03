@@ -3,13 +3,13 @@ name: Test and Deploy Github Pages with Nuxt
 on:
   pull_request:
     paths:
-      - "nuxt/**"
-      - ".github/workflows/*nuxt*.yml"
+      - 'nuxt/**'
+      - '.github/workflows/*nuxt*.yml'
   push:
     branches: master
     paths:
-      - "nuxt/**"
-      - ".github/workflows/*nuxt*.yml"
+      - 'nuxt/**'
+      - '.github/workflows/*nuxt*.yml'
 
 jobs:
   test:
@@ -18,10 +18,12 @@ jobs:
       run:
         working-directory: nuxt
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
         with:
           node-version: 16.x
+          cache: 'yarn'
+          cache-dependency-path: 'nuxt/yarn.lock'
       - run: yarn
       - run: yarn lint
       - run: yarn test
@@ -34,10 +36,12 @@ jobs:
         working-directory: nuxt
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
         with:
           node-version: 16.x
+          cache: 'yarn'
+          cache-dependency-path: 'nuxt/yarn.lock'
       - name: yarn
         run: yarn
       - name: deploy

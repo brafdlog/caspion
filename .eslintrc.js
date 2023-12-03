@@ -5,7 +5,8 @@ const readonlyGlobals = Object.keys(globals).reduce((acc, key) => {
   return acc;
 }, {});
 
-const productionError = process.env.NODE_ENV === 'production' ? 'error' : 'warn';
+const productionError =
+  process.env.NODE_ENV === 'production' ? 'error' : 'warn';
 
 module.exports = {
   root: true,
@@ -13,34 +14,33 @@ module.exports = {
   parserOptions: {
     parser: '@typescript-eslint/parser',
     sourceType: 'module',
-    ecmaVersion: 2018
+    ecmaVersion: 2018,
   },
 
   env: {
     browser: true,
-    node: true
+    node: true,
   },
 
-  extends: ['airbnb-base', 'plugin:vue/recommended', '@vue/typescript'],
+  extends: [
+    'airbnb-base',
+    'plugin:vue/recommended',
+    '@vue/typescript',
+    'prettier',
+  ],
 
   globals: {
     __static: 'writable',
     ...readonlyGlobals,
   },
 
-  plugins: [
-    'import',
-    'vue',
-    'html',
-  ],
+  plugins: ['import', 'vue', 'html'],
 
   settings: {
     'import/core-modules': ['electron'],
     'import/resolver': {
       alias: {
-        map: [
-          ['@', './src'],
-        ],
+        map: [['@', './src']],
         extensions: ['.js', '.ts', '.vue', '.tsx'],
       },
     },
@@ -62,32 +62,38 @@ module.exports = {
     'no-await-in-loop': 'off',
     'import/prefer-default-export': 'off',
     'no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars': ['error', { args: 'after-used', argsIgnorePattern: '^_|h' }],
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      { args: 'after-used', argsIgnorePattern: '^_|h' },
+    ],
     'arrow-body-style': 'off',
-    'object-curly-newline': 'warn',
-    'semi': productionError,
+    'object-curly-newline': 'off',
+    semi: productionError,
     'padded-blocks': 'off',
     'no-return-assign': 'off',
     'quote-props': ['error', 'consistent-as-needed'],
-    'no-restricted-imports': ['error', {
-      name: 'electron-log',
-      importNames: ['default'],
-      message: 'You should import from logging/logger instead'
-    }]
+    'no-restricted-imports': [
+      'error',
+      {
+        name: 'electron-log',
+        importNames: ['default'],
+        message: 'You should import from logging/logger instead',
+      },
+    ],
   },
 
   overrides: [
     {
-      files: [
-        '**/test/**/*.spec.{j,t}s',
-        '**/*.test.{j,t}s'
-      ],
+      files: ['**/test/**/*.spec.{j,t}s', '**/*.test.{j,t}s'],
       env: {
         jest: true,
       },
       rules: {
-        'import/extensions': ['error', { js: 'never', vue: 'always', json: 'always' }]
-      }
-    }
+        'import/extensions': [
+          'error',
+          { js: 'never', vue: 'always', json: 'always' },
+        ],
+      },
+    },
   ],
 };
