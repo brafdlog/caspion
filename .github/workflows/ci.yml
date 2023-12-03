@@ -10,6 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # https://github.com/nodejs/node-gyp/issues/2869
+      - name: Use Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
       - name: Use Node.js 16.x
         uses: actions/setup-node@v3
         with:
@@ -39,6 +44,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      # https://github.com/nodejs/node-gyp/issues/2869
+      - name: Use Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
@@ -78,6 +88,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      # https://github.com/nodejs/node-gyp/issues/2869
+      - name: Use Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v3
         with:

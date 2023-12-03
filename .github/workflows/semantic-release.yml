@@ -23,6 +23,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      # https://github.com/nodejs/node-gyp/issues/2869
+      - name: Use Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
       - run: yarn --network-timeout 100000
       - uses: cycjimmy/semantic-release-action@8f6ceb9d5aae5578b1dcda6af00008235204e7fa
         id: semantic
@@ -46,6 +51,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      # https://github.com/nodejs/node-gyp/issues/2869
+      - name: Use Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v3
         with:
