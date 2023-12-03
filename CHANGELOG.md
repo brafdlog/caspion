@@ -1,3 +1,14 @@
+# [1.14.0](https://github.com/brafdlog/caspion/compare/v1.13.1...v1.14.0) (2023-12-03)
+
+
+### Deps
+
+* upgrade israeli-bank-scrapers to 4.0.3 (#514) ([120eeed](https://github.com/brafdlog/caspion/commit/120eeedcc7ffbf31d55a08d127bd0af3c2b11a7d)), closes [#514](https://github.com/brafdlog/caspion/issues/514)
+
+### Upgrade
+
+* nodejs version to 16 (#513) ([46f9ca6](https://github.com/brafdlog/caspion/commit/46f9ca6dbf5844bd649ad38333ecf0011896345a)), closes [#513](https://github.com/brafdlog/caspion/issues/513)
+
 ## [1.13.1](https://github.com/brafdlog/caspion/compare/v1.13.0...v1.13.1) (2023-09-10)
 
 
