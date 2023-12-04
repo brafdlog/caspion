@@ -1,3 +1,10 @@
+# [1.16.0](https://github.com/brafdlog/caspion/compare/v1.15.0...v1.16.0) (2023-12-04)
+
+
+### Upgrade
+
+* Bump word-wrap from 1.2.3 to 1.2.5 (#516) ([9c9251b](https://github.com/brafdlog/caspion/commit/9c9251b630ffcdc32cbd4fd6e7794a20eae3b3c2)), closes [#516](https://github.com/brafdlog/caspion/issues/516) [jonschlinkert/word-wrap#24](https://github.com/jonschlinkert/word-wrap/issues/24) [jonschlinkert/word-wrap#41](https://github.com/jonschlinkert/word-wrap/issues/41) [jonschlinkert/word-wrap#33](https://github.com/jonschlinkert/word-wrap/issues/33) [jonschlinkert/word-wrap#42](https://github.com/jonschlinkert/word-wrap/issues/42) [jonschlinkert/word-wrap#24](https://github.com/jonschlinkert/word-wrap/issues/24) [jonschlinkert/word-wrap#41](https://github.com/jonschlinkert/word-wrap/issues/41) [jonschlinkert/word-wrap#33](https://github.com/jonschlinkert/word-wrap/issues/33) [#42](https://github.com/brafdlog/caspion/issues/42) [#41](https://github.com/brafdlog/caspion/issues/41)
+
 # [1.15.0](https://github.com/brafdlog/caspion/compare/v1.14.1...v1.15.0) (2023-12-04)
 
 
