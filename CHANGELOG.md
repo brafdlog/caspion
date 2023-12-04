@@ -1,3 +1,10 @@
+# [1.15.0](https://github.com/brafdlog/caspion/compare/v1.14.1...v1.15.0) (2023-12-04)
+
+
+### New
+
+* change font-family to improve UI (#517) ([5f3c6ca](https://github.com/brafdlog/caspion/commit/5f3c6caa4c3c14c6d82428f4cbaabe31aeb02522)), closes [#517](https://github.com/brafdlog/caspion/issues/517) [#501](https://github.com/brafdlog/caspion/issues/501) [#501](https://github.com/brafdlog/caspion/issues/501) [#500](https://github.com/brafdlog/caspion/issues/500)
+
 ## [1.14.1](https://github.com/brafdlog/caspion/compare/v1.14.0...v1.14.1) (2023-12-03)
 
 
