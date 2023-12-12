@@ -12,7 +12,7 @@ import {
 } from '@/backend/commonTypes';
 import { getConfig } from '@/backend/configManager/configManager';
 import * as bankScraper from '@/backend/import/bankScraper';
-import * as categoryCalculation from '@/backend/import/categoryCalculationScript';
+// import * as categoryCalculation from '@/backend/import/categoryCalculationScript';
 import {
   AccountStatus,
   BudgetTrackingEventEmitter,
