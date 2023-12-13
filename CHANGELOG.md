@@ -1,3 +1,10 @@
+## [1.16.1](https://github.com/brafdlog/caspion/compare/v1.16.0...v1.16.1) (2023-12-13)
+
+
+### Fix
+
+* disable category enrichment (fixes #518) (#519) ([e49b900](https://github.com/brafdlog/caspion/commit/e49b9006858b7fd1cbad2e8add79ac58c59d24c3)), closes [#518](https://github.com/brafdlog/caspion/issues/518) [#519](https://github.com/brafdlog/caspion/issues/519) [#518](https://github.com/brafdlog/caspion/issues/518)
+
 # [1.16.0](https://github.com/brafdlog/caspion/compare/v1.15.0...v1.16.0) (2023-12-04)
 
 
