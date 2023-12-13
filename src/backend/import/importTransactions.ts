@@ -8,7 +8,7 @@ import {
   Config,
   EnrichedTransaction,
   FinancialAccountDetails,
-  ScaperScrapingResult
+  ScraperScrapingResult
 } from '@/backend/commonTypes';
 import { getConfig } from '@/backend/configManager/configManager';
 import * as bankScraper from '@/backend/import/bankScraper';
@@ -132,7 +132,7 @@ async function fetchTransactions(
 }
 
 // eslint-disable-next-line max-len
-async function postProcessTransactions(accountToScrape: AccountToScrapeConfig, scrapeResult: ScaperScrapingResult): Promise<EnrichedTransaction[]> {
+async function postProcessTransactions(accountToScrape: AccountToScrapeConfig, scrapeResult: ScraperScrapingResult): Promise<EnrichedTransaction[]> {
   if (scrapeResult.accounts) {
     let transactions = scrapeResult.accounts.flatMap((transactionAccount) => {
       return transactionAccount.txns.map((transaction) => enrichTransaction(transaction, accountToScrape.key, transactionAccount.accountNumber));
