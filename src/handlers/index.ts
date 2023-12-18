@@ -1,14 +1,22 @@
-import { dialog, ipcMain, ipcRenderer } from 'electron';
+import { App } from '@/app-globals';
 import { scrapeAndUpdateOutputVendors } from '@/backend';
+import { Credentials } from '@/backend/commonTypes';
 import { getConfig } from '@/backend/configManager/configManager';
 import { BudgetTrackingEventEmitter } from '@/backend/eventEmitters/EventEmitter';
+import electronGoogleOAuth2Connector from '@/backend/export/outputVendors/googleSheets/electronGoogleOAuth2Connector';
+import {
+  createClient,
+  validateToken,
+} from '@/backend/export/outputVendors/googleSheets/googleAuth';
+import { createSpreadsheet } from '@/backend/export/outputVendors/googleSheets/googleSheets';
+import { getAllSpreadsheets } from '@/backend/export/outputVendors/googleSheets/googleSheetsInternalAPI';
 import { getYnabAccountData } from '@/manual/setupHelpers';
-import { App } from '@/app-globals';
+import { dialog, ipcMain, ipcRenderer } from 'electron';
+import { repository } from '../../package.json';
 import Sentry from '../logging/sentry';
 import { getConfigHandler, updateConfigHandler } from './configHandlers';
-import { checkForUpdate, downloadUpdate, quitAndInstall } from './updater';
 import { getLogsInfoHandler } from './logsHandlers';
-import { repository } from '../../package.json';
+import { checkForUpdate, downloadUpdate, quitAndInstall } from './updater';
 
 const functions = {
   showSaveDialog: async () => {
@@ -27,10 +35,20 @@ const functions = {
       sourceCommitShort: SOURCE_COMMIT_SHORT,
       repository,
       discordChanel: DISCORD_CHANNEL,
-      currentVersion: App.getVersion()
+      currentVersion: App.getVersion(),
     };
   },
   sentryUserReportProblem: Sentry.userReportProblem,
+  // Google Sheets
+  getAllUserSpreadsheets: (_, credentials: Credentials) =>
+    getAllSpreadsheets(createClient(credentials)),
+  validateToken: (_, credentials: Credentials) => validateToken(credentials),
+  electronGoogleOAuth2Connector,
+  createSpreadsheet: (
+    _: any,
+    spreadsheetTitle: string,
+    credentials: Credentials,
+  ) => createSpreadsheet(spreadsheetTitle, credentials),
 };
 
 type Functions = typeof functions;
@@ -57,8 +75,14 @@ export const registerHandlers = () => {
   });
 
   ipcMain.removeAllListeners('getYnabAccountData');
-  ipcMain.on('getYnabAccountData', async (event, _event, ynabExporterOptions) => {
-    const ynabAccountData = await getYnabAccountData(_event, ynabExporterOptions);
-    event.reply(ynabAccountData);
-  });
+  ipcMain.on(
+    'getYnabAccountData',
+    async (event, _event, ynabExporterOptions) => {
+      const ynabAccountData = await getYnabAccountData(
+        _event,
+        ynabExporterOptions,
+      );
+      event.reply(ynabAccountData);
+    },
+  );
 };

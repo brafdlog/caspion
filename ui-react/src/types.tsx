@@ -1,11 +1,14 @@
 /// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Types common with the electron code
+
+import { Credentials } from '../../src/backend/commonTypes';
+
 /// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export enum OutputVendorName {
   YNAB = 'ynab',
   GOOGLE_SHEETS = 'googleSheets',
   JSON = 'json',
-  CSV = 'csv'
+  CSV = 'csv',
 }
 
 export interface Config {
@@ -26,14 +29,20 @@ export interface Config {
 }
 
 export interface AppInfo {
-  sourceCommitShort: string,
-  repository: string,
-  discordChanel: string,
-  currentVersion: string
+  sourceCommitShort: string;
+  repository: string;
+  discordChanel: string;
+  currentVersion: string;
 }
 
-export type OutputVendorConfigs = Exclude<Config['outputVendors'][OutputVendorName], undefined>
-export type OutputVendorConfig<T extends OutputVendorName> = Exclude<Config['outputVendors'][T], undefined>
+export type OutputVendorConfigs = Exclude<
+  Config['outputVendors'][OutputVendorName],
+  undefined
+>;
+export type OutputVendorConfig<T extends OutputVendorName> = Exclude<
+  Config['outputVendors'][T],
+  undefined
+>;
 
 interface OutputVendorConfigBase {
   active: boolean;
@@ -42,21 +51,21 @@ interface OutputVendorConfigBase {
 export interface CsvConfig extends OutputVendorConfigBase {
   options: {
     filePath: string;
-  }
+  };
 }
 
 export interface JsonConfig extends OutputVendorConfigBase {
   options: {
     filePath: string;
-  }
+  };
 }
 
 export interface GoogleSheetsConfig extends OutputVendorConfigBase {
   options: {
-    // credentials: Credentials;
-    credentials: string;
+    credentials: Credentials;
+    // credentials: string;
     spreadsheetId: string;
-  }
+  };
 }
 
 export interface YnabConfig extends OutputVendorConfigBase {
@@ -97,7 +106,8 @@ export enum CompanyTypes {
 }
 
 export enum AccountType {
-  IMPORTER = 'Importer', EXPORTER = 'Exporter'
+  IMPORTER = 'Importer',
+  EXPORTER = 'Exporter',
 }
 
 export enum AccountStatus {
@@ -105,7 +115,7 @@ export enum AccountStatus {
   PENDING = 'pending',
   IN_PROGRESS = 'inProgress',
   DONE = 'done',
-  ERROR = 'error'
+  ERROR = 'error',
 }
 
 export type BudgetTrackingEvent = {
@@ -118,7 +128,7 @@ export type BudgetTrackingEvent = {
   error?: Error;
 
   accountType?: AccountType;
-}
+};
 
 /// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // End of common types
@@ -126,7 +136,7 @@ export type BudgetTrackingEvent = {
 
 export interface Log {
   message: string;
-  originalEvent?: BudgetTrackingEvent
+  originalEvent?: BudgetTrackingEvent;
 }
 
 export interface Account {
@@ -137,7 +147,7 @@ export interface Account {
   type: AccountType;
   active: boolean;
   status?: AccountStatus;
-  logs: Log[]
+  logs: Log[];
 }
 
 export interface Importer extends Account {
@@ -145,13 +155,13 @@ export interface Importer extends Account {
 }
 
 export interface Exporter extends Account {
-  options: object
+  options: object;
 }
 
 export type AccountMetadata = {
-  companyId: string,
-  companyName: string,
-  logo: string
+  companyId: string;
+  companyName: string;
+  logo: string;
 };
 
 export enum ModalStatus {
@@ -160,12 +170,12 @@ export enum ModalStatus {
   LOGS,
   HIDDEN,
   NEW_SCRAPER,
-  GENERAL_SETTINGS
+  GENERAL_SETTINGS,
 }
 
 export enum ExporterResultType {
   WEBSITE_URL,
-  FILE
+  FILE,
 }
 
 export interface ExportResultMetadata {
