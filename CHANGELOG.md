@@ -1,3 +1,10 @@
+# [1.17.0](https://github.com/brafdlog/caspion/compare/v1.16.1...v1.17.0) (2023-12-18)
+
+
+### Chore
+
+* add react-hooks lint and typo (#520) ([2e14456](https://github.com/brafdlog/caspion/commit/2e144562d330c6cb659672b8f8a35249a1f920c7)), closes [#520](https://github.com/brafdlog/caspion/issues/520)
+
 ## [1.16.1](https://github.com/brafdlog/caspion/compare/v1.16.0...v1.16.1) (2023-12-13)
 
 
