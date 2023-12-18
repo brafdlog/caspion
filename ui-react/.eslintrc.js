@@ -2,11 +2,10 @@ module.exports = {
   extends: [
     '../.eslintrc.js',
     'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
   ],
-  plugins: [
-    'react',
-  ],
+  plugins: ['react'],
   rules: {
-    '@typescript-eslint/no-unused-vars': 'off'
-  }
+    '@typescript-eslint/no-unused-vars': 'off',
+  },
 };
