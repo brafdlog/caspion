@@ -31,7 +31,7 @@ export async function getYnabAccountData(
 export async function scrape(store) {
   await electron.ipcRenderer.send('scrape');
   if (!progressListenerDefined) {
-    electron.ipcRenderer.on('scrapingProgress', (event, progressEventStr) => {
+    electron.ipcRenderer.on('scrapingProgress', (_, progressEventStr) => {
       const progressEvent = JSON.parse(progressEventStr);
       const { eventName } = progressEvent;
       const { eventData } = progressEvent;
