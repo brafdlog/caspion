@@ -1,7 +1,3 @@
-import { Transaction } from 'israeli-bank-scrapers-core/lib/transactions';
-import Bottleneck from 'bottleneck';
-import _ from 'lodash';
-import moment from 'moment';
 import { configFilePath, userDataPath } from '@/app-globals';
 import {
   AccountToScrapeConfig,
@@ -12,6 +8,10 @@ import {
 } from '@/backend/commonTypes';
 import { getConfig } from '@/backend/configManager/configManager';
 import * as bankScraper from '@/backend/import/bankScraper';
+import Bottleneck from 'bottleneck';
+import { Transaction } from 'israeli-bank-scrapers-core/lib/transactions';
+import _ from 'lodash';
+import moment from 'moment';
 // import * as categoryCalculation from '@/backend/import/categoryCalculationScript';
 import {
   AccountStatus,
