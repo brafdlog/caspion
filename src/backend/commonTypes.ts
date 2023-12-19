@@ -1,7 +1,7 @@
 import { Auth } from 'googleapis';
 import { CompanyTypes, ScraperCredentials } from 'israeli-bank-scrapers-core';
-import { BudgetSummary, Account } from 'ynab';
 import { Transaction } from 'israeli-bank-scrapers-core/lib/transactions';
+import { Account, BudgetSummary } from 'ynab';
 
 export type { ScraperScrapingResult } from 'israeli-bank-scrapers-core';
 export interface Config {
@@ -18,19 +18,25 @@ export interface Config {
     chromiumPath?: string;
     maxConcurrency?: number;
     timeout: number;
-  },
-  useReactUI?: boolean
+  };
+  useReactUI?: boolean;
 }
 
 export enum OutputVendorName {
   YNAB = 'ynab',
   GOOGLE_SHEETS = 'googleSheets',
   JSON = 'json',
-  CSV = 'csv'
+  CSV = 'csv',
 }
 
-export type OutputVendorConfigs = Exclude<Config['outputVendors'][OutputVendorName], undefined>
-export type OutputVendorConfig<T extends OutputVendorName> = Exclude<Config['outputVendors'][T], undefined>
+export type OutputVendorConfigs = Exclude<
+  Config['outputVendors'][OutputVendorName],
+  undefined
+>;
+export type OutputVendorConfig<T extends OutputVendorName> = Exclude<
+  Config['outputVendors'][T],
+  undefined
+>;
 
 interface OutputVendorConfigBase {
   active: boolean;
@@ -39,20 +45,20 @@ interface OutputVendorConfigBase {
 export interface CsvConfig extends OutputVendorConfigBase {
   options: {
     filePath: string;
-  }
+  };
 }
 
 export interface JsonConfig extends OutputVendorConfigBase {
   options: {
     filePath: string;
-  }
+  };
 }
 
 export interface GoogleSheetsConfig extends OutputVendorConfigBase {
   options: {
     credentials: Credentials;
     spreadsheetId: string;
-  }
+  };
 }
 
 export interface YnabConfig extends OutputVendorConfigBase {
@@ -82,15 +88,15 @@ export type ExportTransactionsParams = {
   transactionsToCreate: EnrichedTransaction[];
   startDate: Date;
   outputVendorsConfig: Config['outputVendors'];
-}
+};
 
 export type ExportTransactionsResult = {
-  exportedTransactionsNum: number
-}
+  exportedTransactionsNum: number;
+};
 
 export type ExportTransactionsFunction = (
   exportTransactionsParams: ExportTransactionsParams,
-  eventPublisher: any
+  eventPublisher: any,
 ) => Promise<ExportTransactionsResult>;
 
 export interface OutputVendor {
@@ -107,23 +113,26 @@ export interface FinancialAccountDetails {
   accountNumber: string;
 }
 
-export type YnabFinancialAccount = Pick<Account, 'id' | 'name' | 'type'> & { budgetId: string; active: boolean }
+export type YnabFinancialAccount = Pick<Account, 'id' | 'name' | 'type'> & {
+  budgetId: string;
+  active: boolean;
+};
 
 export enum FETCH_YNAB_ACCOUNT_DATA_STATUS {
   SUCCESS = 'SUCCESS',
   INVALID_ACCESS_TOKEN = 'INVALID_ACCESS_TOKEN',
   INVALID_BUDGET_ID = 'INVALID_BUDGET_ID',
-  GENERAL_ERROR = 'GENERAL_ERROR'
+  GENERAL_ERROR = 'GENERAL_ERROR',
 }
 
 export interface YnabAccountDetails {
   budgets: BudgetSummary[];
   accounts: YnabFinancialAccount[];
-  categories?: string[]
+  categories?: string[];
 }
 
 export type YnabAccountDataType = {
-  ynabAccountData?: YnabAccountDetails,
-  financialAccountDetails?: FinancialAccountDetails[],
-  status: FETCH_YNAB_ACCOUNT_DATA_STATUS
-}
+  ynabAccountData?: YnabAccountDetails;
+  financialAccountDetails?: FinancialAccountDetails[];
+  status: FETCH_YNAB_ACCOUNT_DATA_STATUS;
+};
