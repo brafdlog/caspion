@@ -1,65 +1,13 @@
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Card, Form, Image } from 'react-bootstrap';
-import { Credentials } from '../../../../src/backend/commonTypes';
-import {
-  createSpreadsheet,
-  electronGoogleOAuth2Connector,
-  validateToken,
-} from '../../eventsBridge';
-import { GoogleSheetsConfig } from '../../types';
-import styles from './EditFileExporter.module.css';
-import SheetsDropdown from './google-sheets/SheetsDropdown';
-
-enum Status {
-  LOADING,
-  LOGGED_IN,
-  LOGIN,
-  ERROR,
-}
-
-type LoginButtonProps = {
-  onCredentialsChange: (credentials: Credentials) => void;
-};
-const LoginButton: React.FC<LoginButtonProps> = ({ onCredentialsChange }) => {
-  const [loading, setLoading] = useState(false);
-
-  const login = async () => {
-    try {
-      setLoading(true);
-
-      const credentials = await electronGoogleOAuth2Connector();
-      onCredentialsChange(credentials);
-      setLoading(false);
-    } catch (ex) {
-      console.error(ex);
-      setLoading(false);
-      onCredentialsChange(null);
-    }
-  };
-
-  return (
-    <Button onClick={login} disabled={loading}>
-      Login to Google
-    </Button>
-  );
-};
-
-const useTokenStatus = (credentials: Credentials) => {
-  const [status, setStatus] = useState<Status>(Status.LOADING);
-
-  useEffect(() => {
-    validateToken(toJS(credentials))
-      .then((valid) => setStatus(valid ? Status.LOGGED_IN : Status.LOGIN))
-      .catch((e) => {
-        console.error(e);
-        setStatus(Status.ERROR);
-      });
-  }, [credentials]);
-
-  return [status, setStatus] as const;
-};
+import { Credentials } from '../../../../../src/backend/commonTypes';
+import { GoogleSheetsConfig } from '../../../types';
+import styles from '../EditFileExporter.module.css';
+import LoginButton from './LoginButton';
+import SheetsDropdown from './SheetsDropdown';
+import { Status, createSheetIfNew, useTokenStatus } from './hooks';
 
 type EditSheetsExporterProps = {
   handleSave: (exporterConfig: GoogleSheetsConfig) => Promise<void>;
@@ -94,20 +42,12 @@ const EditSheetsExporter: React.FC<EditSheetsExporterProps> = ({
   };
 
   const handleSaveClick = async () => {
-    const isNewSheet = sheetsConfig.options.spreadsheetId.length < 30;
-    if (isNewSheet) {
-      setSendDisabled(true);
-      console.log(
-        'createSpreadsheet',
-        sheetsConfig.options.credentials,
-        sheetsConfig.options.spreadsheetId,
-      );
-      const spreadsheetId = await createSpreadsheet(
-        toJS(sheetsConfig.options.spreadsheetId),
-        toJS(sheetsConfig.options.credentials),
-      );
-      sheetsConfig.options.spreadsheetId = spreadsheetId;
-    }
+    setSendDisabled(true);
+    const newId = await createSheetIfNew(
+      sheetsConfig.options.spreadsheetId,
+      sheetsConfig.options.credentials,
+    );
+    sheetsConfig.options.spreadsheetId = newId;
     await handleSave(sheetsConfig);
   };
 

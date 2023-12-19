@@ -1,27 +1,8 @@
-import { toJS } from 'mobx';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Form } from 'react-bootstrap';
 import { Typeahead } from 'react-bootstrap-typeahead';
-import {
-  Credentials,
-  Spreadsheet,
-} from '../../../../../src/backend/commonTypes';
-import { getAllUserSpreadsheets } from '../../../eventsBridge';
-
-const useUserSpreadsheets = (credentials: Credentials) => {
-  const [userSpreadsheets, setUserSpreadsheets] = useState<Spreadsheet[]>([]);
-
-  useEffect(() => {
-    getAllUserSpreadsheets(toJS(credentials))
-      .then((spreadsheets) => setUserSpreadsheets(spreadsheets))
-      .catch((err) => {
-        console.error(err);
-        setUserSpreadsheets([]);
-      });
-  }, [credentials]);
-
-  return userSpreadsheets;
-};
+import { Credentials } from '../../../../../src/backend/commonTypes';
+import { useUserSpreadsheets } from './hooks';
 
 type SheetsDropdownProps = {
   credentials: Credentials;

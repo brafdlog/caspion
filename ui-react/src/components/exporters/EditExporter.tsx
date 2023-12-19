@@ -1,7 +1,7 @@
 import React from 'react';
 import { Exporter, OutputVendorName, YnabConfig } from '../../types';
 import EditFileExporter from './EditFileExporter';
-import EditSheetsExporter from './EditSheetsExporter';
+import EditSheetsExporter from './google-sheets/EditSheetsExporter';
 import EditYnabExporter from './EditYnabExporter';
 
 type EditExporterProps = {
