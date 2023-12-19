@@ -1,17 +1,17 @@
-import { Transaction } from 'israeli-bank-scrapers-core/lib/transactions';
-import Bottleneck from 'bottleneck';
-import _ from 'lodash';
-import moment from 'moment';
 import { configFilePath, userDataPath } from '@/app-globals';
 import {
   AccountToScrapeConfig,
   Config,
   EnrichedTransaction,
   FinancialAccountDetails,
-  ScraperScrapingResult
+  ScraperScrapingResult,
 } from '@/backend/commonTypes';
 import { getConfig } from '@/backend/configManager/configManager';
 import * as bankScraper from '@/backend/import/bankScraper';
+import Bottleneck from 'bottleneck';
+import { Transaction } from 'israeli-bank-scrapers-core/lib/transactions';
+import _ from 'lodash';
+import moment from 'moment';
 // import * as categoryCalculation from '@/backend/import/categoryCalculationScript';
 import {
   AccountStatus,
@@ -19,7 +19,7 @@ import {
   DownalodChromeEvent,
   EventNames,
   EventPublisher,
-  ImporterEvent
+  ImporterEvent,
 } from '../eventEmitters/EventEmitter';
 import { calculateTransactionHash } from '../transactions/transactions';
 import getChrome from './downloadChromium';
@@ -28,67 +28,97 @@ type ScrapingConfig = Config['scraping'];
 
 const TRANSACTION_STATUS_COMPLETED = 'completed';
 
-export async function scrapeFinancialAccountsAndFetchTransactions(scrapingConfig: ScrapingConfig, startDate: Date, eventPublisher: EventPublisher) {
+export async function scrapeFinancialAccountsAndFetchTransactions(
+  scrapingConfig: ScrapingConfig,
+  startDate: Date,
+  eventPublisher: EventPublisher,
+) {
   let chromiumPath: string;
 
   if (scrapingConfig.chromiumPath) {
     chromiumPath = scrapingConfig.chromiumPath;
   } else {
-    chromiumPath = await getChrome(userDataPath, (percent) => emitChromeDownload(eventPublisher, percent));
+    chromiumPath = await getChrome(userDataPath, (percent) =>
+      emitChromeDownload(eventPublisher, percent),
+    );
   }
 
   const limiter = new Bottleneck({
-    maxConcurrent: scrapingConfig.maxConcurrency
+    maxConcurrent: scrapingConfig.maxConcurrency,
   });
   const scrapePromises = scrapingConfig.accountsToScrape
     .filter((accountToScrape) => accountToScrape.active !== false)
     .map(async (accountToScrape) => ({
       id: accountToScrape.id,
-      transactions: await limiter
-        .schedule(() => fetchTransactions(accountToScrape, startDate, scrapingConfig.showBrowser, eventPublisher, chromiumPath, scrapingConfig.timeout))
+      transactions: await limiter.schedule(() =>
+        fetchTransactions(
+          accountToScrape,
+          startDate,
+          scrapingConfig.showBrowser,
+          eventPublisher,
+          chromiumPath,
+          scrapingConfig.timeout,
+        ),
+      ),
     }));
 
   const promiseResults = await Promise.allSettled(scrapePromises);
-  const companyIdToTransactions = promiseResults
-    .reduce((idToTrxAcc, scrapeRes) => {
+  const companyIdToTransactions = promiseResults.reduce(
+    (idToTrxAcc, scrapeRes) => {
       if (scrapeRes.status === 'fulfilled') {
         const { id, transactions } = scrapeRes.value;
         idToTrxAcc[id] = transactions;
       }
       return idToTrxAcc;
-    }, {} as Record<string, EnrichedTransaction[]>);
+    },
+    {} as Record<string, EnrichedTransaction[]>,
+  );
 
   return companyIdToTransactions;
 }
 
-function buildImporterEvent(accountConfig: AccountToScrapeConfig, additionalParams: { message: string, error?: Error, status?: AccountStatus }) {
+function buildImporterEvent(
+  accountConfig: AccountToScrapeConfig,
+  additionalParams: { message: string; error?: Error; status?: AccountStatus },
+) {
   return new ImporterEvent({
     message: additionalParams.message,
     importerKey: accountConfig.key,
     error: additionalParams.error,
-    status: additionalParams.status
+    status: additionalParams.status,
   });
 }
 
 function emitChromeDownload(eventPublisher: EventPublisher, percent: number) {
-  eventPublisher.emit(EventNames.DOWNLOAD_CHROME, new DownalodChromeEvent(percent));
+  eventPublisher.emit(
+    EventNames.DOWNLOAD_CHROME,
+    new DownalodChromeEvent(percent),
+  );
 }
 
-export async function getFinancialAccountDetails(): Promise<FinancialAccountDetails[]> {
+export async function getFinancialAccountDetails(): Promise<
+  FinancialAccountDetails[]
+> {
   const config = await getConfig(configFilePath);
   const eventEmitter = new BudgetTrackingEventEmitter();
 
-  const startDate = moment()
-    .subtract(30, 'days')
-    .startOf('day')
-    .toDate();
+  const startDate = moment().subtract(30, 'days').startOf('day').toDate();
 
-  const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config.scraping, startDate, eventEmitter);
+  const companyIdToTransactions =
+    await scrapeFinancialAccountsAndFetchTransactions(
+      config.scraping,
+      startDate,
+      eventEmitter,
+    );
   const financialAccountDetails: { name: string; accountNumber: string }[] = [];
   Object.keys(companyIdToTransactions).forEach((companyId) => {
-    let accountNumbers = companyIdToTransactions[companyId].map((transaction) => transaction.accountNumber);
+    let accountNumbers = companyIdToTransactions[companyId].map(
+      (transaction) => transaction.accountNumber,
+    );
     accountNumbers = _.uniq(accountNumbers);
-    accountNumbers.forEach((accountNumber) => financialAccountDetails.push({ name: companyId, accountNumber }));
+    accountNumbers.forEach((accountNumber) =>
+      financialAccountDetails.push({ name: companyId, accountNumber }),
+    );
   });
   return financialAccountDetails;
 }
@@ -99,61 +129,102 @@ async function fetchTransactions(
   showBrowser: boolean,
   eventPublisher: EventPublisher,
   chromePath: string,
-  timeout: number
+  timeout: number,
 ) {
   try {
-    await eventPublisher.emit(EventNames.IMPORTER_START, buildImporterEvent(account, { message: 'Importer start' }));
+    await eventPublisher.emit(
+      EventNames.IMPORTER_START,
+      buildImporterEvent(account, { message: 'Importer start' }),
+    );
 
-    const emitImporterProgressEvent = async (eventCompanyId: string, message: string) => {
-      await eventPublisher.emit(EventNames.IMPORTER_PROGRESS, buildImporterEvent(account, { message }));
+    const emitImporterProgressEvent = async (
+      eventCompanyId: string,
+      message: string,
+    ) => {
+      await eventPublisher.emit(
+        EventNames.IMPORTER_PROGRESS,
+        buildImporterEvent(account, { message }),
+      );
     };
     const companyId = account.key;
-    const scrapeResult = await bankScraper.scrape({
-      companyId,
-      credentials: account.loginFields,
-      startDate,
-      showBrowser,
-      timeout,
-    }, emitImporterProgressEvent, chromePath);
+    const scrapeResult = await bankScraper.scrape(
+      {
+        companyId,
+        credentials: account.loginFields,
+        startDate,
+        showBrowser,
+        timeout,
+      },
+      emitImporterProgressEvent,
+      chromePath,
+    );
     if (!scrapeResult.success) {
-      throw new Error(`${scrapeResult.errorType}: ${scrapeResult.errorMessage}`);
+      throw new Error(
+        `${scrapeResult.errorType}: ${scrapeResult.errorMessage}`,
+      );
     }
 
     const transactions = await postProcessTransactions(account, scrapeResult);
-    await eventPublisher.emit(EventNames.IMPORTER_END, buildImporterEvent(account, { message: 'Importer end', status: AccountStatus.DONE }));
+    await eventPublisher.emit(
+      EventNames.IMPORTER_END,
+      buildImporterEvent(account, {
+        message: 'Importer end',
+        status: AccountStatus.DONE,
+      }),
+    );
 
     return transactions;
   } catch (error) {
-    await eventPublisher.emit(EventNames.IMPORTER_ERROR, buildImporterEvent(account, {
-      message: error.message, error, status: AccountStatus.ERROR
-    }));
+    await eventPublisher.emit(
+      EventNames.IMPORTER_ERROR,
+      buildImporterEvent(account, {
+        message: error.message,
+        error,
+        status: AccountStatus.ERROR,
+      }),
+    );
     throw error;
   }
 }
 
 // eslint-disable-next-line max-len
-async function postProcessTransactions(accountToScrape: AccountToScrapeConfig, scrapeResult: ScraperScrapingResult): Promise<EnrichedTransaction[]> {
+async function postProcessTransactions(
+  accountToScrape: AccountToScrapeConfig,
+  scrapeResult: ScraperScrapingResult,
+): Promise<EnrichedTransaction[]> {
   if (scrapeResult.accounts) {
     let transactions = scrapeResult.accounts.flatMap((transactionAccount) => {
-      return transactionAccount.txns.map((transaction) => enrichTransaction(transaction, accountToScrape.key, transactionAccount.accountNumber));
+      return transactionAccount.txns.map((transaction) =>
+        enrichTransaction(
+          transaction,
+          accountToScrape.key,
+          transactionAccount.accountNumber,
+        ),
+      );
     });
 
     // Filter out pending transactions
-    transactions = transactions.filter((transaction) => transaction.status === TRANSACTION_STATUS_COMPLETED);
+    transactions = transactions.filter(
+      (transaction) => transaction.status === TRANSACTION_STATUS_COMPLETED,
+    );
     transactions.sort(transactionsDateComparator);
     return transactions;
   }
   return [];
 }
 
-function enrichTransaction(transaction: Transaction, companyId: string, accountNumber: string): EnrichedTransaction {
+function enrichTransaction(
+  transaction: Transaction,
+  companyId: string,
+  accountNumber: string,
+): EnrichedTransaction {
   const hash = calculateTransactionHash(transaction, companyId, accountNumber);
   // const category = categoryCalculation.getCategoryNameByTransactionDescription(transaction.description);
   const enrichedTransaction: EnrichedTransaction = {
     ...transaction,
     accountNumber,
     // category,
-    hash
+    hash,
   };
   return enrichedTransaction;
 }
