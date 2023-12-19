@@ -3,7 +3,7 @@ import { CompanyTypes, ScraperCredentials } from 'israeli-bank-scrapers-core';
 import { Transaction } from 'israeli-bank-scrapers-core/lib/transactions';
 import { Account, BudgetSummary } from 'ynab';
 
-export type { ScaperScrapingResult } from 'israeli-bank-scrapers-core';
+export type { ScraperScrapingResult } from 'israeli-bank-scrapers-core';
 export type { Spreadsheet } from './export/outputVendors/googleSheets/googleSheetsInternalAPI';
 export interface Config {
   outputVendors: {
