@@ -1,5 +1,8 @@
 /// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Types common with the electron code
+
+import { Credentials } from '../../src/backend/commonTypes';
+
 /// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export enum OutputVendorName {
   YNAB = 'ynab',
@@ -59,8 +62,8 @@ export interface JsonConfig extends OutputVendorConfigBase {
 
 export interface GoogleSheetsConfig extends OutputVendorConfigBase {
   options: {
-    // credentials: Credentials;
-    credentials: string;
+    credentials: Credentials;
+    // credentials: string;
     spreadsheetId: string;
   };
 }

@@ -1,9 +1,14 @@
-import { Auth } from 'googleapis';
 import { CompanyTypes, ScraperCredentials } from 'israeli-bank-scrapers-core';
 import { Transaction } from 'israeli-bank-scrapers-core/lib/transactions';
 import { Account, BudgetSummary } from 'ynab';
+import { Credentials } from './export/outputVendors/googleSheets/googleSheetsInternalAPI';
 
 export type { ScraperScrapingResult } from 'israeli-bank-scrapers-core';
+export type {
+  Credentials,
+  OAuth2Client,
+  Spreadsheet,
+} from './export/outputVendors/googleSheets/googleSheetsInternalAPI';
 export interface Config {
   outputVendors: {
     [OutputVendorName.GOOGLE_SHEETS]?: GoogleSheetsConfig;
@@ -104,9 +109,6 @@ export interface OutputVendor {
   init?: (outputVendorsConfig: Config['outputVendors']) => Promise<void>;
   exportTransactions: ExportTransactionsFunction;
 }
-
-export type OAuth2Client = Auth.OAuth2Client;
-export type Credentials = Auth.Credentials;
 
 export interface FinancialAccountDetails {
   name: string;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Exporter, OutputVendorName, YnabConfig } from '../../types';
 import EditFileExporter from './EditFileExporter';
+import EditSheetsExporter from './google-sheets/EditSheetsExporter';
 import EditYnabExporter from './EditYnabExporter';
 
 type EditExporterProps = {
@@ -27,10 +28,7 @@ export default function EditExporter({
   );
   exporterTypeToEditComponent.set(
     OutputVendorName.GOOGLE_SHEETS,
-    <p>
-      ההגדרות של גוגל שיטס עוד לא זמינות בממשק החדש. נא לעבור לממשק הישן כדי
-      להגדיר
-    </p>,
+    <EditSheetsExporter exporterConfig={exporter} handleSave={handleSave} />,
   );
   return <>{exporterTypeToEditComponent.get(exporter.companyId)}</>;
 }

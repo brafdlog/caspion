@@ -14,7 +14,6 @@ import { Auth } from 'googleapis';
 import moment from 'moment/moment';
 import { createClient } from './googleAuth';
 import * as googleSheets from './googleSheetsInternalAPI';
-import { appendToSpreadsheet } from './googleSheetsInternalAPI';
 
 const GOOGLE_SHEETS_DATE_FORMAT = 'YYYY-MM-DD';
 const DEFAULT_SHEET_NAME = '_caspion';
@@ -135,7 +134,7 @@ export async function createSpreadsheet(
     auth,
   );
 
-  await appendToSpreadsheet(
+  await googleSheets.appendToSpreadsheet(
     spreadsheetId,
     `${DEFAULT_SHEET_NAME}!A:A`,
     [COLUMN_HEADERS],

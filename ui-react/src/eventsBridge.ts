@@ -1,3 +1,8 @@
+import {
+  Credentials,
+  FinancialAccountDetails,
+  YnabAccountDetails,
+} from '../../src/backend/commonTypes';
 import { Config, YnabConfig } from './types';
 
 const electron = window.require('electron');
@@ -26,7 +31,7 @@ export async function getYnabAccountData(
 export async function scrape(store) {
   await electron.ipcRenderer.send('scrape');
   if (!progressListenerDefined) {
-    electron.ipcRenderer.on('scrapingProgress', (event, progressEventStr) => {
+    electron.ipcRenderer.on('scrapingProgress', (_, progressEventStr) => {
       const progressEvent = JSON.parse(progressEventStr);
       const { eventName } = progressEvent;
       const { eventData } = progressEvent;
@@ -74,4 +79,27 @@ export async function showSaveDialog() {
 
 export async function quitAndInstall() {
   return electron.ipcRenderer.invoke('quitAndInstall');
+}
+
+// Google Sheets
+export async function validateToken(
+  credentials: Credentials,
+): Promise<boolean> {
+  return electron.ipcRenderer.invoke('validateToken', credentials);
+}
+export async function getAllUserSpreadsheets(credentials: Credentials) {
+  return electron.ipcRenderer.invoke('getAllUserSpreadsheets', credentials);
+}
+export async function electronGoogleOAuth2Connector(): Promise<Credentials> {
+  return electron.ipcRenderer.invoke('electronGoogleOAuth2Connector');
+}
+export async function createSpreadsheet(
+  spreadsheetId: string,
+  credentials: Credentials,
+): Promise<string> {
+  return electron.ipcRenderer.invoke(
+    'createSpreadsheet',
+    spreadsheetId,
+    credentials,
+  );
 }
