@@ -1,3 +1,10 @@
+# [1.18.0](https://github.com/brafdlog/caspion/compare/v1.17.0...v1.18.0) (2023-12-19)
+
+
+### New
+
+* Google Sheets exporter in the new React UI (#521) ([e1dad7e](https://github.com/brafdlog/caspion/commit/e1dad7e1b061660bc7608b4ea0acea9ed5903d47)), closes [#521](https://github.com/brafdlog/caspion/issues/521) [#427](https://github.com/brafdlog/caspion/issues/427)
+
 # [1.17.0](https://github.com/brafdlog/caspion/compare/v1.16.1...v1.17.0) (2023-12-18)
 
 ### Chore
