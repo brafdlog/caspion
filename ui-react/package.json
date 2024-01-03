@@ -38,7 +38,7 @@
     "postbuild": "node copyReactArtifacts.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint -f ./node_modules/eslint-friendly-formatter src",
+    "lint": "eslint -f ../node_modules/eslint-friendly-formatter src",
     "lint:fix": "yarn lint --fix"
   },
   "eslintConfig": {
