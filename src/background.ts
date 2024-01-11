@@ -33,9 +33,9 @@ async function createWindow() {
     width: 1152,
     webPreferences: {
       contextIsolation: false,
-      nodeIntegration: (process.env.ELECTRON_NODE_INTEGRATION as unknown) as
+      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION as unknown as
         | boolean
-        | undefined
+        | undefined,
     },
   });
   await loadUIIntoWindow();
@@ -67,7 +67,9 @@ async function loadUIIntoWindow() {
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
-    const uiDevUrl = useReactUI ? 'http://localhost:3000' : process.env.WEBPACK_DEV_SERVER_URL;
+    const uiDevUrl = useReactUI
+      ? 'http://localhost:3000'
+      : process.env.WEBPACK_DEV_SERVER_URL;
     loadURL(uiDevUrl);
     if (!process.env.IS_TEST) mainWindow.webContents.openDevTools();
   } else {
@@ -84,6 +86,13 @@ async function loadUIIntoWindow() {
   // initialize electron event handlers
   registerHandlers();
 }
+
+app.on('certificate-error', (event, _, url, __, cert, callback) => {
+  if (url.startsWith('https://api.youneedabudget.com/v1')) {
+    event.preventDefault();
+    callback(true);
+  } else callback(false);
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
