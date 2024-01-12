@@ -26,7 +26,7 @@
     "lint:react": "yarn workspace ui-react lint",
     "lint": "yarn workspaces run lint",
     "lint:fix": "yarn workspaces run lint --fix",
-    "typeCheck": "tsc --noEmit",
+    "typeCheck": "yarn workspace src typeCheck",
     "unit": "vue-cli-service test:unit",
     "e2e": "vue-cli-service test:unit --config='test/e2e/jest.e2e.config.js'",
     "test": "yarn unit && yarn e2e"
