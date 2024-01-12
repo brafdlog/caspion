@@ -68,7 +68,7 @@ module.exports = {
     ],
     'arrow-body-style': 'off',
     'object-curly-newline': 'off',
-    semi: productionError,
+    'semi': productionError,
     'padded-blocks': 'off',
     'no-return-assign': 'off',
     'quote-props': ['error', 'consistent-as-needed'],

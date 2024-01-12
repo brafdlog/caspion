@@ -40,15 +40,6 @@
     "eject": "react-scripts eject",
     "lint": "eslint -f ../node_modules/eslint-friendly-formatter src"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ],
-    "rules": {
-      "no-console": "off"
-    }
-  },
   "browserslist": {
     "production": [
       ">0.2%",
