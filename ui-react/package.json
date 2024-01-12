@@ -1,7 +1,15 @@
 {
   "name": "ui-react",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "private": true,
+  "scripts": {
+    "serve": "cross-env SKIP_PREFLIGHT_CHECK=true BROWSER=none react-scripts start",
+    "build": "cross-env SKIP_PREFLIGHT_CHECK=true react-scripts build",
+    "postbuild": "node copyReactArtifacts.js",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint": "eslint -f ../node_modules/eslint-friendly-formatter src"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -31,14 +39,6 @@
     "eslint-friendly-formatter": "^4.0.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "fs-extra": "^10.1.0"
-  },
-  "scripts": {
-    "serve": "cross-env SKIP_PREFLIGHT_CHECK=true BROWSER=none react-scripts start",
-    "build": "cross-env SKIP_PREFLIGHT_CHECK=true react-scripts build",
-    "postbuild": "node copyReactArtifacts.js",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "lint": "eslint -f ../node_modules/eslint-friendly-formatter src"
   },
   "browserslist": {
     "production": [
