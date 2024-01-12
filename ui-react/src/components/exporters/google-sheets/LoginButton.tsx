@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { Credentials } from '../../../../../src/backend/commonTypes';
+import { Credentials } from '../../../../../src/src/backend/commonTypes';
 import { electronGoogleOAuth2Connector } from '../../../eventsBridge';
 
 type LoginButtonProps = {

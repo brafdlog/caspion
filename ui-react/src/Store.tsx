@@ -18,7 +18,7 @@ import {
   Log
 } from './types';
 import accountMetadata, { exporterUIHandlers } from './accountMetadata';
-import { YnabAccountDataType, YnabConfig } from '../../src/backend/commonTypes';
+import { YnabAccountDataType, YnabConfig } from '../../src/src/backend/commonTypes';
 
 export default class Store {
   config?: Config;
