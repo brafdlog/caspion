@@ -24,12 +24,12 @@ export async function scrapeAndUpdateOutputVendors(config: Config, optionalEvent
 
   await eventPublisher.emit(Events.EventNames.IMPORT_PROCESS_START, { message: `Starting to scrape from ${startDate} to today` });
 
-  const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config.scraping, startDate, eventPublisher);
+  const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(config.scraping, startDate, eventPublisher as Events.EventPublisher);
   try {
     const executionResult = await createTransactionsInExternalVendors(config.outputVendors, companyIdToTransactions, startDate, eventPublisher);
 
     return executionResult;
-  } catch (e) {
+  } catch (e: any) {
     await eventPublisher.emit(Events.EventNames.GENERAL_ERROR, new Events.BudgetTrackingEvent({ message: e.message, error: e }));
     throw e;
   }

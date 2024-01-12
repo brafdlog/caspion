@@ -63,7 +63,6 @@ const arrayOfMappingObjectsToMapping = (mappingObjects: ConvertedType) => mappin
 }), {} as Record<string, string>);
 
 type ConvertedType = ReturnType<typeof mappingToArrayOfMappingObjects>
-type ConvertedTypeElement = ConvertedType[number]
 
 export default defineComponent({
   name: 'YnabAccountMappingTable',

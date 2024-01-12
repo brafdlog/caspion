@@ -174,7 +174,7 @@ async function fetchTransactions(
     );
 
     return transactions;
-  } catch (error) {
+  } catch (error: any) {
     await eventPublisher.emit(
       EventNames.IMPORTER_ERROR,
       buildImporterEvent(account, {

@@ -35,7 +35,7 @@ export async function createTransactionsInExternalVendors(
           exportedTransactionsNum: exportTransactionsResult.exportedTransactionsNum
         }));
         executionResult[outputVendor.name] = exportTransactionsResult;
-      } catch (e) {
+      } catch (e: any) {
         await eventPublisher.emit(EventNames.EXPORTER_ERROR, new ExporterEvent({
           message: e.message, error: e, ...baseEvent
         }));

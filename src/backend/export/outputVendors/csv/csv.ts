@@ -94,7 +94,7 @@ const parseTransactionsFile = async (filename: string) => {
   try {
     const content = await fs.readFile(filename, { encoding: 'utf8' });
     return parseTransactions(content);
-  } catch (err) {
+  } catch (err: any) {
     if (err.code === 'ENOENT') {
       return [] as EnrichedTransaction[];
     }

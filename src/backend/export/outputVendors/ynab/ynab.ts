@@ -63,7 +63,7 @@ const createTransactions: ExportTransactionsFunction = async ({ transactionsToCr
     return {
       exportedTransactionsNum: transactionsThatDontExistInYnab.length
     };
-  } catch (e) {
+  } catch (e: any) {
     await eventPublisher.emit(EventNames.EXPORTER_ERROR, new ExporterEvent({
       message: e.message, error: e, exporterName: ynabOutputVendor.name, allTransactions: transactionsToCreate
     }));

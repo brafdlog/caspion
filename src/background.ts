@@ -116,7 +116,7 @@ app.on('ready', async () => {
     // you can upgrade electron and uncomment these lines
     try {
       await installExtension(VUEJS_DEVTOOLS);
-    } catch (e) {
+    } catch (e: any) {
       logger.info('Vue Devtools failed to install:', e.toString());
     }
   }
