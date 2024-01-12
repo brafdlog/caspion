@@ -117,10 +117,10 @@
     "jest-each": "^26.4.2",
     "jest-environment-node": "^26.6.2",
     "ncp": "^2.0.0",
-    "node-loader": "^1.0.2",
+    "node-loader": "^2.0.0",
     "prettier": "^3.0.3",
     "replace-in-file": "5.0.2",
-    "sass": "~1.32",
+    "sass": "~1.69.7",
     "sass-loader": "^10.0.0",
     "semantic-release": "^19.0.5",
     "spectron": "^19.0.0",
@@ -129,8 +129,8 @@
     "vue-cli-plugin-electron-builder": "^2.1.1",
     "vue-cli-plugin-vuetify": "^2.3.1",
     "vue-jest": "4.0.0-beta.5",
-    "vue-template-compiler": "^2.6.11",
-    "vuetify-loader": "^1.4.4"
+    "vue-template-compiler": "^2.7.16",
+    "vuetify-loader": "^1.9.2"
   },
   "resolutions": {
     "electron-builder": "^23.0.0"
