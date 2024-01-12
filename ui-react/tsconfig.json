@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "composite": true,
     "lib": [
       "dom",
       "dom.iterable",

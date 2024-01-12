@@ -22,7 +22,6 @@
     "prebuild": "yarn workspace ui-react build",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
-    "prepare": "node scripts/copyCategoryCalculationScript.js && husky install",
     "lint:backend": "yarn workspace src lint",
     "lint:react": "yarn workspace ui-react lint",
     "lint": "yarn workspaces run lint",
