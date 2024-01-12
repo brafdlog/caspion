@@ -40,7 +40,7 @@ module.exports = {
     'import/core-modules': ['electron'],
     'import/resolver': {
       alias: {
-        map: [['@', './']],
+        map: [['@', './src/']],
         extensions: ['.js', '.ts', '.vue', '.tsx'],
       },
     },
