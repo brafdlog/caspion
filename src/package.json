@@ -11,15 +11,12 @@
     "serve:docker": "yarn serve --no-sandbox",
     "build": "vue-cli-service electron:build",
     "prebuild": "yarn workspace ui-react build",
-    "prepare": "node scripts/copyCategoryCalculationScript.js && husky install",
+    "prepare": "node scripts/copyCategoryCalculationScript.js",
     "lint": "eslint -f ../node_modules/eslint-friendly-formatter .",
     "typeCheck": "tsc --noEmit",
     "unit": "vue-cli-service test:unit",
     "e2e": "vue-cli-service test:unit --config='test/e2e/jest.e2e.config.js'",
     "test": "yarn unit && yarn e2e"
-  },
-  "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
     "@electron/remote": "^2.0.8",
@@ -80,7 +77,6 @@
     "babel-jest": "^26.3.0",
     "babel-plugin-component": "^1.1.1",
     "concurrently": "^6.3.0",
-    "conventional-changelog-eslint": "^3.0.9",
     "electron": "^17.0.0",
     "eslint": "^7.1.0",
     "eslint-config-airbnb-base": "^14.1.0",
@@ -95,7 +91,6 @@
     "eslint-plugin-promise": "^4.3.1",
     "eslint-plugin-standard": "^5.0.0",
     "eslint-plugin-vue": "^7.8.0",
-    "husky": "^8.0.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^26.4.2",
     "jest-circus": "^26.4.2",
@@ -104,7 +99,6 @@
     "jest-environment-node": "^26.6.2",
     "ncp": "^2.0.0",
     "node-loader": "^1.0.2",
-    "prettier": "^3.0.3",
     "replace-in-file": "5.0.2",
     "sass": "~1.32",
     "sass-loader": "^10.0.0",
