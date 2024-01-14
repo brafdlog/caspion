@@ -20,7 +20,9 @@
     "typeCheck": "yarn workspace src typeCheck",
     "unit": "yarn workspace src unit",
     "e2e": "yarn workspace src e2e",
-    "test": "yarn unit && yarn e2e"
+    "test": "yarn unit && yarn e2e",
+    "postinstall": "electron-builder install-app-deps",
+    "postuninstall": "electron-builder install-app-deps"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"

@@ -8,8 +8,6 @@
     "serve:debug": "set DEBUG=israeli-bank-scrapers:* & vue-cli-service electron:serve --debug",
     "serve:docker": "yarn serve --no-sandbox",
     "build": "vue-cli-service electron:build",
-    "postinstall": "electron-builder install-app-deps",
-    "postuninstall": "electron-builder install-app-deps",
     "prepare": "node scripts/copyCategoryCalculationScript.js",
     "lint": "eslint -f ../node_modules/eslint-friendly-formatter src",
     "typeCheck": "tsc --noEmit",
