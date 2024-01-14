@@ -1,5 +1,5 @@
 // eslint-disable-next-line max-classes-per-file
-import { UnwrapRef } from '@vue/composition-api';
+import { UnwrapRef } from 'vue';
 import { Events } from '@/backend';
 import { AccountStatus, AccountType } from '@/backend/eventEmitters/EventEmitter';
 import { Levels } from '@/logging/logger';

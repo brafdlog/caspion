@@ -1,5 +1,4 @@
-import VueCompositionAPI, { h, ref } from '@vue/composition-api';
-import Vue from 'vue';
+import Vue, { ref, h } from 'vue';
 import logger from './logging/logger';
 import Sentry from './logging/sentry';
 import App from './ui/components/App.vue';
@@ -15,14 +14,11 @@ process.on('unhandledRejection', (error) => {
   console.error(error);
 });
 
-Vue.use(VueCompositionAPI);
-
 Vue.config.productionTip = process.env.NODE_ENV !== 'production';
 
 new Vue({
   router,
   store: store.original,
-  vuetify,
 
   name: APP_NAME,
 
@@ -35,4 +31,4 @@ new Vue({
 
     return () => (loaded.value ? h(App) : h(SplashScreen));
   }
-}).$mount('#app');
+}).Use(vuetify).$mount('#app');

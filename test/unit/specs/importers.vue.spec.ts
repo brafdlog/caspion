@@ -1,4 +1,3 @@
-import CompositionApi from '@vue/composition-api';
 import { createLocalVue, shallowMount, Wrapper } from '@vue/test-utils';
 import Vuex, { Store } from 'vuex';
 import { inputVendors } from '../../../src/backend';
@@ -7,7 +6,6 @@ import AddImporter from '../../../src/ui/components/app/importers/AddImporter.vu
 
 const localVue = createLocalVue();
 
-localVue.use(CompositionApi);
 localVue.use(Vuex);
 
 describe('Importers', () => {

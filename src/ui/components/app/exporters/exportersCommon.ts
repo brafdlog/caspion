@@ -1,4 +1,4 @@
-import { computed, reactive, ref } from '@vue/composition-api';
+import { computed, reactive, ref } from 'vue';
 import { cloneDeep } from 'lodash';
 import { OutputVendorName } from '@/backend/commonTypes';
 import store from '@/ui/store';
