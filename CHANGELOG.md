@@ -1,3 +1,10 @@
+# [1.19.0](https://github.com/brafdlog/caspion/compare/v1.18.0...v1.19.0) (2024-01-14)
+
+
+### Chore
+
+* align typescript version to 3.9.7 (#532) ([af6d0f7](https://github.com/brafdlog/caspion/commit/af6d0f78b5188a37564492edc54f038bc4425a9c)), closes [#532](https://github.com/brafdlog/caspion/issues/532)
+
 # [1.18.0](https://github.com/brafdlog/caspion/compare/v1.17.0...v1.18.0) (2023-12-19)
 
 
