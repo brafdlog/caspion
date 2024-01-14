@@ -89,6 +89,7 @@ export default class Store {
     return accountsById;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   get settings() {
     return {
       numDaysBack: this.config?.scraping.numDaysBack,
@@ -100,6 +101,7 @@ export default class Store {
     return !!Array.from(this.accountScrapingData.values()).find((account) => account.status === AccountStatus.IN_PROGRESS);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   openResults(exporterName: string) {
     const config = this.config?.outputVendors[exporterName];
     const { resultType, getResultUri } = exporterUIHandlers[exporterName];
