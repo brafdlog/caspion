@@ -78,8 +78,6 @@
     "babel-plugin-component": "^1.1.1",
     "concurrently": "^6.3.0",
     "electron": "^17.0.0",
-    "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-config-prettier": "^9.0.0",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-loader": "^4.0.2",
     "eslint-plugin-html": "^6.0.2",
