@@ -18,7 +18,7 @@
   "dependencies": {
     "@electron/remote": "^2.0.8",
     "@sentry/electron": "^2.5.0",
-    "@vue/composition-api": "^1.7.2",
+    "@vue/composition-api": "^1.0.0-rc.6",
     "analytics-node": "^5.1.0",
     "bottleneck": "^2.19.5",
     "core-js": "^3.9.1",
