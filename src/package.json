@@ -5,12 +5,11 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service electron:serve",
-    "serve:debug": "concurrently --kill-others-on-fail \"yarn serve-electron:debug\"  \"yarn ui\"",
-    "serve-electron": "vue-cli-service electron:serve",
-    "serve-electron:debug": "set DEBUG=israeli-bank-scrapers:* & vue-cli-service electron:serve --debug",
+    "serve:debug": "set DEBUG=israeli-bank-scrapers:* & vue-cli-service electron:serve --debug",
     "serve:docker": "yarn serve --no-sandbox",
     "build": "vue-cli-service electron:build",
-    "prebuild": "yarn workspace ui-react build",
+    "postinstall": "electron-builder install-app-deps",
+    "postuninstall": "electron-builder install-app-deps",
     "prepare": "node scripts/copyCategoryCalculationScript.js",
     "lint": "eslint -f ../node_modules/eslint-friendly-formatter src",
     "typeCheck": "tsc --noEmit",
@@ -76,7 +75,6 @@
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.3.0",
     "babel-plugin-component": "^1.1.1",
-    "concurrently": "^6.3.0",
     "electron": "^17.0.0",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-loader": "^4.0.2",
@@ -109,6 +107,5 @@
   },
   "resolutions": {
     "electron-builder": "^23.0.0"
-  },
-  "packageManager": "yarn@1.22.19"
+  }
 }
