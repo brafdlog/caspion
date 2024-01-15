@@ -13,7 +13,7 @@
   "repository": "https://github.com/brafdlog/caspion",
   "homepage": "https://github.com/brafdlog/caspion#README.md",
   "scripts": {
-    "serve": "yarn workspaces run serve",
+    "serve": "concurrently --kill-others-on-fail \"yarn workspace src serve\" \"yarn workspace ui-react serve\"",
     "build": "yarn workspace ui-react build && yarn workspace src build",
     "lint": "yarn workspaces run lint",
     "lint:fix": "yarn workspaces run lint --fix",
@@ -27,14 +27,14 @@
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@typescript-eslint/eslint-plugin": "^3.7.0",
     "@typescript-eslint/parser": "^3.2.0",
+    "concurrently": "^8.2.2",
     "conventional-changelog-eslint": "^3.0.9",
     "eslint": "^7.1.0",
     "eslint-config-airbnb-base": "^14.1.0",

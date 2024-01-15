@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "composite": true,
+    // "composite": true, enable it when you really using a common package
     "lib": [
       "dom",
       "dom.iterable",

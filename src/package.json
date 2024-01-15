@@ -32,7 +32,7 @@
     "emittery": "^0.10.0",
     "googleapis": "^87.0.0",
     "israeli-bank-scrapers-core": "4.0.3",
-    "keytar": "^7.4.0",
+    "keytar": "^7.9.0",
     "lint-staged": "~13.2.3",
     "lodash": "^4.17.15",
     "moment": "^2.29.4",
