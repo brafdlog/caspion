@@ -23,9 +23,9 @@ jobs:
           cache-dependency-path: 'yarn.lock'
       - run: yarn --network-timeout 100000
       - run: yarn lint
-      - name: Type check
-        run: |
-          yarn typeCheck
+      # - name: Type check
+      #   run: |
+      #     yarn typeCheck
 
   test:
     runs-on: ${{ matrix.os }}

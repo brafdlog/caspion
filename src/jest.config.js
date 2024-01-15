@@ -1,5 +1,5 @@
 const { defaults } = require('jest-config');
-const globals = require('./globals');
+const globals = require('../globals');
 
 module.exports = {
   preset: '@vue/cli-plugin-unit-jest/presets/typescript-and-babel',

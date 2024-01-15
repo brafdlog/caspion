@@ -1,5 +1,5 @@
-const globals = require('./globals');
-const appName = require('./package.json').name;
+const globals = require('../globals');
+const appName = require('../package.json').name;
 
 const defineGlobals = (config) => {
   config.plugin('define').tap((args) => {
@@ -22,18 +22,15 @@ module.exports = {
       chainWebpackMainProcess: defineGlobals,
       chainWebpackRendererProcess: defineGlobals,
       // List native deps here if they don't work
-      externals: [
-        'keytar',
-        'israeli-bank-scrapers-core'
-      ],
+      externals: ['keytar', 'israeli-bank-scrapers-core'],
       builderOptions: {
         productName: appName,
         appId: `com.electron.${appName}`,
         publish: [
           {
             provider: 'github',
-            releaseType: 'release'
-          }
+            releaseType: 'release',
+          },
         ],
         // eslint-disable-next-line no-template-curly-in-string
         artifactName: '${productName}.${ext}',
@@ -59,19 +56,12 @@ module.exports = {
           icon: 'build/icons/icon.ico',
         },
         linux: {
-          target: [
-            'AppImage',
-            'deb',
-          ],
+          target: ['AppImage', 'deb'],
           icon: 'build/icons',
         },
       },
     },
-    mainProcessWatch: [
-      'src/service',
-    ],
+    mainProcessWatch: ['src/service'],
   },
-  transpileDependencies: [
-    'vuetify',
-  ],
+  transpileDependencies: ['vuetify'],
 };

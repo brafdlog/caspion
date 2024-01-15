@@ -90,7 +90,7 @@ categoryCalculationScript.ts
 config.encrypted
 googleApiToken.json
 *.map
-/userData
+userData/
 config.encrypt
 transaction.csv
 public/react

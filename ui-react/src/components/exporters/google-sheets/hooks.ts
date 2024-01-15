@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import {
   Credentials,
   Spreadsheet,
-} from '../../../../../src/backend/commonTypes';
+} from '../../../../../src/src/backend/commonTypes';
 import {
   createSpreadsheet,
   getAllUserSpreadsheets,

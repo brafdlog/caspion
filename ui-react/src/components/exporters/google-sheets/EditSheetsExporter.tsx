@@ -2,7 +2,7 @@ import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import React, { useState } from 'react';
 import { Button, Card, Form, Image } from 'react-bootstrap';
-import { Credentials } from '../../../../../src/backend/commonTypes';
+import { Credentials } from '../../../../../src/src/backend/commonTypes';
 import { GoogleSheetsConfig } from '../../../types';
 import styles from '../EditFileExporter.module.css';
 import LoginButton from './LoginButton';

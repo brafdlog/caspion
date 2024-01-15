@@ -2,7 +2,7 @@ import {
   Credentials,
   FinancialAccountDetails,
   YnabAccountDetails,
-} from '../../src/backend/commonTypes';
+} from '../../src/src/backend/commonTypes';
 import { Config, YnabConfig } from './types';
 
 const electron = window.require('electron');
