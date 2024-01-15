@@ -1,3 +1,12 @@
+# [1.20.0](https://github.com/brafdlog/caspion/compare/v1.19.0...v1.20.0) (2024-01-15)
+
+
+### Upgrade
+
+* (deps): Bump follow-redirects from 1.14.8 to 1.15.4 (#526) ([51cf188](https://github.com/brafdlog/caspion/commit/51cf188b265bff6014ddbf8d64c598cb66dd9578)), closes [#526](https://github.com/brafdlog/caspion/issues/526)
+* Bump follow-redirects from 1.15.2 to 1.15.4 in /ui-react (#527) ([435f0ae](https://github.com/brafdlog/caspion/commit/435f0ae4bc17bd2f62f341f98df3b3ce81f1fc55)), closes [#527](https://github.com/brafdlog/caspion/issues/527)
+* Bump follow-redirects from 1.15.3 to 1.15.4 in /nuxt (#528) ([64799bc](https://github.com/brafdlog/caspion/commit/64799bca3a26c734e75a83b897a29c81ad284a96)), closes [#528](https://github.com/brafdlog/caspion/issues/528)
+
 # [1.19.0](https://github.com/brafdlog/caspion/compare/v1.18.0...v1.19.0) (2024-01-14)
 
 
