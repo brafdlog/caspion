@@ -1,0 +1,77 @@
+name: Update israeli-bank-scrapers
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  # Manual trigger
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: false
+        default: 'information'
+        type: choice
+        options:
+          - information
+          - debug
+          - warning
+          - critical
+      tags:
+        description: 'Purpose of Run This Workflow?'
+        required: false
+        type: string
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Get old version
+        id: get_old_version
+        run: |
+          old_version=$(grep 'israeli-bank-scrapers-core@' yarn.lock | head -n1 | cut -d'@' -f2)
+          echo "::set-output name=old_version::$old_version"
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Upgrade israeli-bank-scrapers-core
+        run: |
+          yarn upgrade israeli-bank-scrapers-core --latest
+
+      - name: Get new version
+        id: get_new_version
+        run: |
+          new_version=$(grep 'israeli-bank-scrapers-core@' yarn.lock | cut -d'@' -f2)
+          echo "::set-output name=new_version::$new_version"
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "chore: Upgrade israeli-bank-scrapers-core library" || echo "No changes to commit"
+
+      - name: Generate diff link
+        id: diff_link
+        run: |
+          echo "::set-output name=diff_link::https://github.com/eshaham/israeli-bank-scrapers/compare/v${{ steps.get_old_version.outputs.old_version }}...v${{ steps.get_new_version.outputs.new_version }}"
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'chore: Upgrade israeli-bank-scrapers-core library'
+          title: 'Upgrade israeli-bank-scrapers-core library to ${{ steps.get_new_version.outputs.new_version }}'
+          body: |
+            Upgrade israeli-bank-scrapers-core library to ${{ steps.get_new_version.outputs.new_version }}
+            Changes:
+            - [Diff Link](${{ steps.diff_link.outputs.diff_link }})
