@@ -6,21 +6,6 @@ on:
     - cron: '0 0 * * *'
   # Manual trigger
   workflow_dispatch:
-    inputs:
-      logLevel:
-        description: 'Log level'
-        required: false
-        default: 'information'
-        type: choice
-        options:
-          - information
-          - debug
-          - warning
-          - critical
-      tags:
-        description: 'Purpose of Run This Workflow?'
-        required: false
-        type: string
 
 jobs:
   update:
@@ -54,13 +39,6 @@ jobs:
           new_version=$(yarn list --pattern israeli-bank-scrapers-core --depth=0 --json --non-interactive --no-progress | jq -r '.data.trees[].name' | cut -d'@' -f2)
           echo "new_version=${new_version}" >> $GITHUB_OUTPUT
 
-      - name: Check if update is needed
-        if: ${{ steps.get_old_version.outputs.old_version == steps.get_new_version.outputs.new_version }}
-        run: |
-          echo "No update needed, stopping the workflow."
-          exit 0
-          fi
-
       - name: Generate diff link
         id: diff_link
         run: |
@@ -71,6 +49,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: 'deps/israeli-bank-scrapers-core'
+          base: 'master'
           delete-branch: true # Delete the branch after the pull request is closed
           commit-message: 'Deps: Upgrade israeli-bank-scrapers to ${{ steps.get_new_version.outputs.new_version }}'
           title: 'Deps: Upgrade israeli-bank-scrapers to ${{ steps.get_new_version.outputs.new_version }}'
