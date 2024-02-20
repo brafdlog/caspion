@@ -30,6 +30,7 @@
   height: 18px;
   width: 18px;
   display: none;
+  cursor: pointer;
 }
 
 .container:hover .logsButton {
