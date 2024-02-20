@@ -27,18 +27,18 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: '16'
 
       - name: Get old version
         id: get_old_version
         run: |
-          old_version=$(grep 'israeli-bank-scrapers-core@' yarn.lock | head -n1 | cut -d'@' -f2)
-          echo "::set-output name=old_version::$old_version"
+          old_version=$(yarn list --pattern israeli-bank-scrapers-core --depth=0 --json --non-interactive --no-progress | jq -r '.data.trees[].name' | cut -d'@' -f2)
+          echo "old_version=${old_version}" >> $GITHUB_OUTPUT
 
       - name: Install dependencies
         run: yarn install
@@ -50,27 +50,29 @@ jobs:
       - name: Get new version
         id: get_new_version
         run: |
-          new_version=$(grep 'israeli-bank-scrapers-core@' yarn.lock | cut -d'@' -f2)
-          echo "::set-output name=new_version::$new_version"
+          new_version=$(yarn list --pattern israeli-bank-scrapers-core --depth=0 --json --non-interactive --no-progress | jq -r '.data.trees[].name' | cut -d'@' -f2)
+          echo "new_version=${new_version}" >> $GITHUB_OUTPUT
 
-      - name: Commit changes
+      - name: Check if update is needed
+        if: ${{ steps.get_old_version.outputs.old_version == steps.get_new_version.outputs.new_version }}
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add .
-          git commit -m "chore: Upgrade israeli-bank-scrapers-core library" || echo "No changes to commit"
+          echo "No update needed, stopping the workflow."
+          exit 0
+          fi
 
       - name: Generate diff link
         id: diff_link
         run: |
-          echo "::set-output name=diff_link::https://github.com/eshaham/israeli-bank-scrapers/compare/v${{ steps.get_old_version.outputs.old_version }}...v${{ steps.get_new_version.outputs.new_version }}"
+          echo "diff_link=https://github.com/eshaham/israeli-bank-scrapers/compare/v${{ steps.get_old_version.outputs.old_version }}...v${{ steps.get_new_version.outputs.new_version }}" >> $GITHUB_OUTPUT
 
       - name: Create pull request
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@b1ddad2c994a25fbc81a28b3ec0e368bb2021c50
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: 'chore: Upgrade israeli-bank-scrapers-core library'
-          title: 'Upgrade israeli-bank-scrapers-core library to ${{ steps.get_new_version.outputs.new_version }}'
+          branch: 'deps/israeli-bank-scrapers-core-${{ steps.get_new_version.outputs.new_version }}'
+          delete-branch: true # Delete the branch after the pull request is closed
+          commit-message: 'Deps: Upgrade israeli-bank-scrapers to ${{ steps.get_new_version.outputs.new_version }}'
+          title: 'Deps: Upgrade israeli-bank-scrapers to ${{ steps.get_new_version.outputs.new_version }}'
           body: |
             Upgrade israeli-bank-scrapers-core library to ${{ steps.get_new_version.outputs.new_version }}
             Changes:
