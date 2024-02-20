@@ -1,3 +1,10 @@
+# [1.21.0](https://github.com/brafdlog/caspion/compare/v1.20.1...v1.21.0) (2024-02-20)
+
+
+### Upgrade
+
+* (deps): Bump ip from 1.1.5 to 1.1.9 (#538) ([83b3358](https://github.com/brafdlog/caspion/commit/83b33584bbd6935f3f5cc0df09a75fadc3a4ca1f)), closes [#538](https://github.com/brafdlog/caspion/issues/538)
+
 ## [1.20.1](https://github.com/brafdlog/caspion/compare/v1.20.0...v1.20.1) (2024-02-01)
 
 
