@@ -1,44 +1,43 @@
 .container {
-  display: flex;
-  align-items: center;
-  height: 40px;
-  width: 200px;
-  padding: 4px 12px;
-  border: 1px solid #ddcfcf;
-  box-sizing: border-box;
-  border-radius: 4px;
-  margin: 5px 0;
-  cursor: pointer;
+    display: flex;
+    align-items: center;
+    height: 40px;
+    width: 200px;
+    padding: 4px 12px;
+    border: 1px solid #DDCFCF;
+    box-sizing: border-box;
+    border-radius: 4px;
+    margin: 5px 0;
 }
 
 .nameWrapper {
-  display: flex;
-  justify-content: flex-start;
-  flex: 1;
-  margin-right: 7px;
+    display: flex;
+    justify-content: flex-start;
+    flex: 1;
+    margin-right: 7px;
 }
 
 .notActive {
-  opacity: 0.5;
+    opacity: 0.5;
 }
 
 .logsButton {
-  margin-left: 5px;
-  height: 18px;
-  width: 18px;
-  display: none;
+    margin-left: 5px;
+    height: 18px;
+    width: 18px;
+    display: none;
 }
 
 .container:hover .logsButton {
-  display: block;
+    display: block;
 }
 
 .settingsButton {
-  margin-left: 5px;
-  height: 18px;
-  width: 18px;
+    margin-left: 5px;
+    height: 18px;
+    width: 18px;
 }
 
 .newTxnsIndicator {
-  margin-right: 8px;
+    margin-right: 8px;
 }
