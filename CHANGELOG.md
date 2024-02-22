@@ -1,3 +1,22 @@
+# [1.22.0](https://github.com/brafdlog/caspion/compare/v1.21.0...v1.22.0) (2024-02-21)
+
+
+### Build
+
+* Updates Israeli bank scrapers library (#537) ([b816ea3](https://github.com/brafdlog/caspion/commit/b816ea30d93a0a324da71a25041ab6d89c19c1a8)), closes [#537](https://github.com/brafdlog/caspion/issues/537) [#536](https://github.com/brafdlog/caspion/issues/536)
+
+### Upgrade
+
+* Bump ip from 1.1.5 to 1.1.9 in /nuxt (#540) ([3a18220](https://github.com/brafdlog/caspion/commit/3a1822010c2a672a015a46b4ff5155c8186262d1)), closes [#540](https://github.com/brafdlog/caspion/issues/540)
+* Bump ip from 1.1.8 to 1.1.9 in /ui-react (#539) ([ead6335](https://github.com/brafdlog/caspion/commit/ead63357b84313702ba96309467572d288c51785)), closes [#539](https://github.com/brafdlog/caspion/issues/539)
+
+# [1.21.0](https://github.com/brafdlog/caspion/compare/v1.20.1...v1.21.0) (2024-02-20)
+
+
+### Upgrade
+
+* (deps): Bump ip from 1.1.5 to 1.1.9 (#538) ([83b3358](https://github.com/brafdlog/caspion/commit/83b33584bbd6935f3f5cc0df09a75fadc3a4ca1f)), closes [#538](https://github.com/brafdlog/caspion/issues/538)
+
 ## [1.20.1](https://github.com/brafdlog/caspion/compare/v1.20.0...v1.20.1) (2024-02-01)
 
 
