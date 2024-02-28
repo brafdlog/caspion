@@ -1,3 +1,10 @@
+# [1.23.0](https://github.com/brafdlog/caspion/compare/v1.22.0...v1.23.0) (2024-02-28)
+
+
+### Upgrade
+
+* Bump es5-ext from 0.10.62 to 0.10.64 (#542) ([313002f](https://github.com/brafdlog/caspion/commit/313002f1366054fdce6f5fdb70c015876a8308b2)), closes [#542](https://github.com/brafdlog/caspion/issues/542) [#201](https://github.com/brafdlog/caspion/issues/201) [#021](https://github.com/brafdlog/caspion/issues/021) [#181](https://github.com/brafdlog/caspion/issues/181) [#201](https://github.com/brafdlog/caspion/issues/201) [#021](https://github.com/brafdlog/caspion/issues/021) [#181](https://github.com/brafdlog/caspion/issues/181)
+
 # [1.22.0](https://github.com/brafdlog/caspion/compare/v1.21.0...v1.22.0) (2024-02-21)
 
 
