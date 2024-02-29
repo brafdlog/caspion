@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
-import {
-  Button, Form, Modal, Row, Col, Stack
-} from 'react-bootstrap';
+import { Button, Form, Modal, Row, Col, Stack } from 'react-bootstrap';
 import os from 'os';
 import {
-  getLogsInfo, openExternal, sentryUserReportProblem
+  getLogsInfo,
+  openExternal,
+  sentryUserReportProblem,
 } from '../../eventsBridge';
 import LogsCanvas from './LogsCanvas';
 import { isValidEmail } from '../../utils/validations';
@@ -31,7 +31,6 @@ type ValidationError = {
 };
 
 function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
-
   const [logsFolder, setLogsFolder] = useState<string>();
   const store = useContext(StoreContext);
 
@@ -51,7 +50,7 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
     title: '',
     email: '',
     details: '',
-    attachedLogs: true
+    attachedLogs: true,
   });
 
   const [errors, setErrors] = useState<ValidationError>({});
@@ -69,7 +68,9 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
     if (!form.title || form.title === '') newErrors.title = 'שדה חובה';
 
     if (validateEmail) {
-      if (!form.email || !isValidEmail(form.email)) { newErrors.email = 'שדה מייל לא חוקי'; }
+      if (!form.email || !isValidEmail(form.email)) {
+        newErrors.email = 'שדה מייל לא חוקי';
+      }
     }
 
     return newErrors;
@@ -87,7 +88,7 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
     const url = createGithubIssueLink(
       form.title ?? '',
       form.details ?? '',
-      form.attachedLogs ? (lastLines ?? '') : ''
+      form.attachedLogs ? lastLines ?? '' : '',
     );
     openExternal(url);
   };
@@ -95,7 +96,7 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
   const createGithubIssueLink = (
     title: string,
     details: string,
-    log: string
+    log: string,
   ) => {
     const formattedDetails = details
       ? `
@@ -121,11 +122,11 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
          - OS Version: \`${os.release()}\`
         `;
 
-    return `${`${store.appInfo.repository}/issues/new?`
-      + `title=${encodeURIComponent(title)}`
-      + '&body='}${encodeURIComponent(
-      formattedDetails + formattedLog + sysInfo
-    )}`;
+    return `${
+      `${store.appInfo.repository}/issues/new?` +
+      `title=${encodeURIComponent(title)}` +
+      '&body='
+    }${encodeURIComponent(formattedDetails + formattedLog + sysInfo)}`;
   };
 
   const sendReport = async (e) => {
@@ -137,14 +138,12 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
       return;
     }
 
-    sentryUserReportProblem(
-      {
-        title: form.title,
-        body: form.details,
-        logs: form.attachedLogs ?? '',
-        email: form.email
-      }
-    );
+    sentryUserReportProblem({
+      title: form.title,
+      body: form.details,
+      logs: form.attachedLogs ?? '',
+      email: form.email,
+    });
   };
 
   const seeLogs = () => {
@@ -158,7 +157,7 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
       title: '',
       email: '',
       details: '',
-      attachedLogs: false
+      attachedLogs: false,
     });
   };
 
@@ -175,8 +174,8 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
         style={{ zIndex: getZIndexes().modal }}
       >
         <Modal.Header closeButton>
-        <div className="row justify-content-center">
-          <Modal.Title>דיווח על באג</Modal.Title>
+          <div className="row justify-content-center">
+            <Modal.Title>דיווח על באג</Modal.Title>
           </div>
         </Modal.Header>
         <Modal.Body>
@@ -196,6 +195,7 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
                   value={form.title}
                   isInvalid={!!errors.title}
                   onChange={(e) => setField('title', e.target.value)}
+                  autoFocus
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.title}
@@ -234,19 +234,27 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
               value={form.details}
               onChange={(e) => setField('details', e.target.value)}
             />
-             <Form.Group className="mb-4" as={Col} md="2">
-              <Form.Check value={form.attachedLogs} type="checkbox" label="צירוף קבצי לוג"
+            <Form.Group className="mb-4" as={Col} md="2">
+              <Form.Check
+                value={form.attachedLogs}
+                type="checkbox"
+                label="צירוף קבצי לוג"
                 checked={form.attachedLogs === true}
-                          onChange={(e) => setForm((prevForm) => ({ ...prevForm, attachedLogs: e.target.checked }))}/>(
+                onChange={(e) =>
+                  setForm((prevForm) => ({
+                    ...prevForm,
+                    attachedLogs: e.target.checked,
+                  }))
+                }
+              />
+              (
               <Button variant="link" onClick={seeLogs}>
                 צפיה בלוגים
               </Button>
               )
             </Form.Group>
 
-            <div className="mb-4">
-              אפשר למצוא את הלוגים פה: {logsFolder}
-            </div>
+            <div className="mb-4">אפשר למצוא את הלוגים פה: {logsFolder}</div>
             <Stack direction="horizontal" gap={3}>
               <Button variant="light" onClick={onClose}>
                 סגור
@@ -271,7 +279,11 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
           </Form>
         </Modal.Body>
       </Modal>
-      <LogsCanvas show={showLogs} handleClose={() => setShowLogs(false)} lastLines={lastLines} />
+      <LogsCanvas
+        show={showLogs}
+        handleClose={() => setShowLogs(false)}
+        lastLines={lastLines}
+      />
     </>
   );
 }

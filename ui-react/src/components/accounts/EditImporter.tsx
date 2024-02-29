@@ -1,30 +1,34 @@
 import React, { useState } from 'react';
-import {
-  Button, Card, Form, Image
-} from 'react-bootstrap';
+import { Button, Card, Form, Image } from 'react-bootstrap';
 import { Importer } from '../../types';
-import { IMPORTERS_LOGIN_FIELDS, LOGIN_FIELD_DISPLAY_NAMES, LOGIN_FIELD_MIN_LENGTH } from '../../accountMetadata';
+import {
+  IMPORTERS_LOGIN_FIELDS,
+  LOGIN_FIELD_DISPLAY_NAMES,
+  LOGIN_FIELD_MIN_LENGTH,
+} from '../../accountMetadata';
 import styles from './EditImporter.module.css';
 
 type EditImporterProps = {
   handleSave: (importer: Importer) => Promise<void>;
   handleDelete: (id: string) => Promise<void>;
   importer: Importer;
-}
+};
 
 export default function EditImporter({
   handleSave,
   handleDelete,
-  importer
+  importer,
 }: EditImporterProps) {
-  const [loginFields, setLoginFields] = useState<Record<string, string>>(importer.loginFields || {});
+  const [loginFields, setLoginFields] = useState<Record<string, string>>(
+    importer.loginFields || {},
+  );
   const [active, setActive] = useState<boolean>(importer.active);
   const [validated, setValidated] = useState(false);
   const onSaveClicked = async () => {
     await handleSave({
       ...importer,
       active,
-      loginFields
+      loginFields,
     });
   };
 
@@ -33,12 +37,19 @@ export default function EditImporter({
   };
 
   const checkFieldsValidity = (fieldsToCheck) => {
-    setValidated(Object.entries(fieldsToCheck).every(([key, value]) => checkFieldValidity(key, value)));
+    setValidated(
+      Object.entries(fieldsToCheck).every(([key, value]) =>
+        checkFieldValidity(key, value),
+      ),
+    );
   };
 
   const onLoginFieldChanged = (loginFieldName: string, loginFieldValue) => {
     setLoginFields((prevLoginFields) => {
-      const nextLoginFields = { ...prevLoginFields, [loginFieldName]: loginFieldValue };
+      const nextLoginFields = {
+        ...prevLoginFields,
+        [loginFieldName]: loginFieldValue,
+      };
 
       checkFieldsValidity(nextLoginFields);
 
@@ -54,18 +65,34 @@ export default function EditImporter({
   return (
     <div className={styles.container}>
       <Card className={styles.card}>
-        <Image className={styles.logo} src={importer.logo} roundedCircle width={100} height={100} />
+        <Image
+          className={styles.logo}
+          src={importer.logo}
+          roundedCircle
+          width={100}
+          height={100}
+        />
         <Card.Body className={styles.cardBody}>
           <Form>
-            {IMPORTERS_LOGIN_FIELDS[importer.companyId].map((loginField) => (
-              <Form.Group key={loginField} className={styles.formGroup} controlId={loginField}>
-                <Form.Control
-                  placeholder={LOGIN_FIELD_DISPLAY_NAMES[loginField]}
-                  type={loginField === 'password' ? 'password' : ''}
-                  value={loginFields[loginField]}
-                  onChange={(event) => onLoginFieldChanged(loginField, event.target.value)} />
-              </Form.Group>
-            ))}
+            {IMPORTERS_LOGIN_FIELDS[importer.companyId].map(
+              (loginField, index) => (
+                <Form.Group
+                  key={loginField}
+                  className={styles.formGroup}
+                  controlId={loginField}
+                >
+                  <Form.Control
+                    placeholder={LOGIN_FIELD_DISPLAY_NAMES[loginField]}
+                    type={loginField === 'password' ? 'password' : ''}
+                    value={loginFields[loginField]}
+                    onChange={(event) =>
+                      onLoginFieldChanged(loginField, event.target.value)
+                    }
+                    autoFocus={index === 0}
+                  />
+                </Form.Group>
+              ),
+            )}
             <Form.Check
               type="switch"
               onChange={onActiveChanged}
@@ -73,8 +100,19 @@ export default function EditImporter({
               checked={active}
             />
             <div className={styles.actionButtonsWrapper}>
-              <Button variant="danger" onClick={() => handleDelete(importer.id)}>מחק</Button>
-              <Button variant="primary" onClick={onSaveClicked} disabled={!validated}>שמור</Button>
+              <Button
+                variant="danger"
+                onClick={() => handleDelete(importer.id)}
+              >
+                מחק
+              </Button>
+              <Button
+                variant="primary"
+                onClick={onSaveClicked}
+                disabled={!validated}
+              >
+                שמור
+              </Button>
             </div>
           </Form>
         </Card.Body>

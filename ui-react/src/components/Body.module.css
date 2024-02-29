@@ -1,19 +1,23 @@
 .container {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .buttonsContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .scrapeButton {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
+}
+
+.pointer {
+  cursor: pointer;
 }
 
 .customGap {
@@ -21,10 +25,10 @@
 }
 
 .contentContainer {
-    margin-top: 5rem;
+  margin-top: 5rem;
 }
 
 .modalWide {
-    max-width: unset;
-    width: 70%;
+  max-width: unset;
+  width: 70%;
 }
