@@ -13,7 +13,6 @@ function GeneralSettings() {
   }
 
   const handleTimeoutChanged = (timeout: string) => {
-
     const numberTimeout = Number(timeout);
     if (numberTimeout) {
       store.setTimeout(numberTimeout);
@@ -21,48 +20,53 @@ function GeneralSettings() {
   };
 
   return (
-        <div className={styles.container}>
-            <Card className={styles.card}>
-                <Card.Body className={styles.cardBody}>
-                    <Form>
-                        <Form.Label>הראה דפדפן</Form.Label>
-                        <Form.Check
-                            type="switch"
-                            onClick={toggleShowBrowser}
-                            defaultChecked={store.config?.scraping?.showBrowser}
-                        />
-                        <Form.Group>
-                            <Form.Label>כמה ימים אחורה לחפש?</Form.Label>
-                            <Form.Control
-                                className={styles.input}
-                                defaultValue={store.config?.scraping.numDaysBack}
-                                onBlur={(event) => store.setNumDaysBack(event.target.value)} />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>כמה חשבונות לשלוף במקביל?</Form.Label>
-                            <Form.Control
-                                className={styles.input}
-                                defaultValue={store.config?.scraping.maxConcurrency}
-                                onBlur={(event) => store.setMaxConcurrency(event.target.value)} />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Chromium path</Form.Label>
-                            <Form.Control
-                                className={styles.input}
-                                defaultValue={store.config?.scraping.chromiumPath}
-                                onBlur={(event) => store.setChromiumPath(event.target.value)} />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>כמה זמן לחכות לשליפה? (millisec)</Form.Label>
-                            <Form.Control
-                                className={styles.input}
-                                defaultValue={store.config?.scraping.timeout}
-                                onBlur={(event) => handleTimeoutChanged(event.target.value)} />
-                        </Form.Group>
-                    </Form>
-                </Card.Body>
-            </Card>
-        </div>
+    <div className={styles.container}>
+      <Card className={styles.card}>
+        <Card.Body className={styles.cardBody}>
+          <Form>
+            <Form.Label>הראה דפדפן</Form.Label>
+            <Form.Check
+              type="switch"
+              onClick={toggleShowBrowser}
+              defaultChecked={store.config?.scraping?.showBrowser}
+            />
+            <Form.Group>
+              <Form.Label>כמה ימים אחורה לחפש?</Form.Label>
+              <Form.Control
+                className={styles.input}
+                defaultValue={store.config?.scraping.numDaysBack}
+                onBlur={(event) => store.setNumDaysBack(event.target.value)}
+                autoFocus
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>כמה חשבונות לשלוף במקביל?</Form.Label>
+              <Form.Control
+                className={styles.input}
+                defaultValue={store.config?.scraping.maxConcurrency}
+                onBlur={(event) => store.setMaxConcurrency(event.target.value)}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Chromium path</Form.Label>
+              <Form.Control
+                className={styles.input}
+                defaultValue={store.config?.scraping.chromiumPath}
+                onBlur={(event) => store.setChromiumPath(event.target.value)}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>כמה זמן לחכות לשליפה? (millisec)</Form.Label>
+              <Form.Control
+                className={styles.input}
+                defaultValue={store.config?.scraping.timeout}
+                onBlur={(event) => handleTimeoutChanged(event.target.value)}
+              />
+            </Form.Group>
+          </Form>
+        </Card.Body>
+      </Card>
+    </div>
   );
 }
 
