@@ -1,3 +1,10 @@
+# [1.24.0](https://github.com/brafdlog/caspion/compare/v1.23.0...v1.24.0) (2024-02-29)
+
+
+### New
+
+* cursor and autoFocus (#541) ([9dce6a8](https://github.com/brafdlog/caspion/commit/9dce6a8cbc9fd7f5c9fb48f487c14d521af8a1a5)), closes [#541](https://github.com/brafdlog/caspion/issues/541)
+
 # [1.23.0](https://github.com/brafdlog/caspion/compare/v1.22.0...v1.23.0) (2024-02-28)
 
 
