@@ -1,3 +1,10 @@
+# [1.25.0](https://github.com/brafdlog/caspion/compare/v1.24.0...v1.25.0) (2024-03-17)
+
+
+### Upgrade
+
+* Bump follow-redirects (#548) ([32fae02](https://github.com/brafdlog/caspion/commit/32fae025a887790a3d2305a775d89f4a915828f0)), closes [#548](https://github.com/brafdlog/caspion/issues/548)
+
 # [1.24.0](https://github.com/brafdlog/caspion/compare/v1.23.0...v1.24.0) (2024-02-29)
 
 
