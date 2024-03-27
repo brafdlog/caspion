@@ -19,6 +19,8 @@ import leumi from './importers/leumi.png';
 import massad from './importers/massad.png';
 import yahav from './importers/yahavLogo.jpg';
 import beyahadBishvilha from './importers/beyahadLogo.png';
+import behatsdaa from './importers/behatsdaa.png';
+import mercantile from './importers/mercantile.png';
 
 export const importerIcons = {
   discount,
@@ -36,12 +38,14 @@ export const importerIcons = {
   leumi,
   massad,
   yahav,
-  beyahadBishvilha
+  beyahadBishvilha,
+  behatsdaa,
+  mercantile,
 };
 
 export const exporterIcons = {
   [OutputVendorName.CSV]: csv,
   [OutputVendorName.YNAB]: ynab,
   [OutputVendorName.JSON]: json,
-  [OutputVendorName.GOOGLE_SHEETS]: googleSheets
+  [OutputVendorName.GOOGLE_SHEETS]: googleSheets,
 };

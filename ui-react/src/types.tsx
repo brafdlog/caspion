@@ -104,6 +104,7 @@ export enum CompanyTypes {
   YAHAV = 'yahav',
   BEYAHAD_BISHVILHA = 'beyahadBishvilha',
   BEHATSDAA = 'behatsdaa',
+  MERCANTILE = 'mercantile',
 }
 
 export enum AccountType {

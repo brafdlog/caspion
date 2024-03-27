@@ -12,6 +12,7 @@ import isracardLogo from './ui/assets/logos/isracard.jpeg';
 import jsonLogo from './ui/assets/logos/json.jpeg';
 import leumiLogo from './ui/assets/logos/leumi.png';
 import leumiCardLogo from './ui/assets/logos/leumicard.png';
+import mercantileLogo from './ui/assets/logos/mercantile.png';
 import massadLogo from './ui/assets/logos/massad.png';
 import maxLogo from './ui/assets/logos/max.jpeg';
 import mizrahiLogo from './ui/assets/logos/mizrahi.png';
@@ -30,7 +31,7 @@ export type AccountMetadata = {
 }
 
 type AccountsMetadata = {
-  importers: Record<CompanyTypes, AccountMetadata>,
+  importers: Partial<Record<CompanyTypes, AccountMetadata>>,
   exporters: Record<OutputVendorName, AccountMetadata>
 }
 
@@ -125,6 +126,11 @@ const ACCOUNT_METADATA: AccountsMetadata = {
       companyKey: CompanyTypes.behatsdaa,
       companyName: 'בחצדעה',
       logo: behatsdaaLogo
+    },
+    [CompanyTypes.mercantile]: {
+      companyKey: CompanyTypes.mercantile,
+      companyName: 'מרכנתיל',
+      logo: mercantileLogo
     }
   },
   exporters: {
