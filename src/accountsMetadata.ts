@@ -12,6 +12,7 @@ import isracardLogo from './ui/assets/logos/isracard.jpeg';
 import jsonLogo from './ui/assets/logos/json.jpeg';
 import leumiLogo from './ui/assets/logos/leumi.png';
 import leumiCardLogo from './ui/assets/logos/leumicard.png';
+import marcantileLogo from './ui/assets/logos/marcantile.png';
 import massadLogo from './ui/assets/logos/massad.png';
 import maxLogo from './ui/assets/logos/max.jpeg';
 import mizrahiLogo from './ui/assets/logos/mizrahi.png';
@@ -125,6 +126,11 @@ const ACCOUNT_METADATA: AccountsMetadata = {
       companyKey: CompanyTypes.behatsdaa,
       companyName: 'בחצדעה',
       logo: behatsdaaLogo
+    },
+    [CompanyTypes.marcantile]: {
+      companyKey: CompanyTypes.marcantile,
+      companyName: 'מרכנתיל',
+      logo: marcantileLogo
     }
   },
   exporters: {
