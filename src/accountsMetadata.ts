@@ -30,7 +30,7 @@ export type AccountMetadata = {
 }
 
 type AccountsMetadata = {
-  importers: Record<CompanyTypes, AccountMetadata>,
+  importers: Partial<Record<CompanyTypes, AccountMetadata>>,
   exporters: Record<OutputVendorName, AccountMetadata>
 }
 
