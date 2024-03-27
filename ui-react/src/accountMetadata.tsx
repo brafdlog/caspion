@@ -39,6 +39,7 @@ const accountIdToDisplayName: Record<CompanyTypes | OutputVendorName, string> =
     [CompanyTypes.BEYAHAD_BISHVILHA]: 'ביחד בשבילך',
     [CompanyTypes.MASSAD]: 'מסד',
     [CompanyTypes.BEHATSDAA]: 'בהצדעה',
+    [CompanyTypes.MERCANTILE]: 'מרכנתיל',
     [OutputVendorName.CSV]: 'אקסל',
     [OutputVendorName.GOOGLE_SHEETS]: 'Google Sheets',
     [OutputVendorName.YNAB]: 'Ynab',
