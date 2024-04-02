@@ -47,7 +47,7 @@ jobs:
           echo "diff_link=https://github.com/eshaham/israeli-bank-scrapers/compare/v${{ steps.get_old_version.outputs.old_version }}...v${{ steps.get_new_version.outputs.new_version }}" >> $GITHUB_OUTPUT
 
       - name: Create pull request
-        uses: peter-evans/create-pull-request@b1ddad2c994a25fbc81a28b3ec0e368bb2021c50
+        uses: peter-evans/create-pull-request@70a41aba780001da0a30141984ae2a0c95d8704e # v6.0.2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: 'deps/israeli-bank-scrapers-core'
