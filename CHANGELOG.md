@@ -1,3 +1,14 @@
+## [1.25.2](https://github.com/brafdlog/caspion/compare/v1.25.1...v1.25.2) (2024-04-02)
+
+
+### ci
+
+* upgrade create-pr-action to fix github but in update existing pr ([0610b9a](https://github.com/brafdlog/caspion/commit/0610b9a6fd494f7779b9e4f8550430eed2e52991))
+
+### Deps
+
+* Upgrade israeli-bank-scrapers to 4.4.1 (#553) ([c72c16a](https://github.com/brafdlog/caspion/commit/c72c16a44ae18541c8129b0ccc35a151b7693069)), closes [#553](https://github.com/brafdlog/caspion/issues/553)
+
 ## [1.25.1](https://github.com/brafdlog/caspion/compare/v1.25.0...v1.25.1) (2024-03-27)
 
 
