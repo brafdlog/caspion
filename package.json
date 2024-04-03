@@ -48,7 +48,7 @@
     "electron-updater": "^5.2.4",
     "emittery": "^0.10.0",
     "googleapis": "^87.0.0",
-    "israeli-bank-scrapers-core": "4.4.1",
+    "israeli-bank-scrapers-core": "4.4.2",
     "keytar": "^7.4.0",
     "lint-staged": "~13.2.3",
     "lodash": "^4.17.15",
