@@ -1,3 +1,14 @@
+# [1.27.0](https://github.com/brafdlog/caspion/compare/v1.26.1...v1.27.0) (2024-04-28)
+
+
+### Deps
+
+* Upgrade israeli-bank-scrapers to 4.5.0 (#558) ([9d47c73](https://github.com/brafdlog/caspion/commit/9d47c739c52db52421bdb1de8843c3930140cc2f)), closes [#558](https://github.com/brafdlog/caspion/issues/558)
+
+### Upgrade
+
+* Bump tar from 6.1.11 to 6.2.1 (#560) ([05e8bb4](https://github.com/brafdlog/caspion/commit/05e8bb45c40c5f89a94096ad2703506d88acc740)), closes [#560](https://github.com/brafdlog/caspion/issues/560)
+
 ## [1.26.1](https://github.com/brafdlog/caspion/compare/v1.26.0...v1.26.1) (2024-04-03)
 
 
