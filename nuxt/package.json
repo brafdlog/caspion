@@ -34,7 +34,7 @@
     "eslint-plugin-html": "^6.0.1",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-vue": "^7.9.0",
-    "gh-pages": "^2.2.0",
+    "gh-pages": "^5.0.0",
     "jest": "^25.1.0",
     "jest-serializer-vue": "^2.0.2",
     "serve": "^11.3.0",
