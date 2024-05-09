@@ -67,9 +67,7 @@ Depending on your distribution, you will need to run the following command:
 
 #### Mac Prerequisites
 
-For M1 macs, if you get an error while scraping due to not being able to download chromium, download it manually
-as described [here](https://linguinecode.com/post/how-to-fix-m1-mac-puppeteer-chromium-arm64-bug). Then in the settings,
-set the chromium path to be the result of `which chromium`
+For M1 macs, if you get an error while scraping due to not being able to download chromium, download it manually as described [here](https://linguinecode.com/post/how-to-fix-m1-mac-puppeteer-chromium-arm64-bug). Then in the settings, set the chromium path to be the result of `which chromium`
 
 
 ### Start from Source
