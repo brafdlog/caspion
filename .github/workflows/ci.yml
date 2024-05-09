@@ -67,7 +67,7 @@ jobs:
       - run: yarn e2e
       - name: Upload screenshots
         if: failure()
-        uses: actions/upload-artifact@v1.0.0
+        uses: actions/upload-artifact@v4
         with:
           # Artifact name
           name: ${{ matrix.os }}-screenshots
@@ -111,7 +111,7 @@ jobs:
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
         run: yarn build --publish never
       - name: Upload artifact
-        uses: actions/upload-artifact@v1.0.0
+        uses: actions/upload-artifact@v4
         with:
           # Artifact name
           name: ${{ matrix.os }}-artifact
