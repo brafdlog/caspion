@@ -5,6 +5,13 @@
 
 * upgrade deprecated actions (#561) ([55e2b02](https://github.com/brafdlog/caspion/commit/55e2b025d1781e01d50e2c0afb8f213de47ecf3c)), closes [#561](https://github.com/brafdlog/caspion/issues/561)
 
+## [1.27.1](https://github.com/brafdlog/caspion/compare/v1.27.0...v1.27.1) (2024-05-09)
+
+
+### Deps
+
+* upgrade deprecated actions (#561) ([55e2b02](https://github.com/brafdlog/caspion/commit/55e2b025d1781e01d50e2c0afb8f213de47ecf3c)), closes [#561](https://github.com/brafdlog/caspion/issues/561)
+
 # [1.27.0](https://github.com/brafdlog/caspion/compare/v1.26.1...v1.27.0) (2024-04-28)
 
 
