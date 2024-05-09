@@ -69,7 +69,7 @@ jobs:
           cache: 'yarn'
           cache-dependency-path: 'yarn.lock'
       - name: Install Snapcraft
-        uses: samuelmeuli/action-snapcraft@cb425203a562475bca039ba4dbf90c7f9ac790f4
+        uses: samuelmeuli/action-snapcraft@d33c176a9b784876d966f80fb1b461808edc0641
         # Only install Snapcraft  on Ubuntu
         if: startsWith(matrix.os, 'ubuntu')
         continue-on-error: true
