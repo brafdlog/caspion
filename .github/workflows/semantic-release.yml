@@ -38,6 +38,8 @@ jobs:
       - uses: cycjimmy/semantic-release-action@cb425203a562475bca039ba4dbf90c7f9ac790f4
         id: semantic
         if: inputs.version == ''
+        with:
+          semantic_version: 19.0.5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
