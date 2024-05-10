@@ -30,7 +30,7 @@ const TRANSACTION_2 = {
   status: TransactionStatuses.Completed
 };
 
-const TRANSACTION_2_HASH = "2020-03-27T21:00:00.000Z_-200_מי גבעתיים בע'מ_some memo_visaCal_2222";
+const TRANSACTION_2_HASH = "2020-03-27T21:00:00.000Z_-200_מיגבעתייםבע'מ_somememo_visaCal_2222";
 
 const companyId = 'visaCal';
 const accountNumber = '2222';
