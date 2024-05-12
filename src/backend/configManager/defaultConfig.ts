@@ -35,6 +35,12 @@ const DEFAULT_CONFIG: Config = {
         credentials: {},
         spreadsheetId: ''
       }
+    },
+    firefly: {
+      active: false,
+      options: {
+        baseURL: ''
+      }
     }
   }
 };

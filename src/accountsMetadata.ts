@@ -6,15 +6,16 @@ import beinleumiLogo from './ui/assets/logos/beinleumi.jpeg';
 import beyahadLogo from './ui/assets/logos/beyahadLogo.png';
 import discountLogo from './ui/assets/logos/discount.jpeg';
 import excelLogo from './ui/assets/logos/excel.png';
+import fireflyLogo from './ui/assets/logos/firefly.png';
 import hapoalimBeOnlineLogo from './ui/assets/logos/hapoalimBeOnline.jpeg';
 import igudLogo from './ui/assets/logos/igud.jpeg';
 import isracardLogo from './ui/assets/logos/isracard.jpeg';
 import jsonLogo from './ui/assets/logos/json.jpeg';
 import leumiLogo from './ui/assets/logos/leumi.png';
 import leumiCardLogo from './ui/assets/logos/leumicard.png';
-import mercantileLogo from './ui/assets/logos/mercantile.png';
 import massadLogo from './ui/assets/logos/massad.png';
 import maxLogo from './ui/assets/logos/max.jpeg';
+import mercantileLogo from './ui/assets/logos/mercantile.png';
 import mizrahiLogo from './ui/assets/logos/mizrahi.png';
 import oneZeroLogo from './ui/assets/logos/oneZero.jpeg';
 import otsarHahayalLogo from './ui/assets/logos/otsarHahayal.jpeg';
@@ -28,133 +29,138 @@ export type AccountMetadata = {
   companyKey: string;
   companyName: string;
   logo: any;
-}
+};
 
 type AccountsMetadata = {
-  importers: Partial<Record<CompanyTypes, AccountMetadata>>,
-  exporters: Record<OutputVendorName, AccountMetadata>
-}
+  importers: Partial<Record<CompanyTypes, AccountMetadata>>;
+  exporters: Record<OutputVendorName, AccountMetadata>;
+};
 
 const ACCOUNT_METADATA: AccountsMetadata = {
   importers: {
     [CompanyTypes.max]: {
       companyKey: CompanyTypes.max,
       companyName: 'Max',
-      logo: maxLogo
+      logo: maxLogo,
     },
     [CompanyTypes.amex]: {
       companyKey: CompanyTypes.amex,
       companyName: 'American Express',
-      logo: americanExpressLogo
+      logo: americanExpressLogo,
     },
     [CompanyTypes.beinleumi]: {
       companyKey: CompanyTypes.beinleumi,
       companyName: 'הבינלאומי',
-      logo: beinleumiLogo
+      logo: beinleumiLogo,
     },
     [CompanyTypes.hapoalimBeOnline]: {
       companyKey: CompanyTypes.hapoalimBeOnline,
       companyName: 'הפועלים',
-      logo: hapoalimBeOnlineLogo
+      logo: hapoalimBeOnlineLogo,
     },
     [CompanyTypes.isracard]: {
       companyKey: CompanyTypes.isracard,
       companyName: 'ישראכרט',
-      logo: isracardLogo
+      logo: isracardLogo,
     },
     [CompanyTypes.leumiCard]: {
       companyKey: CompanyTypes.leumiCard,
       companyName: 'לאומי קארד',
-      logo: leumiCardLogo
+      logo: leumiCardLogo,
     },
     [CompanyTypes.otsarHahayal]: {
       companyKey: CompanyTypes.otsarHahayal,
       companyName: 'אוצר החייל',
-      logo: otsarHahayalLogo
+      logo: otsarHahayalLogo,
     },
     [CompanyTypes.union]: {
       companyKey: CompanyTypes.union,
       companyName: 'איגוד',
-      logo: igudLogo
+      logo: igudLogo,
     },
     [CompanyTypes.leumi]: {
       companyKey: CompanyTypes.leumi,
       companyName: 'לאומי',
-      logo: leumiLogo
+      logo: leumiLogo,
     },
     [CompanyTypes.mizrahi]: {
       companyKey: CompanyTypes.mizrahi,
       companyName: 'מזרחי',
-      logo: mizrahiLogo
+      logo: mizrahiLogo,
     },
     [CompanyTypes.hapoalim]: {
       companyKey: CompanyTypes.hapoalim,
       companyName: 'הפועלים',
-      logo: poalimLogo
+      logo: poalimLogo,
     },
     [CompanyTypes.visaCal]: {
       companyKey: CompanyTypes.visaCal,
       companyName: 'ויזה כאל',
-      logo: visaCalLogo
+      logo: visaCalLogo,
     },
     [CompanyTypes.discount]: {
       companyKey: CompanyTypes.discount,
       companyName: 'דיסקונט',
-      logo: discountLogo
+      logo: discountLogo,
     },
     [CompanyTypes.massad]: {
       companyKey: CompanyTypes.massad,
       companyName: 'מסד',
-      logo: massadLogo
+      logo: massadLogo,
     },
     [CompanyTypes.yahav]: {
       companyKey: CompanyTypes.yahav,
       companyName: 'יהב',
-      logo: yahavLogo
+      logo: yahavLogo,
     },
     [CompanyTypes.beyahadBishvilha]: {
       companyKey: CompanyTypes.beyahadBishvilha,
       companyName: 'ביחד בשבילך',
-      logo: beyahadLogo
+      logo: beyahadLogo,
     },
     [CompanyTypes.oneZero]: {
       companyKey: CompanyTypes.oneZero,
       companyName: 'ONE ZERO',
-      logo: oneZeroLogo
+      logo: oneZeroLogo,
     },
     [CompanyTypes.behatsdaa]: {
       companyKey: CompanyTypes.behatsdaa,
       companyName: 'בחצדעה',
-      logo: behatsdaaLogo
+      logo: behatsdaaLogo,
     },
     [CompanyTypes.mercantile]: {
       companyKey: CompanyTypes.mercantile,
       companyName: 'מרכנתיל',
-      logo: mercantileLogo
-    }
+      logo: mercantileLogo,
+    },
   },
   exporters: {
     [OutputVendorName.CSV]: {
       companyKey: OutputVendorName.CSV,
       companyName: 'Excel (csv)',
-      logo: excelLogo
+      logo: excelLogo,
     },
     [OutputVendorName.JSON]: {
       companyKey: OutputVendorName.JSON,
       companyName: 'Json',
-      logo: jsonLogo
+      logo: jsonLogo,
     },
     [OutputVendorName.GOOGLE_SHEETS]: {
       companyKey: OutputVendorName.GOOGLE_SHEETS,
       companyName: 'Google sheets',
-      logo: googleSheetsLogo
+      logo: googleSheetsLogo,
     },
     [OutputVendorName.YNAB]: {
       companyKey: OutputVendorName.YNAB,
       companyName: 'Ynab',
-      logo: ynabLogo
-    }
-  }
+      logo: ynabLogo,
+    },
+    [OutputVendorName.FIREFLY]: {
+      companyKey: OutputVendorName.FIREFLY,
+      companyName: 'Firefly III',
+      logo: fireflyLogo,
+    },
+  },
 };
 
 export default ACCOUNT_METADATA;

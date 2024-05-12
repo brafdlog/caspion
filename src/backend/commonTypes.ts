@@ -15,6 +15,7 @@ export interface Config {
     [OutputVendorName.YNAB]?: YnabConfig;
     [OutputVendorName.JSON]?: JsonConfig;
     [OutputVendorName.CSV]?: CsvConfig;
+    [OutputVendorName.FIREFLY]?: FireflyConfig;
   };
   scraping: {
     numDaysBack: number;
@@ -32,6 +33,7 @@ export enum OutputVendorName {
   GOOGLE_SHEETS = 'googleSheets',
   JSON = 'json',
   CSV = 'csv',
+  FIREFLY = 'firefly'
 }
 
 export type OutputVendorConfigs = Exclude<
@@ -73,6 +75,12 @@ export interface YnabConfig extends OutputVendorConfigBase {
     budgetId: string;
     maxPayeeNameLength?: number;
   };
+}
+
+export interface FireflyConfig extends OutputVendorConfigBase {
+  options: {
+    baseURL: string
+  }
 }
 
 export interface AccountToScrapeConfig {
