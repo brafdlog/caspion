@@ -5,44 +5,44 @@ const DEFAULT_CONFIG: Config = {
     numDaysBack: 40,
     showBrowser: false,
     accountsToScrape: [],
-    timeout: 60000
+    timeout: 60000,
   },
   outputVendors: {
     csv: {
       active: true,
       options: {
-        filePath: 'transaction.csv'
-      }
+        filePath: 'transaction.csv',
+      },
     },
     json: {
       active: false,
       options: {
-        filePath: 'transaction.json'
-      }
+        filePath: 'transaction.json',
+      },
     },
     ynab: {
       active: false,
       options: {
         accessToken: 'YNAB_ACCESS_TOKEN_GOES_HERE',
         budgetId: '',
-        accountNumbersToYnabAccountIds: {
-        }
-      }
+        accountNumbersToYnabAccountIds: {},
+      },
     },
     googleSheets: {
       active: false,
       options: {
         credentials: {},
-        spreadsheetId: ''
-      }
+        spreadsheetId: '',
+      },
     },
     firefly: {
       active: false,
       options: {
-        baseURL: ''
-      }
-    }
-  }
+        token: '',
+        baseURL: '',
+      },
+    },
+  },
 };
 
 export default DEFAULT_CONFIG;

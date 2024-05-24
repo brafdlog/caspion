@@ -1,12 +1,19 @@
 import React from 'react';
-import { Exporter, OutputVendorName, YnabConfig } from '../../types';
+import {
+  Exporter,
+  FireflyConfig,
+  OutputVendorName,
+  YnabConfig,
+} from '../../types';
 import EditFileExporter from './EditFileExporter';
 import EditFireflyExporter from './EditFireflyExporter';
 import EditYnabExporter from './EditYnabExporter';
 import EditSheetsExporter from './google-sheets/EditSheetsExporter';
 
 type EditExporterProps = {
-  handleSave: (exporterConfig: Exporter | YnabConfig) => Promise<void>;
+  handleSave: (
+    exporterConfig: Exporter | YnabConfig | FireflyConfig,
+  ) => Promise<void>;
   exporter: Exporter;
 };
 
@@ -33,7 +40,7 @@ export default function EditExporter({
   );
   exporterTypeToEditComponent.set(
     OutputVendorName.FIREFLY,
-    <EditFireflyExporter exporter={exporter} handleSave={handleSave} />
+    <EditFireflyExporter exporterConfig={exporter} handleSave={handleSave} />,
   );
   return <>{exporterTypeToEditComponent.get(exporter.companyId)}</>;
 }

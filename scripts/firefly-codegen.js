@@ -3,6 +3,7 @@ const { generateApi } = require('swagger-typescript-api');
 const path = require('path');
 const fs = require('fs');
 const fetch = require('node-fetch');
+const { exec } = require('child_process');
 
 const swaggerRemoteUrl =
   'https://api-docs.firefly-iii.org/firefly-iii-2.1.0-v1.yaml';
@@ -35,4 +36,17 @@ const generateAPIFromSwagger = async (input) => {
 downloadSwaaggerFile(
   swaggerRemoteUrl,
   path.join(fireflyAPIFolder, 'firefly.openapi.yaml'),
-).then(generateAPIFromSwagger);
+)
+  .then(generateAPIFromSwagger)
+  .then(async () => {
+    exec(
+      `yarn prettier --write --ignore-unknown ${fireflyAPIFolder}`,
+      (error, stdout) => {
+        if (error) {
+          console.error(`exec error: ${error}`);
+          return;
+        }
+        console.log(stdout);
+      },
+    );
+  });

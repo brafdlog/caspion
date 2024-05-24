@@ -9,7 +9,7 @@ export enum OutputVendorName {
   GOOGLE_SHEETS = 'googleSheets',
   JSON = 'json',
   CSV = 'csv',
-  FIREFLY = 'firefly'
+  FIREFLY = 'firefly',
 }
 
 export interface Config {
@@ -48,6 +48,7 @@ export type OutputVendorConfig<T extends OutputVendorName> = Exclude<
 
 interface OutputVendorConfigBase {
   active: boolean;
+  logo: string;
 }
 
 export interface CsvConfig extends OutputVendorConfigBase {
@@ -81,8 +82,9 @@ export interface YnabConfig extends OutputVendorConfigBase {
 
 export interface FireflyConfig extends OutputVendorConfigBase {
   options: {
-    baseURL: string
-  }
+    token: string;
+    baseURL: string;
+  };
 }
 export interface AccountToScrapeConfig {
   id: string;
