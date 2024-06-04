@@ -74,7 +74,7 @@
     "@types/analytics-node": "^3.1.4",
     "@types/jest": "^26.0.22",
     "@types/lodash": "^4.14.158",
-    "@types/node": "12",
+    "@types/node": "^16",
     "@types/puppeteer-core": "^5.4.0",
     "@types/webdriverio": "^5.0.0",
     "@typescript-eslint/eslint-plugin": "^3.7.0",
