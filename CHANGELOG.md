@@ -1,137 +1,126 @@
-## [1.27.1](https://github.com/brafdlog/caspion/compare/v1.27.0...v1.27.1) (2024-05-09)
-
-
-### Deps
-
-* upgrade deprecated actions (#561) ([55e2b02](https://github.com/brafdlog/caspion/commit/55e2b025d1781e01d50e2c0afb8f213de47ecf3c)), closes [#561](https://github.com/brafdlog/caspion/issues/561)
-
-## [1.27.1](https://github.com/brafdlog/caspion/compare/v1.27.0...v1.27.1) (2024-05-09)
-
+## [1.27.2](https://github.com/brafdlog/caspion/compare/v1.27.1...v1.27.2) (2024-06-18)
 
 ### Deps
 
-* upgrade deprecated actions (#561) ([55e2b02](https://github.com/brafdlog/caspion/commit/55e2b025d1781e01d50e2c0afb8f213de47ecf3c)), closes [#561](https://github.com/brafdlog/caspion/issues/561)
+- Upgrade israeli-bank-scrapers to 4.5.3 (#566) ([e1894f6](https://github.com/brafdlog/caspion/commit/e1894f698a74c168c1979b04cff54bde2becdce8)), closes [#566](https://github.com/brafdlog/caspion/issues/566)
 
 ## [1.27.1](https://github.com/brafdlog/caspion/compare/v1.27.0...v1.27.1) (2024-05-09)
 
+### Deps
+
+- upgrade deprecated actions (#561) ([55e2b02](https://github.com/brafdlog/caspion/commit/55e2b025d1781e01d50e2c0afb8f213de47ecf3c)), closes [#561](https://github.com/brafdlog/caspion/issues/561)
+
+## [1.27.1](https://github.com/brafdlog/caspion/compare/v1.27.0...v1.27.1) (2024-05-09)
 
 ### Deps
 
-* upgrade deprecated actions (#561) ([55e2b02](https://github.com/brafdlog/caspion/commit/55e2b025d1781e01d50e2c0afb8f213de47ecf3c)), closes [#561](https://github.com/brafdlog/caspion/issues/561)
+- upgrade deprecated actions (#561) ([55e2b02](https://github.com/brafdlog/caspion/commit/55e2b025d1781e01d50e2c0afb8f213de47ecf3c)), closes [#561](https://github.com/brafdlog/caspion/issues/561)
+
+## [1.27.1](https://github.com/brafdlog/caspion/compare/v1.27.0...v1.27.1) (2024-05-09)
+
+### Deps
+
+- upgrade deprecated actions (#561) ([55e2b02](https://github.com/brafdlog/caspion/commit/55e2b025d1781e01d50e2c0afb8f213de47ecf3c)), closes [#561](https://github.com/brafdlog/caspion/issues/561)
 
 # [1.27.0](https://github.com/brafdlog/caspion/compare/v1.26.1...v1.27.0) (2024-04-28)
 
-
 ### Deps
 
-* Upgrade israeli-bank-scrapers to 4.5.0 (#558) ([9d47c73](https://github.com/brafdlog/caspion/commit/9d47c739c52db52421bdb1de8843c3930140cc2f)), closes [#558](https://github.com/brafdlog/caspion/issues/558)
+- Upgrade israeli-bank-scrapers to 4.5.0 (#558) ([9d47c73](https://github.com/brafdlog/caspion/commit/9d47c739c52db52421bdb1de8843c3930140cc2f)), closes [#558](https://github.com/brafdlog/caspion/issues/558)
 
 ### Upgrade
 
-* Bump tar from 6.1.11 to 6.2.1 (#560) ([05e8bb4](https://github.com/brafdlog/caspion/commit/05e8bb45c40c5f89a94096ad2703506d88acc740)), closes [#560](https://github.com/brafdlog/caspion/issues/560)
+- Bump tar from 6.1.11 to 6.2.1 (#560) ([05e8bb4](https://github.com/brafdlog/caspion/commit/05e8bb45c40c5f89a94096ad2703506d88acc740)), closes [#560](https://github.com/brafdlog/caspion/issues/560)
 
 ## [1.26.1](https://github.com/brafdlog/caspion/compare/v1.26.0...v1.26.1) (2024-04-03)
 
-
 ### Deps
 
-* Upgrade israeli-bank-scrapers to 4.4.2 (#554) ([05ad9a0](https://github.com/brafdlog/caspion/commit/05ad9a0d38cd106fbaf8e265480033bf03aec0ee)), closes [#554](https://github.com/brafdlog/caspion/issues/554)
+- Upgrade israeli-bank-scrapers to 4.4.2 (#554) ([05ad9a0](https://github.com/brafdlog/caspion/commit/05ad9a0d38cd106fbaf8e265480033bf03aec0ee)), closes [#554](https://github.com/brafdlog/caspion/issues/554)
 
 # [1.26.0](https://github.com/brafdlog/caspion/compare/v1.25.2...v1.26.0) (2024-04-02)
 
-
 ### Upgrade
 
-* Bump express from 4.18.2 to 4.19.2 (#552) ([bd280ba](https://github.com/brafdlog/caspion/commit/bd280bac81242efd59c9aed4a0884cf63713da17)), closes [#552](https://github.com/brafdlog/caspion/issues/552) [expressjs/express#5552](https://github.com/expressjs/express/issues/5552) [expressjs/express#5556](https://github.com/expressjs/express/issues/5556) [expressjs/express#5527](https://github.com/expressjs/express/issues/5527) [expressjs/express#5511](https://github.com/expressjs/express/issues/5511) [expressjs/express#5510](https://github.com/expressjs/express/issues/5510) [expressjs/express#5541](https://github.com/expressjs/express/issues/5541) [expressjs/express#5551](https://github.com/expressjs/express/issues/5551) [expressjs/express#5541](https://github.com/expressjs/express/issues/5541) [expressjs/express#5032](https://github.com/expressjs/express/issues/5032) [expressjs/express#5034](https://github.com/expressjs/express/issues/5034) [expressjs/express#5027](https://github.com/expressjs/express/issues/5027) [expressjs/express#5124](https://github.com/expressjs/express/issues/5124) [expressjs/express#5119](https://github.com/expressjs/express/issues/5119) [expressjs/express#5117](https://github.com/expressjs/express/issues/5117) [expressjs/express#5113](https://github.com/expressjs/express/issues/5113) [expressjs/express#5130](https://github.com/expressjs/express/issues/5130) [expressjs/express#5131](https://github.com/expressjs/express/issues/5131) [expressjs/express#5028](https://github.com/expressjs/express/issues/5028) [expressjs/express#5137](https://github.com/expressjs/express/issues/5137) [#5541](https://github.com/brafdlog/caspion/issues/5541)
-* Bump express from 4.19.2 in /ui-react (#551) ([8d6032d](https://github.com/brafdlog/caspion/commit/8d6032d7ed8468c57bf0fcc42d56b7235726c3c2)), closes [#551](https://github.com/brafdlog/caspion/issues/551) [expressjs/express#5552](https://github.com/expressjs/express/issues/5552) [expressjs/express#5556](https://github.com/expressjs/express/issues/5556) [expressjs/express#5527](https://github.com/expressjs/express/issues/5527) [expressjs/express#5511](https://github.com/expressjs/express/issues/5511) [expressjs/express#5510](https://github.com/expressjs/express/issues/5510) [expressjs/express#5541](https://github.com/expressjs/express/issues/5541) [expressjs/express#5551](https://github.com/expressjs/express/issues/5551) [expressjs/express#5541](https://github.com/expressjs/express/issues/5541) [expressjs/express#5032](https://github.com/expressjs/express/issues/5032) [expressjs/express#5034](https://github.com/expressjs/express/issues/5034) [expressjs/express#5027](https://github.com/expressjs/express/issues/5027) [expressjs/express#5124](https://github.com/expressjs/express/issues/5124) [expressjs/express#5119](https://github.com/expressjs/express/issues/5119) [expressjs/express#5117](https://github.com/expressjs/express/issues/5117) [expressjs/express#5113](https://github.com/expressjs/express/issues/5113) [expressjs/express#5130](https://github.com/expressjs/express/issues/5130) [expressjs/express#5131](https://github.com/expressjs/express/issues/5131) [expressjs/express#5028](https://github.com/expressjs/express/issues/5028) [expressjs/express#5137](https://github.com/expressjs/express/issues/5137) [#5541](https://github.com/brafdlog/caspion/issues/5541)
+- Bump express from 4.18.2 to 4.19.2 (#552) ([bd280ba](https://github.com/brafdlog/caspion/commit/bd280bac81242efd59c9aed4a0884cf63713da17)), closes [#552](https://github.com/brafdlog/caspion/issues/552) [expressjs/express#5552](https://github.com/expressjs/express/issues/5552) [expressjs/express#5556](https://github.com/expressjs/express/issues/5556) [expressjs/express#5527](https://github.com/expressjs/express/issues/5527) [expressjs/express#5511](https://github.com/expressjs/express/issues/5511) [expressjs/express#5510](https://github.com/expressjs/express/issues/5510) [expressjs/express#5541](https://github.com/expressjs/express/issues/5541) [expressjs/express#5551](https://github.com/expressjs/express/issues/5551) [expressjs/express#5541](https://github.com/expressjs/express/issues/5541) [expressjs/express#5032](https://github.com/expressjs/express/issues/5032) [expressjs/express#5034](https://github.com/expressjs/express/issues/5034) [expressjs/express#5027](https://github.com/expressjs/express/issues/5027) [expressjs/express#5124](https://github.com/expressjs/express/issues/5124) [expressjs/express#5119](https://github.com/expressjs/express/issues/5119) [expressjs/express#5117](https://github.com/expressjs/express/issues/5117) [expressjs/express#5113](https://github.com/expressjs/express/issues/5113) [expressjs/express#5130](https://github.com/expressjs/express/issues/5130) [expressjs/express#5131](https://github.com/expressjs/express/issues/5131) [expressjs/express#5028](https://github.com/expressjs/express/issues/5028) [expressjs/express#5137](https://github.com/expressjs/express/issues/5137) [#5541](https://github.com/brafdlog/caspion/issues/5541)
+- Bump express from 4.19.2 in /ui-react (#551) ([8d6032d](https://github.com/brafdlog/caspion/commit/8d6032d7ed8468c57bf0fcc42d56b7235726c3c2)), closes [#551](https://github.com/brafdlog/caspion/issues/551) [expressjs/express#5552](https://github.com/expressjs/express/issues/5552) [expressjs/express#5556](https://github.com/expressjs/express/issues/5556) [expressjs/express#5527](https://github.com/expressjs/express/issues/5527) [expressjs/express#5511](https://github.com/expressjs/express/issues/5511) [expressjs/express#5510](https://github.com/expressjs/express/issues/5510) [expressjs/express#5541](https://github.com/expressjs/express/issues/5541) [expressjs/express#5551](https://github.com/expressjs/express/issues/5551) [expressjs/express#5541](https://github.com/expressjs/express/issues/5541) [expressjs/express#5032](https://github.com/expressjs/express/issues/5032) [expressjs/express#5034](https://github.com/expressjs/express/issues/5034) [expressjs/express#5027](https://github.com/expressjs/express/issues/5027) [expressjs/express#5124](https://github.com/expressjs/express/issues/5124) [expressjs/express#5119](https://github.com/expressjs/express/issues/5119) [expressjs/express#5117](https://github.com/expressjs/express/issues/5117) [expressjs/express#5113](https://github.com/expressjs/express/issues/5113) [expressjs/express#5130](https://github.com/expressjs/express/issues/5130) [expressjs/express#5131](https://github.com/expressjs/express/issues/5131) [expressjs/express#5028](https://github.com/expressjs/express/issues/5028) [expressjs/express#5137](https://github.com/expressjs/express/issues/5137) [#5541](https://github.com/brafdlog/caspion/issues/5541)
 
 ## [1.25.2](https://github.com/brafdlog/caspion/compare/v1.25.1...v1.25.2) (2024-04-02)
 
-
 ### ci
 
-* upgrade create-pr-action to fix github but in update existing pr ([0610b9a](https://github.com/brafdlog/caspion/commit/0610b9a6fd494f7779b9e4f8550430eed2e52991))
+- upgrade create-pr-action to fix github but in update existing pr ([0610b9a](https://github.com/brafdlog/caspion/commit/0610b9a6fd494f7779b9e4f8550430eed2e52991))
 
 ### Deps
 
-* Upgrade israeli-bank-scrapers to 4.4.1 (#553) ([c72c16a](https://github.com/brafdlog/caspion/commit/c72c16a44ae18541c8129b0ccc35a151b7693069)), closes [#553](https://github.com/brafdlog/caspion/issues/553)
+- Upgrade israeli-bank-scrapers to 4.4.1 (#553) ([c72c16a](https://github.com/brafdlog/caspion/commit/c72c16a44ae18541c8129b0ccc35a151b7693069)), closes [#553](https://github.com/brafdlog/caspion/issues/553)
 
 ## [1.25.1](https://github.com/brafdlog/caspion/compare/v1.25.0...v1.25.1) (2024-03-27)
 
-
 ### Deps
 
-* Upgrade israeli-bank-scrapers to 4.3.0 (#550) ([c5666e4](https://github.com/brafdlog/caspion/commit/c5666e42a34f0271af3b126f31d7d6a0f4691e90)), closes [#550](https://github.com/brafdlog/caspion/issues/550)
+- Upgrade israeli-bank-scrapers to 4.3.0 (#550) ([c5666e4](https://github.com/brafdlog/caspion/commit/c5666e42a34f0271af3b126f31d7d6a0f4691e90)), closes [#550](https://github.com/brafdlog/caspion/issues/550)
 
 # [1.25.0](https://github.com/brafdlog/caspion/compare/v1.24.0...v1.25.0) (2024-03-17)
 
-
 ### Upgrade
 
-* Bump follow-redirects (#548) ([32fae02](https://github.com/brafdlog/caspion/commit/32fae025a887790a3d2305a775d89f4a915828f0)), closes [#548](https://github.com/brafdlog/caspion/issues/548)
+- Bump follow-redirects (#548) ([32fae02](https://github.com/brafdlog/caspion/commit/32fae025a887790a3d2305a775d89f4a915828f0)), closes [#548](https://github.com/brafdlog/caspion/issues/548)
 
 # [1.24.0](https://github.com/brafdlog/caspion/compare/v1.23.0...v1.24.0) (2024-02-29)
 
-
 ### New
 
-* cursor and autoFocus (#541) ([9dce6a8](https://github.com/brafdlog/caspion/commit/9dce6a8cbc9fd7f5c9fb48f487c14d521af8a1a5)), closes [#541](https://github.com/brafdlog/caspion/issues/541)
+- cursor and autoFocus (#541) ([9dce6a8](https://github.com/brafdlog/caspion/commit/9dce6a8cbc9fd7f5c9fb48f487c14d521af8a1a5)), closes [#541](https://github.com/brafdlog/caspion/issues/541)
 
 # [1.23.0](https://github.com/brafdlog/caspion/compare/v1.22.0...v1.23.0) (2024-02-28)
 
-
 ### Upgrade
 
-* Bump es5-ext from 0.10.62 to 0.10.64 (#542) ([313002f](https://github.com/brafdlog/caspion/commit/313002f1366054fdce6f5fdb70c015876a8308b2)), closes [#542](https://github.com/brafdlog/caspion/issues/542) [#201](https://github.com/brafdlog/caspion/issues/201) [#021](https://github.com/brafdlog/caspion/issues/021) [#181](https://github.com/brafdlog/caspion/issues/181) [#201](https://github.com/brafdlog/caspion/issues/201) [#021](https://github.com/brafdlog/caspion/issues/021) [#181](https://github.com/brafdlog/caspion/issues/181)
+- Bump es5-ext from 0.10.62 to 0.10.64 (#542) ([313002f](https://github.com/brafdlog/caspion/commit/313002f1366054fdce6f5fdb70c015876a8308b2)), closes [#542](https://github.com/brafdlog/caspion/issues/542) [#201](https://github.com/brafdlog/caspion/issues/201) [#021](https://github.com/brafdlog/caspion/issues/021) [#181](https://github.com/brafdlog/caspion/issues/181) [#201](https://github.com/brafdlog/caspion/issues/201) [#021](https://github.com/brafdlog/caspion/issues/021) [#181](https://github.com/brafdlog/caspion/issues/181)
 
 # [1.22.0](https://github.com/brafdlog/caspion/compare/v1.21.0...v1.22.0) (2024-02-21)
 
-
 ### Build
 
-* Updates Israeli bank scrapers library (#537) ([b816ea3](https://github.com/brafdlog/caspion/commit/b816ea30d93a0a324da71a25041ab6d89c19c1a8)), closes [#537](https://github.com/brafdlog/caspion/issues/537) [#536](https://github.com/brafdlog/caspion/issues/536)
+- Updates Israeli bank scrapers library (#537) ([b816ea3](https://github.com/brafdlog/caspion/commit/b816ea30d93a0a324da71a25041ab6d89c19c1a8)), closes [#537](https://github.com/brafdlog/caspion/issues/537) [#536](https://github.com/brafdlog/caspion/issues/536)
 
 ### Upgrade
 
-* Bump ip from 1.1.5 to 1.1.9 in /nuxt (#540) ([3a18220](https://github.com/brafdlog/caspion/commit/3a1822010c2a672a015a46b4ff5155c8186262d1)), closes [#540](https://github.com/brafdlog/caspion/issues/540)
-* Bump ip from 1.1.8 to 1.1.9 in /ui-react (#539) ([ead6335](https://github.com/brafdlog/caspion/commit/ead63357b84313702ba96309467572d288c51785)), closes [#539](https://github.com/brafdlog/caspion/issues/539)
+- Bump ip from 1.1.5 to 1.1.9 in /nuxt (#540) ([3a18220](https://github.com/brafdlog/caspion/commit/3a1822010c2a672a015a46b4ff5155c8186262d1)), closes [#540](https://github.com/brafdlog/caspion/issues/540)
+- Bump ip from 1.1.8 to 1.1.9 in /ui-react (#539) ([ead6335](https://github.com/brafdlog/caspion/commit/ead63357b84313702ba96309467572d288c51785)), closes [#539](https://github.com/brafdlog/caspion/issues/539)
 
 # [1.21.0](https://github.com/brafdlog/caspion/compare/v1.20.1...v1.21.0) (2024-02-20)
 
-
 ### Upgrade
 
-* (deps): Bump ip from 1.1.5 to 1.1.9 (#538) ([83b3358](https://github.com/brafdlog/caspion/commit/83b33584bbd6935f3f5cc0df09a75fadc3a4ca1f)), closes [#538](https://github.com/brafdlog/caspion/issues/538)
+- (deps): Bump ip from 1.1.5 to 1.1.9 (#538) ([83b3358](https://github.com/brafdlog/caspion/commit/83b33584bbd6935f3f5cc0df09a75fadc3a4ca1f)), closes [#538](https://github.com/brafdlog/caspion/issues/538)
 
 ## [1.20.1](https://github.com/brafdlog/caspion/compare/v1.20.0...v1.20.1) (2024-02-01)
 
-
 ### Deps
 
-* israeli-bank-scrapers v4.2.2 (#534) ([0b5242b](https://github.com/brafdlog/caspion/commit/0b5242b1bc8963f4db34c89fa823c9989a38fa62)), closes [#534](https://github.com/brafdlog/caspion/issues/534)
+- israeli-bank-scrapers v4.2.2 (#534) ([0b5242b](https://github.com/brafdlog/caspion/commit/0b5242b1bc8963f4db34c89fa823c9989a38fa62)), closes [#534](https://github.com/brafdlog/caspion/issues/534)
 
 # [1.20.0](https://github.com/brafdlog/caspion/compare/v1.19.0...v1.20.0) (2024-01-15)
 
-
 ### Upgrade
 
-* (deps): Bump follow-redirects from 1.14.8 to 1.15.4 (#526) ([51cf188](https://github.com/brafdlog/caspion/commit/51cf188b265bff6014ddbf8d64c598cb66dd9578)), closes [#526](https://github.com/brafdlog/caspion/issues/526)
-* Bump follow-redirects from 1.15.2 to 1.15.4 in /ui-react (#527) ([435f0ae](https://github.com/brafdlog/caspion/commit/435f0ae4bc17bd2f62f341f98df3b3ce81f1fc55)), closes [#527](https://github.com/brafdlog/caspion/issues/527)
-* Bump follow-redirects from 1.15.3 to 1.15.4 in /nuxt (#528) ([64799bc](https://github.com/brafdlog/caspion/commit/64799bca3a26c734e75a83b897a29c81ad284a96)), closes [#528](https://github.com/brafdlog/caspion/issues/528)
+- (deps): Bump follow-redirects from 1.14.8 to 1.15.4 (#526) ([51cf188](https://github.com/brafdlog/caspion/commit/51cf188b265bff6014ddbf8d64c598cb66dd9578)), closes [#526](https://github.com/brafdlog/caspion/issues/526)
+- Bump follow-redirects from 1.15.2 to 1.15.4 in /ui-react (#527) ([435f0ae](https://github.com/brafdlog/caspion/commit/435f0ae4bc17bd2f62f341f98df3b3ce81f1fc55)), closes [#527](https://github.com/brafdlog/caspion/issues/527)
+- Bump follow-redirects from 1.15.3 to 1.15.4 in /nuxt (#528) ([64799bc](https://github.com/brafdlog/caspion/commit/64799bca3a26c734e75a83b897a29c81ad284a96)), closes [#528](https://github.com/brafdlog/caspion/issues/528)
 
 # [1.19.0](https://github.com/brafdlog/caspion/compare/v1.18.0...v1.19.0) (2024-01-14)
 
-
 ### Chore
 
-* align typescript version to 3.9.7 (#532) ([af6d0f7](https://github.com/brafdlog/caspion/commit/af6d0f78b5188a37564492edc54f038bc4425a9c)), closes [#532](https://github.com/brafdlog/caspion/issues/532)
+- align typescript version to 3.9.7 (#532) ([af6d0f7](https://github.com/brafdlog/caspion/commit/af6d0f78b5188a37564492edc54f038bc4425a9c)), closes [#532](https://github.com/brafdlog/caspion/issues/532)
 
 # [1.18.0](https://github.com/brafdlog/caspion/compare/v1.17.0...v1.18.0) (2023-12-19)
 
-
 ### New
 
-* Google Sheets exporter in the new React UI (#521) ([e1dad7e](https://github.com/brafdlog/caspion/commit/e1dad7e1b061660bc7608b4ea0acea9ed5903d47)), closes [#521](https://github.com/brafdlog/caspion/issues/521) [#427](https://github.com/brafdlog/caspion/issues/427)
+- Google Sheets exporter in the new React UI (#521) ([e1dad7e](https://github.com/brafdlog/caspion/commit/e1dad7e1b061660bc7608b4ea0acea9ed5903d47)), closes [#521](https://github.com/brafdlog/caspion/issues/521) [#427](https://github.com/brafdlog/caspion/issues/427)
 
 # [1.17.0](https://github.com/brafdlog/caspion/compare/v1.16.1...v1.17.0) (2023-12-18)
 
