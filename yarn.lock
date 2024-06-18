@@ -9943,10 +9943,10 @@ isobject@^3.0.0, isobject@^3.0.1:
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
   integrity sha1-TkMekrEalzFjaqH5yNHMvP2reN8=
 
-israeli-bank-scrapers-core@4.5.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/israeli-bank-scrapers-core/-/israeli-bank-scrapers-core-4.5.0.tgz#fe1491d62bddd93c7b7ee9b40e39ea0c4fdc1848"
-  integrity sha512-MVwKyjAx/eFv054gOSAb+sRYNJZsF7wN7oG2EjXG7amz4TrznS7824doBVX24rCYgLxb/E0PWJyIcA1d8tWvWA==
+israeli-bank-scrapers-core@4.5.3:
+  version "4.5.3"
+  resolved "https://registry.yarnpkg.com/israeli-bank-scrapers-core/-/israeli-bank-scrapers-core-4.5.3.tgz#b878bdc62cdc3d85ce63ff0bcab922de9691c6a9"
+  integrity sha512-QX+pFVtKZYCNc+5IBTVDT+GQRKcdTbfrsscmaNlDNz+31J8uyhNpOzmQiRVhJX7xdpW7aXjcfkvuYbe6+L8t+A==
   dependencies:
     build-url "^2.0.0"
     core-js "^3.1.4"
