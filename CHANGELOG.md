@@ -1,3 +1,13 @@
+# [1.28.0](https://github.com/brafdlog/caspion/compare/v1.27.2...v1.28.0) (2024-06-19)
+
+### Deps
+
+- Upgrade israeli-bank-scrapers to 4.5.4 (#569) ([9979af7](https://github.com/brafdlog/caspion/commit/9979af76393e61b9fcd62e09f40421206da5f4c5)), closes [#569](https://github.com/brafdlog/caspion/issues/569)
+
+### Upgrade
+
+- Bump ws from 6.2.2 to 6.2.3 in /ui-react (#568) ([ede513e](https://github.com/brafdlog/caspion/commit/ede513e0bda23fd80e5ab2808dd82e04e75440ca)), closes [#568](https://github.com/brafdlog/caspion/issues/568)
+
 ## [1.27.2](https://github.com/brafdlog/caspion/compare/v1.27.1...v1.27.2) (2024-06-18)
 
 ### Deps
