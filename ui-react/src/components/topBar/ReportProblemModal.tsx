@@ -100,9 +100,9 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
   ) => {
     const formattedDetails = details
       ? `
-        ## Details
+## Details
         
-        ${details}`
+${details}`
       : '';
 
     // if the log too big it makes an error
