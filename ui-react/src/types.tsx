@@ -9,6 +9,7 @@ export enum OutputVendorName {
   GOOGLE_SHEETS = 'googleSheets',
   JSON = 'json',
   CSV = 'csv',
+  FIREFLY = 'firefly',
 }
 
 export interface Config {
@@ -17,6 +18,7 @@ export interface Config {
     [OutputVendorName.YNAB]?: YnabConfig;
     [OutputVendorName.JSON]?: JsonConfig;
     [OutputVendorName.CSV]?: CsvConfig;
+    [OutputVendorName.FIREFLY]?: FireflyConfig;
   };
   scraping: {
     timeout: number;
@@ -46,6 +48,7 @@ export type OutputVendorConfig<T extends OutputVendorName> = Exclude<
 
 interface OutputVendorConfigBase {
   active: boolean;
+  logo: string;
 }
 
 export interface CsvConfig extends OutputVendorConfigBase {
@@ -77,6 +80,12 @@ export interface YnabConfig extends OutputVendorConfigBase {
   };
 }
 
+export interface FireflyConfig extends OutputVendorConfigBase {
+  options: {
+    token: string;
+    baseURL: string;
+  };
+}
 export interface AccountToScrapeConfig {
   id: string;
   // key: CompanyTypes;

@@ -70,6 +70,12 @@ export const dummyConfig: Config = {
         credentials: '',
         spreadsheetId: ''
       }
+    },
+    firefly: {
+      active: true,
+      options: {
+        baseURL: 'foo'
+      }
     }
   }
 };

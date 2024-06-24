@@ -124,6 +124,7 @@
     "sass-loader": "^10.0.0",
     "semantic-release": "^19.0.5",
     "spectron": "^19.0.0",
+    "swagger-typescript-api": "^13.0.3",
     "ts-jest": "^26.3.0",
     "typescript": "^3.9.7",
     "vue-cli-plugin-electron-builder": "^2.1.1",

@@ -1,8 +1,9 @@
 import csv from './csv/csv';
+import firefly from './firefly';
+import { googleSheetsOutputVendor } from './googleSheets/googleSheets';
 import json from './json/json';
 import { ynabOutputVendor } from './ynab/ynab';
-import { googleSheetsOutputVendor } from './googleSheets/googleSheets';
 
-const outputVendors = [csv, json, ynabOutputVendor, googleSheetsOutputVendor];
+const outputVendors = [csv, json, ynabOutputVendor, googleSheetsOutputVendor, firefly];
 
 export default outputVendors;
