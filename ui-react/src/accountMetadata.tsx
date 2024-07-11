@@ -44,6 +44,7 @@ const accountIdToDisplayName: Record<CompanyTypes | OutputVendorName, string> =
     [OutputVendorName.GOOGLE_SHEETS]: 'Google Sheets',
     [OutputVendorName.YNAB]: 'Ynab',
     [OutputVendorName.JSON]: 'Json',
+    [OutputVendorName.FIREFLY]: 'Firefly III'
   };
 
 const accountMetadata: Record<

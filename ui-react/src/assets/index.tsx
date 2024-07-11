@@ -3,6 +3,7 @@ import discount from './importers/discount.jpeg';
 import visaCal from './importers/visa-cal.jpeg';
 import csv from './exporters/excel.png';
 import ynab from './exporters/ynab.jpeg';
+import firefly from './exporters/firefly.png';
 import googleSheets from './exporters/sheets.png';
 import json from './exporters/json.jpeg';
 import hapoalim from './importers/poalim.jpeg';
@@ -48,4 +49,5 @@ export const exporterIcons = {
   [OutputVendorName.YNAB]: ynab,
   [OutputVendorName.JSON]: json,
   [OutputVendorName.GOOGLE_SHEETS]: googleSheets,
+  [OutputVendorName.FIREFLY]: firefly,
 };
