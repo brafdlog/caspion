@@ -1,3 +1,17 @@
+## [1.28.1](https://github.com/brafdlog/caspion/compare/v1.28.0...v1.28.1) (2024-07-11)
+
+### chore
+
+- Update Store.tsx to include the 'toJS' function from mobx ([0c5518f](https://github.com/brafdlog/caspion/commit/0c5518f80d81c130209c82b29b292c626b17dd65))
+
+### Deps
+
+- Upgrade israeli-bank-scrapers to 4.5.5 (#572) ([8dfc02d](https://github.com/brafdlog/caspion/commit/8dfc02d82a74e7cce331c3f9059662a6b29d7701)), closes [#572](https://github.com/brafdlog/caspion/issues/572)
+
+### fix
+
+- the end of bad issues formatting ([72c5e09](https://github.com/brafdlog/caspion/commit/72c5e0953e8a59466a21a8bf51568e11c55264c6))
+
 # [1.28.0](https://github.com/brafdlog/caspion/compare/v1.27.2...v1.28.0) (2024-06-19)
 
 ### Deps
