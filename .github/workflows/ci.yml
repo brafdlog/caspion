@@ -1,119 +1,49 @@
-name: Node CI
-
+# This workflow is the entry point for all CI processes.
+# It is from here that all other workflows are launched.
 on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - 'renovate/**'
+    paths-ignore:
+      - '.github/**'
+      - '!.github/workflows/ci.yml'
+      - '!.github/workflows/typechecking.yml'
+      - '!.github/workflows/tests.yml'
+      - '!.github/workflows/release.yml'
+      - '**.md'
+      - .editorconfig
+      - .gitignore
+      - '.idea/**'
+      - '.vscode/**'
   pull_request:
     paths-ignore:
-      - 'nuxt/**'
+      - '.github/**'
+      - '!.github/workflows/ci.yml'
+      - '!.github/workflows/typechecking.yml'
+      - '!.github/workflows/tests.yml'
+      - '!.github/workflows/release.yml'
+      - '**.md'
+      - .editorconfig
+      - .gitignore
+      - '.idea/**'
+      - '.vscode/**'
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      # https://github.com/nodejs/node-gyp/issues/2869
-      - name: Use Python 3.11
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v4
-        with:
-          node-version: 16.x
-          cache: 'yarn'
-          cache-dependency-path: 'yarn.lock'
-      - run: yarn --network-timeout 100000
-      - run: yarn lint
-      - name: Type check
-        run: |
-          yarn typeCheck
+  typechecking:
+    uses: ./.github/workflows/typechecking.yml
+  tests:
+    uses: ./.github/workflows/tests.yml
+  draft_release:
+    permissions:
+      contents: write # Allows this job to create releases
+    with:
+      dry-run: ${{ github.event_name != 'push' || github.ref_name != 'main' }}
+    needs: [ typechecking, tests ]
+    uses: ./.github/workflows/release.yml
 
-  test:
-    runs-on: ${{ matrix.os }}
-    env:
-      DISPLAY: :99.0
-      GOOGLE_CLIENT_ID: ''
-      GOOGLE_CLIENT_SECRET: ''
-
-    strategy:
-      matrix:
-        node-version: [16.x]
-        os:
-          - windows-latest
-          - ubuntu-latest
-          - macos-latest
-
-    steps:
-      - uses: actions/checkout@v4
-      # https://github.com/nodejs/node-gyp/issues/2869
-      - name: Use Python 3.11
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'yarn'
-          cache-dependency-path: 'yarn.lock'
-      - name: Install xvfb
-        if: matrix.os == 'ubuntu-latest'
-        run: |
-          sudo apt update
-          sudo apt install -y xvfb graphicsmagick
-          npm install -g xvfb-maybe
-          Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-      - run: yarn --network-timeout 100000
-      - run: yarn unit
-      - run: yarn e2e
-      - name: Upload screenshots
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          # Artifact name
-          name: ${{ matrix.os }}-screenshots
-          # Directory containing files to upload
-          path: screenshots
-
-  build:
-    runs-on: ${{ matrix.os }}
-
-    # Platforms to build on/for
-    strategy:
-      max-parallel: 2
-      matrix:
-        os:
-          - windows-latest
-          - ubuntu-latest
-          - macos-latest
-
-    steps:
-      - uses: actions/checkout@v4
-      # https://github.com/nodejs/node-gyp/issues/2869
-      - name: Use Python 3.11
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - name: Install Node.js, NPM and Yarn
-        uses: actions/setup-node@v4
-        with:
-          node-version: 16.x
-          cache: 'yarn'
-          cache-dependency-path: 'yarn.lock'
-      - run: yarn --network-timeout 100000
-      - name: Build Electron app
-        shell: bash
-        env:
-          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_OPTIONS: --max-old-space-size=4096
-          SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
-          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-        run: yarn build --publish never
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          # Artifact name
-          name: ${{ matrix.os }}-artifact
-          # Directory containing files to upload
-          path: dist_electron

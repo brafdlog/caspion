@@ -141,13 +141,22 @@ In some cases you may get gibberish when you open the CSV file in Excel. In this
 
 ## Release
 
+<details>
+<summary>Release Workflow</summary>
+
+> ⚠️ Warning: Outdated Information
+> 
+> This section contains information about the previous structure and requires an update. Please refer to the latest documentation for accurate instructions.
+
 The Release workflow, configured in `.github/workflows/release.yml`, will **draft** a new release or update the artifacts on an existing draft, according to the following conditions:
 
 1. A change pushed to the `master` branch.
-1. The `version` from the `package.json`, with the prefix `v`, is not a **published** release.
-1. Upload the artifacts to the `v${package_version}` Github Release.
+2. The `version` from the `package.json`, with the prefix `v`, is not a **published** release.
+3. Upload the artifacts to the `v${package_version}` Github Release.
 
 It means that after you published a new release, from the Github interface, you need to upgrade the version in the `package.json` file, to get a new draft.
+
+</details>
 
 #### Disclaimer
 

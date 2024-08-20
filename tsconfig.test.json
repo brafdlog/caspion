@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "strict": true
+  },
+  "include": [
+    ".", // Include all files in the project
+    "packages/**/*",
+    "tests/**/*",
+    "scripts/**/*",
+    "./.eslintrc.cjs"
+  ],
+  "exclude": ["node_modules"]
+}

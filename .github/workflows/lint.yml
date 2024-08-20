@@ -1,0 +1,61 @@
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '**.js'
+      - '**.mjs'
+      - '**.cjs'
+      - '**.jsx'
+      - '**.ts'
+      - '**.mts'
+      - '**.cts'
+      - '**.tsx'
+      - '**.vue'
+  pull_request:
+    paths:
+      - '**.js'
+      - '**.mjs'
+      - '**.cjs'
+      - '**.jsx'
+      - '**.ts'
+      - '**.mts'
+      - '**.cts'
+      - '**.tsx'
+      - '**.vue'
+
+concurrency:
+  group: lint-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: 'bash'
+
+jobs:
+  eslint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+      - uses: actions/setup-node@v4
+        with:
+          cache: 'yarn'
+
+      - run: yarn
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+
+      - run: yarn lint
+
+  # This job just check code style for in-template contributions.
+  code-style:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+      - uses: actions/setup-node@v4
+        with:
+          cache: 'yarn'
+
+      - run: yarn add prettier
+      - run: npx prettier --check "**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue}"
