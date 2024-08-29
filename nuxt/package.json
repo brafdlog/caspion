@@ -39,7 +39,7 @@
     "jest-serializer-vue": "^2.0.2",
     "serve": "^11.3.0",
     "vue-jest": "^4.0.0-beta.2",
-    "webpack": "^4.42.1"
+    "webpack": "^5.94.0"
   }
 }
 
