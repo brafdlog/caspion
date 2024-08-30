@@ -6,13 +6,16 @@ import configExample from './defaultConfig';
 
 export async function getConfig(configPath: string = configFilePath): Promise<Config> {
   const configFromFile = await getConfigFromFile(configPath);
-
   if (configFromFile) {
     const decrypted = await decrypt(configFromFile) as string;
-    return JSON.parse(decrypted);
+    try {
+      return JSON.parse(decrypted);
+    } catch (e) {
+      console.error('Failed to parse config file, returning default config', e);
+    }
   }
 
-  // Fallback to configExample if there is no config file defined at all
+  // Fallback to configExample if there is no config file, or it isn't valid
   return configExample;
 }
 
