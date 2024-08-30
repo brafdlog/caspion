@@ -26,11 +26,18 @@ const EditYnabExporter = ({ handleSave, exporterConfig }: EditYnabExporterProps)
   const isLoading = !store.ynabAccountData || store.fetchingYnabAccountData;
   const isValidAccessToken = !isLoading && store.ynabAccountData?.status !== INVALID_ACCESS_TOKEN;
 
+  // Set default budget id if not set
+  useEffect(() => {
+    const defaultBudgetId = store.ynabAccountData?.ynabAccountData?.budgets[0]?.id;
+    if (!ynabOptions.budgetId && defaultBudgetId) {
+      updateOptionsState({ budgetId: defaultBudgetId });
+    }
+  }, [store.ynabAccountData, ynabOptions.budgetId]);
+
   useEffect(() => {
     if (ynabOptions.accessToken) {
       store.fetchYnabAccountData(ynabOptions);
     }
-    // eslint-disable-next-line
   }, [ynabOptions.budgetId, ynabOptions.accessToken, store]);
 
   const updateOptionsState = (optionUpdates: Partial<YnabConfig['options']>) => {
