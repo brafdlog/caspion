@@ -3,6 +3,12 @@ node_modules
 dist
 *.local
 thumbs.db
+public
+ui-react/build
+ui-react/yarn-error.log
+dist_electron
+build
+transaction.csv
 
 .eslintcache
 .browserslistrc
