@@ -12,7 +12,7 @@ import { createSpreadsheet } from '@/backend/export/outputVendors/googleSheets/g
 import { getAllSpreadsheets } from '@/backend/export/outputVendors/googleSheets/googleSheetsInternalAPI';
 import { getYnabAccountData } from '@/manual/setupHelpers';
 import { type IpcMainEvent, dialog, ipcMain, type IpcMainInvokeEvent } from 'electron';
-import { repository } from '../../../../package.json';
+import { repository, discord } from '../../../../package.json';
 import Sentry from '../logging/sentry';
 import { getConfigHandler, updateConfigHandler } from './configHandlers';
 import { getLogsInfoHandler } from './logsHandlers';
@@ -37,7 +37,7 @@ const functions: Record<string, Listener> = {
     return {
       sourceCommitShort: import.meta.env.SOURCE_COMMIT_SHORT,
       repository,
-      discordChanel: import.meta.env.DISCORD_CHANNEL,
+      discordChanel: discord,
       currentVersion: App.getVersion(),
     };
   },

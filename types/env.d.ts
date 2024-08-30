@@ -28,7 +28,6 @@ interface ImportMetaEnv {
   readonly SEGMENT_WRITE_KEY: string;
 
   readonly SOURCE_COMMIT_SHORT: string;
-  readonly DISCORD_CHANNEL: string;
 }
 
 interface ImportMeta {

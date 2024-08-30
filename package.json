@@ -11,6 +11,7 @@
     "url": "https://kozack.me"
   },
   "repository": "https://github.com/brafdlog/caspion",
+  "discord": "https://discord.gg/XWWg7xvJyS",
   "homepage": "https://github.com/brafdlog/caspion#README.md",
   "main": "packages/main/dist/index.js",
   "scripts": {
