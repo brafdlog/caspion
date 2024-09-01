@@ -1,10 +1,14 @@
 name: Release
 on:
+  push:
+    branches:
+      - vite-electron-builder
   workflow_call:
     inputs:
       dry-run:
         description: 'Compiles the app but not upload artifacts to distribution server'
-        default: false
+        # TODO: default: false
+        default: true
         required: false
         type: boolean
 
