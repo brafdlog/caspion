@@ -4,6 +4,7 @@
   "version": "2.0.0",
   "private": true,
   "type": "module",
+  "author": "Jonathan Goldfarb <brafdlog@gmail.com>",
   "repository": "https://github.com/brafdlog/caspion",
   "discord": "https://discord.gg/XWWg7xvJyS",
   "homepage": "https://github.com/brafdlog/caspion#README.md",
