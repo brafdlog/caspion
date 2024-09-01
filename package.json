@@ -1,15 +1,9 @@
 {
-  "TODO": "Update this file with your project information",
-  "name": "vite-electron-builder",
-  "description": "Secure boilerplate for Electron app based on Vite",
+  "name": "caspion",
+  "description": "Caspion is a personal finance management application",
   "version": "2.0.0",
   "private": true,
   "type": "module",
-  "author": {
-    "email": "kozackunisoft@gmail.com",
-    "name": "Alex Kozack",
-    "url": "https://kozack.me"
-  },
   "repository": "https://github.com/brafdlog/caspion",
   "discord": "https://discord.gg/XWWg7xvJyS",
   "homepage": "https://github.com/brafdlog/caspion#README.md",
