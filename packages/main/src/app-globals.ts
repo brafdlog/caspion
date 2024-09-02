@@ -4,7 +4,7 @@ import electron from 'electron';
 
 export const App: Electron.App = electron.app;
 
-if (process.env.NODE_ENV !== 'production') {
+if (import.meta.env.MODE !== 'production') {
   const localUserData = path.resolve('userData');
   mkdirSync(localUserData, { recursive: true });
   App.setPath('userData', localUserData);

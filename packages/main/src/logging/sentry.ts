@@ -1,9 +1,9 @@
 import { init, captureMessage, type ElectronMainOptions } from '@sentry/electron/main';
 
 const reporterConfiguration = {
-  dsn: import.meta.env.SENTRY_DSN,
+  dsn: import.meta.env.VITE_SENTRY_DSN,
   defaultIntegrations: false,
-  environment: process.env.NODE_ENV,
+  environment: import.meta.env.MODE,
   enableJavaScript: true,
   enableNative: false,
   enableUnresponsive: false,

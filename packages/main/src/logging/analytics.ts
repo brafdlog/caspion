@@ -3,7 +3,7 @@ import { machineId } from 'node-machine-id';
 import { type BudgetTrackingEventEmitter} from '@/backend/eventEmitters/EventEmitter';
 import { EventNames } from '@/backend/eventEmitters/EventEmitter';
 
-const analytics = import.meta.env.SEGMENT_WRITE_KEY ? new Analytics(import.meta.env.SEGMENT_WRITE_KEY) : null;
+const analytics = import.meta.env.VITE_SEGMENT_WRITE_KEY ? new Analytics(import.meta.env.VITE_SEGMENT_WRITE_KEY) : null;
 
 type EventProperties = Record<string, string | number | boolean | undefined>;
 
@@ -54,7 +54,7 @@ async function buildEvent(properties?: EventProperties) {
   return {
     anonymousId: id,
     properties: {
-      env: process.env.NODE_ENV,
+      env: import.meta.env.MODE,
       ...properties,
     },
   };

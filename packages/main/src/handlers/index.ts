@@ -35,7 +35,7 @@ const functions: Record<string, Listener> = {
   getLogsInfo: getLogsInfoHandler,
   getAppInfo: async () => {
     return {
-      sourceCommitShort: import.meta.env.SOURCE_COMMIT_SHORT,
+      sourceCommitShort: import.meta.env.VITE_SOURCE_COMMIT_SHORT,
       repository,
       discordChanel: discord,
       currentVersion: App.getVersion(),

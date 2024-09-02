@@ -1,11 +1,3 @@
-const globals = require('./globals.cjs');
-const readonlyGlobals = Object.keys(globals).reduce((acc, key) => {
-  acc[key] = 'readonly';
-  return acc;
-}, {});
-
-const _productionError = process.env.NODE_ENV === 'production' ? 'error' : 'warn';
-
 module.exports = {
   root: true,
   env: {
@@ -28,9 +20,6 @@ module.exports = {
   },
   plugins: ['@typescript-eslint'],
   ignorePatterns: ['node_modules/**', '**/dist/**'],
-  globals: {
-    ...readonlyGlobals,
-  },
   rules: {
     '@typescript-eslint/no-unused-vars': [
       'error',
