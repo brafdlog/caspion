@@ -20,8 +20,17 @@ export async function encrypt(text: string) {
 }
 
 export async function decrypt(text: string) {
-  const salt = await SALT();
-  const decipher = crypto.createDecipher(ALGORITHM, salt);
-  const decrypted = decipher.update(text, 'hex', 'utf8');
-  return decrypted + decipher.final('utf8');
+  try {
+    const salt = await SALT();
+    const decipher = crypto.createDecipher(ALGORITHM, salt);
+    const decrypted = decipher.update(text, 'hex', 'utf8');
+    return decrypted + decipher.final('utf8');
+  } catch (e) {
+    if (!text) {
+      console.info('Failed to decrypt an empty string, returning null');
+      return null;
+    }
+    console.error('Failed to decrypt', e);
+    throw e;
+  }
 }

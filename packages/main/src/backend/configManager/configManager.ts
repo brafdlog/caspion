@@ -8,6 +8,10 @@ export async function getConfig(configPath: string = configFilePath): Promise<Co
   const configFromFile = await getConfigFromFile(configPath);
   if (configFromFile) {
     const decrypted = await decrypt(configFromFile) as string;
+    if (!decrypted) {
+      console.log('No config file found, returning default config');
+      return configExample;
+    }
     try {
       return JSON.parse(decrypted);
     } catch (e) {
