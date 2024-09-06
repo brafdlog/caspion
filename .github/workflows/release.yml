@@ -47,7 +47,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: 'yarn'
-      # - run: yarn
+      - run: yarn
       - uses: cycjimmy/semantic-release-action@cb425203a562475bca039ba4dbf90c7f9ac790f4
         id: semantic
         if: inputs.version == ''
