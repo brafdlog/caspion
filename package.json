@@ -27,7 +27,8 @@
     "typecheck:renderer": "tsc --noEmit -p packages/renderer/tsconfig.json",
     "typecheck": "yarn typecheck:main && yarn typecheck:preload && yarn typecheck:renderer",
     "postinstall": "cross-env ELECTRON_RUN_AS_NODE=1 electron scripts/update-electron-vendors.js",
-    "format": "prettier --write \"**/*.{js,mjs,cjs,ts,mts,cts,tsx,json}\""
+    "format": "prettier --write \"**/*.{js,mjs,cjs,ts,mts,cts,tsx,json}\"",
+    "format:check": "prettier --check \"**/*.{js,mjs,cjs,ts,mts,cts,tsx,json}\""
   },
   "devDependencies": {
     "@semantic-release/commit-analyzer": "^13.0.0",

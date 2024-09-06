@@ -1,3 +1,5 @@
+name: Lint
+
 on:
   workflow_dispatch:
   push:
@@ -60,4 +62,4 @@ jobs:
           node-version-file: '.node-version'
 
       - run: yarn add prettier
-      - run: npx prettier --check "**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue}"
+      - run: yarn format:check

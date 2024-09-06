@@ -54,7 +54,7 @@ const EditYnabExporter = ({ handleSave, exporterConfig }: EditYnabExporterProps)
     });
   };
 
-  const handleOptionChangeEvent = (propertyName: keyof YnabConfig["options"], event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOptionChangeEvent = (propertyName: keyof YnabConfig['options'], event: React.ChangeEvent<HTMLInputElement>) => {
     updateOptionsState({ [propertyName]: event.target.value });
   };
 
