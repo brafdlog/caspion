@@ -9,18 +9,18 @@ on:
 
   push:
     branches:
-      - vite-electron-builder
+      - master
     paths-ignore:
       - 'nuxt/**'
 
-  workflow_call:
-    inputs:
-      dry-run:
-        description: 'Compiles the app but not upload artifacts to distribution server'
-        # TODO: default: false
-        default: true
-        required: false
-        type: boolean
+  # workflow_call:
+  #   inputs:
+  #     dry-run:
+  #       description: 'Compiles the app but not upload artifacts to distribution server'
+  #       # TODO: default: false
+  #       default: true
+  #       required: false
+  #       type: boolean
 
 concurrency:
   group: release-${{ github.ref }}
