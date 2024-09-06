@@ -2,32 +2,7 @@ name: Build
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - master
-    paths-ignore:
-      - '.github/**'
-      - '!.github/workflows/build.yml'
-      - '!.github/workflows/lint.yml'
-      - '!.github/workflows/ci.yml'
-      - '!.github/workflows/release.yml'
-      - '**.md'
-      - .editorconfig
-      - .gitignore
-      - '.idea/**'
-      - '.vscode/**'
   pull_request:
-    paths-ignore:
-      - '.github/**'
-      - '!.github/workflows/build.yml'
-      - '!.github/workflows/lint.yml'
-      - '!.github/workflows/ci.yml'
-      - '!.github/workflows/release.yml'
-      - '**.md'
-      - .editorconfig
-      - .gitignore
-      - '.idea/**'
-      - '.vscode/**'
 
 jobs:
   build:
@@ -36,8 +11,8 @@ jobs:
         matrix:
           os: 
             - macos-latest
-            # - ubuntu-latest
-            # - windows-latest
+            - ubuntu-latest
+            - windows-latest
 
     runs-on: ${{ matrix.os }}
 

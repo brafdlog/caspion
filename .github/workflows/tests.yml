@@ -1,5 +1,7 @@
 name: Tests
-on: [ workflow_call ]
+on:
+  workflow_dispatch:
+  pull_request:
 
 concurrency:
   group: tests-${{ github.ref }}
