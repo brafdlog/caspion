@@ -4,7 +4,7 @@ import {
   clientSecret,
   redirectUri,
   scopes,
-} from '@/backend/export/outputVendors/googleSheets/googleAuth';
+} from './googleAuth';
 
 export default () => {
   if (!clientId || !clientSecret)
