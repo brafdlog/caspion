@@ -9,4 +9,5 @@ linux:
   target: deb
 
 publish:
-  releaseType: release
+  - provider: github
+    releaseType: release
