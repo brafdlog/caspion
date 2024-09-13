@@ -156,7 +156,6 @@ class ConfigStore {
   }
 
   handleScrapingEvent(eventName: string, budgetTrackingEvent?: BudgetTrackingEvent) {
-    console.log('Received scraping event', eventName, budgetTrackingEvent);
     if (eventName === 'DOWNLOAD_CHROME') {
       this.updateChromeDownloadPercent((budgetTrackingEvent as DownalodChromeEvent)?.percent);
     }
