@@ -57,6 +57,13 @@ jobs:
       NEW_RELEASE_PUBLISHED: ${{ inputs.version && 'true' || needs.release.outputs.new_release_published }}
       NEW_RELEASE_VERSION: ${{ needs.release.outputs.new_release_version || inputs.version }}
 
+      NODE_ENV: production
+      MODE: production
+      VITE_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      VITE_GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+      VITE_SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
+      VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+
     permissions:
       contents: write # Allows this job to create releases
 
@@ -114,10 +121,4 @@ jobs:
           # CSC_KEY_PASSWORD: ''
           # Publishing artifacts
           GH_TOKEN: ${{ secrets.github_token }}
-          NODE_ENV: production
-          MODE: production
-          VITE_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          VITE_GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-          VITE_SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
-          VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           PUBLISH_PARAM: ${{ env.NEW_RELEASE_PUBLISHED == 'true' && 'always' || 'never' }}
