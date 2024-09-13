@@ -84,7 +84,7 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
     const url = createGithubIssueLink(
       form.title ?? '',
       form.details ?? '',
-      form.attachedLogs ? lastLines ?? '' : '',
+      form.attachedLogs ? (lastLines ?? '') : '',
     );
     openExternal(url);
   };
