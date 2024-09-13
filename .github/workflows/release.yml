@@ -99,6 +99,7 @@ jobs:
       - run: yarn
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+          NODE_ENV: development
 
       - run: yarn build
 
