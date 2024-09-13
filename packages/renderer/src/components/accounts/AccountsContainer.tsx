@@ -10,9 +10,7 @@ function AccountsContainer({ title, children }: AccountsContainerProps) {
   return (
     <div className={styles.container}>
       <h3 className={styles.title}>{title}</h3>
-      <div className={styles.accountsWrapper}>
-          {children}
-      </div>
+      <div className={styles.accountsWrapper}>{children}</div>
     </div>
   );
 }

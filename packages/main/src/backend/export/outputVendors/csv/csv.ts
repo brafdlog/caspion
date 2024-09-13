@@ -1,12 +1,14 @@
-import { type TransactionInstallments } from 'israeli-bank-scrapers-core/lib/transactions';
-import { promises as fs } from 'fs';
-import { stringify } from 'csv-stringify/sync';
-import { parse } from 'csv-parse/sync';
 import {
-  type EnrichedTransaction, type ExportTransactionsFunction, type OutputVendor} from '@/backend/commonTypes';
-import { OutputVendorName,
+  OutputVendorName,
+  type EnrichedTransaction,
+  type ExportTransactionsFunction,
+  type OutputVendor,
 } from '@/backend/commonTypes';
 import { mergeTransactions, sortByDate } from '@/backend/transactions/transactions';
+import { parse } from 'csv-parse/sync';
+import { stringify } from 'csv-stringify/sync';
+import { promises as fs } from 'fs';
+import { type TransactionInstallments } from 'israeli-bank-scrapers-core/lib/transactions';
 
 export function parseTransactions(csvText: string) {
   return parse(csvText, {
@@ -20,7 +22,7 @@ export function parseTransactions(csvText: string) {
   }) as unknown as EnrichedTransaction[];
 }
 
-function parseColumn(value:string, column: string | number) {
+function parseColumn(value: string, column: string | number) {
   switch (column) {
     case 'chargedAmount':
     case 'identifier':
@@ -80,7 +82,10 @@ export const serializeTransactions = (transactions: EnrichedTransaction[]) => {
   });
 };
 
-const exportTransactions: ExportTransactionsFunction = async ({ transactionsToCreate, outputVendorsConfig }) => {
+const exportTransactions: ExportTransactionsFunction = async ({
+  transactionsToCreate,
+  outputVendorsConfig,
+}) => {
   const { filePath } = outputVendorsConfig.csv!.options;
   const savedTransactions = await parseTransactionsFile(filePath);
   const mergedTransactions = mergeTransactions(savedTransactions, transactionsToCreate);

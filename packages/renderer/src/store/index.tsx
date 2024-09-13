@@ -2,7 +2,7 @@ import { getConfig } from '#preload';
 import { useEffect } from 'react';
 import { type Config } from '../types';
 import { AppInfoStoreProvider, useInitAppInfoStore } from './AppInfoStore';
-import { configStore, ConfigStoreProvider } from './ConfigStore';
+import { ConfigStoreProvider, configStore } from './ConfigStore';
 import Store, { StoreProvider } from './Store';
 
 export { useAppInfoStore } from './AppInfoStore';
@@ -20,9 +20,9 @@ export const StoresProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
   return (
     <StoreProvider value={store}>
-        <ConfigStoreProvider>
-          <AppInfoStoreProvider>{children}</AppInfoStoreProvider>
-        </ConfigStoreProvider>
+      <ConfigStoreProvider>
+        <AppInfoStoreProvider>{children}</AppInfoStoreProvider>
+      </ConfigStoreProvider>
     </StoreProvider>
   );
 };

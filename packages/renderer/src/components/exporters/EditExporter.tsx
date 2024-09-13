@@ -1,18 +1,14 @@
-import React from 'react';
-import { type Exporter, OutputVendorName, type YnabConfig } from '../../types';
+import { OutputVendorName, type Exporter, type YnabConfig } from '../../types';
 import EditFileExporter from './EditFileExporter';
-import EditSheetsExporter from './google-sheets/EditSheetsExporter';
 import EditYnabExporter from './EditYnabExporter';
+import EditSheetsExporter from './google-sheets/EditSheetsExporter';
 
 interface EditExporterProps {
   handleSave: (exporterConfig: Exporter | YnabConfig) => Promise<void>;
   exporter: Exporter;
 }
 
-export default function EditExporter({
-  handleSave,
-  exporter,
-}: EditExporterProps) {
+export default function EditExporter({ handleSave, exporter }: EditExporterProps) {
   const exporterTypeToEditComponent = new Map<string, JSX.Element>();
   exporterTypeToEditComponent.set(
     OutputVendorName.CSV,

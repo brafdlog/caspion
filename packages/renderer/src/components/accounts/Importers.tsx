@@ -5,7 +5,7 @@ import {
   AccountStatus,
   ModalStatus,
   AccountType as TypeOfAccount,
-  type Account as AccountType
+  type Account as AccountType,
 } from '../../types';
 import Account, { type ActionButton } from './Account';
 import NewAccount from './NewAccount';

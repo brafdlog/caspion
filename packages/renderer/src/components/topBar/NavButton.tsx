@@ -1,4 +1,3 @@
-import React from 'react';
 import { Button, Stack } from 'react-bootstrap';
 import navEllipseIcon from '../../assets/navEllipse.svg';
 

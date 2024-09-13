@@ -4,9 +4,7 @@ import { homepage } from '../../../../../../../package.json';
 export const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 export const clientSecret = import.meta.env.VITE_GOOGLE_CLIENT_SECRET;
 export const redirectUri = homepage;
-export const scopes = [
-  'https://www.googleapis.com/auth/drive.file',
-];
+export const scopes = ['https://www.googleapis.com/auth/drive.file'];
 
 export const createClient = (credentials: Auth.Credentials) => {
   const authClient = new Auth.OAuth2Client({ clientId, clientSecret, redirectUri });

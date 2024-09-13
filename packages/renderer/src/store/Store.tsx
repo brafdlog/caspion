@@ -6,7 +6,6 @@ import { type YnabAccountDataType, type YnabConfig } from '../types';
 
 // TODO: rename to YnabStore
 export default class Store {
-
   ynabAccountData?: YnabAccountDataType;
 
   fetchingYnabAccountData: boolean;
@@ -26,7 +25,6 @@ export default class Store {
       console.log('Ynab account data ', this.ynabAccountData);
     });
   }
-
 }
 
 const StoreContext = createContext<Store>(new Store());

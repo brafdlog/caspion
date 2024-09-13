@@ -1,9 +1,5 @@
-import _ from 'lodash';
-import moment from 'moment/moment';
-import * as ynab from 'ynab';
-import { type EventPublisher} from '@/backend/eventEmitters/EventEmitter';
-import { EventNames, ExporterEvent } from '@/backend/eventEmitters/EventEmitter';
 import {
+  OutputVendorName,
   type Config,
   type EnrichedTransaction,
   type ExportTransactionsFunction,
@@ -13,8 +9,13 @@ import {
   type YnabFinancialAccount,
 } from '@/backend/commonTypes';
 import {
-  OutputVendorName,
-} from '@/backend/commonTypes';
+  EventNames,
+  ExporterEvent,
+  type EventPublisher,
+} from '@/backend/eventEmitters/EventEmitter';
+import _ from 'lodash';
+import moment from 'moment/moment';
+import * as ynab from 'ynab';
 
 const YNAB_DATE_FORMAT = 'YYYY-MM-DD';
 const NOW = moment();
@@ -29,7 +30,6 @@ let ynabAPI: ynab.API | undefined;
 export async function init(outputVendorsConfig: Config['outputVendors']) {
   ynabConfig = outputVendorsConfig.ynab;
   initFromToken(outputVendorsConfig[OutputVendorName.YNAB]?.options.accessToken);
-
 }
 
 async function initFromToken(accessToken?: string) {
@@ -40,7 +40,10 @@ async function initFromToken(accessToken?: string) {
   }
 }
 
-const createTransactions: ExportTransactionsFunction = async ({ transactionsToCreate, startDate }, eventPublisher) => {
+const createTransactions: ExportTransactionsFunction = async (
+  { transactionsToCreate, startDate },
+  eventPublisher,
+) => {
   if (!ynabConfig) {
     throw new Error('Must call init before using ynab functions');
   }
@@ -48,17 +51,30 @@ const createTransactions: ExportTransactionsFunction = async ({ transactionsToCr
     await initCategories();
   }
   const transactionsFromFinancialAccount = transactionsToCreate.map(convertTransactionToYnabFormat);
-  let transactionsThatDontExistInYnab = await filterOnlyTransactionsThatDontExistInYnabAlready(startDate, transactionsFromFinancialAccount);
+  let transactionsThatDontExistInYnab = await filterOnlyTransactionsThatDontExistInYnabAlready(
+    startDate,
+    transactionsFromFinancialAccount,
+  );
   // Filter out transactions that are in the future
-  transactionsThatDontExistInYnab = transactionsThatDontExistInYnab.filter((transaction) => moment(transaction.date, YNAB_DATE_FORMAT).isBefore(NOW));
+  transactionsThatDontExistInYnab = transactionsThatDontExistInYnab.filter(transaction =>
+    moment(transaction.date, YNAB_DATE_FORMAT).isBefore(NOW),
+  );
   if (!transactionsThatDontExistInYnab.length) {
-    await emitProgressEvent(eventPublisher, transactionsToCreate, 'All transactions already exist in ynab. Doing nothing.');
+    await emitProgressEvent(
+      eventPublisher,
+      transactionsToCreate,
+      'All transactions already exist in ynab. Doing nothing.',
+    );
     return {
       exportedTransactionsNum: 0,
     };
   }
 
-  await emitProgressEvent(eventPublisher, transactionsToCreate, `Creating ${transactionsThatDontExistInYnab.length} transactions in ynab`);
+  await emitProgressEvent(
+    eventPublisher,
+    transactionsToCreate,
+    `Creating ${transactionsThatDontExistInYnab.length} transactions in ynab`,
+  );
   try {
     await ynabAPI!.transactions.createTransactions(ynabConfig.options.budgetId, {
       transactions: transactionsThatDontExistInYnab,
@@ -67,15 +83,24 @@ const createTransactions: ExportTransactionsFunction = async ({ transactionsToCr
       exportedTransactionsNum: transactionsThatDontExistInYnab.length,
     };
   } catch (e) {
-    await eventPublisher.emit(EventNames.EXPORTER_ERROR, new ExporterEvent({
-      message: (e as Error).message, error: e as Error, exporterName: ynabOutputVendor.name, allTransactions: transactionsToCreate,
-    }));
+    await eventPublisher.emit(
+      EventNames.EXPORTER_ERROR,
+      new ExporterEvent({
+        message: (e as Error).message,
+        error: e as Error,
+        exporterName: ynabOutputVendor.name,
+        allTransactions: transactionsToCreate,
+      }),
+    );
     throw e;
   }
 };
 
 function getTransactions(startDate: Date): Promise<ynab.TransactionsResponse> {
-  return ynabAPI!.transactions.getTransactions(ynabConfig!.options.budgetId, moment(startDate).format(YNAB_DATE_FORMAT));
+  return ynabAPI!.transactions.getTransactions(
+    ynabConfig!.options.budgetId,
+    moment(startDate).format(YNAB_DATE_FORMAT),
+  );
 }
 
 export function getPayeeName(transaction: EnrichedTransaction, payeeNameMaxLength = 50) {
@@ -87,7 +112,9 @@ export function getPayeeName(transaction: EnrichedTransaction, payeeNameMaxLengt
   return transaction.description.substring(0, payeeNameMaxLength);
 }
 
-function convertTransactionToYnabFormat(originalTransaction: EnrichedTransaction): ynab.SaveTransaction {
+function convertTransactionToYnabFormat(
+  originalTransaction: EnrichedTransaction,
+): ynab.SaveTransaction {
   const amount = Math.round(originalTransaction.chargedAmount * 1000);
   const date = convertTimestampToYnabDateFormat(originalTransaction);
 
@@ -106,8 +133,9 @@ function convertTransactionToYnabFormat(originalTransaction: EnrichedTransaction
   };
 }
 
-function getYnabAccountIdByAccountNumberFromTransaction(transactionAccountNumber: string) : string {
-  const ynabAccountId = ynabConfig!.options.accountNumbersToYnabAccountIds[transactionAccountNumber];
+function getYnabAccountIdByAccountNumberFromTransaction(transactionAccountNumber: string): string {
+  const ynabAccountId =
+    ynabConfig!.options.accountNumbersToYnabAccountIds[transactionAccountNumber];
   if (!ynabAccountId) {
     throw new Error(`Unhandled account number ${transactionAccountNumber}`);
   }
@@ -131,49 +159,64 @@ function getYnabCategoryIdFromCategoryName(categoryName?: string) {
 
 export async function initCategories() {
   const categories = await ynabAPI!.categories.getCategories(ynabConfig!.options.budgetId);
-  categories.data.category_groups.forEach((categoryGroup) => {
+  categories.data.category_groups.forEach(categoryGroup => {
     categoryGroup.categories
-      .map((category) => ({
+      .map(category => ({
         id: category.id,
         name: category.name,
         category_group_id: category.category_group_id,
       }))
-      .forEach((category) => {
+      .forEach(category => {
         categoriesMap.set(category.name, category);
       });
   });
 }
 
-async function filterOnlyTransactionsThatDontExistInYnabAlready(startDate: Date, transactionsFromFinancialAccounts: ynab.SaveTransaction[]) {
+async function filterOnlyTransactionsThatDontExistInYnabAlready(
+  startDate: Date,
+  transactionsFromFinancialAccounts: ynab.SaveTransaction[],
+) {
   let transactionsInYnabBeforeCreatingTheseTransactions: ynab.TransactionDetail[];
   if (transactionsFromYnab.has(startDate)) {
     transactionsInYnabBeforeCreatingTheseTransactions = transactionsFromYnab.get(startDate)!;
   } else {
     const transactionsFromYnabResponse = await getTransactions(startDate);
-    transactionsInYnabBeforeCreatingTheseTransactions = transactionsFromYnabResponse.data.transactions;
+    transactionsInYnabBeforeCreatingTheseTransactions =
+      transactionsFromYnabResponse.data.transactions;
     transactionsFromYnab.set(startDate, transactionsInYnabBeforeCreatingTheseTransactions);
   }
   const transactionsThatDontExistInYnab = transactionsFromFinancialAccounts.filter(
-    (transactionToCheck) => !transactionsInYnabBeforeCreatingTheseTransactions.find(
-      (existingTransaction) => isSameTransaction(transactionToCheck, existingTransaction),
-    ),
+    transactionToCheck =>
+      !transactionsInYnabBeforeCreatingTheseTransactions.find(existingTransaction =>
+        isSameTransaction(transactionToCheck, existingTransaction),
+      ),
   );
   return transactionsThatDontExistInYnab;
 }
 
-export function isSameTransaction(transactionToCreate: ynab.SaveTransaction, transactionFromYnab: ynab.TransactionDetail) {
+export function isSameTransaction(
+  transactionToCreate: ynab.SaveTransaction,
+  transactionFromYnab: ynab.TransactionDetail,
+) {
   const isATransferTransaction = !!transactionFromYnab.transfer_account_id;
   return (
-    transactionToCreate.account_id === transactionFromYnab.account_id
-    && transactionToCreate.date === transactionFromYnab.date
+    transactionToCreate.account_id === transactionFromYnab.account_id &&
+    transactionToCreate.date === transactionFromYnab.date &&
     // @ts-expect-error error TS18049: 'transactionToCreate.amount' is possibly 'null' or 'undefined'
-    && Math.abs(transactionToCreate.amount - transactionFromYnab.amount) < 1000
+    Math.abs(transactionToCreate.amount - transactionFromYnab.amount) < 1000 &&
     // In a transfer transaction the payee name changes, but we still consider this the same transaction
-    && (areStringsEqualIgnoreCaseAndWhitespace(transactionToCreate.payee_name, transactionFromYnab.payee_name) || isATransferTransaction)
+    (areStringsEqualIgnoreCaseAndWhitespace(
+      transactionToCreate.payee_name,
+      transactionFromYnab.payee_name,
+    ) ||
+      isATransferTransaction)
   );
 }
 
-export function areStringsEqualIgnoreCaseAndWhitespace(str1: string | null | undefined = '', str2 : string | null | undefined = '') {
+export function areStringsEqualIgnoreCaseAndWhitespace(
+  str1: string | null | undefined = '',
+  str2: string | null | undefined = '',
+) {
   const trimmedAndLowerCaseStr1 = str1 && normalizeWhitespace(str1.toLowerCase());
   const trimmedAndLowerCaseStr2 = str2 && normalizeWhitespace(str2.toLowerCase());
 
@@ -185,7 +228,11 @@ function normalizeWhitespace(str: string) {
 }
 
 // eslint-disable-next-line max-len
-export async function getYnabAccountDetails(outputVendorsConfig: Config['outputVendors'], budgetIdToCheck: string, accessToken: string): Promise<YnabAccountDetails> {
+export async function getYnabAccountDetails(
+  outputVendorsConfig: Config['outputVendors'],
+  budgetIdToCheck: string,
+  accessToken: string,
+): Promise<YnabAccountDetails> {
   await initFromToken(accessToken);
   console.log('Getting budget and account data');
   const { budgets, accounts } = await getBudgetsAndAccountsData();
@@ -209,13 +256,15 @@ function doesBudgetIdExistInYnab(budgetIdToCheck: string, budgets?: ynab.BudgetS
   if (!budgetIdToCheck) {
     return false;
   }
-  return !!budgets && !!budgets.find((budget) => budget.id === budgetIdToCheck);
+  return !!budgets && !!budgets.find(budget => budget.id === budgetIdToCheck);
 }
 
-export async function getBudgets(accessToken: string): Promise<{ id: string; name: string; }[] | undefined> {
+export async function getBudgets(
+  accessToken: string,
+): Promise<{ id: string; name: string }[] | undefined> {
   const localYnabApi = new ynab.API(accessToken);
   const budgetsResponse = await localYnabApi.budgets.getBudgets();
-  return budgetsResponse?.data.budgets.map((budget) => ({ id: budget.id, name: budget.name }));
+  return budgetsResponse?.data.budgets.map(budget => ({ id: budget.id, name: budget.name }));
 }
 
 export async function isAccessTokenValid(accessToken: string) {
@@ -236,16 +285,20 @@ async function getBudgetsAndAccountsData() {
   const budgetsResponse = await ynabAPI!.budgets.getBudgets();
   console.log('Got budgets from ynab');
   let { budgets } = budgetsResponse.data;
-  budgets = budgets.map((budget) => ({ id: budget.id, name: budget.name }));
+  budgets = budgets.map(budget => ({ id: budget.id, name: budget.name }));
   const accounts: YnabFinancialAccount[] = [];
   await Promise.all(
-    budgets.map(async (budget) => {
+    budgets.map(async budget => {
       const budgetAccountsResponse = await ynabAPI!.accounts.getAccounts(budget.id);
-      const budgetAccounts = budgetAccountsResponse.data.accounts.map(({
-        id, name, type, deleted, closed,
-      }) => ({
-        id, name, type, budgetId: budget.id, active: !deleted && !closed,
-      }));
+      const budgetAccounts = budgetAccountsResponse.data.accounts.map(
+        ({ id, name, type, deleted, closed }) => ({
+          id,
+          name,
+          type,
+          budgetId: budget.id,
+          active: !deleted && !closed,
+        }),
+      );
       accounts.push(...budgetAccounts);
     }),
   );
@@ -257,13 +310,23 @@ async function getBudgetsAndAccountsData() {
 
 async function getYnabCategories() {
   const categoriesResponse = await ynabAPI!.categories.getCategories(ynabConfig!.options.budgetId);
-  const categories = _.flatMap(categoriesResponse.data.category_groups, (categoryGroup) => categoryGroup.categories);
-  const categoryNames = categories.map((category) => category.name);
+  const categories = _.flatMap(
+    categoriesResponse.data.category_groups,
+    categoryGroup => categoryGroup.categories,
+  );
+  const categoryNames = categories.map(category => category.name);
   return categoryNames;
 }
 
-async function emitProgressEvent(eventPublisher: EventPublisher, allTransactions: EnrichedTransaction[], message: string) {
-  await eventPublisher.emit(EventNames.EXPORTER_PROGRESS, new ExporterEvent({ message, exporterName: ynabOutputVendor.name, allTransactions }));
+async function emitProgressEvent(
+  eventPublisher: EventPublisher,
+  allTransactions: EnrichedTransaction[],
+  message: string,
+) {
+  await eventPublisher.emit(
+    EventNames.EXPORTER_PROGRESS,
+    new ExporterEvent({ message, exporterName: ynabOutputVendor.name, allTransactions }),
+  );
 }
 
 export const ynabOutputVendor: OutputVendor = {

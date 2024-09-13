@@ -1,5 +1,4 @@
-import { type Auth, type drive_v3 as driveV3} from 'googleapis';
-import { google } from 'googleapis';
+import { google, type Auth, type drive_v3 as driveV3 } from 'googleapis';
 import _ from 'lodash';
 
 export type OAuth2Client = Auth.OAuth2Client;
@@ -58,11 +57,7 @@ export const getAllSpreadsheets = async (auth: OAuth2Client) => {
   return response.data.files as Spreadsheet[];
 };
 
-export async function getSheet(
-  spreadsheetId: string,
-  sheetName: string,
-  auth: OAuth2Client,
-) {
+export async function getSheet(spreadsheetId: string, sheetName: string, auth: OAuth2Client) {
   const spreadsheetResponse = await sheets.spreadsheets.get({
     auth,
     spreadsheetId,

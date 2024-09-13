@@ -35,10 +35,7 @@ export enum OutputVendorName {
   CSV = 'csv',
 }
 
-export type OutputVendorConfigs = Exclude<
-  Config['outputVendors'][OutputVendorName],
-  undefined
->;
+export type OutputVendorConfigs = Exclude<Config['outputVendors'][OutputVendorName], undefined>;
 export type OutputVendorConfig<T extends OutputVendorName> = Exclude<
   Config['outputVendors'][T],
   undefined
