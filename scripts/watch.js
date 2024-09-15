@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-import {build, createServer} from 'vite';
+import { spawn } from 'child_process';
 import electronPath from 'electron';
-import {spawn} from 'child_process';
+import { build, createServer } from 'vite';
 
 /** @type 'production' | 'development'' */
 const mode = (process.env.MODE = process.env.MODE ?? 'development');
@@ -16,7 +16,7 @@ const logLevel = 'warn';
  * @param {import('vite').ViteDevServer} watchServer Renderer watch server instance.
  * Needs to set up `VITE_DEV_SERVER_URL` environment variable from {@link import('vite').ViteDevServer.resolvedUrls}
  */
-function setupMainPackageWatcher({resolvedUrls}) {
+function setupMainPackageWatcher({ resolvedUrls }) {
   process.env.VITE_DEV_SERVER_URL = resolvedUrls.local[0];
 
   /** @type {ChildProcess | null} */
@@ -63,7 +63,7 @@ function setupMainPackageWatcher({resolvedUrls}) {
  * @param {import('vite').ViteDevServer} watchServer Renderer watch server instance.
  * Required to access the web socket of the page. By sending the `full-reload` command to the socket, it reloads the web page.
  */
-function setupPreloadPackageWatcher({ws}) {
+function setupPreloadPackageWatcher({ ws }) {
   return build({
     mode,
     logLevel,

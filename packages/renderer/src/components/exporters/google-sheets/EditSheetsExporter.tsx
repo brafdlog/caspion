@@ -13,10 +13,7 @@ interface EditSheetsExporterProps {
   exporterConfig: GoogleSheetsConfig;
 }
 
-const EditSheetsExporter: React.FC<EditSheetsExporterProps> = ({
-  handleSave,
-  exporterConfig,
-}) => {
+const EditSheetsExporter: React.FC<EditSheetsExporterProps> = ({ handleSave, exporterConfig }) => {
   const [sheetsConfig, setSheetsConfig] = useState<GoogleSheetsConfig>(
     toJS<GoogleSheetsConfig>(exporterConfig),
   );
@@ -24,14 +21,14 @@ const EditSheetsExporter: React.FC<EditSheetsExporterProps> = ({
   const [sendDisabled, setSendDisabled] = useState(false);
 
   const handleActiveChange = () => {
-    setSheetsConfig((prev) => ({
+    setSheetsConfig(prev => ({
       ...prev,
       active: !prev.active,
     }));
   };
 
   const handleSheetIdChange = (sheetId: string) => {
-    setSheetsConfig((prev) => ({
+    setSheetsConfig(prev => ({
       ...prev,
       options: {
         ...prev.options,
@@ -60,7 +57,7 @@ const EditSheetsExporter: React.FC<EditSheetsExporterProps> = ({
 
   if (loginStatus === Status.LOGIN) {
     const updateCredentials = (credentials: Credentials) => {
-      setSheetsConfig((prev) => ({
+      setSheetsConfig(prev => ({
         ...prev,
         options: {
           ...prev.options,
@@ -98,11 +95,7 @@ const EditSheetsExporter: React.FC<EditSheetsExporterProps> = ({
             </Form.Group>
           </Form>
           <div className={styles.actionButtonsWrapper}>
-            <Button
-              variant="primary"
-              onClick={handleSaveClick}
-              disabled={sendDisabled}
-            >
+            <Button variant="primary" onClick={handleSaveClick} disabled={sendDisabled}>
               שמור
             </Button>
           </div>

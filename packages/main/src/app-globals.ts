@@ -1,6 +1,6 @@
+import electron from 'electron';
 import { mkdirSync } from 'fs';
 import path from 'path';
-import electron from 'electron';
 
 export const App: Electron.App = electron.app;
 

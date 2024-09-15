@@ -242,4 +242,3 @@ export interface Config {
   };
   useReactUI?: boolean;
 }
-

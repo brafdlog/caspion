@@ -1,5 +1,5 @@
-import {node} from '../../.electron-vendors.cache.json';
-import {join} from 'node:path';
+import { join } from 'node:path';
+import { node } from '../../.electron-vendors.cache.json';
 
 const PACKAGE_ROOT = __dirname;
 const PROJECT_ROOT = join(PACKAGE_ROOT, '../..');

@@ -9,11 +9,7 @@ interface SheetsDropdownProps {
   value: string;
   onChange: (value: string) => void;
 }
-const SheetsDropdown: React.FC<SheetsDropdownProps> = ({
-  credentials,
-  value,
-  onChange,
-}) => {
+const SheetsDropdown: React.FC<SheetsDropdownProps> = ({ credentials, value, onChange }) => {
   const userSpreadsheets = useUserSpreadsheets(credentials);
   const existedSpreadsheet = useMemo(
     () => userSpreadsheets.find(({ id }) => id === value),
@@ -26,7 +22,7 @@ const SheetsDropdown: React.FC<SheetsDropdownProps> = ({
   }, [existedSpreadsheet, value]);
 
   const onSelectionChange = useCallback(
-    (selections) => {
+    selections => {
       if (selections[0]?.customOption) onChange(selections[0]?.name);
       else if (selections.length) onChange(selections[0]?.id);
       else onChange(null);

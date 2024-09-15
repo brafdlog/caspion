@@ -5,10 +5,13 @@ type ZIndexLayers = 'modal' | 'offcanvas';
 let zIndexes: Record<ZIndexLayers, number>;
 
 const makeZIndexes = (layers: ZIndexLayers[]) => {
-  return layers.reduce((prevValue, layerName, index) => {
-    prevValue[layerName] = (index + 1) * maxZIndexUsedByReactBootstrap;
-    return prevValue;
-  }, {} as Record<ZIndexLayers, number>);
+  return layers.reduce(
+    (prevValue, layerName, index) => {
+      prevValue[layerName] = (index + 1) * maxZIndexUsedByReactBootstrap;
+      return prevValue;
+    },
+    {} as Record<ZIndexLayers, number>,
+  );
 };
 
 export const getZIndexes = () => {

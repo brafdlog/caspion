@@ -1,4 +1,4 @@
-import {configFilePath, userDataPath} from '@/app-globals';
+import { configFilePath, userDataPath } from '@/app-globals';
 import {
   type AccountToScrapeConfig,
   type Config,
@@ -6,10 +6,10 @@ import {
   type FinancialAccountDetails,
   type ScraperScrapingResult,
 } from '@/backend/commonTypes';
-import {getConfig} from '@/backend/configManager/configManager';
+import { getConfig } from '@/backend/configManager/configManager';
 import * as bankScraper from '@/backend/import/bankScraper';
 import Bottleneck from 'bottleneck';
-import {type Transaction} from 'israeli-bank-scrapers-core/lib/transactions';
+import { type Transaction } from 'israeli-bank-scrapers-core/lib/transactions';
 import _ from 'lodash';
 import moment from 'moment';
 // import * as categoryCalculation from '@/backend/import/categoryCalculationScript';
@@ -21,7 +21,7 @@ import {
   ImporterEvent,
   type EventPublisher,
 } from '../eventEmitters/EventEmitter';
-import {calculateTransactionHash} from '../transactions/transactions';
+import { calculateTransactionHash } from '../transactions/transactions';
 import getChrome from './downloadChromium';
 
 type ScrapingConfig = Config['scraping'];
@@ -70,7 +70,7 @@ export async function scrapeFinancialAccountsAndFetchTransactions(
   const companyIdToTransactions = promiseResults.reduce(
     (idToTrxAcc, scrapeRes) => {
       if (scrapeRes.status === 'fulfilled') {
-        const {id, transactions} = scrapeRes.value;
+        const { id, transactions } = scrapeRes.value;
         idToTrxAcc[id] = transactions;
       }
       return idToTrxAcc;
@@ -83,7 +83,7 @@ export async function scrapeFinancialAccountsAndFetchTransactions(
 
 function buildImporterEvent(
   accountConfig: AccountToScrapeConfig,
-  additionalParams: {message: string; error?: Error; status?: AccountStatus},
+  additionalParams: { message: string; error?: Error; status?: AccountStatus },
 ) {
   return new ImporterEvent({
     message: additionalParams.message,
@@ -109,14 +109,14 @@ export async function getFinancialAccountDetails(): Promise<FinancialAccountDeta
     startDate,
     eventEmitter,
   );
-  const financialAccountDetails: {name: string; accountNumber: string}[] = [];
+  const financialAccountDetails: { name: string; accountNumber: string }[] = [];
   Object.keys(companyIdToTransactions).forEach(companyId => {
     let accountNumbers = companyIdToTransactions[companyId].map(
       transaction => transaction.accountNumber,
     );
     accountNumbers = _.uniq(accountNumbers);
     accountNumbers.forEach(accountNumber =>
-      financialAccountDetails.push({name: companyId, accountNumber}),
+      financialAccountDetails.push({ name: companyId, accountNumber }),
     );
   });
   return financialAccountDetails;
@@ -133,13 +133,13 @@ async function fetchTransactions(
   try {
     await eventPublisher.emit(
       EventNames.IMPORTER_START,
-      buildImporterEvent(account, {message: 'Importer start'}),
+      buildImporterEvent(account, { message: 'Importer start' }),
     );
 
     const emitImporterProgressEvent = async (eventCompanyId: string, message: string) => {
       await eventPublisher.emit(
         EventNames.IMPORTER_PROGRESS,
-        buildImporterEvent(account, {message}),
+        buildImporterEvent(account, { message }),
       );
     };
     const companyId = account.key;

@@ -1,9 +1,10 @@
+import { EventNames, type BudgetTrackingEventEmitter } from '@/backend/eventEmitters/EventEmitter';
 import Analytics from 'analytics-node';
 import { machineId } from 'node-machine-id';
-import { type BudgetTrackingEventEmitter} from '@/backend/eventEmitters/EventEmitter';
-import { EventNames } from '@/backend/eventEmitters/EventEmitter';
 
-const analytics = import.meta.env.VITE_SEGMENT_WRITE_KEY ? new Analytics(import.meta.env.VITE_SEGMENT_WRITE_KEY) : null;
+const analytics = import.meta.env.VITE_SEGMENT_WRITE_KEY
+  ? new Analytics(import.meta.env.VITE_SEGMENT_WRITE_KEY)
+  : null;
 
 type EventProperties = Record<string, string | number | boolean | undefined>;
 
@@ -38,7 +39,7 @@ export async function trackEvent(eventType: string, properties?: EventProperties
 }
 
 export async function initAnalyticsEventHandling(eventEmitter: BudgetTrackingEventEmitter) {
-  eventEmitter.onAny(((eventName, eventData) => {
+  eventEmitter.onAny((eventName, eventData) => {
     if (EVENTS_TO_TRACK.includes(eventName)) {
       trackEvent(eventName.toString(), {
         name: eventData?.vendorId,
@@ -46,7 +47,7 @@ export async function initAnalyticsEventHandling(eventEmitter: BudgetTrackingEve
         isError: !!eventData?.error,
       });
     }
-  }));
+  });
 }
 
 async function buildEvent(properties?: EventProperties) {

@@ -1,7 +1,7 @@
 // eslint-disable-next-line max-classes-per-file
+import { type EnrichedTransaction, type OutputVendorName } from '@/backend/commonTypes';
 import Emittery from 'emittery';
 import { type CompanyTypes } from 'israeli-bank-scrapers-core';
-import { type EnrichedTransaction, type OutputVendorName } from '@/backend/commonTypes';
 
 export enum EventNames {
   IMPORT_PROCESS_START = 'IMPORT_PROCESS_START',
@@ -18,11 +18,12 @@ export enum EventNames {
   EXPORTER_END = 'EXPORTER_END',
   EXPORT_PROCESS_END = 'EXPORT_PROCESS_END',
   GENERAL_ERROR = 'GENERAL_ERROR',
-  LOG = 'LOG'
+  LOG = 'LOG',
 }
 
 export enum AccountType {
-  IMPORTER, EXPORTER
+  IMPORTER,
+  EXPORTER,
 }
 
 export enum AccountStatus {
@@ -30,7 +31,7 @@ export enum AccountStatus {
   PENDING = 'pending',
   IN_PROGRESS = 'inProgress',
   DONE = 'done',
-  ERROR = 'error'
+  ERROR = 'error',
 }
 
 export class BudgetTrackingEvent {
@@ -45,7 +46,11 @@ export class BudgetTrackingEvent {
   accountType?: AccountType;
 
   constructor({
-    message, vendorId, error, accountType, accountStatus = AccountStatus.IN_PROGRESS,
+    message,
+    vendorId,
+    error,
+    accountType,
+    accountStatus = AccountStatus.IN_PROGRESS,
   }: BudgetTrackingEvent) {
     this.message = message;
     this.vendorId = vendorId;
@@ -63,11 +68,13 @@ export interface ImporterEventParams {
 }
 
 export class ImporterEvent extends BudgetTrackingEvent {
-  constructor({
-    message, importerKey, error, status,
-  }: ImporterEventParams) {
+  constructor({ message, importerKey, error, status }: ImporterEventParams) {
     super({
-      message, vendorId: importerKey, error, accountType: AccountType.IMPORTER, accountStatus: status,
+      message,
+      vendorId: importerKey,
+      error,
+      accountType: AccountType.IMPORTER,
+      accountStatus: status,
     });
   }
 }
@@ -83,11 +90,13 @@ export interface ExporterEventParams {
 export class ExporterEvent extends BudgetTrackingEvent {
   allTransactions: EnrichedTransaction[];
 
-  constructor({
-    message, allTransactions, status, error, exporterName,
-  }: ExporterEventParams) {
+  constructor({ message, allTransactions, status, error, exporterName }: ExporterEventParams) {
     super({
-      message, accountType: AccountType.EXPORTER, accountStatus: status, error, vendorId: exporterName,
+      message,
+      accountType: AccountType.EXPORTER,
+      accountStatus: status,
+      error,
+      vendorId: exporterName,
     });
     this.allTransactions = allTransactions;
   }
@@ -112,27 +121,28 @@ export class DownalodChromeEvent extends BudgetTrackingEvent {
 }
 
 export interface EventDataMap {
-  [EventNames.IMPORT_PROCESS_START]: BudgetTrackingEvent
-  [EventNames.DOWNLOAD_CHROME]: DownalodChromeEvent
-  [EventNames.IMPORTER_START]: ImporterEvent
-  [EventNames.IMPORTER_PROGRESS]: ImporterEvent
-  [EventNames.IMPORTER_ERROR]: ImporterEvent
-  [EventNames.IMPORTER_END]: ImporterEvent
-  [EventNames.IMPORT_PROCESS_END]: undefined
-  [EventNames.EXPORT_PROCESS_START]: undefined
-  [EventNames.EXPORT_PROCESS_END]: undefined
-  [EventNames.EXPORTER_START]: ExporterEvent
-  [EventNames.EXPORTER_PROGRESS]: ExporterEvent
-  [EventNames.EXPORTER_ERROR]: ExporterEvent
-  [EventNames.EXPORTER_END]: ExporterEndEvent
-  [EventNames.GENERAL_ERROR]: BudgetTrackingEvent
-  [EventNames.LOG]: BudgetTrackingEvent
+  [EventNames.IMPORT_PROCESS_START]: BudgetTrackingEvent;
+  [EventNames.DOWNLOAD_CHROME]: DownalodChromeEvent;
+  [EventNames.IMPORTER_START]: ImporterEvent;
+  [EventNames.IMPORTER_PROGRESS]: ImporterEvent;
+  [EventNames.IMPORTER_ERROR]: ImporterEvent;
+  [EventNames.IMPORTER_END]: ImporterEvent;
+  [EventNames.IMPORT_PROCESS_END]: undefined;
+  [EventNames.EXPORT_PROCESS_START]: undefined;
+  [EventNames.EXPORT_PROCESS_END]: undefined;
+  [EventNames.EXPORTER_START]: ExporterEvent;
+  [EventNames.EXPORTER_PROGRESS]: ExporterEvent;
+  [EventNames.EXPORTER_ERROR]: ExporterEvent;
+  [EventNames.EXPORTER_END]: ExporterEndEvent;
+  [EventNames.GENERAL_ERROR]: BudgetTrackingEvent;
+  [EventNames.LOG]: BudgetTrackingEvent;
 }
 
-export class BudgetTrackingEventEmitter extends Emittery<EventDataMap> {
+export class BudgetTrackingEventEmitter extends Emittery<EventDataMap> {}
 
-}
+export type EventPublisher = Pick<BudgetTrackingEventEmitter, 'emit'>;
 
-export type EventPublisher = Pick<BudgetTrackingEventEmitter, 'emit'>
-
-export type EventSubscriber = Pick<BudgetTrackingEventEmitter, 'on' | 'once' | 'off' | 'onAny' | 'anyEvent' | 'offAny'>;
+export type EventSubscriber = Pick<
+  BudgetTrackingEventEmitter,
+  'on' | 'once' | 'off' | 'onAny' | 'anyEvent' | 'offAny'
+>;

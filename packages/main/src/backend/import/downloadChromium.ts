@@ -1,7 +1,7 @@
 import { Browser, install } from '@puppeteer/browsers';
 
-type PuppeteerProgressCallback = (downloadBytes: number, totalBytes: number) => void
-type PercentCallback = (percent: number) => void
+type PuppeteerProgressCallback = (downloadBytes: number, totalBytes: number) => void;
+type PercentCallback = (percent: number) => void;
 
 const getIntegerPercent = (callback: PercentCallback): PuppeteerProgressCallback => {
   let prevPercent = -1;
@@ -19,14 +19,17 @@ const revision = '1321684'; // getPuppeteerConfig().chromiumRevision; see https:
 
 let downloadProm: ReturnType<typeof downloadChromium> | null = null;
 
-export default async function downloadChromium(installPath: string, onProgress?: PercentCallback): Promise<string> {
+export default async function downloadChromium(
+  installPath: string,
+  onProgress?: PercentCallback,
+): Promise<string> {
   if (downloadProm) return downloadProm;
 
   const progressCallback = onProgress && getIntegerPercent(onProgress);
 
-  downloadProm = install({ 
-    cacheDir: installPath, 
-    browser: Browser.CHROMIUM, 
+  downloadProm = install({
+    cacheDir: installPath,
+    browser: Browser.CHROMIUM,
     buildId: revision,
     downloadProgressCallback: progressCallback,
   }).then(({ executablePath }) => {
