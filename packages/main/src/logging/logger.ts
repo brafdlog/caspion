@@ -1,6 +1,9 @@
 import { App } from '@/app-globals';
-import { type LogFunctions, type LogLevel, type MainErrorHandlerOptions } from 'electron-log';
-import logger from 'electron-log'; // eslint-disable-line no-restricted-imports
+import logger, {
+  type LogFunctions,
+  type LogLevel,
+  type MainErrorHandlerOptions,
+} from 'electron-log'; // eslint-disable-line no-restricted-imports
 import fs from 'fs';
 import { EOL } from 'os';
 import path from 'path';
@@ -16,7 +19,7 @@ const onError: MainErrorHandlerOptions['onError'] = ({ error }) => {
   if (error.stack) logger.debug(error.stack);
 };
 logger.errorHandler.startCatching({ onError });
-logger.catchErrors({onError});
+logger.catchErrors({ onError });
 
 export const getLastLines = (n: number) => {
   const lines = fs.readFileSync(logger.transports.file.getFile().path).toString().split(EOL);

@@ -3,8 +3,8 @@ import {
   type Config,
   type Credentials,
   type HandleScrapingEvent,
-  type YnabConfig,
   type YnabAccountDataType,
+  type YnabConfig,
 } from './commonTypes';
 
 export async function getConfig(): Promise<Config> {
@@ -17,7 +17,9 @@ export async function updateConfig(config: Config) {
   await electron.ipcRenderer.invoke('updateConfig', JSON.stringify(config));
 }
 
-export async function getYnabAccountData(ynabOptions: YnabConfig['options']): Promise<YnabAccountDataType> {
+export async function getYnabAccountData(
+  ynabOptions: YnabConfig['options'],
+): Promise<YnabAccountDataType> {
   return electron.ipcRenderer.invoke('getYnabAccountData', ynabOptions);
 }
 

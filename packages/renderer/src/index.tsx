@@ -2,9 +2,9 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { configure } from 'mobx';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
+import App from './components/App';
 import './index.module.css';
 import reportWebVitals from './reportWebVitals';
-import App from './components/App';
 
 configureMobxLinting();
 

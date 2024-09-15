@@ -1,4 +1,4 @@
-import { type ModalStatus, type Account as AccountType } from '../../types';
+import { type Account as AccountType, type ModalStatus } from '../../types';
 import Account from '../accounts/Account';
 import { getActionButtons } from '../accounts/Importers';
 

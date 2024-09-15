@@ -25,8 +25,7 @@ const DEFAULT_CONFIG: Config = {
       options: {
         accessToken: 'YNAB_ACCESS_TOKEN_GOES_HERE',
         budgetId: '',
-        accountNumbersToYnabAccountIds: {
-        },
+        accountNumbersToYnabAccountIds: {},
       },
     },
     googleSheets: {

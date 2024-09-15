@@ -1,5 +1,5 @@
-import Store from './Store';
 import { dummyConfig } from '../test/testData';
+import Store from './Store';
 import { AccountType, CompanyTypes, type Config, type Exporter, type Importer } from './types';
 
 describe('Store', () => {

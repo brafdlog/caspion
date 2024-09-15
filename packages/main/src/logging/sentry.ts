@@ -1,4 +1,4 @@
-import { init, captureMessage, type ElectronMainOptions } from '@sentry/electron/main';
+import { captureMessage, init, type ElectronMainOptions } from '@sentry/electron/main';
 
 const reporterConfiguration = {
   dsn: import.meta.env.VITE_SENTRY_DSN,
@@ -11,7 +11,13 @@ const reporterConfiguration = {
 
 const initializeReporter = () => init(reporterConfiguration);
 
-const userReportProblem = (title: string, body: string, logs: string, email: string, extra: Record<string, unknown>) => {
+const userReportProblem = (
+  title: string,
+  body: string,
+  logs: string,
+  email: string,
+  extra: Record<string, unknown>,
+) => {
   return captureMessage(title, {
     user: {
       email,

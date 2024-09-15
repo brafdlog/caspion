@@ -1,10 +1,9 @@
-import { type TransactionDetail } from 'ynab';
-import { SaveTransaction } from 'ynab';
-import { TransactionStatuses, TransactionTypes } from 'israeli-bank-scrapers-core/lib/transactions';
 import { type EnrichedTransaction } from '@/backend/commonTypes';
+import { TransactionStatuses, TransactionTypes } from 'israeli-bank-scrapers-core/lib/transactions';
+import { describe, expect, test } from 'vitest';
+import { SaveTransaction, type TransactionDetail } from 'ynab';
 import * as ynab from './ynab';
 import ClearedEnum = SaveTransaction.ClearedEnum;
-import { describe, expect, test } from 'vitest';
 
 // TODO: make tests work again
 
@@ -41,7 +40,9 @@ describe('ynab', () => {
         cleared: ClearedEnum.Cleared,
       };
 
-      expect(ynab.isSameTransaction(transactionFromFinancialAccount, transferTransactionFromYnab)).toBeTruthy();
+      expect(
+        ynab.isSameTransaction(transactionFromFinancialAccount, transferTransactionFromYnab),
+      ).toBeTruthy();
     });
   });
   describe('areStringsEqualIgnoreCaseAndWhitespace', () => {
@@ -51,10 +52,23 @@ describe('ynab', () => {
     test('should consider two strings that are the same except for whitespace as equal', async () => {
       expect(ynab.areStringsEqualIgnoreCaseAndWhitespace('Gett', 'Gett ')).toBeTruthy();
       expect(ynab.areStringsEqualIgnoreCaseAndWhitespace('Gett', ' Gett ')).toBeTruthy();
-      expect(ynab.areStringsEqualIgnoreCaseAndWhitespace('PAYPAL *AVIDEUT        4029357733    LU', 'PAYPAL *AVIDEUT 4029357733 LU')).toBeTruthy();
-      expect(ynab.areStringsEqualIgnoreCaseAndWhitespace('ממלכת הצעצועים הרצליה', 'ממלכת הצעצועים  הרצליה')).toBeTruthy();
       expect(
-        ynab.areStringsEqualIgnoreCaseAndWhitespace('BOOKDEPOSITORY.COM 441452307905 GB', 'BOOKDEPOSITORY.COM     441452307905  GB'),
+        ynab.areStringsEqualIgnoreCaseAndWhitespace(
+          'PAYPAL *AVIDEUT        4029357733    LU',
+          'PAYPAL *AVIDEUT 4029357733 LU',
+        ),
+      ).toBeTruthy();
+      expect(
+        ynab.areStringsEqualIgnoreCaseAndWhitespace(
+          'ממלכת הצעצועים הרצליה',
+          'ממלכת הצעצועים  הרצליה',
+        ),
+      ).toBeTruthy();
+      expect(
+        ynab.areStringsEqualIgnoreCaseAndWhitespace(
+          'BOOKDEPOSITORY.COM 441452307905 GB',
+          'BOOKDEPOSITORY.COM     441452307905  GB',
+        ),
       ).toBeTruthy();
     });
     test('should consider two different strings as not equal', async () => {
@@ -62,7 +76,7 @@ describe('ynab', () => {
     });
   });
   describe('getPayeeName', () => {
-    const transactionSample : EnrichedTransaction = {
+    const transactionSample: EnrichedTransaction = {
       description: 'הוראת-קבע',
       memo: '',
       accountNumber: '',
@@ -94,10 +108,13 @@ describe('ynab', () => {
       ['העברה מהבנק', 'לטובת: אישה כלשהי. עבור: משכורת אוגוסט', 'אישה כלשהי'],
       // Weird bank accounts names
       ['הוראת קבע', 'לטובת: di. עבור: גן 092-.', 'di'],
-    ])('Verify hapoalim transfers capture the correct payee name', async (description, memo, expected) => {
-      transactionSample.description = description;
-      transactionSample.memo = memo;
-      expect(ynab.getPayeeName(transactionSample)).toBe(expected);
-    });
+    ])(
+      'Verify hapoalim transfers capture the correct payee name',
+      async (description, memo, expected) => {
+        transactionSample.description = description;
+        transactionSample.memo = memo;
+        expect(ynab.getPayeeName(transactionSample)).toBe(expected);
+      },
+    );
   });
 });

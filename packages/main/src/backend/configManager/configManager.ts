@@ -1,13 +1,13 @@
-import { existsSync, promises as fs } from 'fs';
-import { decrypt, encrypt } from '@/backend/configManager/encryption/crypto';
-import { type Config } from '@/backend/commonTypes';
 import { configFilePath } from '@/app-globals';
+import { type Config } from '@/backend/commonTypes';
+import { decrypt, encrypt } from '@/backend/configManager/encryption/crypto';
+import { existsSync, promises as fs } from 'fs';
 import configExample from './defaultConfig';
 
 export async function getConfig(configPath: string = configFilePath): Promise<Config> {
   const configFromFile = await getConfigFromFile(configPath);
   if (configFromFile) {
-    const decrypted = await decrypt(configFromFile) as string;
+    const decrypted = (await decrypt(configFromFile)) as string;
     if (!decrypted) {
       console.log('No config file found, returning default config');
       return configExample;

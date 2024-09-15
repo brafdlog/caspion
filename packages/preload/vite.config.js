@@ -1,6 +1,6 @@
-import {chrome} from '../../.electron-vendors.cache.json';
-import {preload} from 'unplugin-auto-expose';
-import {join} from 'node:path';
+import { join } from 'node:path';
+import { preload } from 'unplugin-auto-expose';
+import { chrome } from '../../.electron-vendors.cache.json';
 
 const PACKAGE_ROOT = __dirname;
 const PROJECT_ROOT = join(PACKAGE_ROOT, '../..');

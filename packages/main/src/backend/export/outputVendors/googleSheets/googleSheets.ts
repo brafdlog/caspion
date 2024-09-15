@@ -4,11 +4,15 @@ import {
   type ExportTransactionsFunction,
   type OutputVendor,
 } from '@/backend/commonTypes';
-import {EventNames, ExporterEvent, type EventPublisher} from '@/backend/eventEmitters/EventEmitter';
-import {filterExistedHashes} from '@/backend/transactions/transactions';
-import {type Auth} from 'googleapis';
+import {
+  EventNames,
+  ExporterEvent,
+  type EventPublisher,
+} from '@/backend/eventEmitters/EventEmitter';
+import { filterExistedHashes } from '@/backend/transactions/transactions';
+import { type Auth } from 'googleapis';
 import moment from 'moment/moment';
-import {createClient} from './googleAuth';
+import { createClient } from './googleAuth';
 import * as googleSheets from './googleSheetsInternalAPI';
 
 const GOOGLE_SHEETS_DATE_FORMAT = 'YYYY-MM-DD';
@@ -30,10 +34,10 @@ const COLUMN_HEADERS = [
 ];
 
 const createTransactionsInGoogleSheets: ExportTransactionsFunction = async (
-  {transactionsToCreate: transactions, outputVendorsConfig},
+  { transactionsToCreate: transactions, outputVendorsConfig },
   eventPublisher,
 ) => {
-  const {spreadsheetId, credentials} = outputVendorsConfig.googleSheets!.options;
+  const { spreadsheetId, credentials } = outputVendorsConfig.googleSheets!.options;
   if (!credentials) throw new Error("You must set the 'credentials'");
   const oAuthClient = createClient(credentials);
 

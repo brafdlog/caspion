@@ -1,9 +1,11 @@
-import { promises as fs } from 'fs';
 import {
-  type EnrichedTransaction, type ExportTransactionsFunction, type OutputVendor} from '@/backend/commonTypes';
-import { OutputVendorName,
+  OutputVendorName,
+  type EnrichedTransaction,
+  type ExportTransactionsFunction,
+  type OutputVendor,
 } from '@/backend/commonTypes';
 import { mergeTransactions, sortByDate } from '@/backend/transactions/transactions';
+import { promises as fs } from 'fs';
 
 const parseTransactionsFile = async (filename: string) => {
   try {
@@ -17,7 +19,10 @@ const parseTransactionsFile = async (filename: string) => {
   }
 };
 
-const exportTransactions: ExportTransactionsFunction = async ({ transactionsToCreate, outputVendorsConfig }) => {
+const exportTransactions: ExportTransactionsFunction = async ({
+  transactionsToCreate,
+  outputVendorsConfig,
+}) => {
   const { filePath } = outputVendorsConfig.json!.options;
   const savedTransactions = await parseTransactionsFile(filePath);
   const mergedTransactions = mergeTransactions(savedTransactions, transactionsToCreate);

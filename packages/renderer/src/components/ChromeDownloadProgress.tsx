@@ -18,7 +18,7 @@ const ChromeDownloadProgress = () => {
     return null;
   }
 
-  return <ProgressBar now={configStore.chromeDownloadPercent} label={label} className='w-100' />;
+  return <ProgressBar now={configStore.chromeDownloadPercent} label={label} className="w-100" />;
 };
 
 export default observer(ChromeDownloadProgress);

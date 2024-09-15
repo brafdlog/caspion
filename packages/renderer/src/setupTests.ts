@@ -18,5 +18,4 @@ window.require = (name: string) => {
     return MOCK_ELECTRON;
   }
   throw new Error(`No mock for module ${name}`);
-
 };
