@@ -17,12 +17,18 @@ class AppInfoStore {
 
 const appInfoStore = new AppInfoStore();
 const AppInfoStoreContext = createContext(appInfoStore);
-export const AppInfoStoreProvider = ({ children }: { children: React.ReactNode }) => (
-  <AppInfoStoreContext.Provider value={appInfoStore}>{children}</AppInfoStoreContext.Provider>
+export const AppInfoStoreProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => (
+  <AppInfoStoreContext.Provider value={appInfoStore}>
+    {children}
+  </AppInfoStoreContext.Provider>
 );
 export const useInitAppInfoStore = () => {
   useEffect(() => {
-    getAppInfo().then(appInfo => {
+    getAppInfo().then((appInfo) => {
       appInfoStore.updateAppInfo(appInfo);
     });
   });

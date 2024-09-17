@@ -7,7 +7,11 @@ interface LogsCanvasProps {
   lastLines?: string;
 }
 
-export default function LogsCanvas({ show, handleClose, lastLines }: LogsCanvasProps) {
+export default function LogsCanvas({
+  show,
+  handleClose,
+  lastLines,
+}: LogsCanvasProps) {
   const splitted = lastLines?.split('\n');
 
   return (

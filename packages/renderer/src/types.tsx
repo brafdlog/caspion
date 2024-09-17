@@ -40,7 +40,10 @@ export interface AppInfo {
   currentVersion: string;
 }
 
-export type OutputVendorConfigs = Exclude<Config['outputVendors'][OutputVendorName], undefined>;
+export type OutputVendorConfigs = Exclude<
+  Config['outputVendors'][OutputVendorName],
+  undefined
+>;
 export type OutputVendorConfig<T extends OutputVendorName> = Exclude<
   Config['outputVendors'][T],
   undefined

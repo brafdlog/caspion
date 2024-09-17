@@ -4,7 +4,10 @@ import {
   type ExportTransactionsFunction,
   type OutputVendor,
 } from '@/backend/commonTypes';
-import { mergeTransactions, sortByDate } from '@/backend/transactions/transactions';
+import {
+  mergeTransactions,
+  sortByDate,
+} from '@/backend/transactions/transactions';
 import { promises as fs } from 'fs';
 
 const parseTransactionsFile = async (filename: string) => {
@@ -25,11 +28,15 @@ const exportTransactions: ExportTransactionsFunction = async ({
 }) => {
   const { filePath } = outputVendorsConfig.json!.options;
   const savedTransactions = await parseTransactionsFile(filePath);
-  const mergedTransactions = mergeTransactions(savedTransactions, transactionsToCreate);
+  const mergedTransactions = mergeTransactions(
+    savedTransactions,
+    transactionsToCreate,
+  );
   const sorted = sortByDate(mergedTransactions);
   await fs.writeFile(filePath, JSON.stringify(sorted, null, 4));
   return {
-    exportedTransactionsNum: mergedTransactions.length - savedTransactions.length,
+    exportedTransactionsNum:
+      mergedTransactions.length - savedTransactions.length,
   };
 };
 

@@ -98,7 +98,7 @@ const rendererWatchServer = await createServer({
   mode,
   logLevel,
   configFile: 'packages/renderer/vite.config.js',
-}).then(s => s.listen());
+}).then((s) => s.listen());
 
 await setupPreloadPackageWatcher(rendererWatchServer);
 await setupMainPackageWatcher(rendererWatchServer);

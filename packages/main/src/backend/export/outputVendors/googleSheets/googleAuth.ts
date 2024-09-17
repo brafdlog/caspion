@@ -7,7 +7,11 @@ export const redirectUri = homepage;
 export const scopes = ['https://www.googleapis.com/auth/drive.file'];
 
 export const createClient = (credentials: Auth.Credentials) => {
-  const authClient = new Auth.OAuth2Client({ clientId, clientSecret, redirectUri });
+  const authClient = new Auth.OAuth2Client({
+    clientId,
+    clientSecret,
+    redirectUri,
+  });
   authClient.setCredentials(credentials);
   return authClient;
 };

@@ -14,7 +14,11 @@ export default function StatusIndicator({ status }: StatusIndicatorProps) {
       return <img src={pendingIcon} alt="pending" />;
     case AccountStatus.IN_PROGRESS:
       return (
-        <Spinner style={{ width: '20px', height: '20px' }} animation="border" variant="primary" />
+        <Spinner
+          style={{ width: '20px', height: '20px' }}
+          animation="border"
+          variant="primary"
+        />
       );
     case AccountStatus.DONE:
       return <img src={successIcon} alt="success" />;

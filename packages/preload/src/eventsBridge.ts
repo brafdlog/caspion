@@ -80,7 +80,9 @@ export async function quitAndInstall() {
 }
 
 // Google Sheets
-export async function validateToken(credentials: Credentials): Promise<boolean> {
+export async function validateToken(
+  credentials: Credentials,
+): Promise<boolean> {
   return electron.ipcRenderer.invoke('validateToken', credentials);
 }
 export async function getAllUserSpreadsheets(credentials: Credentials) {
@@ -93,5 +95,9 @@ export async function createSpreadsheet(
   spreadsheetId: string,
   credentials: Credentials,
 ): Promise<string> {
-  return electron.ipcRenderer.invoke('createSpreadsheet', spreadsheetId, credentials);
+  return electron.ipcRenderer.invoke(
+    'createSpreadsheet',
+    spreadsheetId,
+    credentials,
+  );
 }

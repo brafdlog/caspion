@@ -29,7 +29,9 @@ const EditFileExporter = ({ handleSave, exporter }: EditFileExporterProps) => {
     });
   };
 
-  const handleChooseFile: React.ChangeEventHandler<HTMLInputElement> = event => {
+  const handleChooseFile: React.ChangeEventHandler<HTMLInputElement> = (
+    event,
+  ) => {
     updateOption({
       filePath: event.currentTarget.value,
     });

@@ -16,19 +16,24 @@ export async function scrapeAndUpdateOutputVendors(
   config: Config,
   optionalEventPublisher?: Events.EventPublisher,
 ) {
-  const eventPublisher = optionalEventPublisher ?? new Events.BudgetTrackingEventEmitter();
+  const eventPublisher =
+    optionalEventPublisher ?? new Events.BudgetTrackingEventEmitter();
 
-  const startDate = moment().subtract(config.scraping.numDaysBack, 'days').startOf('day').toDate();
+  const startDate = moment()
+    .subtract(config.scraping.numDaysBack, 'days')
+    .startOf('day')
+    .toDate();
 
   await eventPublisher.emit(Events.EventNames.IMPORT_PROCESS_START, {
     message: `Starting to scrape from ${startDate} to today`,
   });
 
-  const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(
-    config.scraping,
-    startDate,
-    eventPublisher,
-  );
+  const companyIdToTransactions =
+    await scrapeFinancialAccountsAndFetchTransactions(
+      config.scraping,
+      startDate,
+      eventPublisher,
+    );
   try {
     const executionResult = await createTransactionsInExternalVendors(
       config.outputVendors,
@@ -41,7 +46,10 @@ export async function scrapeAndUpdateOutputVendors(
   } catch (e) {
     await eventPublisher.emit(
       Events.EventNames.GENERAL_ERROR,
-      new Events.BudgetTrackingEvent({ message: (e as Error).message, error: e as Error }),
+      new Events.BudgetTrackingEvent({
+        message: (e as Error).message,
+        error: e as Error,
+      }),
     );
     throw e;
   }

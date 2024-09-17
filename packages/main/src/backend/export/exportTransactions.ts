@@ -14,7 +14,9 @@ import {
 import outputVendors from '@/backend/export/outputVendors';
 import _ from 'lodash';
 
-type ExecutionResult = Partial<Record<OutputVendorName, ExportTransactionsResult>>;
+type ExecutionResult = Partial<
+  Record<OutputVendorName, ExportTransactionsResult>
+>;
 
 export async function createTransactionsInExternalVendors(
   outputVendorsConfig: Config['outputVendors'],
@@ -27,8 +29,8 @@ export async function createTransactionsInExternalVendors(
   const allTransactions = _.flatten(Object.values(companyIdToTransactions));
 
   const exportPromises = outputVendors
-    .filter(outputVendor => outputVendorsConfig[outputVendor.name]?.active)
-    .map(async outputVendor => {
+    .filter((outputVendor) => outputVendorsConfig[outputVendor.name]?.active)
+    .map(async (outputVendor) => {
       const baseEvent = {
         exporterName: outputVendor.name,
         allTransactions,
@@ -54,7 +56,8 @@ export async function createTransactionsInExternalVendors(
             message: 'Finished',
             ...baseEvent,
             status: AccountStatus.DONE,
-            exportedTransactionsNum: exportTransactionsResult.exportedTransactionsNum,
+            exportedTransactionsNum:
+              exportTransactionsResult.exportedTransactionsNum,
           }),
         );
         executionResult[outputVendor.name] = exportTransactionsResult;
@@ -73,7 +76,9 @@ export async function createTransactionsInExternalVendors(
 
   await Promise.all(exportPromises);
   if (!Object.keys(executionResult).length) {
-    const error = new Error('You need to set at least one output vendor to be active');
+    const error = new Error(
+      'You need to set at least one output vendor to be active',
+    );
     throw error;
   }
 

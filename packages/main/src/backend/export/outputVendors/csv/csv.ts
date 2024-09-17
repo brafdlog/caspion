@@ -4,7 +4,10 @@ import {
   type ExportTransactionsFunction,
   type OutputVendor,
 } from '@/backend/commonTypes';
-import { mergeTransactions, sortByDate } from '@/backend/transactions/transactions';
+import {
+  mergeTransactions,
+  sortByDate,
+} from '@/backend/transactions/transactions';
 import { parse } from 'csv-parse/sync';
 import { stringify } from 'csv-stringify/sync';
 import { promises as fs } from 'fs';
@@ -88,11 +91,15 @@ const exportTransactions: ExportTransactionsFunction = async ({
 }) => {
   const { filePath } = outputVendorsConfig.csv!.options;
   const savedTransactions = await parseTransactionsFile(filePath);
-  const mergedTransactions = mergeTransactions(savedTransactions, transactionsToCreate);
+  const mergedTransactions = mergeTransactions(
+    savedTransactions,
+    transactionsToCreate,
+  );
   const sorted = sortByDate(mergedTransactions);
   await writeCsvFile(filePath, serializeTransactions(sorted));
   return {
-    exportedTransactionsNum: mergedTransactions.length - savedTransactions.length,
+    exportedTransactionsNum:
+      mergedTransactions.length - savedTransactions.length,
   };
 };
 

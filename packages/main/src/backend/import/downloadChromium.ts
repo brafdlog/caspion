@@ -1,9 +1,14 @@
 import { Browser, install } from '@puppeteer/browsers';
 
-type PuppeteerProgressCallback = (downloadBytes: number, totalBytes: number) => void;
+type PuppeteerProgressCallback = (
+  downloadBytes: number,
+  totalBytes: number,
+) => void;
 type PercentCallback = (percent: number) => void;
 
-const getIntegerPercent = (callback: PercentCallback): PuppeteerProgressCallback => {
+const getIntegerPercent = (
+  callback: PercentCallback,
+): PuppeteerProgressCallback => {
   let prevPercent = -1;
 
   return (downloadBytes: number, totalBytes: number) => {

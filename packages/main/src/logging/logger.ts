@@ -22,11 +22,15 @@ logger.errorHandler.startCatching({ onError });
 logger.catchErrors({ onError });
 
 export const getLastLines = (n: number) => {
-  const lines = fs.readFileSync(logger.transports.file.getFile().path).toString().split(EOL);
+  const lines = fs
+    .readFileSync(logger.transports.file.getFile().path)
+    .toString()
+    .split(EOL);
   const lastLines = lines.slice(lines.length - n);
   return lastLines.join(EOL);
 };
 
-export const getLogsFolder = () => path.dirname(logger.transports.file.getFile().path);
+export const getLogsFolder = () =>
+  path.dirname(logger.transports.file.getFile().path);
 
 export default logger as Logger;

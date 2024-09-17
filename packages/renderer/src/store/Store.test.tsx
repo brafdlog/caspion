@@ -1,6 +1,12 @@
 import { dummyConfig } from '../test/testData';
 import Store from './Store';
-import { AccountType, CompanyTypes, type Config, type Exporter, type Importer } from './types';
+import {
+  AccountType,
+  CompanyTypes,
+  type Config,
+  type Exporter,
+  type Importer,
+} from './types';
 
 describe('Store', () => {
   let store;
@@ -23,9 +29,13 @@ describe('Store', () => {
     test('importers', () => {
       expect(store.importers).toHaveLength(3);
 
-      const discountImporter = store.importers.find(i => i.companyId === 'discount');
-      const visaCalImporter = store.importers.find(i => i.companyId === 'visaCal');
-      const maxImporter = store.importers.find(i => i.companyId === 'max');
+      const discountImporter = store.importers.find(
+        (i) => i.companyId === 'discount',
+      );
+      const visaCalImporter = store.importers.find(
+        (i) => i.companyId === 'visaCal',
+      );
+      const maxImporter = store.importers.find((i) => i.companyId === 'max');
 
       expect(discountImporter).toMatchSnapshot();
       expect(visaCalImporter).toMatchSnapshot();
@@ -38,15 +48,21 @@ describe('Store', () => {
     });
 
     test('allAccounts', () => {
-      expect(store.allAccounts).toHaveLength(store.importers.length + store.exporters.length);
-      [...store.importers, ...store.exporters].forEach(account =>
+      expect(store.allAccounts).toHaveLength(
+        store.importers.length + store.exporters.length,
+      );
+      [...store.importers, ...store.exporters].forEach((account) =>
         expect(store.allAccounts).toContainEqual(account),
       );
     });
 
     test('settings', () => {
-      expect(store.settings.numDaysBack).toEqual(dummyConfig.scraping.numDaysBack);
-      expect(store.settings.showBrowser).toEqual(dummyConfig.scraping.showBrowser);
+      expect(store.settings.numDaysBack).toEqual(
+        dummyConfig.scraping.numDaysBack,
+      );
+      expect(store.settings.showBrowser).toEqual(
+        dummyConfig.scraping.showBrowser,
+      );
     });
   });
   describe('actions', () => {
@@ -78,15 +94,15 @@ describe('Store', () => {
           active: !importer.active,
         };
         store.updateImporter(importer.id, updatedImporter);
-        expect(store.importers.find(i => i.id === importer.id)).toHaveProperty(
-          'active',
-          updatedImporter.active,
-        );
+        expect(
+          store.importers.find((i) => i.id === importer.id),
+        ).toHaveProperty('active', updatedImporter.active);
       });
 
       test('deleteImporter', () => {
         const importer = dummyConfig.scraping.accountsToScrape[0];
-        const originalNumImporters = dummyConfig.scraping.accountsToScrape.length;
+        const originalNumImporters =
+          dummyConfig.scraping.accountsToScrape.length;
         expect(store.importers).toHaveLength(originalNumImporters);
         expect(store.allAccountsById.get(importer.id)).toBeTruthy();
         store.deleteImporter(importer.id);

@@ -40,7 +40,7 @@ app.on('activate', restoreOrCreateWindow);
 app
   .whenReady()
   .then(restoreOrCreateWindow)
-  .catch(e => console.error('Failed create window:', e));
+  .catch((e) => console.error('Failed create window:', e));
 
 /**
  * Install Vue.js or any other extension in development mode only.
@@ -77,7 +77,7 @@ if (import.meta.env.PROD) {
   app
     .whenReady()
     .then(() => updater.autoUpdater.checkForUpdatesAndNotify())
-    .catch(e => console.error('Failed check and install updates:', e));
+    .catch((e) => console.error('Failed check and install updates:', e));
 }
 
 registerHandlers();

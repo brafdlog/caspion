@@ -1,4 +1,7 @@
-import { EventNames, type BudgetTrackingEventEmitter } from '@/backend/eventEmitters/EventEmitter';
+import {
+  EventNames,
+  type BudgetTrackingEventEmitter,
+} from '@/backend/eventEmitters/EventEmitter';
 import Analytics from 'analytics-node';
 import { machineId } from 'node-machine-id';
 
@@ -22,7 +25,10 @@ const EVENTS_TO_TRACK: EventNames[] = [
   EventNames.GENERAL_ERROR,
 ];
 
-export async function trackPage(pageName: string, properties?: EventProperties) {
+export async function trackPage(
+  pageName: string,
+  properties?: EventProperties,
+) {
   const event = await buildEvent(properties);
   analytics?.page({
     name: pageName,
@@ -30,7 +36,10 @@ export async function trackPage(pageName: string, properties?: EventProperties) 
   });
 }
 
-export async function trackEvent(eventType: string, properties?: EventProperties) {
+export async function trackEvent(
+  eventType: string,
+  properties?: EventProperties,
+) {
   const event = await buildEvent(properties);
   analytics?.track({
     ...event,
@@ -38,7 +47,9 @@ export async function trackEvent(eventType: string, properties?: EventProperties
   });
 }
 
-export async function initAnalyticsEventHandling(eventEmitter: BudgetTrackingEventEmitter) {
+export async function initAnalyticsEventHandling(
+  eventEmitter: BudgetTrackingEventEmitter,
+) {
   eventEmitter.onAny((eventName, eventData) => {
     if (EVENTS_TO_TRACK.includes(eventName)) {
       trackEvent(eventName.toString(), {

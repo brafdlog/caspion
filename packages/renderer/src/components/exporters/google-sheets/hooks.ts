@@ -1,4 +1,8 @@
-import { createSpreadsheet, getAllUserSpreadsheets, validateToken } from '#preload';
+import {
+  createSpreadsheet,
+  getAllUserSpreadsheets,
+  validateToken,
+} from '#preload';
 import { toJS } from 'mobx';
 import { useEffect, useState } from 'react';
 import { type Credentials, type Spreadsheet } from '/@/types';
@@ -15,8 +19,8 @@ export const useUserSpreadsheets = (credentials: Credentials) => {
 
   useEffect(() => {
     getAllUserSpreadsheets(toJS(credentials))
-      .then(spreadsheets => setUserSpreadsheets(spreadsheets))
-      .catch(err => {
+      .then((spreadsheets) => setUserSpreadsheets(spreadsheets))
+      .catch((err) => {
         console.error(err);
         setUserSpreadsheets([]);
       });
@@ -30,8 +34,8 @@ export const useTokenStatus = (credentials: Credentials) => {
 
   useEffect(() => {
     validateToken(toJS(credentials))
-      .then(valid => setStatus(valid ? Status.LOGGED_IN : Status.LOGIN))
-      .catch(e => {
+      .then((valid) => setStatus(valid ? Status.LOGGED_IN : Status.LOGIN))
+      .catch((e) => {
         console.error(e);
         setStatus(Status.ERROR);
       });
@@ -40,7 +44,10 @@ export const useTokenStatus = (credentials: Credentials) => {
   return [status, setStatus] as const;
 };
 
-export const createSheetIfNew = async (spreadsheetId: string, credentials: Credentials) => {
+export const createSheetIfNew = async (
+  spreadsheetId: string,
+  credentials: Credentials,
+) => {
   if (spreadsheetId.length >= 30) return spreadsheetId;
 
   const newId = await createSpreadsheet(toJS(spreadsheetId), toJS(credentials));

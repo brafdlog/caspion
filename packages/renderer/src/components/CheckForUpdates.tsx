@@ -1,4 +1,9 @@
-import { checkForUpdate, downloadUpdate, openExternal, quitAndInstall } from '#preload';
+import {
+  checkForUpdate,
+  downloadUpdate,
+  openExternal,
+  quitAndInstall,
+} from '#preload';
 import { useState } from 'react';
 import { Button, Spinner } from 'react-bootstrap';
 import { useAppInfoStore } from '../store';
@@ -26,7 +31,11 @@ function CheckForUpdates() {
     try {
       const info = await checkForUpdate();
       setUpdateInfo(info);
-      setUpdateState(info ? UPDATE_STATES.NEW_VERSION_AVAILABLE : UPDATE_STATES.NO_NEW_VERSION);
+      setUpdateState(
+        info
+          ? UPDATE_STATES.NEW_VERSION_AVAILABLE
+          : UPDATE_STATES.NO_NEW_VERSION,
+      );
     } catch (error) {
       console.error(error);
       setUpdateState(UPDATE_STATES.ERROR);
@@ -45,7 +54,9 @@ function CheckForUpdates() {
   };
 
   const openGithubRelease = () => {
-    openExternal(`${store.appInfo?.repository}/releases/tag/v${updateInfo?.version}`);
+    openExternal(
+      `${store.appInfo?.repository}/releases/tag/v${updateInfo?.version}`,
+    );
   };
   const openCompare = () => {
     openExternal(
@@ -55,13 +66,17 @@ function CheckForUpdates() {
 
   return (
     <>
-      {updateState === UPDATE_STATES.LOADING && <Spinner animation="border" role="status" />}
+      {updateState === UPDATE_STATES.LOADING && (
+        <Spinner animation="border" role="status" />
+      )}
       {updateState === UPDATE_STATES.INIT && (
         <Button variant="dark" size="sm" onClick={checkForUpdates}>
           בדיקת עדכונים
         </Button>
       )}
-      {updateState === UPDATE_STATES.NO_NEW_VERSION && <div>אין עדכונים זמינים</div>}
+      {updateState === UPDATE_STATES.NO_NEW_VERSION && (
+        <div>אין עדכונים זמינים</div>
+      )}
       {updateState === UPDATE_STATES.NEW_VERSION_AVAILABLE && (
         <div>
           <Button variant="dark" size="sm" onClick={downloadNewVersion}>

@@ -18,22 +18,34 @@ interface ImportersProps {
   handleNewAccountClicked?: () => void;
 }
 
-function Importers({ accounts, isScraping, showModal, handleNewAccountClicked }: ImportersProps) {
+function Importers({
+  accounts,
+  isScraping,
+  showModal,
+  handleNewAccountClicked,
+}: ImportersProps) {
   const configStore = useConfigStore();
   return (
     <>
-      {accounts.map(account => {
+      {accounts.map((account) => {
         return (
           <Account
             key={account.id}
             account={account}
-            actionButtons={getActionButtons(showModal, account, isScraping, () => {
-              configStore.openResults(account.companyId);
-            })}
+            actionButtons={getActionButtons(
+              showModal,
+              account,
+              isScraping,
+              () => {
+                configStore.openResults(account.companyId);
+              },
+            )}
           />
         );
       })}
-      {handleNewAccountClicked ? <NewAccount onClick={handleNewAccountClicked} /> : null}
+      {handleNewAccountClicked ? (
+        <NewAccount onClick={handleNewAccountClicked} />
+      ) : null}
     </>
   );
 }
@@ -65,7 +77,8 @@ export function getActionButtons(
   const actionButtons: ActionButton[] = [];
 
   const shouldLog =
-    account.status !== AccountStatus.PENDING && account.status !== AccountStatus.IDLE;
+    account.status !== AccountStatus.PENDING &&
+    account.status !== AccountStatus.IDLE;
 
   const openResultsButton = {
     icon: resultsIcon,

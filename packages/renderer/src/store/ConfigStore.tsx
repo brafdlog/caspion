@@ -74,7 +74,10 @@ class ConfigStore {
   chromeDownloadPercent = 0;
 
   // TODO: move this to a separate store
-  accountScrapingData: Map<CompanyTypes | OutputVendorName, AccountScrapingData>;
+  accountScrapingData: Map<
+    CompanyTypes | OutputVendorName,
+    AccountScrapingData
+  >;
 
   constructor() {
     this.accountScrapingData = new Map();
@@ -91,39 +94,43 @@ class ConfigStore {
 
   get importers(): Importer[] {
     if (!this.config) return [];
-    return this.config.scraping.accountsToScrape.map(({ id, key, active, loginFields }) => {
-      return {
-        ...createAccountObject(
-          id,
-          key,
-          AccountType.IMPORTER,
-          !!active,
-          this.accountScrapingData.get(key),
-        ),
-        loginFields,
-      };
-    });
+    return this.config.scraping.accountsToScrape.map(
+      ({ id, key, active, loginFields }) => {
+        return {
+          ...createAccountObject(
+            id,
+            key,
+            AccountType.IMPORTER,
+            !!active,
+            this.accountScrapingData.get(key),
+          ),
+          loginFields,
+        };
+      },
+    );
   }
 
   get exporters(): Exporter[] {
     if (!this.config) return [];
-    return Object.entries(this.config.outputVendors).map(([exporterKey, exporter]) => {
-      return {
-        ...createAccountObject(
-          exporterKey,
-          exporterKey as OutputVendorName,
-          AccountType.EXPORTER,
-          !!exporter?.active,
-          this.accountScrapingData.get(exporterKey as OutputVendorName),
-        ),
-        options: exporter?.options || {},
-      };
-    });
+    return Object.entries(this.config.outputVendors).map(
+      ([exporterKey, exporter]) => {
+        return {
+          ...createAccountObject(
+            exporterKey,
+            exporterKey as OutputVendorName,
+            AccountType.EXPORTER,
+            !!exporter?.active,
+            this.accountScrapingData.get(exporterKey as OutputVendorName),
+          ),
+          options: exporter?.options || {},
+        };
+      },
+    );
   }
 
   get isScraping(): boolean {
     return !!Array.from(this.accountScrapingData.values()).find(
-      account => account.status === AccountStatus.IN_PROGRESS,
+      (account) => account.status === AccountStatus.IN_PROGRESS,
     );
   }
 
@@ -158,9 +165,14 @@ class ConfigStore {
     }
   }
 
-  handleScrapingEvent(eventName: string, budgetTrackingEvent?: BudgetTrackingEvent) {
+  handleScrapingEvent(
+    eventName: string,
+    budgetTrackingEvent?: BudgetTrackingEvent,
+  ) {
     if (eventName === 'DOWNLOAD_CHROME') {
-      this.updateChromeDownloadPercent((budgetTrackingEvent as DownalodChromeEvent)?.percent);
+      this.updateChromeDownloadPercent(
+        (budgetTrackingEvent as DownalodChromeEvent)?.percent,
+      );
     }
     if (budgetTrackingEvent) {
       const accountId = budgetTrackingEvent.vendorId;
@@ -177,7 +189,8 @@ class ConfigStore {
             message: budgetTrackingEvent.message,
             originalEvent: budgetTrackingEvent,
           });
-          accountScrapingData.status = budgetTrackingEvent.accountStatus ?? AccountStatus.IDLE;
+          accountScrapingData.status =
+            budgetTrackingEvent.accountStatus ?? AccountStatus.IDLE;
         }
       }
     }
@@ -185,7 +198,9 @@ class ConfigStore {
 
   async addImporter(importerConfig: Importer) {
     if (!accountMetadata[importerConfig.companyId]) {
-      throw new Error(`Company id ${importerConfig.companyId} is not a valid company id`);
+      throw new Error(
+        `Company id ${importerConfig.companyId} is not a valid company id`,
+      );
     }
     const accountToScrapeConfig: AccountToScrapeConfig =
       createAccountToScrapeConfigFromImporter(importerConfig);
@@ -194,24 +209,28 @@ class ConfigStore {
 
   async updateImporter(id: string, updatedImporterConfig: Importer) {
     const importerIndex = this.config.scraping.accountsToScrape.findIndex(
-      importer => importer.id === id,
+      (importer) => importer.id === id,
     );
     if (importerIndex === -1) {
-      throw new Error(`Cant update importer with id ${id}. No importer with that id found`);
+      throw new Error(
+        `Cant update importer with id ${id}. No importer with that id found`,
+      );
     }
     this.config.scraping.accountsToScrape[importerIndex] =
       createAccountToScrapeConfigFromImporter(updatedImporterConfig);
   }
 
   async deleteImporter(id: string) {
-    this.config.scraping.accountsToScrape = this.config.scraping.accountsToScrape.filter(
-      importer => importer.id !== id,
-    );
+    this.config.scraping.accountsToScrape =
+      this.config.scraping.accountsToScrape.filter(
+        (importer) => importer.id !== id,
+      );
   }
 
   async updateExporter(updatedExporterConfig: Exporter) {
-    this.config.outputVendors[updatedExporterConfig.companyId as OutputVendorName] =
-      createOutputVendorConfigFromExporter(updatedExporterConfig);
+    this.config.outputVendors[
+      updatedExporterConfig.companyId as OutputVendorName
+    ] = createOutputVendorConfigFromExporter(updatedExporterConfig);
   }
 
   async toggleShowBrowser() {
@@ -237,7 +256,11 @@ class ConfigStore {
 
 export const configStore = new ConfigStore();
 const StoreContext = createContext<ConfigStore>(configStore);
-export const ConfigStoreProvider = ({ children }: { children: React.ReactNode }) => (
+export const ConfigStoreProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => (
   <StoreContext.Provider value={configStore}>{children}</StoreContext.Provider>
 );
 export const useConfigStore = () => useContext(StoreContext);

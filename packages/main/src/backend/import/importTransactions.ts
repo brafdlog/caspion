@@ -42,7 +42,7 @@ export async function scrapeFinancialAccountsAndFetchTransactions(
     chromiumPath = scrapingConfig.chromiumPath;
   } else {
     console.log('Downloading chromium');
-    chromiumPath = await getChrome(userDataPath, percent =>
+    chromiumPath = await getChrome(userDataPath, (percent) =>
       emitChromeDownload(eventPublisher, percent),
     );
   }
@@ -51,8 +51,8 @@ export async function scrapeFinancialAccountsAndFetchTransactions(
     maxConcurrent: scrapingConfig.maxConcurrency,
   });
   const scrapePromises = scrapingConfig.accountsToScrape
-    .filter(accountToScrape => accountToScrape.active !== false)
-    .map(async accountToScrape => ({
+    .filter((accountToScrape) => accountToScrape.active !== false)
+    .map(async (accountToScrape) => ({
       id: accountToScrape.id,
       transactions: await limiter.schedule(() =>
         fetchTransactions(
@@ -95,27 +95,33 @@ function buildImporterEvent(
 
 function emitChromeDownload(eventPublisher: EventPublisher, percent: number) {
   console.log(`Downloading chrome ${percent}%`);
-  eventPublisher.emit(EventNames.DOWNLOAD_CHROME, new DownalodChromeEvent(percent));
+  eventPublisher.emit(
+    EventNames.DOWNLOAD_CHROME,
+    new DownalodChromeEvent(percent),
+  );
 }
 
-export async function getFinancialAccountDetails(): Promise<FinancialAccountDetails[]> {
+export async function getFinancialAccountDetails(): Promise<
+  FinancialAccountDetails[]
+> {
   const config = await getConfig(configFilePath);
   const eventEmitter = new BudgetTrackingEventEmitter();
 
   const startDate = moment().subtract(30, 'days').startOf('day').toDate();
 
-  const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(
-    config.scraping,
-    startDate,
-    eventEmitter,
-  );
+  const companyIdToTransactions =
+    await scrapeFinancialAccountsAndFetchTransactions(
+      config.scraping,
+      startDate,
+      eventEmitter,
+    );
   const financialAccountDetails: { name: string; accountNumber: string }[] = [];
-  Object.keys(companyIdToTransactions).forEach(companyId => {
+  Object.keys(companyIdToTransactions).forEach((companyId) => {
     let accountNumbers = companyIdToTransactions[companyId].map(
-      transaction => transaction.accountNumber,
+      (transaction) => transaction.accountNumber,
     );
     accountNumbers = _.uniq(accountNumbers);
-    accountNumbers.forEach(accountNumber =>
+    accountNumbers.forEach((accountNumber) =>
       financialAccountDetails.push({ name: companyId, accountNumber }),
     );
   });
@@ -136,7 +142,10 @@ async function fetchTransactions(
       buildImporterEvent(account, { message: 'Importer start' }),
     );
 
-    const emitImporterProgressEvent = async (eventCompanyId: string, message: string) => {
+    const emitImporterProgressEvent = async (
+      eventCompanyId: string,
+      message: string,
+    ) => {
       await eventPublisher.emit(
         EventNames.IMPORTER_PROGRESS,
         buildImporterEvent(account, { message }),
@@ -155,7 +164,9 @@ async function fetchTransactions(
       chromePath,
     );
     if (!scrapeResult.success) {
-      throw new Error(`${scrapeResult.errorType}: ${scrapeResult.errorMessage}`);
+      throw new Error(
+        `${scrapeResult.errorType}: ${scrapeResult.errorMessage}`,
+      );
     }
 
     const transactions = await postProcessTransactions(account, scrapeResult);
@@ -187,15 +198,19 @@ async function postProcessTransactions(
   scrapeResult: ScraperScrapingResult,
 ): Promise<EnrichedTransaction[]> {
   if (scrapeResult.accounts) {
-    let transactions = scrapeResult.accounts.flatMap(transactionAccount => {
-      return transactionAccount.txns.map(transaction =>
-        enrichTransaction(transaction, accountToScrape.key, transactionAccount.accountNumber),
+    let transactions = scrapeResult.accounts.flatMap((transactionAccount) => {
+      return transactionAccount.txns.map((transaction) =>
+        enrichTransaction(
+          transaction,
+          accountToScrape.key,
+          transactionAccount.accountNumber,
+        ),
       );
     });
 
     // Filter out pending transactions
     transactions = transactions.filter(
-      transaction => transaction.status === TRANSACTION_STATUS_COMPLETED,
+      (transaction) => transaction.status === TRANSACTION_STATUS_COMPLETED,
     );
     transactions.sort(transactionsDateComparator);
     return transactions;

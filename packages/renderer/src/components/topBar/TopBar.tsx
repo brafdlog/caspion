@@ -15,7 +15,10 @@ function TopBar() {
 
   return (
     <>
-      <NavBar className={styles.topNavBar} style={{ borderBottom: '1px solid #C4C4C4' }}>
+      <NavBar
+        className={styles.topNavBar}
+        style={{ borderBottom: '1px solid #C4C4C4' }}
+      >
         <Container fluid>
           <NavBar.Brand>
             <Stack direction="horizontal" gap={3}>

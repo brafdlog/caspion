@@ -1,4 +1,11 @@
-import { beforeEach, expect, test, vi, type MockedClass, type MockedObject } from 'vitest';
+import {
+  beforeEach,
+  expect,
+  test,
+  vi,
+  type MockedClass,
+  type MockedObject,
+} from 'vitest';
 import { restoreOrCreateWindow } from '../src/mainWindow';
 
 import { BrowserWindow } from 'electron';
@@ -10,8 +17,12 @@ vi.mock('electron', () => {
   // Use "as unknown as" because vi.fn() does not have static methods
   const bw = vi.fn() as unknown as MockedClass<typeof BrowserWindow>;
   bw.getAllWindows = vi.fn(() => bw.mock.instances);
-  bw.prototype.loadURL = vi.fn((_: string, __?: Electron.LoadURLOptions) => Promise.resolve());
-  bw.prototype.loadFile = vi.fn((_: string, __?: Electron.LoadFileOptions) => Promise.resolve());
+  bw.prototype.loadURL = vi.fn((_: string, __?: Electron.LoadURLOptions) =>
+    Promise.resolve(),
+  );
+  bw.prototype.loadFile = vi.fn((_: string, __?: Electron.LoadFileOptions) =>
+    Promise.resolve(),
+  );
   // Use "any" because the on function is overloaded
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   bw.prototype.on = vi.fn<any>();
@@ -45,9 +56,13 @@ test('Should create a new window', async () => {
   const loadFileCalls = instance.loadFile.mock.calls.length;
   expect(loadURLCalls + loadFileCalls).toBe(1);
   if (loadURLCalls === 1) {
-    expect(instance.loadURL).toHaveBeenCalledWith(expect.stringMatching(/index\.html$/));
+    expect(instance.loadURL).toHaveBeenCalledWith(
+      expect.stringMatching(/index\.html$/),
+    );
   } else {
-    expect(instance.loadFile).toHaveBeenCalledWith(expect.stringMatching(/index\.html$/));
+    expect(instance.loadFile).toHaveBeenCalledWith(
+      expect.stringMatching(/index\.html$/),
+    );
   }
 });
 

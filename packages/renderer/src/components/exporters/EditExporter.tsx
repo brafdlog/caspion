@@ -8,7 +8,10 @@ interface EditExporterProps {
   exporter: Exporter;
 }
 
-export default function EditExporter({ handleSave, exporter }: EditExporterProps) {
+export default function EditExporter({
+  handleSave,
+  exporter,
+}: EditExporterProps) {
   const exporterTypeToEditComponent = new Map<string, JSX.Element>();
   exporterTypeToEditComponent.set(
     OutputVendorName.CSV,

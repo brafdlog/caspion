@@ -37,20 +37,28 @@ const createTransactionsInGoogleSheets: ExportTransactionsFunction = async (
   { transactionsToCreate: transactions, outputVendorsConfig },
   eventPublisher,
 ) => {
-  const { spreadsheetId, credentials } = outputVendorsConfig.googleSheets!.options;
+  const { spreadsheetId, credentials } =
+    outputVendorsConfig.googleSheets!.options;
   if (!credentials) throw new Error("You must set the 'credentials'");
   const oAuthClient = createClient(credentials);
 
-  const sheet = await googleSheets.getSheet(spreadsheetId, DEFAULT_SHEET_NAME, oAuthClient);
-  if (!sheet) {
-    throw new Error(`There is no sheet called ${DEFAULT_SHEET_NAME} in the spreadsheet`);
-  }
-
-  const hashesAlreadyExistingInGoogleSheets = await googleSheets.getExistingHashes(
+  const sheet = await googleSheets.getSheet(
     spreadsheetId,
     DEFAULT_SHEET_NAME,
     oAuthClient,
   );
+  if (!sheet) {
+    throw new Error(
+      `There is no sheet called ${DEFAULT_SHEET_NAME} in the spreadsheet`,
+    );
+  }
+
+  const hashesAlreadyExistingInGoogleSheets =
+    await googleSheets.getExistingHashes(
+      spreadsheetId,
+      DEFAULT_SHEET_NAME,
+      oAuthClient,
+    );
   const transactionsToCreate = filterExistedHashes(
     transactions,
     hashesAlreadyExistingInGoogleSheets,
@@ -73,7 +81,7 @@ const createTransactionsInGoogleSheets: ExportTransactionsFunction = async (
     `Creating ${transactionsToCreate.length} transactions in google sheets`,
   );
 
-  const transactionsInSheetsFormat = transactionsToCreate.map(transaction => [
+  const transactionsInSheetsFormat = transactionsToCreate.map((transaction) => [
     moment(transaction.date).format(GOOGLE_SHEETS_DATE_FORMAT),
     transaction.chargedAmount,
     transaction.description,

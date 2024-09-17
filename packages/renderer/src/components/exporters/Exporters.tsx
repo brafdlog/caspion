@@ -11,7 +11,7 @@ interface ExporterProps {
 function Exporters({ exporters, isScraping, showModal }: ExporterProps) {
   return (
     <>
-      {exporters.map(exporter => (
+      {exporters.map((exporter) => (
         <Account
           key={exporter.id}
           account={exporter}

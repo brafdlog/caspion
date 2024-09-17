@@ -1,5 +1,8 @@
 import { type EnrichedTransaction } from '@/backend/commonTypes';
-import { TransactionStatuses, TransactionTypes } from 'israeli-bank-scrapers-core/lib/transactions';
+import {
+  TransactionStatuses,
+  TransactionTypes,
+} from 'israeli-bank-scrapers-core/lib/transactions';
 import { describe, expect, test } from 'vitest';
 import { SaveTransaction, type TransactionDetail } from 'ynab';
 import * as ynab from './ynab';
@@ -41,17 +44,26 @@ describe('ynab', () => {
       };
 
       expect(
-        ynab.isSameTransaction(transactionFromFinancialAccount, transferTransactionFromYnab),
+        ynab.isSameTransaction(
+          transactionFromFinancialAccount,
+          transferTransactionFromYnab,
+        ),
       ).toBeTruthy();
     });
   });
   describe('areStringsEqualIgnoreCaseAndWhitespace', () => {
     test('should consider two strings with different casing as equal', async () => {
-      expect(ynab.areStringsEqualIgnoreCaseAndWhitespace('Gett', 'GETT')).toBeTruthy();
+      expect(
+        ynab.areStringsEqualIgnoreCaseAndWhitespace('Gett', 'GETT'),
+      ).toBeTruthy();
     });
     test('should consider two strings that are the same except for whitespace as equal', async () => {
-      expect(ynab.areStringsEqualIgnoreCaseAndWhitespace('Gett', 'Gett ')).toBeTruthy();
-      expect(ynab.areStringsEqualIgnoreCaseAndWhitespace('Gett', ' Gett ')).toBeTruthy();
+      expect(
+        ynab.areStringsEqualIgnoreCaseAndWhitespace('Gett', 'Gett '),
+      ).toBeTruthy();
+      expect(
+        ynab.areStringsEqualIgnoreCaseAndWhitespace('Gett', ' Gett '),
+      ).toBeTruthy();
       expect(
         ynab.areStringsEqualIgnoreCaseAndWhitespace(
           'PAYPAL *AVIDEUT        4029357733    LU',
@@ -72,7 +84,9 @@ describe('ynab', () => {
       ).toBeTruthy();
     });
     test('should consider two different strings as not equal', async () => {
-      expect(ynab.areStringsEqualIgnoreCaseAndWhitespace('Gett', ' shmett ')).toBeFalsy();
+      expect(
+        ynab.areStringsEqualIgnoreCaseAndWhitespace('Gett', ' shmett '),
+      ).toBeFalsy();
     });
   });
   describe('getPayeeName', () => {
@@ -96,13 +110,22 @@ describe('ynab', () => {
       [' משכורת', 'המבצע: לאומי'],
       ['קצבת ילדים', ''],
       ['בזק-הוראת קבע', 'בזק - חיובי טלפון'],
-    ])('Verify getPayeeName extracts the correct payeeName', async (description, memo) => {
-      transactionSample.description = description;
-      transactionSample.memo = memo;
-      expect(ynab.getPayeeName(transactionSample)).toBe(transactionSample.description);
-    });
+    ])(
+      'Verify getPayeeName extracts the correct payeeName',
+      async (description, memo) => {
+        transactionSample.description = description;
+        transactionSample.memo = memo;
+        expect(ynab.getPayeeName(transactionSample)).toBe(
+          transactionSample.description,
+        );
+      },
+    );
     test.each([
-      ['הוראת קבע', 'לטובת: צהרון. עבור: צהרון גנים - ילד 00-000-0000000', 'צהרון'],
+      [
+        'הוראת קבע',
+        'לטובת: צהרון. עבור: צהרון גנים - ילד 00-000-0000000',
+        'צהרון',
+      ],
       ["העב' לאחר-נייד", 'לטובת: איש כלשהו. עבור: סוף חשבון', 'איש כלשהו'],
       ['העברה לאחר', 'לטובת: פנסיה לדוגמא. עבור: סיבה מסויימת', 'פנסיה לדוגמא'],
       ['העברה מהבנק', 'לטובת: אישה כלשהי. עבור: משכורת אוגוסט', 'אישה כלשהי'],

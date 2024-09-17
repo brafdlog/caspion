@@ -14,7 +14,7 @@ export const StoresProvider = ({ children }: { children: React.ReactNode }) => {
   useInitAppInfoStore();
   // TODO: create useInitConfigStore
   useEffect(() => {
-    getConfig().then(config => {
+    getConfig().then((config) => {
       configStore.updateConfig(config as Config);
     });
   }, []);
