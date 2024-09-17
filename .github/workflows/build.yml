@@ -1,0 +1,31 @@
+name: Build
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  build:
+    strategy:
+        fail-fast: true
+        matrix:
+          os: 
+            - macos-latest
+            - ubuntu-latest
+            - windows-latest
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.node-version'
+          cache: 'yarn'
+      - name: Install dependencies
+        run: yarn
+      - name: Build
+        run: yarn compile
+
+

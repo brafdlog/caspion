@@ -27,9 +27,11 @@
     "typecheck:renderer": "tsc --noEmit -p packages/renderer/tsconfig.json",
     "typecheck": "yarn typecheck:main && yarn typecheck:preload && yarn typecheck:renderer",
     "postinstall": "cross-env ELECTRON_RUN_AS_NODE=1 electron scripts/update-electron-vendors.js",
-    "format": "prettier --write \"**/*.{js,mjs,cjs,ts,mts,cts,tsx,json}\""
+    "format": "prettier --write \"**/*.{js,mjs,cjs,ts,mts,cts,tsx,json}\"",
+    "format:check": "prettier --check \"**/*.{js,mjs,cjs,ts,mts,cts,tsx,json}\""
   },
   "devDependencies": {
+    "@semantic-release/commit-analyzer": "^13.0.0",
     "@sveltejs/vite-plugin-svelte": "^3.1.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.4.8",
@@ -69,7 +71,7 @@
     "bottleneck": "^2.19.5",
     "csv-parse": "^5.5.6",
     "csv-stringify": "^6.5.0",
-    "electron-google-oauth2": "^3.0.0",
+    "electron-google-oauth2": "^3.1.0",
     "electron-log": "^5.1.5",
     "electron-updater": "6.2.1",
     "emittery": "^1.0.3",

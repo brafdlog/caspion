@@ -1,4 +1,5 @@
 import { getLogsInfo, openExternal, sentryUserReportProblem } from '#preload';
+// TODO: you can't use os on renderer.
 import os from 'os';
 import { useEffect, useState } from 'react';
 import { Button, Col, Form, Modal, Row, Stack } from 'react-bootstrap';

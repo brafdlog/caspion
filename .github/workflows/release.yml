@@ -1,20 +1,21 @@
 name: Release
 on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Exsiting version to publish files. If not provided, will create a new release.'
+        required: false
+        type: string
+
   push:
     branches:
-      - vite-electron-builder
-  workflow_call:
-    inputs:
-      dry-run:
-        description: 'Compiles the app but not upload artifacts to distribution server'
-        # TODO: default: false
-        default: true
-        required: false
-        type: boolean
+      - master
+    paths-ignore:
+      - 'nuxt/**'
 
 concurrency:
   group: release-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 
 defaults:
@@ -23,7 +24,45 @@ defaults:
 
 
 jobs:
-  draft_release:
+  release:
+    runs-on: ubuntu-latest
+
+    outputs:
+      new_release_version: ${{ steps.semantic.outputs.new_release_version }}
+      new_release_published: ${{ steps.semantic.outputs.new_release_published }}
+
+    steps:
+      - uses: actions/checkout@v4
+      # https://github.com/nodejs/node-gyp/issues/2869
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.node-version'
+          cache: 'yarn'
+
+      - name: Install semantic-release dependencies
+        run: yarn add -D @semantic-release/commit-analyzer conventional-changelog-eslint
+      - uses: cycjimmy/semantic-release-action@cb425203a562475bca039ba4dbf90c7f9ac790f4
+        id: semantic
+        if: inputs.version == ''
+        with:
+          semantic_version: 24.1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish:
+    needs: [release]
+    if: needs.release.outputs.new_release_published == 'true' || inputs.version != ''
+    env:
+      NEW_RELEASE_PUBLISHED: ${{ inputs.version && 'true' || needs.release.outputs.new_release_published }}
+      NEW_RELEASE_VERSION: ${{ needs.release.outputs.new_release_version || inputs.version }}
+
+      NODE_ENV: production
+      MODE: production
+      VITE_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      VITE_GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+      VITE_SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
+      VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
 
     permissions:
       contents: write # Allows this job to create releases
@@ -33,8 +72,8 @@ jobs:
       matrix:
         os: 
           - macos-latest
-          # - ubuntu-latest
-          # - windows-latest
+          - ubuntu-latest
+          - windows-latest
 
     runs-on: ${{ matrix.os }}
 
@@ -44,14 +83,27 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           cache: 'yarn'
+          node-version-file: '.node-version'
+      
+      - name: Install Snapcraft
+        uses: samuelmeuli/action-snapcraft@d33c176a9b784876d966f80fb1b461808edc0641
+        # Only install Snapcraft  on Ubuntu
+        if: startsWith(matrix.os, 'ubuntu')
+        continue-on-error: true
+        env:
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_TOKEN }}
+
+      - name: set version
+        run: yarn version --no-git-tag-version --new-version ${{ env.NEW_RELEASE_VERSION }}
 
       - run: yarn
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+          NODE_ENV: development
 
       - run: yarn build
 
-      - name: Compile artifacts ${{ inputs.dry-run && '' || 'and upload them to github release' }}
+      - name: Compile artifacts ${{ env.NEW_RELEASE_PUBLISHED == 'true' && 'and upload them to github release' || '' }}
         # I use this action because it is capable of retrying multiple times if there are any issues with the distribution server
         uses: nick-fields/retry@v3
         with:
@@ -62,13 +114,12 @@ jobs:
           shell: 'bash'
           # Due to this issue https://github.com/electron-userland/electron-builder/issues/6411 the build with npx when rebuilding native dependencies hangs forever
           # see https://github.com/cawa-93/vite-electron-builder/pull/953
-          command: ./node_modules/.bin/electron-builder --config electron-builder.yml --publish ${{ inputs.dry-run && 'never' || 'always' }}
+          command: ./node_modules/.bin/electron-builder --config electron-builder.yml --publish $PUBLISH_PARAM
         env:
           # Code Signing params
           # See https://www.electron.build/code-signing
           # CSC_LINK: ''
           # CSC_KEY_PASSWORD: ''
           # Publishing artifacts
-          GH_TOKEN: ${{ secrets.github_token }} # GitHub token, automatically provided (No need to define this secret in the repo settings)
-          NODE_ENV: production
-          MODE: production
+          GH_TOKEN: ${{ secrets.github_token }}
+          PUBLISH_PARAM: ${{ env.NEW_RELEASE_PUBLISHED == 'true' && 'always' || 'never' }}

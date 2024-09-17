@@ -25,4 +25,6 @@ export const downloadUpdate = async () =>
     autoUpdater.downloadUpdate();
   });
 
-export const quitAndInstall = () => setImmediate(() => autoUpdater.quitAndInstall());
+export const quitAndInstall = () => {
+  setImmediate(() => autoUpdater.quitAndInstall());
+};

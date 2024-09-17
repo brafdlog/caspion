@@ -124,8 +124,8 @@ If you wish though to build/debug this from source, you will need to setup your 
 Now that you have the keys above, store them as env variables:
 
 ```
-EXPORT GOOGLE_CLIENT_ID=XXXXX
-EXPORT GOOGLE_CLIENT_SECRET=YYYYYY
+EXPORT VITE_GOOGLE_CLIENT_ID=XXXXX
+EXPORT VITE_GOOGLE_CLIENT_SECRET=YYYYYY
 ```
 
 That's it. Next time you'll run the code a one time OAuth authorization window will appear and ask for access.

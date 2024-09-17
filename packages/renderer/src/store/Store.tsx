@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { getYnabAccountData } from '#preload';
-import { makeAutoObservable, runInAction } from 'mobx';
+import { makeAutoObservable, runInAction, toJS } from 'mobx';
 import { createContext, useContext } from 'react';
 import { type YnabAccountDataType, type YnabConfig } from '../types';
 
@@ -22,7 +22,7 @@ export default class Store {
     runInAction(() => {
       this.ynabAccountData = ynabAccountData;
       this.fetchingYnabAccountData = false;
-      console.log('Ynab account data ', this.ynabAccountData);
+      console.log('Ynab account data ', toJS(this.ynabAccountData));
     });
   }
 }

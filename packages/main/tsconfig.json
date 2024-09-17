@@ -14,7 +14,7 @@
       "/@/*": ["./src/*"],
       "@/*": ["./src/*"]
     },
-    "resolveJsonModule": true,
+    "resolveJsonModule": true
   },
   "include": ["src/**/*.ts", "../../types/**/*.d.ts"],
   "exclude": ["**/*.spec.ts", "**/*.test.ts"]
