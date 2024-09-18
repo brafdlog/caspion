@@ -1,0 +1,31 @@
+.container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttonsContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 1.5vh;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.customGap {
+  gap: 6rem;
+}
+
+.contentContainer {
+  margin-top: 5rem;
+}
+
+.modalWide {
+  max-width: unset;
+  width: 70%;
+}

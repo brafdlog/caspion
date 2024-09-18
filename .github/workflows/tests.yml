@@ -1,0 +1,44 @@
+name: Tests
+on:
+  workflow_dispatch:
+  pull_request:
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: 'bash'
+
+jobs:
+  tests:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          # - windows-latest
+          - ubuntu-latest
+          # - macos-latest
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+      - uses: actions/setup-node@v4
+        with:
+          cache: 'yarn'
+          node-version-file: '.node-version'
+      - run: yarn
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+      - run: yarn test:main
+      - run: yarn test:preload
+      - run: yarn test:renderer
+
+      # I ran into problems trying to run an electron window in ubuntu due to a missing graphics server.
+      # That's why this special command for Ubuntu is here
+      - run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- yarn test:e2e
+        if: matrix.os == 'ubuntu-latest'
+
+      - run: yarn test:e2e
+        if: matrix.os != 'ubuntu-latest'

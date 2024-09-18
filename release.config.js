@@ -8,35 +8,14 @@ const releaseRules = {
     { tag: 'New', release: 'minor' },
     { tag: 'Update', release: 'minor' },
     { tag: 'Upgrade', release: 'minor' },
-    { tag: 'Deps', release: 'patch' }
-  ]
+    { tag: 'Deps', release: 'patch' },
+  ],
 };
 
-module.exports = {
+export default {
   branches: ['master'],
   plugins: [
-    [
-      '@semantic-release/commit-analyzer',
-      releaseRules
-    ],
-    [
-      '@semantic-release/release-notes-generator',
-      releaseRules
-    ],
+    ['@semantic-release/commit-analyzer', releaseRules],
     '@semantic-release/github',
-    [
-      '@semantic-release/changelog',
-      {
-        changelogFile: 'CHANGELOG.md'
-      }
-    ],
-    [
-      '@semantic-release/git',
-      {
-        assets: ['package.json', 'CHANGELOG.md'],
-        // eslint-disable-next-line no-template-curly-in-string
-        message: 'chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}'
-      }
-    ]
-  ]
+  ],
 };

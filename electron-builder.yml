@@ -1,0 +1,13 @@
+directories:
+  output: dist
+  buildResources: buildResources
+
+files:
+  - packages/**/dist/**
+
+linux:
+  target: deb
+
+publish:
+  - provider: github
+    releaseType: release
