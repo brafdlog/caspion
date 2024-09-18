@@ -3,11 +3,15 @@
     "browser": true,
     "node": false
   },
-  "extends": ["plugin:react-hooks/recommended"],
+  "extends": [
+    "plugin:react-hooks/recommended"
+  ],
   "parserOptions": {
     "parser": "@typescript-eslint/parser",
     "ecmaVersion": 12,
-    "sourceType": "module"
+    "sourceType": "module",
+    "project": "../../tsconfig.test.json"
   },
-  "rules": {}
+  "rules": {
+  }
 }

@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [svelte(), svelteTesting()],
   test: {
     environment: 'jsdom',
-    setupFiles: ['./vitest-setup.js'],
+    setupFiles: ['./vitest.setup.js'],
     /**
      * By default, vitest searches for the test files in all packages.
      * For e2e tests, have vitest search only in the project root 'tests' folder.

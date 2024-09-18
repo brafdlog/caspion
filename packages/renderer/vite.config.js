@@ -20,6 +20,7 @@ const config = {
     alias: {
       '/@/': join(PACKAGE_ROOT, 'src') + '/',
       events: 'events',
+      '#preload': join(PROJECT_ROOT, 'packages', 'preload', 'src') + '/index.ts',
     },
   },
   base: '',
