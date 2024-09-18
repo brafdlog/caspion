@@ -73,7 +73,7 @@
     "csv-stringify": "^6.5.0",
     "electron-google-oauth2": "^3.1.0",
     "electron-log": "^5.1.5",
-    "electron-updater": "6.2.1",
+    "electron-updater": "6.3.0",
     "emittery": "^1.0.3",
     "eslint-plugin-react-hooks": "^4.6.2",
     "events": "^3.3.0",
