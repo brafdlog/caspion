@@ -78,7 +78,7 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "events": "^3.3.0",
     "googleapis": "^139.0.0",
-    "israeli-bank-scrapers-core": "5.1.1",
+    "israeli-bank-scrapers-core": "5.1.4",
     "keytar": "^7.9.0",
     "lodash": "^4.17.21",
     "mobx": "^6.12.4",
