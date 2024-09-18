@@ -92,6 +92,7 @@
     "react-bootstrap-table2-editor": "^1.4.0",
     "react-bootstrap-typeahead": "^6.3.2",
     "react-dom": "^18.3.1",
+    "svelte": "^4.2.19",
     "web-vitals": "^4.2.0",
     "ynab": "^1.19.0"
   }
