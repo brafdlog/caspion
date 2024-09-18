@@ -1,0 +1,57 @@
+name: Update israeli-bank-scrapers
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  # Manual trigger
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+
+      - name: Get old version
+        id: get_old_version
+        run: |
+          old_version=$(yarn list --pattern israeli-bank-scrapers-core --depth=0 --json --non-interactive --no-progress | jq -r '.data.trees[].name' | cut -d'@' -f2)
+          echo "old_version=${old_version}" >> $GITHUB_OUTPUT
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Upgrade israeli-bank-scrapers-core
+        run: |
+          yarn upgrade israeli-bank-scrapers-core --latest
+      - name: Get new version
+        id: get_new_version
+        run: |
+          new_version=$(yarn list --pattern israeli-bank-scrapers-core --depth=0 --json --non-interactive --no-progress | jq -r '.data.trees[].name' | cut -d'@' -f2)
+          echo "new_version=${new_version}" >> $GITHUB_OUTPUT
+      - name: Generate diff link
+        id: diff_link
+        run: |
+          echo "diff_link=https://github.com/eshaham/israeli-bank-scrapers/compare/v${{ steps.get_old_version.outputs.old_version }}...v${{ steps.get_new_version.outputs.new_version }}" >> $GITHUB_OUTPUT
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@70a41aba780001da0a30141984ae2a0c95d8704e # v6.0.2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: 'deps/israeli-bank-scrapers-core'
+          base: 'master'
+          delete-branch: true # Delete the branch after the pull request is closed
+          commit-message: 'Deps: Upgrade israeli-bank-scrapers to ${{ steps.get_new_version.outputs.new_version }}'
+          title: 'Deps: Upgrade israeli-bank-scrapers to ${{ steps.get_new_version.outputs.new_version }}'
+          body: |
+            Upgrade israeli-bank-scrapers-core library to ${{ steps.get_new_version.outputs.new_version }}
+            Changes:
+            - [Diff Link](${{ steps.diff_link.outputs.diff_link }})
