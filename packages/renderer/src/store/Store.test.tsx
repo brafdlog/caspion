@@ -3,7 +3,7 @@ import {
   AccountType,
   CompanyTypes,
   type Config,
-  Credentials,
+  type Credentials,
   type Exporter,
   type Importer,
 } from '../types';
