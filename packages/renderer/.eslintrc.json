@@ -1,7 +1,7 @@
 {
   "env": {
     "browser": true,
-    "node": false
+    "node": true
   },
   "extends": ["plugin:react-hooks/recommended"],
   "parserOptions": {

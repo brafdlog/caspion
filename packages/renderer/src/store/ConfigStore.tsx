@@ -69,7 +69,7 @@ const saveConfigIntoFile = (config?: Config) => {
   updateConfig(toJS(config));
 };
 
-class ConfigStore {
+export class ConfigStore {
   config: Config;
 
   chromeDownloadPercent = 0;

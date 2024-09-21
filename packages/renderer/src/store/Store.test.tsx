@@ -1,4 +1,4 @@
-import { configStore } from './ConfigStore';
+import { type ConfigStore, configStore } from './ConfigStore';
 import {
   AccountType,
   CompanyTypes,
@@ -10,7 +10,7 @@ import {
 import { beforeEach, describe, test, expect } from 'vitest';
 
 describe('Store', () => {
-  let store: any;
+  let store: ConfigStore;
   beforeEach(() => {
     store = configStore;
     store.config = dummyConfig;

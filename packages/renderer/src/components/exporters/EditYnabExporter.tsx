@@ -1,6 +1,6 @@
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Button, Card, Form, Image } from 'react-bootstrap';
 import Spinner from 'react-bootstrap/Spinner';
 import { type YnabConfig } from '../../types';
@@ -37,22 +37,24 @@ const EditYnabExporter = ({
     if (!ynabOptions.budgetId && defaultBudgetId) {
       updateOptionsState({ budgetId: defaultBudgetId });
     }
-  }, [store.ynabAccountData, ynabOptions.budgetId]);
+  }, [store.ynabAccountData, ynabOptions.budgetId, updateOptionsState]);
 
   useEffect(() => {
     if (ynabOptions.accessToken) {
       store.fetchYnabAccountData(ynabOptions);
     }
-  }, [ynabOptions.budgetId, ynabOptions.accessToken, store]);
+  }, [ynabOptions, store]);
 
-  const updateOptionsState = (
-    optionUpdates: Partial<YnabConfig['options']>,
-  ) => {
-    setYnabOptions({
-      ...ynabOptions,
-      ...optionUpdates,
-    });
-  };
+  const updateOptionsState = useCallback(
+    (optionUpdates: Partial<YnabConfig['options']>) => {
+      setYnabOptions((prevYnabOptions) => ({
+        ...prevYnabOptions,
+        ...optionUpdates,
+      }));
+    },
+    [],
+  );
+
   const handleSaveClick = async () => {
     await handleSave({
       ...exporterConfig,
