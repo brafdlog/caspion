@@ -1,4 +1,3 @@
-import { createHash } from 'crypto';
 import { type BrowserWindow } from 'electron';
 import {
   _electron as electron,
