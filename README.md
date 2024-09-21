@@ -67,6 +67,9 @@ Depending on your distribution, you will need to run the following command:
 
 #### Mac Prerequisites
 
+If when installing you get a message saying caspion is damaged and can't be opened, run this in the terminal `sudo xattr -r -d com.apple.quarantine /Applications/caspion.app/
+`
+
 For M1 macs, if you get an error while scraping due to not being able to download chromium, download it manually as described [here](https://linguinecode.com/post/how-to-fix-m1-mac-puppeteer-chromium-arm64-bug). Then in the settings, set the chromium path to be the result of `which chromium`
 
 
