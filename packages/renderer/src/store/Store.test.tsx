@@ -2,7 +2,8 @@ import { configStore } from './ConfigStore';
 import {
   AccountType,
   CompanyTypes,
-  type Config, Credentials,
+  type Config,
+  Credentials,
   type Exporter,
   type Importer,
 } from '../types';
@@ -34,7 +35,9 @@ describe('Store', () => {
       const visaCalImporter = store.importers.find(
         (i: Importer) => i.companyId === 'visaCal',
       );
-      const maxImporter = store.importers.find((i: Importer) => i.companyId === 'max');
+      const maxImporter = store.importers.find(
+        (i: Importer) => i.companyId === 'max',
+      );
 
       expect(discountImporter).toMatchSnapshot();
       expect(visaCalImporter).toMatchSnapshot();

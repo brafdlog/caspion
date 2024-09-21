@@ -20,10 +20,15 @@ vi.mock('electron', () => {
       return Promise.resolve({ name: 'Test App', version: '1.0.0' });
     }
     if (channel === 'getConfig') {
-      return Promise.resolve(JSON.stringify({ config: { someKey: 'someValue' } }));
+      return Promise.resolve(
+        JSON.stringify({ config: { someKey: 'someValue' } }),
+      );
     }
     if (channel === 'getLogsInfo') {
-      return Promise.resolve({ logsFolder: '/path/to/logs', otherData: 'someValue' });  // Ensure logsFolder is defined
+      return Promise.resolve({
+        logsFolder: '/path/to/logs',
+        otherData: 'someValue',
+      });
     }
     return Promise.resolve(null);
   });
