@@ -19,7 +19,6 @@ const onError: MainErrorHandlerOptions['onError'] = ({ error }) => {
   if (error.stack) logger.debug(error.stack);
 };
 logger.errorHandler.startCatching({ onError });
-logger.catchErrors({ onError });
 
 export const getLastLines = (n: number) => {
   const lines = fs

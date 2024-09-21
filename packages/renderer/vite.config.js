@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react';
 import { join } from 'node:path';
 import { renderer } from 'unplugin-auto-expose';
 import { chrome } from '../../.electron-vendors.cache.json';
+import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
 const PACKAGE_ROOT = __dirname;
 const PROJECT_ROOT = join(PACKAGE_ROOT, '../..');
@@ -20,7 +21,6 @@ const config = {
     alias: {
       '/@/': join(PACKAGE_ROOT, 'src') + '/',
       events: 'events',
-      '#preload': join(PROJECT_ROOT, 'packages', 'preload', 'src') + '/index.ts',
     },
   },
   base: '',
@@ -44,6 +44,18 @@ const config = {
     environment: 'happy-dom',
   },
   plugins: [
+    nodePolyfills({
+      include: ['util', 'path','fs', 'stream'],
+      globals: {
+        Buffer: true,
+        global: true,
+        process: true,
+      },
+      overrides: {
+        fs: 'memfs',
+      },
+      protocolImports: true,
+    }),
     react(),
     renderer.vite({
       preloadEntry: join(PACKAGE_ROOT, '../preload/src/index.ts'),

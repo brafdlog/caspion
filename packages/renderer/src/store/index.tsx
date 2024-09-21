@@ -2,7 +2,7 @@ import { getConfig } from '#preload';
 import { useEffect } from 'react';
 import { type Config } from '../types';
 import { AppInfoStoreProvider, useInitAppInfoStore } from './AppInfoStore';
-import { ConfigStoreProvider, configStore } from './ConfigStore';
+import { ConfigStoreProvider, configStore, useInitConfigStore } from './ConfigStore';
 import Store, { StoreProvider } from './Store';
 
 export { useAppInfoStore } from './AppInfoStore';
@@ -12,7 +12,7 @@ const store = new Store();
 
 export const StoresProvider = ({ children }: { children: React.ReactNode }) => {
   useInitAppInfoStore();
-  // TODO: create useInitConfigStore
+  useInitConfigStore();
   useEffect(() => {
     getConfig().then((config) => {
       configStore.updateConfig(config as Config);

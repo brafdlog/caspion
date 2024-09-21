@@ -1,6 +1,6 @@
-import { openExternal, openItem, updateConfig } from '#preload';
+import { getAppInfo, getConfig, openExternal, openItem, updateConfig } from '#preload';
 import { autorun, makeAutoObservable, toJS } from 'mobx';
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useEffect } from 'react';
 import accountMetadata, { exporterUIHandlers } from '../accountMetadata';
 import {
   AccountStatus,
@@ -73,13 +73,13 @@ class ConfigStore {
 
   chromeDownloadPercent = 0;
 
-  // TODO: move this to a separate store
   accountScrapingData: Map<
     CompanyTypes | OutputVendorName,
     AccountScrapingData
   >;
 
-  constructor() {
+  constructor(config: Config) {
+    this.config = config;
     this.accountScrapingData = new Map();
     makeAutoObservable(this);
 
@@ -254,7 +254,8 @@ class ConfigStore {
   }
 }
 
-export const configStore = new ConfigStore();
+const cc = await getConfig()
+export const configStore = new ConfigStore(cc as Config);
 const StoreContext = createContext<ConfigStore>(configStore);
 export const ConfigStoreProvider = ({
   children,
@@ -263,4 +264,13 @@ export const ConfigStoreProvider = ({
 }) => (
   <StoreContext.Provider value={configStore}>{children}</StoreContext.Provider>
 );
+export const useInitConfigStore = () => {
+  useEffect(() => {
+    getConfig().then((config) => {
+      configStore.updateConfig(config as Config);
+    });
+  });
+};
 export const useConfigStore = () => useContext(StoreContext);
+
+
