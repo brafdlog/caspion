@@ -14,7 +14,7 @@ import {
   type Exporter,
   type Importer,
   type Log,
-  type OutputVendorName,
+  type OutputVendorName, DownalodChromeEvent,
 } from '../types';
 
 interface AccountScrapingData {

@@ -68,7 +68,6 @@ export interface JsonConfig extends OutputVendorConfigBase {
 export interface GoogleSheetsConfig extends OutputVendorConfigBase {
   options: {
     credentials: Auth.Credentials;
-    // credentials: string;
     spreadsheetId: string;
   };
 }

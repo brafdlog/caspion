@@ -7,7 +7,7 @@ import { type YnabConfig } from '../../types';
 import styles from './EditYnabExporter.module.css';
 
 import YnabAccountMappingTable from './YnabAccountMappingTable';
-import { useStore } from '/@/store';
+import { useStore } from '../../store';
 
 interface EditYnabExporterProps {
   handleSave: (exporterConfig: YnabConfig) => Promise<void>;

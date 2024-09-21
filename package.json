@@ -61,7 +61,8 @@
     "typescript": "5.4.5",
     "unplugin-auto-expose": "0.3.0",
     "vite": "5.2.14",
-    "vitest": "^2.0.5"
+    "vite-tsconfig-paths": "^5.0.1",
+    "vitest": "^2.1.1"
   },
   "dependencies": {
     "@puppeteer/browsers": "^2.2.3",
@@ -92,6 +93,8 @@
     "react-bootstrap-table2-editor": "^1.4.0",
     "react-bootstrap-typeahead": "^6.3.2",
     "react-dom": "^18.3.1",
+    "svelte": "^4.2.19",
+    "vite-plugin-node-polyfills": "^0.22.0",
     "web-vitals": "^4.2.0",
     "ynab": "^1.19.0"
   }

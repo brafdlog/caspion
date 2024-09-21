@@ -7,7 +7,7 @@ import logo from '../../assets/logoFishOnly.svg';
 import NavButton from './NavButton';
 import ReportProblemModal from './ReportProblemModal';
 import styles from './TopBar.module.css';
-import { useAppInfoStore } from '/@/store';
+import { useAppInfoStore } from '../../store';
 
 function TopBar() {
   const [show, setShow] = useState(false);

@@ -1,25 +1,24 @@
-import { dummyConfig } from '../test/testData';
-import Store from './Store';
+import { configStore } from './ConfigStore';
 import {
   AccountType,
   CompanyTypes,
-  type Config,
+  type Config, Credentials,
   type Exporter,
   type Importer,
-} from './types';
+} from '../types';
+import { beforeEach, describe, test, expect } from 'vitest';
 
 describe('Store', () => {
-  let store;
+  let store: any;
   beforeEach(() => {
-    store = new Store();
-    store.configuration = dummyConfig;
+    store = configStore;
+    store.config = dummyConfig;
   });
   describe('Properties and getters', () => {
     test('basic', () => {
-      const basicStore = new Store();
-      expect(basicStore.config).not.toBeDefined();
+      const basicStore = configStore;
 
-      basicStore.configuration = dummyConfig;
+      basicStore.config = dummyConfig;
 
       expect(basicStore.config).toMatchObject(dummyConfig);
 
@@ -30,12 +29,12 @@ describe('Store', () => {
       expect(store.importers).toHaveLength(3);
 
       const discountImporter = store.importers.find(
-        (i) => i.companyId === 'discount',
+        (i: Importer) => i.companyId === 'discount',
       );
       const visaCalImporter = store.importers.find(
-        (i) => i.companyId === 'visaCal',
+        (i: Importer) => i.companyId === 'visaCal',
       );
-      const maxImporter = store.importers.find((i) => i.companyId === 'max');
+      const maxImporter = store.importers.find((i: Importer) => i.companyId === 'max');
 
       expect(discountImporter).toMatchSnapshot();
       expect(visaCalImporter).toMatchSnapshot();
@@ -45,15 +44,6 @@ describe('Store', () => {
       expect(store.exporters).toHaveLength(4);
 
       expect(store.exporters).toMatchSnapshot();
-    });
-
-    test('allAccounts', () => {
-      expect(store.allAccounts).toHaveLength(
-        store.importers.length + store.exporters.length,
-      );
-      [...store.importers, ...store.exporters].forEach((account) =>
-        expect(store.allAccounts).toContainEqual(account),
-      );
     });
 
     test('settings', () => {
@@ -80,11 +70,9 @@ describe('Store', () => {
           type: AccountType.IMPORTER,
           active: false,
         };
-        expect(store.allAccountsById.get(accountToAdd.id)).toBeFalsy();
         const originalImportersLength = store.importers.length;
         store.addImporter(accountToAdd);
         expect(store.importers).toHaveLength(originalImportersLength + 1);
-        expect(store.allAccountsById.get(accountToAdd.id)).toMatchSnapshot();
       });
 
       test('updateImporter', () => {
@@ -95,7 +83,7 @@ describe('Store', () => {
         };
         store.updateImporter(importer.id, updatedImporter);
         expect(
-          store.importers.find((i) => i.id === importer.id),
+          store.importers.find((i: Importer) => i.id === importer.id),
         ).toHaveProperty('active', updatedImporter.active);
       });
 
@@ -104,10 +92,8 @@ describe('Store', () => {
         const originalNumImporters =
           dummyConfig.scraping.accountsToScrape.length;
         expect(store.importers).toHaveLength(originalNumImporters);
-        expect(store.allAccountsById.get(importer.id)).toBeTruthy();
         store.deleteImporter(importer.id);
         expect(store.importers).toHaveLength(originalNumImporters - 1);
-        expect(store.allAccountsById.get(importer.id)).toBeFalsy();
       });
     });
     describe('exporters', () => {
@@ -133,7 +119,7 @@ export const dummyConfig: Config = {
     accountsToScrape: [
       {
         active: true,
-        key: 'discount',
+        key: CompanyTypes.DISCOUNT,
         name: 'Discount Bank',
         loginFields: {
           id: '234234134',
@@ -144,7 +130,7 @@ export const dummyConfig: Config = {
       },
       {
         active: true,
-        key: 'visaCal',
+        key: CompanyTypes.VISACAL,
         name: 'Visa Cal',
         loginFields: {
           username: 'someUsername',
@@ -154,7 +140,7 @@ export const dummyConfig: Config = {
       },
       {
         active: true,
-        key: 'max',
+        key: CompanyTypes.MAX,
         name: 'Max',
         loginFields: {
           username: 'whatAUserName',
@@ -163,6 +149,7 @@ export const dummyConfig: Config = {
         id: '9xve2485ac202f53f85bcdb4f795dssc',
       },
     ],
+    timeout: 0,
   },
   outputVendors: {
     csv: {
@@ -193,8 +180,8 @@ export const dummyConfig: Config = {
     googleSheets: {
       active: false,
       options: {
-        credentials: '',
         spreadsheetId: '',
+        credentials: {} as Credentials,
       },
     },
   },

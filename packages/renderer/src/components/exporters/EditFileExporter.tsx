@@ -2,7 +2,7 @@ import { showSaveDialog } from '#preload';
 import { observer } from 'mobx-react-lite';
 import React, { useState } from 'react';
 import { Button, Card, Form, Image } from 'react-bootstrap';
-import { type Exporter } from '../../types';
+import { type Exporter } from '/@/types';
 import styles from './EditFileExporter.module.css';
 
 interface EditFileExporterProps {

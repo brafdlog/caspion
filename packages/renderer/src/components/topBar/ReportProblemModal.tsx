@@ -6,7 +6,7 @@ import { Button, Col, Form, Modal, Row, Stack } from 'react-bootstrap';
 import { isValidEmail } from '../../utils/validations';
 import { getZIndexes } from '../../utils/zIndexesManager';
 import LogsCanvas from './LogsCanvas';
-import { useAppInfoStore } from '/@/store';
+import { useAppInfoStore } from '../../store';
 
 const NUM_OF_LAST_LINES = 10;
 

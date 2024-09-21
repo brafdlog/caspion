@@ -9,7 +9,7 @@ import {
 } from '../../types';
 import Account, { type ActionButton } from './Account';
 import NewAccount from './NewAccount';
-import { useConfigStore } from '/@/store/ConfigStore';
+import { useConfigStore } from '../../store/ConfigStore';
 
 interface ImportersProps {
   accounts: AccountType[];
