@@ -32,7 +32,10 @@ export default function EditImporter({
     });
   };
 
-  const checkFieldValidity = (loginFieldName: keyof typeof LOGIN_FIELD_MIN_LENGTH, value: string): boolean => {
+  const checkFieldValidity = (
+    loginFieldName: keyof typeof LOGIN_FIELD_MIN_LENGTH,
+    value: string,
+  ): boolean => {
     return value.length >= LOGIN_FIELD_MIN_LENGTH[loginFieldName];
   };
 
@@ -44,7 +47,10 @@ export default function EditImporter({
     );
   };
 
-  const onLoginFieldChanged = (loginFieldName: string, loginFieldValue: string) => {
+  const onLoginFieldChanged = (
+    loginFieldName: string,
+    loginFieldValue: string,
+  ) => {
     setLoginFields((prevLoginFields) => {
       const nextLoginFields = {
         ...prevLoginFields,
@@ -76,25 +82,27 @@ export default function EditImporter({
           <Form>
             {IMPORTERS_LOGIN_FIELDS[
               importer.companyId as keyof typeof IMPORTERS_LOGIN_FIELDS
-              ].map(
-              (loginField: string, index: number) => (
-                <Form.Group
-                  key={loginField}
-                  className={styles.formGroup}
-                  controlId={loginField}
-                >
-                  <Form.Control
-                    placeholder={LOGIN_FIELD_DISPLAY_NAMES[loginField as keyof typeof LOGIN_FIELD_DISPLAY_NAMES]}
-                    type={loginField === 'password' ? 'password' : ''}
-                    value={loginFields[loginField]}
-                    onChange={(event) =>
-                      onLoginFieldChanged(loginField, event.target.value)
-                    }
-                    autoFocus={index === 0}
-                  />
-                </Form.Group>
-              ),
-            )}
+            ].map((loginField: string, index: number) => (
+              <Form.Group
+                key={loginField}
+                className={styles.formGroup}
+                controlId={loginField}
+              >
+                <Form.Control
+                  placeholder={
+                    LOGIN_FIELD_DISPLAY_NAMES[
+                      loginField as keyof typeof LOGIN_FIELD_DISPLAY_NAMES
+                    ]
+                  }
+                  type={loginField === 'password' ? 'password' : ''}
+                  value={loginFields[loginField]}
+                  onChange={(event) =>
+                    onLoginFieldChanged(loginField, event.target.value)
+                  }
+                  autoFocus={index === 0}
+                />
+              </Form.Group>
+            ))}
             <Form.Check
               type="switch"
               onChange={onActiveChanged}

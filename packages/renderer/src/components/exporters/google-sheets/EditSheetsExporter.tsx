@@ -75,12 +75,7 @@ const EditSheetsExporter: React.FC<EditSheetsExporterProps> = ({
   return (
     <div className={styles.container}>
       <Card className={styles.card}>
-        <Image
-          className={styles.logo}
-          roundedCircle
-          width={100}
-          height={100}
-        />
+        <Image className={styles.logo} roundedCircle width={100} height={100} />
         <Card.Body className={styles.cardBody}>
           <Form>
             <SheetsDropdown

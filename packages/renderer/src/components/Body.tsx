@@ -10,7 +10,8 @@ import {
   type YnabConfig,
   type Account,
   type Exporter,
-  type Importer, type GoogleSheetsConfig,
+  type Importer,
+  type GoogleSheetsConfig,
 } from '../types';
 import styles from './Body.module.css';
 import CheckForUpdates from './CheckForUpdates';
@@ -83,9 +84,7 @@ const Body = () => {
               </AccountsContainer>
             )}
             {configStore.config?.outputVendors && (
-              <AccountsContainer
-                title="תוכנות ניהול תקציב"
-              >
+              <AccountsContainer title="תוכנות ניהול תקציב">
                 <Exporters
                   exporters={configStore.exporters}
                   isScraping={configStore.isScraping}
@@ -119,7 +118,11 @@ const Body = () => {
             {modalStatus === ModalStatus.EXPORTER_SETTINGS &&
               currentAccount && (
                 <EditExporter
-                  handleSave={updateExporter as (exporter: Exporter | YnabConfig | GoogleSheetsConfig) => Promise<void>}
+                  handleSave={
+                    updateExporter as (
+                      exporter: Exporter | YnabConfig | GoogleSheetsConfig,
+                    ) => Promise<void>
+                  }
                   exporter={currentAccount as Exporter}
                 />
               )}

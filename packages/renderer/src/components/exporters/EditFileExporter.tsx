@@ -63,7 +63,13 @@ const EditFileExporter = ({ handleSave, exporter }: EditFileExporterProps) => {
               <Form.Label>לאיזה קובץ לכתוב את הטרנזאקציות?</Form.Label>
               <Form.Control
                 contentEditable={false}
-                value={(exporterConfig.options as CsvConfig['options'] | JsonConfig['options']).filePath}
+                value={
+                  (
+                    exporterConfig.options as
+                      | CsvConfig['options']
+                      | JsonConfig['options']
+                  ).filePath
+                }
                 onClick={selectFolderDialog}
                 onChange={handleChooseFile}
               />

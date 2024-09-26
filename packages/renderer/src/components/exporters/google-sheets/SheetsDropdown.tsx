@@ -29,7 +29,11 @@ const SheetsDropdown: React.FC<SheetsDropdownProps> = ({
 
   const onSelectionChange = useCallback(
     (selections: Option[]) => {
-      const selectedOption = selections[0] as { id: string; name: string; customOption?: boolean };
+      const selectedOption = selections[0] as {
+        id: string;
+        name: string;
+        customOption?: boolean;
+      };
       if (selectedOption?.customOption) onChange(selectedOption.name);
       else if (selections.length) onChange(selectedOption.id);
       else onChange('');

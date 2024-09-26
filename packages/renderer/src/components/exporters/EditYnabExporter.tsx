@@ -65,7 +65,9 @@ const EditYnabExporter = ({
 
   const handleOptionChangeEvent = (
     propertyName: keyof YnabConfig['options'],
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
   ) => {
     updateOptionsState({ [propertyName]: event.target.value });
   };
@@ -81,12 +83,7 @@ const EditYnabExporter = ({
   return (
     <div className={styles.container}>
       <Card className={styles.card}>
-        <Image
-          className={styles.logo}
-          roundedCircle
-          width={100}
-          height={100}
-        />
+        <Image className={styles.logo} roundedCircle width={100} height={100} />
         <Card.Body className={styles.cardBody}>
           <Form className={styles.form}>
             <Form.Group controlId="accessToken" className="mb-3">
