@@ -4,6 +4,7 @@ import resultsIcon from '../../assets/results.svg';
 import {
   AccountStatus,
   ModalStatus,
+  OutputVendorName,
   AccountType as TypeOfAccount,
   type Account as AccountType,
 } from '../../types';
@@ -37,7 +38,7 @@ function Importers({
               account,
               isScraping,
               () => {
-                configStore.openResults(account.companyId);
+                configStore.openResults(account.companyId as OutputVendorName);
               },
             )}
           />

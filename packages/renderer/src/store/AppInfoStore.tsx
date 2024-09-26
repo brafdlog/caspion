@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect } from 'react';
 import { type AppInfo } from '../types';
 
 class AppInfoStore {
-  appInfo: AppInfo;
+  appInfo: AppInfo | null = null;
 
   constructor() {
     makeAutoObservable(this);

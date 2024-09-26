@@ -36,11 +36,11 @@ function TopBar() {
           <Stack direction="horizontal" gap={5}>
             <NavButton onClick={() => setShow(true)} text="דיווח על בעיה" />
             <NavButton
-              onClick={() => openExternal(appInfoStore.appInfo?.discordChanel)}
+              onClick={() => openExternal(appInfoStore.appInfo?.discordChanel ?? '')}
               text="ערוץ הדיסקורד שלנו"
             />
             <NavButton
-              onClick={() => openExternal(appInfoStore.appInfo?.repository)}
+              onClick={() => openExternal(appInfoStore.appInfo?.repository ?? '')}
               text="לפתוח ב-Github"
             />
           </Stack>

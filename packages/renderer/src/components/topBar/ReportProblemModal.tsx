@@ -23,6 +23,7 @@ interface ReportProblemModalProps {
 }
 
 interface ValidationError {
+  [key: string]: string | undefined;
   title?: string;
   email?: string;
 }
@@ -56,7 +57,7 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
   const setField = (field: string, value: string) => {
     setForm((prevForm) => ({ ...prevForm, [field]: value }));
 
-    if (errors[field]) setErrors({ ...errors, [field]: null });
+    if (errors[field]) setErrors({ ...errors, [field]: undefined });
   };
 
   const validateForm = (validateEmail = true) => {
@@ -73,7 +74,7 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
     return newErrors;
   };
 
-  const openGithub = (e) => {
+  const openGithub = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     const formErrors = validateForm(false);
@@ -114,19 +115,19 @@ ${details}`
     const sysInfo = `
         ## System Info
         
-         - Source Version: \`${appInfoStore.appInfo.sourceCommitShort || 'unknown'}\`
+         - Source Version: \`${appInfoStore.appInfo?.sourceCommitShort ?? 'unknown'}\`
          - OS: \`${os.platform()}${os.arch()}\`
          - OS Version: \`${os.release()}\`
         `;
 
     return `${
-      `${appInfoStore.appInfo.repository}/issues/new?` +
+      `${appInfoStore.appInfo?.repository}/issues/new?` +
       `title=${encodeURIComponent(title)}` +
       '&body='
     }${encodeURIComponent(formattedDetails + formattedLog + sysInfo)}`;
   };
 
-  const sendReport = async (e) => {
+  const sendReport = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     const formErrors = validateForm(true);
@@ -233,7 +234,6 @@ ${details}`
             />
             <Form.Group className="mb-4" as={Col} md="2">
               <Form.Check
-                value={form.attachedLogs}
                 type="checkbox"
                 label="צירוף קבצי לוג"
                 checked={form.attachedLogs === true}

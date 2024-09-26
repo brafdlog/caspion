@@ -149,7 +149,7 @@ export class BudgetTrackingEvent {
   }
 }
 
-export class DownalodChromeEvent extends BudgetTrackingEvent {
+export class DownloadChromeEvent extends BudgetTrackingEvent {
   percent: number;
 
   constructor(percent: number) {

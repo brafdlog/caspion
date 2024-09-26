@@ -15,7 +15,7 @@ import {
   type Importer,
   type Log,
   type OutputVendorName,
-  type DownalodChromeEvent,
+  type DownloadChromeEvent,
 } from '../types';
 
 interface AccountScrapingData {
@@ -70,7 +70,7 @@ const saveConfigIntoFile = (config?: Config) => {
 };
 
 export class ConfigStore {
-  config: Config;
+  config: Config = {} as Config;
 
   chromeDownloadPercent = 0;
 
@@ -172,7 +172,7 @@ export class ConfigStore {
   ) {
     if (eventName === 'DOWNLOAD_CHROME') {
       this.updateChromeDownloadPercent(
-        (budgetTrackingEvent as DownalodChromeEvent)?.percent,
+        (budgetTrackingEvent as DownloadChromeEvent)?.percent,
       );
     }
     if (budgetTrackingEvent) {
@@ -229,6 +229,8 @@ export class ConfigStore {
   }
 
   async updateExporter(updatedExporterConfig: Exporter) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
     this.config.outputVendors[
       updatedExporterConfig.companyId as OutputVendorName
     ] = createOutputVendorConfigFromExporter(updatedExporterConfig);

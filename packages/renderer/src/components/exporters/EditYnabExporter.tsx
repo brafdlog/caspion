@@ -30,6 +30,16 @@ const EditYnabExporter = ({
   const isValidAccessToken =
     !isLoading && store.ynabAccountData?.status !== INVALID_ACCESS_TOKEN;
 
+  const updateOptionsState = useCallback(
+    (optionUpdates: Partial<YnabConfig['options']>) => {
+      setYnabOptions((prevYnabOptions) => ({
+        ...prevYnabOptions,
+        ...optionUpdates,
+      }));
+    },
+    [],
+  );
+
   // Set default budget id if not set
   useEffect(() => {
     const defaultBudgetId =
@@ -45,16 +55,6 @@ const EditYnabExporter = ({
     }
   }, [ynabOptions, store]);
 
-  const updateOptionsState = useCallback(
-    (optionUpdates: Partial<YnabConfig['options']>) => {
-      setYnabOptions((prevYnabOptions) => ({
-        ...prevYnabOptions,
-        ...optionUpdates,
-      }));
-    },
-    [],
-  );
-
   const handleSaveClick = async () => {
     await handleSave({
       ...exporterConfig,
@@ -65,7 +65,7 @@ const EditYnabExporter = ({
 
   const handleOptionChangeEvent = (
     propertyName: keyof YnabConfig['options'],
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
   ) => {
     updateOptionsState({ [propertyName]: event.target.value });
   };
@@ -83,7 +83,6 @@ const EditYnabExporter = ({
       <Card className={styles.card}>
         <Image
           className={styles.logo}
-          src={exporterConfig.logo}
           roundedCircle
           width={100}
           height={100}

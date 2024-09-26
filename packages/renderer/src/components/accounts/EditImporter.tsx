@@ -32,19 +32,19 @@ export default function EditImporter({
     });
   };
 
-  const checkFieldValidity = (loginFieldName: string, value): boolean => {
+  const checkFieldValidity = (loginFieldName: keyof typeof LOGIN_FIELD_MIN_LENGTH, value: string): boolean => {
     return value.length >= LOGIN_FIELD_MIN_LENGTH[loginFieldName];
   };
 
-  const checkFieldsValidity = (fieldsToCheck) => {
+  const checkFieldsValidity = (fieldsToCheck: Record<string, string>) => {
     setValidated(
       Object.entries(fieldsToCheck).every(([key, value]) =>
-        checkFieldValidity(key, value),
+        checkFieldValidity(key as keyof typeof LOGIN_FIELD_MIN_LENGTH, value),
       ),
     );
   };
 
-  const onLoginFieldChanged = (loginFieldName: string, loginFieldValue) => {
+  const onLoginFieldChanged = (loginFieldName: string, loginFieldValue: string) => {
     setLoginFields((prevLoginFields) => {
       const nextLoginFields = {
         ...prevLoginFields,
@@ -74,15 +74,17 @@ export default function EditImporter({
         />
         <Card.Body className={styles.cardBody}>
           <Form>
-            {IMPORTERS_LOGIN_FIELDS[importer.companyId].map(
-              (loginField, index) => (
+            {IMPORTERS_LOGIN_FIELDS[
+              importer.companyId as keyof typeof IMPORTERS_LOGIN_FIELDS
+              ].map(
+              (loginField: string, index: number) => (
                 <Form.Group
                   key={loginField}
                   className={styles.formGroup}
                   controlId={loginField}
                 >
                   <Form.Control
-                    placeholder={LOGIN_FIELD_DISPLAY_NAMES[loginField]}
+                    placeholder={LOGIN_FIELD_DISPLAY_NAMES[loginField as keyof typeof LOGIN_FIELD_DISPLAY_NAMES]}
                     type={loginField === 'password' ? 'password' : ''}
                     value={loginFields[loginField]}
                     onChange={(event) =>

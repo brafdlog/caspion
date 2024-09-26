@@ -7,9 +7,10 @@ import { useConfigStore } from '../store/ConfigStore';
 import {
   ModalStatus,
   OutputVendorName,
+  YnabConfig,
   type Account,
   type Exporter,
-  type Importer,
+  type Importer, GoogleSheetsConfig,
 } from '../types';
 import styles from './Body.module.css';
 import CheckForUpdates from './CheckForUpdates';
@@ -84,9 +85,6 @@ const Body = () => {
             {configStore.config?.outputVendors && (
               <AccountsContainer
                 title="תוכנות ניהול תקציב"
-                accounts={configStore.exporters}
-                isScraping={configStore.isScraping}
-                showModal={showModal}
               >
                 <Exporters
                   exporters={configStore.exporters}
@@ -114,16 +112,15 @@ const Body = () => {
               currentAccount && (
                 <EditImporter
                   handleSave={updateImporter}
-                  importer={currentAccount}
+                  importer={currentAccount as Importer}
                   handleDelete={deleteImporter}
                 />
               )}
             {modalStatus === ModalStatus.EXPORTER_SETTINGS &&
               currentAccount && (
                 <EditExporter
-                  handleSave={updateExporter}
-                  exporter={currentAccount}
-                  handleDelete={deleteImporter}
+                  handleSave={updateExporter as (exporter: Exporter | YnabConfig | GoogleSheetsConfig) => Promise<void>}
+                  exporter={currentAccount as Exporter}
                 />
               )}
             {modalStatus === ModalStatus.NEW_SCRAPER && (
@@ -147,7 +144,7 @@ const Body = () => {
         </Button>
         <Image
           src={settingsIcon}
-          onClick={() => showModal(null, ModalStatus.GENERAL_SETTINGS)}
+          onClick={() => showModal({} as Account, ModalStatus.GENERAL_SETTINGS)}
           className={styles.pointer}
         />
         <CheckForUpdates />

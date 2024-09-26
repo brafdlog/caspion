@@ -1,10 +1,10 @@
-import { OutputVendorName, type Exporter, type YnabConfig } from '../../types';
+import { OutputVendorName, type Exporter, type YnabConfig, type GoogleSheetsConfig } from '../../types';
 import EditFileExporter from './EditFileExporter';
 import EditYnabExporter from './EditYnabExporter';
 import EditSheetsExporter from './google-sheets/EditSheetsExporter';
 
 interface EditExporterProps {
-  handleSave: (exporterConfig: Exporter | YnabConfig) => Promise<void>;
+  handleSave: (exporterConfig: Exporter | YnabConfig | GoogleSheetsConfig) => Promise<void>;
   exporter: Exporter;
 }
 
@@ -23,11 +23,11 @@ export default function EditExporter({
   );
   exporterTypeToEditComponent.set(
     OutputVendorName.YNAB,
-    <EditYnabExporter exporterConfig={exporter} handleSave={handleSave} />,
+    <EditYnabExporter exporterConfig={exporter as YnabConfig} handleSave={handleSave} />,
   );
   exporterTypeToEditComponent.set(
     OutputVendorName.GOOGLE_SHEETS,
-    <EditSheetsExporter exporterConfig={exporter} handleSave={handleSave} />,
+    <EditSheetsExporter exporterConfig={exporter as GoogleSheetsConfig} handleSave={handleSave} />,
   );
   return <>{exporterTypeToEditComponent.get(exporter.companyId)}</>;
 }
