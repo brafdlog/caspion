@@ -4,7 +4,7 @@ import resultsIcon from '../../assets/results.svg';
 import {
   AccountStatus,
   ModalStatus,
-  OutputVendorName,
+  type OutputVendorName,
   AccountType as TypeOfAccount,
   type Account as AccountType,
 } from '../../types';

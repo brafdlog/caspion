@@ -7,10 +7,10 @@ import { useConfigStore } from '../store/ConfigStore';
 import {
   ModalStatus,
   OutputVendorName,
-  YnabConfig,
+  type YnabConfig,
   type Account,
   type Exporter,
-  type Importer, GoogleSheetsConfig,
+  type Importer, type GoogleSheetsConfig,
 } from '../types';
 import styles from './Body.module.css';
 import CheckForUpdates from './CheckForUpdates';
