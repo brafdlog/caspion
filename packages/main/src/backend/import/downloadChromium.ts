@@ -20,7 +20,7 @@ const getIntegerPercent = (
   };
 };
 
-const revision = '1321684'; // getPuppeteerConfig().chromiumRevision; see https://github.com/puppeteer/puppeteer/issues/8203#issuecomment-1535088987
+const revision = '1364960'; // getPuppeteerConfig().chromiumRevision; see https://github.com/puppeteer/puppeteer/issues/8203#issuecomment-1535088987
 
 let downloadProm: ReturnType<typeof downloadChromium> | null = null;
 
