@@ -96,7 +96,6 @@
     "react-bootstrap-typeahead": "^6.3.2",
     "react-dom": "^18.3.1",
     "svelte": "^4.2.19",
-    "vite-plugin-node-polyfills": "^0.22.0",
     "web-vitals": "^4.2.3",
     "ynab": "^1.19.0"
   }
