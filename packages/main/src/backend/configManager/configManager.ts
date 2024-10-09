@@ -3,6 +3,7 @@ import { type Config } from '@/backend/commonTypes';
 import { decrypt, encrypt } from '@/backend/configManager/encryption/crypto';
 import { existsSync, promises as fs } from 'fs';
 import configExample from './defaultConfig';
+import logger from '/@/logging/logger';
 
 export async function getConfig(
   configPath: string = configFilePath,
@@ -11,13 +12,13 @@ export async function getConfig(
   if (configFromFile) {
     const decrypted = (await decrypt(configFromFile)) as string;
     if (!decrypted) {
-      console.log('No config file found, returning default config');
+      logger.log('No config file found, returning default config');
       return configExample;
     }
     try {
       return JSON.parse(decrypted);
     } catch (e) {
-      console.error('Failed to parse config file, returning default config', e);
+      logger.error('Failed to parse config file, returning default config', e);
     }
   }
 

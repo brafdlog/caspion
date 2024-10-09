@@ -1,4 +1,5 @@
 import { Browser, install } from '@puppeteer/browsers';
+import logger from '/@/logging/logger';
 
 type PuppeteerProgressCallback = (
   downloadBytes: number,
@@ -39,8 +40,7 @@ export default async function downloadChromium(
     downloadProgressCallback: progressCallback,
   }).then(({ executablePath }) => {
     downloadProm = null;
-    // TODO: eslint to use logger instead of console.log
-    console.log('Chromium downloaded to', executablePath);
+    logger.log('Chromium downloaded to', executablePath);
     return executablePath;
   });
 
