@@ -229,8 +229,7 @@ export class ConfigStore {
   }
 
   async updateExporter(updatedExporterConfig: Exporter) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
+    // @ts-expect-error the types are not complete here
     this.config.outputVendors[
       updatedExporterConfig.companyId as OutputVendorName
     ] = createOutputVendorConfigFromExporter(updatedExporterConfig);
