@@ -60,7 +60,7 @@ function GeneralSettings() {
               />
             </Form.Group>
             <Form.Group>
-              <Form.Label>כמה זמן לחכות לשליפה? (millisecond)</Form.Label>
+              <Form.Label>כמה זמן לחכות לשליפה? (milliseconds)</Form.Label>
               <Form.Control
                 className={styles.input}
                 defaultValue={configStore.config?.scraping.timeout}

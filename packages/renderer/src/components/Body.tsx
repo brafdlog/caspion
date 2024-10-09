@@ -22,7 +22,7 @@ import AccountsContainer from './accounts/AccountsContainer';
 import CreateImporter from './accounts/CreateImporter';
 import EditImporter from './accounts/EditImporter';
 import Importers from './accounts/Importers';
-import EditExporter from './exporters/EditExporter';
+import EditExporter, { type EditExporterProps } from './exporters/EditExporter';
 import Exporters from './exporters/Exporters';
 
 const Body = () => {
@@ -58,8 +58,10 @@ const Body = () => {
     closeModal();
   };
 
-  const updateExporter = async (exporter: Exporter) => {
-    await configStore.updateExporter(exporter);
+  const updateExporter: EditExporterProps['handleSave'] = async (
+    exporter: Exporter | YnabConfig | GoogleSheetsConfig,
+  ) => {
+    await configStore.updateExporter(exporter as Exporter);
     closeModal();
   };
 
@@ -118,11 +120,7 @@ const Body = () => {
             {modalStatus === ModalStatus.EXPORTER_SETTINGS &&
               currentAccount && (
                 <EditExporter
-                  handleSave={
-                    updateExporter as (
-                      exporter: Exporter | YnabConfig | GoogleSheetsConfig,
-                    ) => Promise<void>
-                  }
+                  handleSave={updateExporter}
                   exporter={currentAccount as Exporter}
                 />
               )}

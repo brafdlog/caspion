@@ -30,13 +30,13 @@ describe('Store', () => {
       expect(store.importers).toHaveLength(3);
 
       const discountImporter = store.importers.find(
-        (i: Importer) => i.companyId === 'discount',
+        (importer) => importer.companyId === 'discount',
       );
       const visaCalImporter = store.importers.find(
-        (i: Importer) => i.companyId === 'visaCal',
+        (importer) => importer.companyId === 'visaCal',
       );
       const maxImporter = store.importers.find(
-        (i: Importer) => i.companyId === 'max',
+        (importer) => importer.companyId === 'max',
       );
 
       expect(discountImporter).toMatchSnapshot();
@@ -86,7 +86,7 @@ describe('Store', () => {
         };
         store.updateImporter(importer.id, updatedImporter);
         expect(
-          store.importers.find((i: Importer) => i.id === importer.id),
+          store.importers.find((importer) => importer.id === importer.id),
         ).toHaveProperty('active', updatedImporter.active);
       });
 

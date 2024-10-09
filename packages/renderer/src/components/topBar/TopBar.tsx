@@ -37,13 +37,15 @@ function TopBar() {
             <NavButton onClick={() => setShow(true)} text="דיווח על בעיה" />
             <NavButton
               onClick={() =>
-                openExternal(appInfoStore.appInfo?.discordChanel ?? '')
+                appInfoStore.appInfo?.discordChanel &&
+                openExternal(appInfoStore.appInfo?.discordChanel)
               }
               text="ערוץ הדיסקורד שלנו"
             />
             <NavButton
               onClick={() =>
-                openExternal(appInfoStore.appInfo?.repository ?? '')
+                appInfoStore.appInfo?.repository &&
+                openExternal(appInfoStore.appInfo?.repository)
               }
               text="לפתוח ב-Github"
             />

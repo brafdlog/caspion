@@ -8,7 +8,7 @@ import EditFileExporter from './EditFileExporter';
 import EditYnabExporter from './EditYnabExporter';
 import EditSheetsExporter from './google-sheets/EditSheetsExporter';
 
-interface EditExporterProps {
+export interface EditExporterProps {
   handleSave: (
     exporterConfig: Exporter | YnabConfig | GoogleSheetsConfig,
   ) => Promise<void>;
