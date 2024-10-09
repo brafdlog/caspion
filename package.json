@@ -8,6 +8,7 @@
   "repository": "https://github.com/brafdlog/caspion",
   "discord": "https://discord.gg/XWWg7xvJyS",
   "homepage": "https://github.com/brafdlog/caspion#README.md",
+  "license": "MIT",
   "main": "packages/main/dist/index.js",
   "scripts": {
     "build": "yarn build:main && yarn build:preload && yarn build:renderer",
