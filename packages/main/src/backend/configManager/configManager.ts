@@ -16,7 +16,12 @@ export async function getConfig(
       return configExample;
     }
     try {
-      return JSON.parse(decrypted);
+      const config = JSON.parse(decrypted);
+      if (Object.keys(config).length === 0) {
+        logger.log('Empty config file found, returning default config');
+        return configExample;
+      }
+      return config;
     } catch (e) {
       logger.error('Failed to parse config file, returning default config', e);
     }
