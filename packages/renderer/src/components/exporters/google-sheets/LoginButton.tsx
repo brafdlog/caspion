@@ -2,6 +2,7 @@ import { electronGoogleOAuth2Connector } from '#preload';
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { type Credentials } from '/@/types';
+import logger from '/@/logging/logger';
 
 interface LoginButtonProps {
   onCredentialsChange: (credentials: Credentials) => void;
@@ -17,7 +18,7 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onCredentialsChange }) => {
       onCredentialsChange(credentials);
       setLoading(false);
     } catch (ex) {
-      console.error(ex);
+      logger.error(ex);
       setLoading(false);
       onCredentialsChange(null);
     }

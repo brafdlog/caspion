@@ -7,6 +7,7 @@ import {
 import { useState } from 'react';
 import { Button, Spinner } from 'react-bootstrap';
 import { useAppInfoStore } from '../store';
+import logger from '../logging/logger';
 
 const UPDATE_STATES = {
   INIT: 'INIT',
@@ -37,7 +38,7 @@ function CheckForUpdates() {
           : UPDATE_STATES.NO_NEW_VERSION,
       );
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       setUpdateState(UPDATE_STATES.ERROR);
     }
   };
@@ -48,7 +49,7 @@ function CheckForUpdates() {
       await downloadUpdate();
       setUpdateState(UPDATE_STATES.READY_TO_INSTALL);
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       setUpdateState(UPDATE_STATES.ERROR);
     }
   };
