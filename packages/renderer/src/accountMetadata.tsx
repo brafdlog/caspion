@@ -52,7 +52,7 @@ const accountMetadata: Record<
   return {
     companyId: accountId,
     companyName: displayName,
-    logo: icons[accountId],
+    logo: icons[accountId as CompanyTypes | OutputVendorName],
   };
 });
 
@@ -111,7 +111,7 @@ export const importers: Account[] = Object.values(CompanyTypes).map(
 
     const importer: Account = {
       id: importerName,
-      companyId,
+      companyId: companyId as CompanyTypes | OutputVendorName,
       displayName: companyName,
       logo,
       type: AccountType.IMPORTER,

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { importers } from '../../accountMetadata';
-import { type Importer } from '../../types';
+import { type Importer, type Account as AccountType } from '../../types';
 import Account from './Account';
 import styles from './CreateImporter.module.css';
 import EditImporter from './EditImporter';
@@ -16,8 +16,8 @@ export default function CreateImporter({
   cancel,
 }: CreateImporterProps) {
   const [importerToCreate, setImporterToCreate] = useState<Importer>();
-  const handleChooseImporter = (importer: Importer) =>
-    setImporterToCreate({ ...importer, id: uuidv4() });
+  const handleChooseImporter = (importer: AccountType) =>
+    setImporterToCreate({ ...importer, id: uuidv4(), loginFields: {} });
   return (
     <div className={styles.container}>
       {importerToCreate ? (

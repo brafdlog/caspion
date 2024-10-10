@@ -10,6 +10,10 @@ const MOCK_ELECTRON = {
     invoke: () => {},
     send: () => {},
   },
+  shell: {
+    openExternal: () => {},
+    openPath: () => {},
+  },
 };
 
 // @ts-expect-error - this is a mock

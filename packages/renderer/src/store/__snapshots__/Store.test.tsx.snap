@@ -1,0 +1,125 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Store > Properties and getters > basic 1`] = `
+{
+  "numDaysBack": 40,
+  "showBrowser": false,
+}
+`;
+
+exports[`Store > Properties and getters > exporters 1`] = `
+[
+  {
+    "active": true,
+    "companyId": "csv",
+    "displayName": "אקסל",
+    "id": "csv",
+    "logo": "/src/assets/exporters/excel.png",
+    "logs": [],
+    "options": {
+      "filePath": "transaction.csv",
+    },
+    "status": "idle",
+    "type": "Exporter",
+  },
+  {
+    "active": false,
+    "companyId": "json",
+    "displayName": "Json",
+    "id": "json",
+    "logo": "/src/assets/exporters/json.jpeg",
+    "logs": [],
+    "options": {
+      "filePath": "transaction.json",
+    },
+    "status": "idle",
+    "type": "Exporter",
+  },
+  {
+    "active": true,
+    "companyId": "ynab",
+    "displayName": "Ynab",
+    "id": "ynab",
+    "logo": "/src/assets/exporters/ynab.jpeg",
+    "logs": [],
+    "options": {
+      "accessToken": "################-######-####-###",
+      "accountNumbersToYnabAccountIds": {
+        "1111": "xcvxcvxcvsd",
+        "3333": "xvxcdv",
+        "5555": "asdvasdvsdvs",
+        "555555555": "vsdvsdvserverv",
+      },
+      "budgetId": "advasdvasd-asdvasdva-sdvasdvasdv-asdvasdvf",
+    },
+    "status": "idle",
+    "type": "Exporter",
+  },
+  {
+    "active": false,
+    "companyId": "googleSheets",
+    "displayName": "Google Sheets",
+    "id": "googleSheets",
+    "logo": "/src/assets/exporters/sheets.png",
+    "logs": [],
+    "options": {
+      "credentials": {},
+      "spreadsheetId": "",
+    },
+    "status": "idle",
+    "type": "Exporter",
+  },
+]
+`;
+
+exports[`Store > Properties and getters > importers 1`] = `
+{
+  "active": true,
+  "companyId": "discount",
+  "displayName": "דיסקונט",
+  "id": "efsvxasgd416f94d1e45a9cfc8c0a95f",
+  "loginFields": {
+    "id": "234234134",
+    "num": "LY9999",
+    "password": "notARealPass",
+  },
+  "logo": "/src/assets/importers/discount.jpeg",
+  "logs": [],
+  "status": "idle",
+  "type": "Importer",
+}
+`;
+
+exports[`Store > Properties and getters > importers 2`] = `
+{
+  "active": true,
+  "companyId": "visaCal",
+  "displayName": "ויזה כאל",
+  "id": "794a9ksj532d86cb4xxxb3438d0da942",
+  "loginFields": {
+    "password": "somePassword",
+    "username": "someUsername",
+  },
+  "logo": "/src/assets/importers/visa-cal.jpeg",
+  "logs": [],
+  "status": "idle",
+  "type": "Importer",
+}
+`;
+
+exports[`Store > Properties and getters > importers 3`] = `
+{
+  "active": true,
+  "companyId": "max",
+  "displayName": "Max",
+  "id": "9xve2485ac202f53f85bcdb4f795dssc",
+  "loginFields": {
+    "password": "greatPass",
+    "username": "whatAUserName",
+  },
+  "logo": "/src/assets/importers/max.jpg",
+  "logs": [],
+  "status": "idle",
+  "type": "Importer",
+}
+`;

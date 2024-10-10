@@ -23,6 +23,7 @@
     "test:renderer": "vitest run -r packages/renderer --passWithNoTests",
     "watch": "node scripts/watch.js",
     "lint": "eslint . --ext js,mjs,cjs,ts,mts,cts,tsx",
+    "lint:fix": "yarn lint --fix",
     "typecheck:main": "tsc --noEmit -p packages/main/tsconfig.json",
     "typecheck:preload": "tsc --noEmit -p packages/preload/tsconfig.json",
     "typecheck:renderer": "tsc --noEmit -p packages/renderer/tsconfig.json",
@@ -42,6 +43,7 @@
     "@types/lodash": "^4.17.4",
     "@types/node": "20.14.1",
     "@types/react": "^18.3.3",
+    "@types/react-bootstrap-table-next": "^4.0.26",
     "@types/react-dom": "^18.3.0",
     "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "7.12.0",
@@ -62,7 +64,8 @@
     "typescript": "5.4.5",
     "unplugin-auto-expose": "0.3.0",
     "vite": "5.2.14",
-    "vitest": "^2.0.5"
+    "vite-tsconfig-paths": "^5.0.1",
+    "vitest": "^2.1.1"
   },
   "dependencies": {
     "@puppeteer/browsers": "^2.2.3",
@@ -93,7 +96,8 @@
     "react-bootstrap-table2-editor": "^1.4.0",
     "react-bootstrap-typeahead": "^6.3.2",
     "react-dom": "^18.3.1",
-    "web-vitals": "^4.2.0",
+    "svelte": "^4.2.19",
+    "web-vitals": "^4.2.3",
     "ynab": "^1.19.0"
   }
 }
