@@ -3,6 +3,7 @@ import { getYnabAccountData } from '#preload';
 import { makeAutoObservable, runInAction, toJS } from 'mobx';
 import { createContext, useContext } from 'react';
 import { type YnabAccountDataType, type YnabConfig } from '../types';
+import logger from '../logging/logger';
 
 // TODO: rename to YnabStore
 export default class Store {
@@ -16,13 +17,13 @@ export default class Store {
   }
 
   async fetchYnabAccountData(ynabOptions: YnabConfig['options']) {
-    console.log('Fetching ynab account data');
+    logger.log('Fetching ynab account data');
     this.fetchingYnabAccountData = true;
     const ynabAccountData = await getYnabAccountData(ynabOptions);
     runInAction(() => {
       this.ynabAccountData = ynabAccountData;
       this.fetchingYnabAccountData = false;
-      console.log('Ynab account data ', toJS(this.ynabAccountData));
+      logger.log('Ynab account data ', toJS(this.ynabAccountData));
     });
   }
 }

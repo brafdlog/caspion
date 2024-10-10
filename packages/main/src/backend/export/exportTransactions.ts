@@ -13,6 +13,7 @@ import {
 } from '@/backend/eventEmitters/EventEmitter';
 import outputVendors from '@/backend/export/outputVendors';
 import _ from 'lodash';
+import logger from '/@/logging/logger';
 
 type ExecutionResult = Partial<
   Record<OutputVendorName, ExportTransactionsResult>
@@ -62,6 +63,7 @@ export async function createTransactionsInExternalVendors(
         );
         executionResult[outputVendor.name] = exportTransactionsResult;
       } catch (e) {
+        logger.error('Failed to create transactions in external vendors', e);
         await eventPublisher.emit(
           EventNames.EXPORTER_ERROR,
           new ExporterEvent({

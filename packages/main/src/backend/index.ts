@@ -6,6 +6,7 @@ import * as configManager from './configManager/configManager';
 import * as Events from './eventEmitters/EventEmitter';
 import outputVendors from './export/outputVendors';
 import * as bankScraper from './import/bankScraper';
+import logger from '../logging/logger';
 
 export { CompanyTypes } from 'israeli-bank-scrapers-core';
 export { Events, configManager, outputVendors };
@@ -44,6 +45,7 @@ export async function scrapeAndUpdateOutputVendors(
 
     return executionResult;
   } catch (e) {
+    logger.error('Failed to create transactions in external vendors', e);
     await eventPublisher.emit(
       Events.EventNames.GENERAL_ERROR,
       new Events.BudgetTrackingEvent({
