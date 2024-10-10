@@ -7,7 +7,7 @@ import logo from '../../assets/logoFishOnly.svg';
 import NavButton from './NavButton';
 import ReportProblemModal from './ReportProblemModal';
 import styles from './TopBar.module.css';
-import { useAppInfoStore } from '/@/store';
+import { useAppInfoStore } from '../../store';
 
 function TopBar() {
   const [show, setShow] = useState(false);
@@ -36,11 +36,17 @@ function TopBar() {
           <Stack direction="horizontal" gap={5}>
             <NavButton onClick={() => setShow(true)} text="דיווח על בעיה" />
             <NavButton
-              onClick={() => openExternal(appInfoStore.appInfo?.discordChanel)}
+              onClick={() =>
+                appInfoStore.appInfo?.discordChanel &&
+                openExternal(appInfoStore.appInfo?.discordChanel)
+              }
               text="ערוץ הדיסקורד שלנו"
             />
             <NavButton
-              onClick={() => openExternal(appInfoStore.appInfo?.repository)}
+              onClick={() =>
+                appInfoStore.appInfo?.repository &&
+                openExternal(appInfoStore.appInfo?.repository)
+              }
               text="לפתוח ב-Github"
             />
           </Stack>

@@ -68,7 +68,6 @@ export interface JsonConfig extends OutputVendorConfigBase {
 export interface GoogleSheetsConfig extends OutputVendorConfigBase {
   options: {
     credentials: Auth.Credentials;
-    // credentials: string;
     spreadsheetId: string;
   };
 }
@@ -150,7 +149,7 @@ export class BudgetTrackingEvent {
   }
 }
 
-export class DownalodChromeEvent extends BudgetTrackingEvent {
+export class DownloadChromeEvent extends BudgetTrackingEvent {
   percent: number;
 
   constructor(percent: number) {

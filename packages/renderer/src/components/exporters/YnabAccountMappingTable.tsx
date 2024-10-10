@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap';
 import BootstrapTable from 'react-bootstrap-table-next';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import cellEditFactory, { Type } from 'react-bootstrap-table2-editor';
-import { type YnabConfig } from '../../types';
+import { type YnabAccountDataType, type YnabConfig } from '../../types';
 
 type AccountNumberToYnabAccountIdMappingObject =
   YnabConfig['options']['accountNumbersToYnabAccountIds'];
@@ -44,7 +44,9 @@ const YnabAccountMappingTable = ({
     {
       dataField: 'accountNumber',
       text: 'Account number',
-      editor: {},
+      editor: {
+        type: Type.TEXT,
+      },
     },
     {
       dataField: 'ynabAccountId',
@@ -120,7 +122,7 @@ function accountMappingObjectToArray(
 }
 
 function accountMappingArrayToObject(accountMappingArray: AccountMappingArray) {
-  const mappingObject = {};
+  const mappingObject: AccountNumberToYnabAccountIdMappingObject = {};
   accountMappingArray.forEach(({ accountNumber, ynabAccountId }) => {
     mappingObject[accountNumber] = ynabAccountId;
   });

@@ -19,7 +19,7 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onCredentialsChange }) => {
     } catch (ex) {
       console.error(ex);
       setLoading(false);
-      onCredentialsChange(null);
+      onCredentialsChange({});
     }
   };
 

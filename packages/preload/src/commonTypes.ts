@@ -66,7 +66,6 @@ export interface JsonConfig extends OutputVendorConfigBase {
 export interface GoogleSheetsConfig extends OutputVendorConfigBase {
   options: {
     credentials: Credentials;
-    // credentials: string;
     spreadsheetId: string;
   };
 }
@@ -82,7 +81,6 @@ export interface YnabConfig extends OutputVendorConfigBase {
 
 export interface AccountToScrapeConfig {
   id: string;
-  // key: CompanyTypes;
   key: string;
   name: string;
   loginFields: Record<string, string>;

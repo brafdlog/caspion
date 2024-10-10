@@ -15,6 +15,7 @@ import {
   type Importer,
   type Log,
   type OutputVendorName,
+  type DownloadChromeEvent,
 } from '../types';
 
 interface AccountScrapingData {
@@ -68,8 +69,8 @@ const saveConfigIntoFile = (config?: Config) => {
   updateConfig(toJS(config));
 };
 
-class ConfigStore {
-  config: Config;
+export class ConfigStore {
+  config: Config = {} as Config;
 
   chromeDownloadPercent = 0;
 
@@ -171,7 +172,7 @@ class ConfigStore {
   ) {
     if (eventName === 'DOWNLOAD_CHROME') {
       this.updateChromeDownloadPercent(
-        (budgetTrackingEvent as DownalodChromeEvent)?.percent,
+        (budgetTrackingEvent as DownloadChromeEvent)?.percent,
       );
     }
     if (budgetTrackingEvent) {
@@ -228,6 +229,7 @@ class ConfigStore {
   }
 
   async updateExporter(updatedExporterConfig: Exporter) {
+    // @ts-expect-error the types are not complete here
     this.config.outputVendors[
       updatedExporterConfig.companyId as OutputVendorName
     ] = createOutputVendorConfigFromExporter(updatedExporterConfig);
