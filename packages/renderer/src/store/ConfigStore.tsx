@@ -3,19 +3,19 @@ import { autorun, makeAutoObservable, toJS } from 'mobx';
 import { createContext, useContext } from 'react';
 import accountMetadata, { exporterUIHandlers } from '../accountMetadata';
 import {
-  AccountStatus,
-  AccountType,
-  ExporterResultType,
   type Account,
+  AccountStatus,
   type AccountToScrapeConfig,
+  AccountType,
   type BudgetTrackingEvent,
   type CompanyTypes,
   type Config,
+  type DownloadChromeEvent,
   type Exporter,
+  ExporterResultType,
   type Importer,
   type Log,
   type OutputVendorName,
-  type DownloadChromeEvent,
 } from '../types';
 
 interface AccountScrapingData {
@@ -69,8 +69,46 @@ const saveConfigIntoFile = (config?: Config) => {
   updateConfig(toJS(config));
 };
 
+const DEFAULT_CONFIG: Config = {
+  scraping: {
+    timeout: 60000,
+    numDaysBack: 40,
+    showBrowser: false,
+    accountsToScrape: [],
+  },
+  outputVendors: {
+    csv: {
+      active: true,
+      options: {
+        filePath: 'transaction.csv',
+      },
+    },
+    json: {
+      active: false,
+      options: {
+        filePath: 'transaction.json',
+      },
+    },
+    ynab: {
+      active: false,
+      options: {
+        accessToken: 'YNAB_ACCESS_TOKEN_GOES_HERE',
+        budgetId: '',
+        accountNumbersToYnabAccountIds: {},
+      },
+    },
+    googleSheets: {
+      active: false,
+      options: {
+        credentials: {},
+        spreadsheetId: '',
+      },
+    },
+  },
+};
+
 export class ConfigStore {
-  config: Config = {} as Config;
+  config: Config;
 
   chromeDownloadPercent = 0;
 
@@ -79,8 +117,8 @@ export class ConfigStore {
     CompanyTypes | OutputVendorName,
     AccountScrapingData
   >;
-
   constructor() {
+    this.config = DEFAULT_CONFIG;
     this.accountScrapingData = new Map();
     makeAutoObservable(this);
 
