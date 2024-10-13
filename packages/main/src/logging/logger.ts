@@ -10,6 +10,10 @@ import { EOL } from 'os';
 import path from 'path';
 
 log.initialize();
+
+// This will transport the logs to the renderer process (DevTools) in production too
+log.transports.ipc.level = log.transports.file.level;
+
 Object.assign(console, log.functions);
 const logger = log.scope('main');
 
