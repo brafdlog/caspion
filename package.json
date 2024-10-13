@@ -8,6 +8,7 @@
   "repository": "https://github.com/brafdlog/caspion",
   "discord": "https://discord.gg/XWWg7xvJyS",
   "homepage": "https://github.com/brafdlog/caspion#README.md",
+  "license": "MIT",
   "main": "packages/main/dist/index.js",
   "scripts": {
     "build": "yarn build:main && yarn build:preload && yarn build:renderer",
@@ -75,7 +76,7 @@
     "csv-parse": "^5.5.6",
     "csv-stringify": "^6.5.0",
     "electron-google-oauth2": "^3.1.0",
-    "electron-log": "^5.1.5",
+    "electron-log": "^5.2.0",
     "electron-updater": "6.3.0",
     "emittery": "^1.0.3",
     "eslint-plugin-react-hooks": "^4.6.2",

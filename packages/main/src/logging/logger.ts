@@ -1,12 +1,16 @@
 import { App } from '@/app-globals';
-import logger, {
-  type LogFunctions,
-  type LogLevel,
-  type MainErrorHandlerOptions,
-} from 'electron-log'; // eslint-disable-line no-restricted-imports
+import type {
+  LogFunctions,
+  LogLevel,
+  MainErrorHandlerOptions,
+} from 'electron-log';
+import log from 'electron-log/main';
 import fs from 'fs';
 import { EOL } from 'os';
 import path from 'path';
+
+log.initialize();
+const logger = log.scope('main');
 
 export type Logger = LogFunctions;
 export type Levels = LogLevel;
@@ -18,12 +22,11 @@ const onError: MainErrorHandlerOptions['onError'] = ({ error }) => {
   logger.error(error.message || error);
   if (error.stack) logger.debug(error.stack);
 };
-logger.errorHandler.startCatching({ onError });
-logger.catchErrors({ onError });
+log.errorHandler.startCatching({ onError });
 
 export const getLastLines = (n: number) => {
   const lines = fs
-    .readFileSync(logger.transports.file.getFile().path)
+    .readFileSync(log.transports.file.getFile().path)
     .toString()
     .split(EOL);
   const lastLines = lines.slice(lines.length - n);
@@ -31,6 +34,8 @@ export const getLastLines = (n: number) => {
 };
 
 export const getLogsFolder = () =>
-  path.dirname(logger.transports.file.getFile().path);
+  path.dirname(log.transports.file.getFile().path);
+
+logger.info(`Logs folder: ${getLogsFolder()}`);
 
 export default logger as Logger;
