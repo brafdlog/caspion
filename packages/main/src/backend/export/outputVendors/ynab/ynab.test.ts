@@ -8,8 +8,6 @@ import { SaveTransaction, type TransactionDetail } from 'ynab';
 import * as ynab from './ynab';
 import ClearedEnum = SaveTransaction.ClearedEnum;
 
-// TODO: make tests work again
-
 describe('ynab', () => {
   describe('isSameTransaction', () => {
     test('Two transactions with different payee names should be considered the same if one of them is a transfer transaction', () => {

@@ -103,6 +103,7 @@ const createTransactions: ExportTransactionsFunction = async (
         allTransactions: transactionsToCreate,
       }),
     );
+    console.error('Failed to create transactions in ynab', e);
     throw e;
   }
 };
