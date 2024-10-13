@@ -10,6 +10,7 @@ import { EOL } from 'os';
 import path from 'path';
 
 log.initialize();
+Object.assign(console, log.functions);
 const logger = log.scope('main');
 
 export type Logger = LogFunctions;
