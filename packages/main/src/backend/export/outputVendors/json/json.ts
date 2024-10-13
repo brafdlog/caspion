@@ -9,6 +9,7 @@ import {
   sortByDate,
 } from '@/backend/transactions/transactions';
 import { promises as fs } from 'fs';
+import logger from '/@/logging/logger';
 
 const parseTransactionsFile = async (filename: string) => {
   try {
@@ -18,6 +19,7 @@ const parseTransactionsFile = async (filename: string) => {
     if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
       return [] as EnrichedTransaction[];
     }
+    logger.error('Failed to parse JSON file', err);
     throw err;
   }
 };

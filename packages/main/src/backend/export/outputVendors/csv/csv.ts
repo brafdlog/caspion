@@ -12,6 +12,7 @@ import { parse } from 'csv-parse/sync';
 import { stringify } from 'csv-stringify/sync';
 import { promises as fs } from 'fs';
 import { type TransactionInstallments } from 'israeli-bank-scrapers-core/lib/transactions';
+import logger from '/@/logging/logger';
 
 export function parseTransactions(csvText: string) {
   return parse(csvText, {
@@ -111,6 +112,7 @@ const parseTransactionsFile = async (filename: string) => {
     if ((e as NodeJS.ErrnoException).code === 'ENOENT') {
       return [] as EnrichedTransaction[];
     }
+    logger.error('Failed to parse CSV file', e);
     throw e;
   }
 };

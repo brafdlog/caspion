@@ -16,6 +16,7 @@ import {
 import _ from 'lodash';
 import moment from 'moment/moment';
 import * as ynab from 'ynab';
+import logger from '/@/logging/logger';
 
 const YNAB_DATE_FORMAT = 'YYYY-MM-DD';
 const NOW = moment();
@@ -103,6 +104,7 @@ const createTransactions: ExportTransactionsFunction = async (
         allTransactions: transactionsToCreate,
       }),
     );
+    logger.error('Failed to create transactions in ynab', e);
     throw e;
   }
 };
