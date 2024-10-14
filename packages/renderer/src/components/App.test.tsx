@@ -2,8 +2,8 @@ import { render, screen } from '@testing-library/react';
 import { expect, test } from 'vitest';
 import App from './App';
 
-test('renders learn react link', () => {
+test('renders discord link', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  const linkElement = screen.getByText(/ערוץ הדיסקורד שלנו/i);
+  expect(linkElement).to.exist;
 });

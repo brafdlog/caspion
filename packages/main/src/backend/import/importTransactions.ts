@@ -23,6 +23,7 @@ import {
 } from '../eventEmitters/EventEmitter';
 import { calculateTransactionHash } from '../transactions/transactions';
 import getChrome from './downloadChromium';
+import logger from '/@/logging/logger';
 
 type ScrapingConfig = Config['scraping'];
 
@@ -188,6 +189,7 @@ async function fetchTransactions(
         status: AccountStatus.ERROR,
       }),
     );
+    logger.error('Failed to fetch transactions', e);
     throw e;
   }
 }

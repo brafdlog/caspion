@@ -4,12 +4,13 @@ import resultsIcon from '../../assets/results.svg';
 import {
   AccountStatus,
   ModalStatus,
+  type OutputVendorName,
   AccountType as TypeOfAccount,
   type Account as AccountType,
 } from '../../types';
 import Account, { type ActionButton } from './Account';
 import NewAccount from './NewAccount';
-import { useConfigStore } from '/@/store/ConfigStore';
+import { useConfigStore } from '../../store/ConfigStore';
 
 interface ImportersProps {
   accounts: AccountType[];
@@ -37,7 +38,7 @@ function Importers({
               account,
               isScraping,
               () => {
-                configStore.openResults(account.companyId);
+                configStore.openResults(account.companyId as OutputVendorName);
               },
             )}
           />

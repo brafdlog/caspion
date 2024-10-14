@@ -1,13 +1,13 @@
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Button, Card, Form, Image } from 'react-bootstrap';
 import Spinner from 'react-bootstrap/Spinner';
 import { type YnabConfig } from '../../types';
 import styles from './EditYnabExporter.module.css';
 
 import YnabAccountMappingTable from './YnabAccountMappingTable';
-import { useStore } from '/@/store';
+import { useStore } from '../../store';
 
 interface EditYnabExporterProps {
   handleSave: (exporterConfig: YnabConfig) => Promise<void>;
@@ -30,6 +30,16 @@ const EditYnabExporter = ({
   const isValidAccessToken =
     !isLoading && store.ynabAccountData?.status !== INVALID_ACCESS_TOKEN;
 
+  const updateOptionsState = useCallback(
+    (optionUpdates: Partial<YnabConfig['options']>) => {
+      setYnabOptions((prevYnabOptions) => ({
+        ...prevYnabOptions,
+        ...optionUpdates,
+      }));
+    },
+    [],
+  );
+
   // Set default budget id if not set
   useEffect(() => {
     const defaultBudgetId =
@@ -37,22 +47,14 @@ const EditYnabExporter = ({
     if (!ynabOptions.budgetId && defaultBudgetId) {
       updateOptionsState({ budgetId: defaultBudgetId });
     }
-  }, [store.ynabAccountData, ynabOptions.budgetId]);
+  }, [store.ynabAccountData, ynabOptions.budgetId, updateOptionsState]);
 
   useEffect(() => {
     if (ynabOptions.accessToken) {
       store.fetchYnabAccountData(ynabOptions);
     }
-  }, [ynabOptions.budgetId, ynabOptions.accessToken, store]);
+  }, [ynabOptions, store]);
 
-  const updateOptionsState = (
-    optionUpdates: Partial<YnabConfig['options']>,
-  ) => {
-    setYnabOptions({
-      ...ynabOptions,
-      ...optionUpdates,
-    });
-  };
   const handleSaveClick = async () => {
     await handleSave({
       ...exporterConfig,
@@ -63,7 +65,9 @@ const EditYnabExporter = ({
 
   const handleOptionChangeEvent = (
     propertyName: keyof YnabConfig['options'],
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
   ) => {
     updateOptionsState({ [propertyName]: event.target.value });
   };
@@ -79,13 +83,7 @@ const EditYnabExporter = ({
   return (
     <div className={styles.container}>
       <Card className={styles.card}>
-        <Image
-          className={styles.logo}
-          src={exporterConfig.logo}
-          roundedCircle
-          width={100}
-          height={100}
-        />
+        <Image className={styles.logo} roundedCircle width={100} height={100} />
         <Card.Body className={styles.cardBody}>
           <Form className={styles.form}>
             <Form.Group controlId="accessToken" className="mb-3">

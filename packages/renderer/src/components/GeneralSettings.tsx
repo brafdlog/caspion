@@ -34,7 +34,7 @@ function GeneralSettings() {
                 className={styles.input}
                 defaultValue={configStore.config?.scraping.numDaysBack}
                 onBlur={(event) =>
-                  configStore.setNumDaysBack(event.target.value)
+                  configStore.setNumDaysBack(Number(event.target.value))
                 }
                 autoFocus
               />
@@ -45,7 +45,7 @@ function GeneralSettings() {
                 className={styles.input}
                 defaultValue={configStore.config?.scraping.maxConcurrency}
                 onBlur={(event) =>
-                  configStore.setMaxConcurrency(event.target.value)
+                  configStore.setMaxConcurrency(Number(event.target.value))
                 }
               />
             </Form.Group>
@@ -60,7 +60,7 @@ function GeneralSettings() {
               />
             </Form.Group>
             <Form.Group>
-              <Form.Label>כמה זמן לחכות לשליפה? (millisec)</Form.Label>
+              <Form.Label>כמה זמן לחכות לשליפה? (milliseconds)</Form.Label>
               <Form.Control
                 className={styles.input}
                 defaultValue={configStore.config?.scraping.timeout}

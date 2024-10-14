@@ -1,4 +1,5 @@
 import { Browser, install } from '@puppeteer/browsers';
+import logger from '/@/logging/logger';
 
 type PuppeteerProgressCallback = (
   downloadBytes: number,
@@ -20,7 +21,7 @@ const getIntegerPercent = (
   };
 };
 
-const revision = '1321684'; // getPuppeteerConfig().chromiumRevision; see https://github.com/puppeteer/puppeteer/issues/8203#issuecomment-1535088987
+const revision = '1364960'; // getPuppeteerConfig().chromiumRevision; see https://github.com/puppeteer/puppeteer/issues/8203#issuecomment-1535088987
 
 let downloadProm: ReturnType<typeof downloadChromium> | null = null;
 
@@ -39,8 +40,7 @@ export default async function downloadChromium(
     downloadProgressCallback: progressCallback,
   }).then(({ executablePath }) => {
     downloadProm = null;
-    // TODO: eslint to use logger instead of console.log
-    console.log('Chromium downloaded to', executablePath);
+    logger.log('Chromium downloaded to', executablePath);
     return executablePath;
   });
 

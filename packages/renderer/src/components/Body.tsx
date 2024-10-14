@@ -7,9 +7,11 @@ import { useConfigStore } from '../store/ConfigStore';
 import {
   ModalStatus,
   OutputVendorName,
+  type YnabConfig,
   type Account,
   type Exporter,
   type Importer,
+  type GoogleSheetsConfig,
 } from '../types';
 import styles from './Body.module.css';
 import CheckForUpdates from './CheckForUpdates';
@@ -20,7 +22,7 @@ import AccountsContainer from './accounts/AccountsContainer';
 import CreateImporter from './accounts/CreateImporter';
 import EditImporter from './accounts/EditImporter';
 import Importers from './accounts/Importers';
-import EditExporter from './exporters/EditExporter';
+import EditExporter, { type EditExporterProps } from './exporters/EditExporter';
 import Exporters from './exporters/Exporters';
 
 const Body = () => {
@@ -56,8 +58,10 @@ const Body = () => {
     closeModal();
   };
 
-  const updateExporter = async (exporter: Exporter) => {
-    await configStore.updateExporter(exporter);
+  const updateExporter: EditExporterProps['handleSave'] = async (
+    exporter: Exporter | YnabConfig | GoogleSheetsConfig,
+  ) => {
+    await configStore.updateExporter(exporter as Exporter);
     closeModal();
   };
 
@@ -82,12 +86,7 @@ const Body = () => {
               </AccountsContainer>
             )}
             {configStore.config?.outputVendors && (
-              <AccountsContainer
-                title="תוכנות ניהול תקציב"
-                accounts={configStore.exporters}
-                isScraping={configStore.isScraping}
-                showModal={showModal}
-              >
+              <AccountsContainer title="תוכנות ניהול תקציב">
                 <Exporters
                   exporters={configStore.exporters}
                   isScraping={configStore.isScraping}
@@ -114,7 +113,7 @@ const Body = () => {
               currentAccount && (
                 <EditImporter
                   handleSave={updateImporter}
-                  importer={currentAccount}
+                  importer={currentAccount as Importer}
                   handleDelete={deleteImporter}
                 />
               )}
@@ -122,8 +121,7 @@ const Body = () => {
               currentAccount && (
                 <EditExporter
                   handleSave={updateExporter}
-                  exporter={currentAccount}
-                  handleDelete={deleteImporter}
+                  exporter={currentAccount as Exporter}
                 />
               )}
             {modalStatus === ModalStatus.NEW_SCRAPER && (
@@ -147,7 +145,7 @@ const Body = () => {
         </Button>
         <Image
           src={settingsIcon}
-          onClick={() => showModal(null, ModalStatus.GENERAL_SETTINGS)}
+          onClick={() => showModal({} as Account, ModalStatus.GENERAL_SETTINGS)}
           className={styles.pointer}
         />
         <CheckForUpdates />

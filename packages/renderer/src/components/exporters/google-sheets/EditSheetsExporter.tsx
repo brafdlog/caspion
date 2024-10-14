@@ -7,6 +7,7 @@ import styles from '../EditFileExporter.module.css';
 import LoginButton from './LoginButton';
 import SheetsDropdown from './SheetsDropdown';
 import { Status, createSheetIfNew, useTokenStatus } from './hooks';
+import type { Auth } from 'googleapis';
 
 interface EditSheetsExporterProps {
   handleSave: (exporterConfig: GoogleSheetsConfig) => Promise<void>;
@@ -59,7 +60,7 @@ const EditSheetsExporter: React.FC<EditSheetsExporterProps> = ({
   }
 
   if (loginStatus === Status.LOGIN) {
-    const updateCredentials = (credentials: Credentials) => {
+    const updateCredentials = (credentials: Auth.Credentials) => {
       setSheetsConfig((prev) => ({
         ...prev,
         options: {
@@ -74,13 +75,7 @@ const EditSheetsExporter: React.FC<EditSheetsExporterProps> = ({
   return (
     <div className={styles.container}>
       <Card className={styles.card}>
-        <Image
-          className={styles.logo}
-          src={exporterConfig.logo}
-          roundedCircle
-          width={100}
-          height={100}
-        />
+        <Image className={styles.logo} roundedCircle width={100} height={100} />
         <Card.Body className={styles.cardBody}>
           <Form>
             <SheetsDropdown

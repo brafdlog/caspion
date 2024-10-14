@@ -19,9 +19,7 @@
     "lib": ["ESNext", "dom", "dom.iterable"]
   },
   "include": [
-    "src/**/*.vue",
-    "src/**/*.ts",
-    "src/**/*.tsx",
+    "src/**/*",
     "types/**/*.d.ts",
     "../../types/**/*.d.ts",
     "../../.eslintrc.cjs"

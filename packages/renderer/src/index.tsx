@@ -5,6 +5,9 @@ import { createRoot } from 'react-dom/client';
 import App from './components/App';
 import './index.module.css';
 import reportWebVitals from './reportWebVitals';
+import logger from './logging/logger';
+
+logger.info('Frontend started');
 
 configureMobxLinting();
 
