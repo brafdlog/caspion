@@ -46,6 +46,7 @@ export default async function downloadChromium(installPath: string, onProgress?:
     } else {
       logger.log('Chromium cached at', executablePath);
     }
+    isCached = true;
     return executablePath;
   });
 
