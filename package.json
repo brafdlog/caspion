@@ -99,5 +99,9 @@
     "svelte": "^4.2.19",
     "web-vitals": "^4.2.3",
     "ynab": "^1.19.0"
+  },
+  "resolutions": {
+    "underscore": "1.12.1",
+    "ws": "8.17.1"
   }
 }
