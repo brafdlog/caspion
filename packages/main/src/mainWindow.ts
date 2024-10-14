@@ -33,10 +33,7 @@ async function createWindow() {
   /**
    * Load the main page of the main window.
    */
-  if (
-    import.meta.env.DEV &&
-    import.meta.env.VITE_DEV_SERVER_URL !== undefined
-  ) {
+  if (import.meta.env.DEV && import.meta.env.VITE_DEV_SERVER_URL !== undefined) {
     /**
      * Load from the Vite dev server for development.
      */
@@ -51,11 +48,7 @@ async function createWindow() {
      * @see https://github.com/nodejs/node/issues/12682
      * @see https://github.com/electron/electron/issues/6869
      */
-    await browserWindow.loadFile(
-      fileURLToPath(
-        new URL('./../../renderer/dist/index.html', import.meta.url),
-      ),
-    );
+    await browserWindow.loadFile(fileURLToPath(new URL('./../../renderer/dist/index.html', import.meta.url)));
   }
 
   return browserWindow;

@@ -4,19 +4,11 @@ import { type Credentials } from '@/backend/commonTypes';
 import { getConfig } from '@/backend/configManager/configManager';
 import { BudgetTrackingEventEmitter } from '@/backend/eventEmitters/EventEmitter';
 import electronGoogleOAuth2Connector from '@/backend/export/outputVendors/googleSheets/electronGoogleOAuth2Connector';
-import {
-  createClient,
-  validateToken,
-} from '@/backend/export/outputVendors/googleSheets/googleAuth';
+import { createClient, validateToken } from '@/backend/export/outputVendors/googleSheets/googleAuth';
 import { createSpreadsheet } from '@/backend/export/outputVendors/googleSheets/googleSheets';
 import { getAllSpreadsheets } from '@/backend/export/outputVendors/googleSheets/googleSheetsInternalAPI';
 import { getYnabAccountData } from '@/manual/setupHelpers';
-import {
-  dialog,
-  ipcMain,
-  type IpcMainEvent,
-  type IpcMainInvokeEvent,
-} from 'electron';
+import { dialog, ipcMain, type IpcMainEvent, type IpcMainInvokeEvent } from 'electron';
 import { discord, repository } from '../../../../package.json';
 import Sentry from '../logging/sentry';
 import { getConfigHandler, updateConfigHandler } from './configHandlers';
@@ -58,10 +50,8 @@ const functions: Record<string, Listener> = {
     extra: Record<string, unknown>,
   ) => Sentry.userReportProblem(title, body, logs, email, extra),
   // Google Sheets
-  getAllUserSpreadsheets: (_: unknown, credentials: Credentials) =>
-    getAllSpreadsheets(createClient(credentials)),
-  validateToken: (_: unknown, credentials: Credentials) =>
-    validateToken(credentials),
+  getAllUserSpreadsheets: (_: unknown, credentials: Credentials) => getAllSpreadsheets(createClient(credentials)),
+  validateToken: (_: unknown, credentials: Credentials) => validateToken(credentials),
   electronGoogleOAuth2Connector,
   createSpreadsheet: (_, spreadsheetTitle: string, credentials: Credentials) =>
     createSpreadsheet(spreadsheetTitle, credentials),
@@ -84,14 +74,8 @@ export const registerHandlers = () => {
   });
 
   ipcMain.removeAllListeners('getYnabAccountData');
-  ipcMain.on(
-    'getYnabAccountData',
-    async (event, _event, ynabExporterOptions) => {
-      const ynabAccountData = await getYnabAccountData(
-        _event,
-        ynabExporterOptions,
-      );
-      event.reply('getYnabAccountData', ynabAccountData);
-    },
-  );
+  ipcMain.on('getYnabAccountData', async (event, _event, ynabExporterOptions) => {
+    const ynabAccountData = await getYnabAccountData(_event, ynabExporterOptions);
+    event.reply('getYnabAccountData', ynabAccountData);
+  });
 };

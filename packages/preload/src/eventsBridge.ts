@@ -17,9 +17,7 @@ export async function updateConfig(config: Config) {
   await electron.ipcRenderer.invoke('updateConfig', JSON.stringify(config));
 }
 
-export async function getYnabAccountData(
-  ynabOptions: YnabConfig['options'],
-): Promise<YnabAccountDataType> {
+export async function getYnabAccountData(ynabOptions: YnabConfig['options']): Promise<YnabAccountDataType> {
   return electron.ipcRenderer.invoke('getYnabAccountData', ynabOptions);
 }
 
@@ -80,9 +78,7 @@ export async function quitAndInstall() {
 }
 
 // Google Sheets
-export async function validateToken(
-  credentials: Credentials,
-): Promise<boolean> {
+export async function validateToken(credentials: Credentials): Promise<boolean> {
   return electron.ipcRenderer.invoke('validateToken', credentials);
 }
 export async function getAllUserSpreadsheets(credentials: Credentials) {
@@ -91,13 +87,6 @@ export async function getAllUserSpreadsheets(credentials: Credentials) {
 export async function electronGoogleOAuth2Connector(): Promise<Credentials> {
   return electron.ipcRenderer.invoke('electronGoogleOAuth2Connector');
 }
-export async function createSpreadsheet(
-  spreadsheetId: string,
-  credentials: Credentials,
-): Promise<string> {
-  return electron.ipcRenderer.invoke(
-    'createSpreadsheet',
-    spreadsheetId,
-    credentials,
-  );
+export async function createSpreadsheet(spreadsheetId: string, credentials: Credentials): Promise<string> {
+  return electron.ipcRenderer.invoke('createSpreadsheet', spreadsheetId, credentials);
 }

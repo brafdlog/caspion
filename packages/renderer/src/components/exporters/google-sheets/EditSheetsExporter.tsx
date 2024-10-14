@@ -14,13 +14,8 @@ interface EditSheetsExporterProps {
   exporterConfig: GoogleSheetsConfig;
 }
 
-const EditSheetsExporter: React.FC<EditSheetsExporterProps> = ({
-  handleSave,
-  exporterConfig,
-}) => {
-  const [sheetsConfig, setSheetsConfig] = useState<GoogleSheetsConfig>(
-    toJS<GoogleSheetsConfig>(exporterConfig),
-  );
+const EditSheetsExporter: React.FC<EditSheetsExporterProps> = ({ handleSave, exporterConfig }) => {
+  const [sheetsConfig, setSheetsConfig] = useState<GoogleSheetsConfig>(toJS<GoogleSheetsConfig>(exporterConfig));
   const [loginStatus] = useTokenStatus(sheetsConfig.options.credentials);
   const [sendDisabled, setSendDisabled] = useState(false);
 
@@ -43,10 +38,7 @@ const EditSheetsExporter: React.FC<EditSheetsExporterProps> = ({
 
   const handleSaveClick = async () => {
     setSendDisabled(true);
-    const newId = await createSheetIfNew(
-      sheetsConfig.options.spreadsheetId,
-      sheetsConfig.options.credentials,
-    );
+    const newId = await createSheetIfNew(sheetsConfig.options.spreadsheetId, sheetsConfig.options.credentials);
     sheetsConfig.options.spreadsheetId = newId;
     await handleSave(sheetsConfig);
   };
@@ -84,20 +76,11 @@ const EditSheetsExporter: React.FC<EditSheetsExporterProps> = ({
               onChange={handleSheetIdChange}
             />
             <Form.Group controlId="exporterActive">
-              <Form.Check
-                type="switch"
-                onChange={handleActiveChange}
-                label="פעיל"
-                checked={sheetsConfig.active}
-              />
+              <Form.Check type="switch" onChange={handleActiveChange} label="פעיל" checked={sheetsConfig.active} />
             </Form.Group>
           </Form>
           <div className={styles.actionButtonsWrapper}>
-            <Button
-              variant="primary"
-              onClick={handleSaveClick}
-              disabled={sendDisabled}
-            >
+            <Button variant="primary" onClick={handleSaveClick} disabled={sendDisabled}>
               שמור
             </Button>
           </div>

@@ -1,9 +1,7 @@
 const INTERNET = 'Internet';
 const ELECTRICITY = 'Electric';
 
-export function getCategoryNameByTransactionDescription(
-  transactionDescription: string,
-): string {
+export function getCategoryNameByTransactionDescription(transactionDescription: string): string {
   if (containsStr('אינטרנט')) return INTERNET;
 
   switch (transactionDescription) {
@@ -18,10 +16,6 @@ export function getCategoryNameByTransactionDescription(
   }
 
   function containsStr(strToSearchFor: string) {
-    return (
-      transactionDescription
-        .toLowerCase()
-        .indexOf(strToSearchFor.toLowerCase()) !== -1
-    );
+    return transactionDescription.toLowerCase().indexOf(strToSearchFor.toLowerCase()) !== -1;
   }
 }

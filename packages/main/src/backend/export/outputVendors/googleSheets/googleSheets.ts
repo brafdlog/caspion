@@ -4,11 +4,7 @@ import {
   type ExportTransactionsFunction,
   type OutputVendor,
 } from '@/backend/commonTypes';
-import {
-  EventNames,
-  ExporterEvent,
-  type EventPublisher,
-} from '@/backend/eventEmitters/EventEmitter';
+import { EventNames, ExporterEvent, type EventPublisher } from '@/backend/eventEmitters/EventEmitter';
 import { filterExistedHashes } from '@/backend/transactions/transactions';
 import { type Auth } from 'googleapis';
 import moment from 'moment/moment';
@@ -37,39 +33,24 @@ const createTransactionsInGoogleSheets: ExportTransactionsFunction = async (
   { transactionsToCreate: transactions, outputVendorsConfig },
   eventPublisher,
 ) => {
-  const { spreadsheetId, credentials } =
-    outputVendorsConfig.googleSheets!.options;
+  const { spreadsheetId, credentials } = outputVendorsConfig.googleSheets!.options;
   if (!credentials) throw new Error("You must set the 'credentials'");
   const oAuthClient = createClient(credentials);
 
-  const sheet = await googleSheets.getSheet(
+  const sheet = await googleSheets.getSheet(spreadsheetId, DEFAULT_SHEET_NAME, oAuthClient);
+  if (!sheet) {
+    throw new Error(`There is no sheet called ${DEFAULT_SHEET_NAME} in the spreadsheet`);
+  }
+
+  const hashesAlreadyExistingInGoogleSheets = await googleSheets.getExistingHashes(
     spreadsheetId,
     DEFAULT_SHEET_NAME,
     oAuthClient,
   );
-  if (!sheet) {
-    throw new Error(
-      `There is no sheet called ${DEFAULT_SHEET_NAME} in the spreadsheet`,
-    );
-  }
-
-  const hashesAlreadyExistingInGoogleSheets =
-    await googleSheets.getExistingHashes(
-      spreadsheetId,
-      DEFAULT_SHEET_NAME,
-      oAuthClient,
-    );
-  const transactionsToCreate = filterExistedHashes(
-    transactions,
-    hashesAlreadyExistingInGoogleSheets,
-  );
+  const transactionsToCreate = filterExistedHashes(transactions, hashesAlreadyExistingInGoogleSheets);
 
   if (transactionsToCreate.length === 0) {
-    await emitProgressEvent(
-      eventPublisher,
-      transactions,
-      'All transactions already exist in google sheets',
-    );
+    await emitProgressEvent(eventPublisher, transactions, 'All transactions already exist in google sheets');
     return {
       exportedTransactionsNum: 0,
     };
@@ -123,23 +104,11 @@ async function emitProgressEvent(
   );
 }
 
-export async function createSpreadsheet(
-  spreadsheetTitle: string,
-  credentials: Auth.Credentials,
-): Promise<string> {
+export async function createSpreadsheet(spreadsheetTitle: string, credentials: Auth.Credentials): Promise<string> {
   const auth = createClient(credentials);
-  const spreadsheetId = await googleSheets.createSpreadsheet(
-    spreadsheetTitle,
-    DEFAULT_SHEET_NAME,
-    auth,
-  );
+  const spreadsheetId = await googleSheets.createSpreadsheet(spreadsheetTitle, DEFAULT_SHEET_NAME, auth);
 
-  await googleSheets.appendToSpreadsheet(
-    spreadsheetId,
-    `${DEFAULT_SHEET_NAME}!A:A`,
-    [COLUMN_HEADERS],
-    auth,
-  );
+  await googleSheets.appendToSpreadsheet(spreadsheetId, `${DEFAULT_SHEET_NAME}!A:A`, [COLUMN_HEADERS], auth);
 
   return spreadsheetId;
 }

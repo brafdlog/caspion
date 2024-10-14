@@ -29,9 +29,7 @@ const EditFileExporter = ({ handleSave, exporter }: EditFileExporterProps) => {
     });
   };
 
-  const handleChooseFile: React.ChangeEventHandler<HTMLInputElement> = (
-    event,
-  ) => {
+  const handleChooseFile: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     updateOption({
       filePath: event.currentTarget.value,
     });
@@ -50,37 +48,20 @@ const EditFileExporter = ({ handleSave, exporter }: EditFileExporterProps) => {
   return (
     <div className={styles.container}>
       <Card className={styles.card}>
-        <Image
-          className={styles.logo}
-          src={exporterConfig.logo}
-          roundedCircle
-          width={100}
-          height={100}
-        />
+        <Image className={styles.logo} src={exporterConfig.logo} roundedCircle width={100} height={100} />
         <Card.Body className={styles.cardBody}>
           <Form>
             <Form.Group controlId="formFile" className="mb-3">
               <Form.Label>לאיזה קובץ לכתוב את הטרנזאקציות?</Form.Label>
               <Form.Control
                 contentEditable={false}
-                value={
-                  (
-                    exporterConfig.options as
-                      | CsvConfig['options']
-                      | JsonConfig['options']
-                  ).filePath
-                }
+                value={(exporterConfig.options as CsvConfig['options'] | JsonConfig['options']).filePath}
                 onClick={selectFolderDialog}
                 onChange={handleChooseFile}
               />
             </Form.Group>
             <Form.Group controlId="exporterActive">
-              <Form.Check
-                type="switch"
-                onChange={handleActiveChange}
-                label="פעיל"
-                checked={exporterConfig.active}
-              />
+              <Form.Check type="switch" onChange={handleActiveChange} label="פעיל" checked={exporterConfig.active} />
             </Form.Group>
           </Form>
           <div className={styles.actionButtonsWrapper}>
