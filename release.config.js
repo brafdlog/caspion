@@ -3,7 +3,7 @@ const releaseRules = {
   releaseRules: [
     { tag: 'Breaking', release: 'major' },
     { tag: 'Build', release: 'minor' },
-    { tag: 'Chore', release: 'minor' },
+    { tag: 'Chore', release: 'patch' },
     { tag: 'Fix', release: 'patch' },
     { tag: 'New', release: 'minor' },
     { tag: 'Update', release: 'minor' },
@@ -14,8 +14,5 @@ const releaseRules = {
 
 export default {
   branches: ['master'],
-  plugins: [
-    ['@semantic-release/commit-analyzer', releaseRules],
-    '@semantic-release/github',
-  ],
+  plugins: [['@semantic-release/commit-analyzer', releaseRules], '@semantic-release/github'],
 };

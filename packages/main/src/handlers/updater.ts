@@ -26,5 +26,6 @@ export const downloadUpdate = async () =>
   });
 
 export const quitAndInstall = () => {
+  logger.info('Quitting and installing update');
   setImmediate(() => autoUpdater.quitAndInstall());
 };

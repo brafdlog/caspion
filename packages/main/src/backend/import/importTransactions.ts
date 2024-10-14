@@ -23,6 +23,7 @@ import {
 } from '../eventEmitters/EventEmitter';
 import { calculateTransactionHash } from '../transactions/transactions';
 import getChrome from './downloadChromium';
+import logger from '/@/logging/logger';
 
 type ScrapingConfig = Config['scraping'];
 
@@ -35,16 +36,14 @@ export async function scrapeFinancialAccountsAndFetchTransactions(
 ) {
   let chromiumPath: string;
 
-  console.log('Scraping financial accounts and fetching transactions');
+  logger.log('Scraping financial accounts and fetching transactions');
 
   if (scrapingConfig.chromiumPath) {
-    console.log('Using provided chromium path', scrapingConfig.chromiumPath);
+    logger.log('Using provided chromium path', scrapingConfig.chromiumPath);
     chromiumPath = scrapingConfig.chromiumPath;
   } else {
-    console.log('Downloading chromium');
-    chromiumPath = await getChrome(userDataPath, (percent) =>
-      emitChromeDownload(eventPublisher, percent),
-    );
+    logger.log('Downloading chromium');
+    chromiumPath = await getChrome(userDataPath, (percent) => emitChromeDownload(eventPublisher, percent));
   }
 
   const limiter = new Bottleneck({
@@ -95,35 +94,25 @@ function buildImporterEvent(
 
 function emitChromeDownload(eventPublisher: EventPublisher, percent: number) {
   console.log(`Downloading chrome ${percent}%`);
-  eventPublisher.emit(
-    EventNames.DOWNLOAD_CHROME,
-    new DownalodChromeEvent(percent),
-  );
+  eventPublisher.emit(EventNames.DOWNLOAD_CHROME, new DownalodChromeEvent(percent));
 }
 
-export async function getFinancialAccountDetails(): Promise<
-  FinancialAccountDetails[]
-> {
+export async function getFinancialAccountDetails(): Promise<FinancialAccountDetails[]> {
   const config = await getConfig(configFilePath);
   const eventEmitter = new BudgetTrackingEventEmitter();
 
   const startDate = moment().subtract(30, 'days').startOf('day').toDate();
 
-  const companyIdToTransactions =
-    await scrapeFinancialAccountsAndFetchTransactions(
-      config.scraping,
-      startDate,
-      eventEmitter,
-    );
+  const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(
+    config.scraping,
+    startDate,
+    eventEmitter,
+  );
   const financialAccountDetails: { name: string; accountNumber: string }[] = [];
   Object.keys(companyIdToTransactions).forEach((companyId) => {
-    let accountNumbers = companyIdToTransactions[companyId].map(
-      (transaction) => transaction.accountNumber,
-    );
+    let accountNumbers = companyIdToTransactions[companyId].map((transaction) => transaction.accountNumber);
     accountNumbers = _.uniq(accountNumbers);
-    accountNumbers.forEach((accountNumber) =>
-      financialAccountDetails.push({ name: companyId, accountNumber }),
-    );
+    accountNumbers.forEach((accountNumber) => financialAccountDetails.push({ name: companyId, accountNumber }));
   });
   return financialAccountDetails;
 }
@@ -137,19 +126,10 @@ async function fetchTransactions(
   timeout: number,
 ) {
   try {
-    await eventPublisher.emit(
-      EventNames.IMPORTER_START,
-      buildImporterEvent(account, { message: 'Importer start' }),
-    );
+    await eventPublisher.emit(EventNames.IMPORTER_START, buildImporterEvent(account, { message: 'Importer start' }));
 
-    const emitImporterProgressEvent = async (
-      eventCompanyId: string,
-      message: string,
-    ) => {
-      await eventPublisher.emit(
-        EventNames.IMPORTER_PROGRESS,
-        buildImporterEvent(account, { message }),
-      );
+    const emitImporterProgressEvent = async (eventCompanyId: string, message: string) => {
+      await eventPublisher.emit(EventNames.IMPORTER_PROGRESS, buildImporterEvent(account, { message }));
     };
     const companyId = account.key;
     const scrapeResult = await bankScraper.scrape(
@@ -164,9 +144,7 @@ async function fetchTransactions(
       chromePath,
     );
     if (!scrapeResult.success) {
-      throw new Error(
-        `${scrapeResult.errorType}: ${scrapeResult.errorMessage}`,
-      );
+      throw new Error(`${scrapeResult.errorType}: ${scrapeResult.errorMessage}`);
     }
 
     const transactions = await postProcessTransactions(account, scrapeResult);
@@ -188,6 +166,7 @@ async function fetchTransactions(
         status: AccountStatus.ERROR,
       }),
     );
+    logger.error('Failed to fetch transactions', e);
     throw e;
   }
 }
@@ -200,29 +179,19 @@ async function postProcessTransactions(
   if (scrapeResult.accounts) {
     let transactions = scrapeResult.accounts.flatMap((transactionAccount) => {
       return transactionAccount.txns.map((transaction) =>
-        enrichTransaction(
-          transaction,
-          accountToScrape.key,
-          transactionAccount.accountNumber,
-        ),
+        enrichTransaction(transaction, accountToScrape.key, transactionAccount.accountNumber),
       );
     });
 
     // Filter out pending transactions
-    transactions = transactions.filter(
-      (transaction) => transaction.status === TRANSACTION_STATUS_COMPLETED,
-    );
+    transactions = transactions.filter((transaction) => transaction.status === TRANSACTION_STATUS_COMPLETED);
     transactions.sort(transactionsDateComparator);
     return transactions;
   }
   return [];
 }
 
-function enrichTransaction(
-  transaction: Transaction,
-  companyId: string,
-  accountNumber: string,
-): EnrichedTransaction {
+function enrichTransaction(transaction: Transaction, companyId: string, accountNumber: string): EnrichedTransaction {
   const hash = calculateTransactionHash(transaction, companyId, accountNumber);
   // const category = categoryCalculation.getCategoryNameByTransactionDescription(transaction.description);
   const enrichedTransaction: EnrichedTransaction = {

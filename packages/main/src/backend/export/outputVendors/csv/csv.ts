@@ -4,14 +4,12 @@ import {
   type ExportTransactionsFunction,
   type OutputVendor,
 } from '@/backend/commonTypes';
-import {
-  mergeTransactions,
-  sortByDate,
-} from '@/backend/transactions/transactions';
+import { mergeTransactions, sortByDate } from '@/backend/transactions/transactions';
 import { parse } from 'csv-parse/sync';
 import { stringify } from 'csv-stringify/sync';
 import { promises as fs } from 'fs';
 import { type TransactionInstallments } from 'israeli-bank-scrapers-core/lib/transactions';
+import logger from '/@/logging/logger';
 
 export function parseTransactions(csvText: string) {
   return parse(csvText, {
@@ -85,21 +83,14 @@ export const serializeTransactions = (transactions: EnrichedTransaction[]) => {
   });
 };
 
-const exportTransactions: ExportTransactionsFunction = async ({
-  transactionsToCreate,
-  outputVendorsConfig,
-}) => {
+const exportTransactions: ExportTransactionsFunction = async ({ transactionsToCreate, outputVendorsConfig }) => {
   const { filePath } = outputVendorsConfig.csv!.options;
   const savedTransactions = await parseTransactionsFile(filePath);
-  const mergedTransactions = mergeTransactions(
-    savedTransactions,
-    transactionsToCreate,
-  );
+  const mergedTransactions = mergeTransactions(savedTransactions, transactionsToCreate);
   const sorted = sortByDate(mergedTransactions);
   await writeCsvFile(filePath, serializeTransactions(sorted));
   return {
-    exportedTransactionsNum:
-      mergedTransactions.length - savedTransactions.length,
+    exportedTransactionsNum: mergedTransactions.length - savedTransactions.length,
   };
 };
 
@@ -111,6 +102,7 @@ const parseTransactionsFile = async (filename: string) => {
     if ((e as NodeJS.ErrnoException).code === 'ENOENT') {
       return [] as EnrichedTransaction[];
     }
+    logger.error('Failed to parse CSV file', e);
     throw e;
   }
 };

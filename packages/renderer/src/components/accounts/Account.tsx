@@ -1,10 +1,7 @@
 import { useMemo } from 'react';
 import Badge from 'react-bootstrap/Badge';
 import piggyBank from '../../assets/piggy-bank.svg';
-import {
-  type Account as AccountType,
-  type ExporterEndEvent,
-} from '../../types';
+import { type Account as AccountType, type ExporterEndEvent } from '../../types';
 import styles from './Account.module.css';
 import StatusIndicator from './StatusIndicator';
 
@@ -30,21 +27,14 @@ export default function Account({ account, actionButtons }: AccountProps) {
   const badgeNumberLog = useMemo(
     () =>
       account.logs.find(
-        (log) =>
-          log.originalEvent &&
-          (log.originalEvent as ExporterEndEvent).exportedTransactionsNum > 0,
+        (log) => log.originalEvent && (log.originalEvent as ExporterEndEvent).exportedTransactionsNum > 0,
       ),
     [account.logs],
   );
 
   return (
     <div className={containerStyles.join(' ')}>
-      <img
-        src={account.logo || piggyBank}
-        alt={account.displayName}
-        height={29}
-        width={29}
-      />
+      <img src={account.logo || piggyBank} alt={account.displayName} height={29} width={29} />
       <div className={styles.nameWrapper}>
         <div className={styles.name}>{account.displayName}</div>
       </div>
@@ -61,10 +51,7 @@ export default function Account({ account, actionButtons }: AccountProps) {
       <StatusIndicator status={account.status} />
       {badgeNumberLog?.originalEvent && (
         <Badge className={styles.newTxnsIndicator} bg={'success'}>
-          {
-            (badgeNumberLog.originalEvent as ExporterEndEvent)
-              .exportedTransactionsNum
-          }
+          {(badgeNumberLog.originalEvent as ExporterEndEvent).exportedTransactionsNum}
         </Badge>
       )}
     </div>

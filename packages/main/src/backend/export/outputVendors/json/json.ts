@@ -4,11 +4,9 @@ import {
   type ExportTransactionsFunction,
   type OutputVendor,
 } from '@/backend/commonTypes';
-import {
-  mergeTransactions,
-  sortByDate,
-} from '@/backend/transactions/transactions';
+import { mergeTransactions, sortByDate } from '@/backend/transactions/transactions';
 import { promises as fs } from 'fs';
+import logger from '/@/logging/logger';
 
 const parseTransactionsFile = async (filename: string) => {
   try {
@@ -18,25 +16,19 @@ const parseTransactionsFile = async (filename: string) => {
     if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
       return [] as EnrichedTransaction[];
     }
+    logger.error('Failed to parse JSON file', err);
     throw err;
   }
 };
 
-const exportTransactions: ExportTransactionsFunction = async ({
-  transactionsToCreate,
-  outputVendorsConfig,
-}) => {
+const exportTransactions: ExportTransactionsFunction = async ({ transactionsToCreate, outputVendorsConfig }) => {
   const { filePath } = outputVendorsConfig.json!.options;
   const savedTransactions = await parseTransactionsFile(filePath);
-  const mergedTransactions = mergeTransactions(
-    savedTransactions,
-    transactionsToCreate,
-  );
+  const mergedTransactions = mergeTransactions(savedTransactions, transactionsToCreate);
   const sorted = sortByDate(mergedTransactions);
   await fs.writeFile(filePath, JSON.stringify(sorted, null, 4));
   return {
-    exportedTransactionsNum:
-      mergedTransactions.length - savedTransactions.length,
+    exportedTransactionsNum: mergedTransactions.length - savedTransactions.length,
   };
 };
 

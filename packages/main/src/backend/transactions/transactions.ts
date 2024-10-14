@@ -27,38 +27,24 @@ export const calculateTransactionHash = (
   companyId: string,
   accountNumber: string,
 ) => {
-  return unifyHash(
-    `${date}_${chargedAmount}_${description}_${memo}_${companyId}_${accountNumber}`,
-  );
+  return unifyHash(`${date}_${chargedAmount}_${description}_${memo}_${companyId}_${accountNumber}`);
 };
 
-export const mergeTransactions = (
-  a: EnrichedTransaction[],
-  b: EnrichedTransaction[],
-) => {
+export const mergeTransactions = (a: EnrichedTransaction[], b: EnrichedTransaction[]) => {
   const aObj = transactionArrayToUnifyHash(a);
   const bObj = transactionArrayToUnifyHash(b);
   const hashes = uniq(Object.keys(aObj).concat(...Object.keys(bObj)));
 
-  const mergedObj = hashes.reduce(
-    (merged: Record<string, EnrichedTransaction>, hash: string) => {
-      merged[hash] = { ...aObj[hash], ...bObj[hash] };
-      return merged;
-    },
-    {},
-  );
+  const mergedObj = hashes.reduce((merged: Record<string, EnrichedTransaction>, hash: string) => {
+    merged[hash] = { ...aObj[hash], ...bObj[hash] };
+    return merged;
+  }, {});
   return Object.values(mergedObj);
 };
 
-export const filterExistedHashes = (
-  transactions: EnrichedTransaction[],
-  existingHashes: string[],
-) => {
+export const filterExistedHashes = (transactions: EnrichedTransaction[], existingHashes: string[]) => {
   const unifiedExistingHashs = existingHashes.map(unifyHash);
-  return transactions.filter(
-    ({ hash }) => !unifiedExistingHashs.includes(unifyHash(hash)),
-  );
+  return transactions.filter(({ hash }) => !unifiedExistingHashs.includes(unifyHash(hash)));
 };
 
-export const sortByDate = (transactions: EnrichedTransaction[]) =>
-  transactions.sort(compareObjectsByDate);
+export const sortByDate = (transactions: EnrichedTransaction[]) => transactions.sort(compareObjectsByDate);

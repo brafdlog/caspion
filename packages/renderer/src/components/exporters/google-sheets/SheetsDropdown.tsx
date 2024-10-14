@@ -11,16 +11,9 @@ interface SheetsDropdownProps {
   onChange: (value: string) => void;
 }
 
-const SheetsDropdown: React.FC<SheetsDropdownProps> = ({
-  credentials,
-  value,
-  onChange,
-}) => {
+const SheetsDropdown: React.FC<SheetsDropdownProps> = ({ credentials, value, onChange }) => {
   const userSpreadsheets = useUserSpreadsheets(credentials);
-  const existedSpreadsheet = useMemo(
-    () => userSpreadsheets.find(({ id }) => id === value),
-    [userSpreadsheets, value],
-  );
+  const existedSpreadsheet = useMemo(() => userSpreadsheets.find(({ id }) => id === value), [userSpreadsheets, value]);
   const selected = useMemo(() => {
     if (existedSpreadsheet) return [existedSpreadsheet];
     if (!value) return [];

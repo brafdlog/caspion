@@ -1,8 +1,5 @@
 // eslint-disable-next-line max-classes-per-file
-import {
-  type EnrichedTransaction,
-  type OutputVendorName,
-} from '@/backend/commonTypes';
+import { type EnrichedTransaction, type OutputVendorName } from '@/backend/commonTypes';
 import Emittery from 'emittery';
 import { type CompanyTypes } from 'israeli-bank-scrapers-core';
 
@@ -93,13 +90,7 @@ export interface ExporterEventParams {
 export class ExporterEvent extends BudgetTrackingEvent {
   allTransactions: EnrichedTransaction[];
 
-  constructor({
-    message,
-    allTransactions,
-    status,
-    error,
-    exporterName,
-  }: ExporterEventParams) {
+  constructor({ message, allTransactions, status, error, exporterName }: ExporterEventParams) {
     super({
       message,
       accountType: AccountType.EXPORTER,
@@ -155,7 +146,4 @@ export class BudgetTrackingEventEmitter extends Emittery<EventDataMap> {}
 
 export type EventPublisher = Pick<BudgetTrackingEventEmitter, 'emit'>;
 
-export type EventSubscriber = Pick<
-  BudgetTrackingEventEmitter,
-  'on' | 'once' | 'off' | 'onAny' | 'anyEvent' | 'offAny'
->;
+export type EventSubscriber = Pick<BudgetTrackingEventEmitter, 'on' | 'once' | 'off' | 'onAny' | 'anyEvent' | 'offAny'>;

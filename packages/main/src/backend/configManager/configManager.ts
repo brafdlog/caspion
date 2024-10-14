@@ -3,21 +3,25 @@ import { type Config } from '@/backend/commonTypes';
 import { decrypt, encrypt } from '@/backend/configManager/encryption/crypto';
 import { existsSync, promises as fs } from 'fs';
 import configExample from './defaultConfig';
+import logger from '/@/logging/logger';
 
-export async function getConfig(
-  configPath: string = configFilePath,
-): Promise<Config> {
+export async function getConfig(configPath: string = configFilePath): Promise<Config> {
   const configFromFile = await getConfigFromFile(configPath);
   if (configFromFile) {
     const decrypted = (await decrypt(configFromFile)) as string;
     if (!decrypted) {
-      console.log('No config file found, returning default config');
+      logger.log('No config file found, returning default config');
       return configExample;
     }
     try {
-      return JSON.parse(decrypted);
+      const config = JSON.parse(decrypted);
+      if (Object.keys(config).length === 0) {
+        logger.log('Empty config file found, returning default config');
+        return configExample;
+      }
+      return config;
     } catch (e) {
-      console.error('Failed to parse config file, returning default config', e);
+      logger.error('Failed to parse config file, returning default config', e);
     }
   }
 
@@ -25,10 +29,7 @@ export async function getConfig(
   return configExample;
 }
 
-export async function updateConfig(
-  configPath: string,
-  configToUpdate: Config,
-): Promise<void> {
+export async function updateConfig(configPath: string, configToUpdate: Config): Promise<void> {
   const stringifiedConfig = JSON.stringify(configToUpdate, null, 2);
   const encryptedConfigStr = await encrypt(stringifiedConfig);
   await fs.writeFile(configPath, encryptedConfigStr);

@@ -15,10 +15,7 @@ function TopBar() {
 
   return (
     <>
-      <NavBar
-        className={styles.topNavBar}
-        style={{ borderBottom: '1px solid #C4C4C4' }}
-      >
+      <NavBar className={styles.topNavBar} style={{ borderBottom: '1px solid #C4C4C4' }}>
         <Container fluid>
           <NavBar.Brand>
             <Stack direction="horizontal" gap={3}>
@@ -36,17 +33,11 @@ function TopBar() {
           <Stack direction="horizontal" gap={5}>
             <NavButton onClick={() => setShow(true)} text="דיווח על בעיה" />
             <NavButton
-              onClick={() =>
-                appInfoStore.appInfo?.discordChanel &&
-                openExternal(appInfoStore.appInfo?.discordChanel)
-              }
+              onClick={() => appInfoStore.appInfo?.discordChanel && openExternal(appInfoStore.appInfo?.discordChanel)}
               text="ערוץ הדיסקורד שלנו"
             />
             <NavButton
-              onClick={() =>
-                appInfoStore.appInfo?.repository &&
-                openExternal(appInfoStore.appInfo?.repository)
-              }
+              onClick={() => appInfoStore.appInfo?.repository && openExternal(appInfoStore.appInfo?.repository)}
               text="לפתוח ב-Github"
             />
           </Stack>
