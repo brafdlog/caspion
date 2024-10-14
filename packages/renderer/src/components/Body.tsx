@@ -32,9 +32,7 @@ const Body = () => {
     return scrape(configStore.handleScrapingEvent.bind(configStore));
   }, [configStore]);
 
-  const [modalStatus, setModalStatus] = useState<ModalStatus>(
-    ModalStatus.HIDDEN,
-  );
+  const [modalStatus, setModalStatus] = useState<ModalStatus>(ModalStatus.HIDDEN);
 
   const [currentAccount, setCurrentAccount] = useState<Account>();
   const closeModal = () => setModalStatus(ModalStatus.HIDDEN);
@@ -101,46 +99,29 @@ const Body = () => {
           onHide={closeModal}
           dialogClassName={wideModal ? styles.modalWide : ''}
         >
-          <Modal.Header
-            closeButton
-            className={styles.modalHeader}
-          ></Modal.Header>
+          <Modal.Header closeButton className={styles.modalHeader}></Modal.Header>
           <Modal.Body>
-            {modalStatus === ModalStatus.LOGS && currentAccount && (
-              <AccountLogs logs={currentAccount.logs} />
+            {modalStatus === ModalStatus.LOGS && currentAccount && <AccountLogs logs={currentAccount.logs} />}
+            {modalStatus === ModalStatus.IMPORTER_SETTINGS && currentAccount && (
+              <EditImporter
+                handleSave={updateImporter}
+                importer={currentAccount as Importer}
+                handleDelete={deleteImporter}
+              />
             )}
-            {modalStatus === ModalStatus.IMPORTER_SETTINGS &&
-              currentAccount && (
-                <EditImporter
-                  handleSave={updateImporter}
-                  importer={currentAccount as Importer}
-                  handleDelete={deleteImporter}
-                />
-              )}
-            {modalStatus === ModalStatus.EXPORTER_SETTINGS &&
-              currentAccount && (
-                <EditExporter
-                  handleSave={updateExporter}
-                  exporter={currentAccount as Exporter}
-                />
-              )}
+            {modalStatus === ModalStatus.EXPORTER_SETTINGS && currentAccount && (
+              <EditExporter handleSave={updateExporter} exporter={currentAccount as Exporter} />
+            )}
             {modalStatus === ModalStatus.NEW_SCRAPER && (
               <CreateImporter handleSave={createImporter} cancel={closeModal} />
             )}
-            {modalStatus === ModalStatus.GENERAL_SETTINGS && (
-              <GeneralSettings />
-            )}
+            {modalStatus === ModalStatus.GENERAL_SETTINGS && <GeneralSettings />}
           </Modal.Body>
         </Modal>
       </Container>
       <Container className={styles.buttonsContainer}>
         <ChromeDownloadProgress />
-        <Button
-          variant="dark"
-          size="lg"
-          onClick={cleanAndScrape}
-          disabled={configStore.isScraping}
-        >
+        <Button variant="dark" size="lg" onClick={cleanAndScrape} disabled={configStore.isScraping}>
           הפעל
         </Button>
         <Image
@@ -154,10 +135,7 @@ const Body = () => {
   );
 };
 
-function shouldShowWideModal(
-  modalStatus: ModalStatus,
-  currentAccount?: Account,
-) {
+function shouldShowWideModal(modalStatus: ModalStatus, currentAccount?: Account) {
   return (
     modalStatus === ModalStatus.EXPORTER_SETTINGS &&
     currentAccount &&

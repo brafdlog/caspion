@@ -38,14 +38,8 @@ export interface AppInfo {
   currentVersion: string;
 }
 
-export type OutputVendorConfigs = Exclude<
-  Config['outputVendors'][OutputVendorName],
-  undefined
->;
-export type OutputVendorConfig<T extends OutputVendorName> = Exclude<
-  Config['outputVendors'][T],
-  undefined
->;
+export type OutputVendorConfigs = Exclude<Config['outputVendors'][OutputVendorName], undefined>;
+export type OutputVendorConfig<T extends OutputVendorName> = Exclude<Config['outputVendors'][T], undefined>;
 
 interface OutputVendorConfigBase {
   active: boolean;
@@ -202,10 +196,7 @@ export interface FinancialAccountDetails {
   accountNumber: string;
 }
 
-export type HandleScrapingEvent = (
-  eventName: string,
-  budgetTrackingEvent?: BudgetTrackingEvent,
-) => void;
+export type HandleScrapingEvent = (eventName: string, budgetTrackingEvent?: BudgetTrackingEvent) => void;
 
 export enum FETCH_YNAB_ACCOUNT_DATA_STATUS {
   SUCCESS = 'SUCCESS',

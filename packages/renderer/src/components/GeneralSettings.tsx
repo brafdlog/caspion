@@ -33,9 +33,7 @@ function GeneralSettings() {
               <Form.Control
                 className={styles.input}
                 defaultValue={configStore.config?.scraping.numDaysBack}
-                onBlur={(event) =>
-                  configStore.setNumDaysBack(Number(event.target.value))
-                }
+                onBlur={(event) => configStore.setNumDaysBack(Number(event.target.value))}
                 autoFocus
               />
             </Form.Group>
@@ -44,9 +42,7 @@ function GeneralSettings() {
               <Form.Control
                 className={styles.input}
                 defaultValue={configStore.config?.scraping.maxConcurrency}
-                onBlur={(event) =>
-                  configStore.setMaxConcurrency(Number(event.target.value))
-                }
+                onBlur={(event) => configStore.setMaxConcurrency(Number(event.target.value))}
               />
             </Form.Group>
             <Form.Group>
@@ -54,9 +50,7 @@ function GeneralSettings() {
               <Form.Control
                 className={styles.input}
                 defaultValue={configStore.config?.scraping.chromiumPath}
-                onBlur={(event) =>
-                  configStore.setChromiumPath(event.target.value)
-                }
+                onBlur={(event) => configStore.setChromiumPath(event.target.value)}
               />
             </Form.Group>
             <Form.Group>

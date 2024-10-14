@@ -1,24 +1,14 @@
-import {
-  OutputVendorName,
-  type Exporter,
-  type YnabConfig,
-  type GoogleSheetsConfig,
-} from '../../types';
+import { OutputVendorName, type Exporter, type YnabConfig, type GoogleSheetsConfig } from '../../types';
 import EditFileExporter from './EditFileExporter';
 import EditYnabExporter from './EditYnabExporter';
 import EditSheetsExporter from './google-sheets/EditSheetsExporter';
 
 export interface EditExporterProps {
-  handleSave: (
-    exporterConfig: Exporter | YnabConfig | GoogleSheetsConfig,
-  ) => Promise<void>;
+  handleSave: (exporterConfig: Exporter | YnabConfig | GoogleSheetsConfig) => Promise<void>;
   exporter: Exporter;
 }
 
-export default function EditExporter({
-  handleSave,
-  exporter,
-}: EditExporterProps) {
+export default function EditExporter({ handleSave, exporter }: EditExporterProps) {
   const exporterTypeToEditComponent = new Map<string, JSX.Element>();
   exporterTypeToEditComponent.set(
     OutputVendorName.CSV,
@@ -30,17 +20,11 @@ export default function EditExporter({
   );
   exporterTypeToEditComponent.set(
     OutputVendorName.YNAB,
-    <EditYnabExporter
-      exporterConfig={exporter as YnabConfig}
-      handleSave={handleSave}
-    />,
+    <EditYnabExporter exporterConfig={exporter as YnabConfig} handleSave={handleSave} />,
   );
   exporterTypeToEditComponent.set(
     OutputVendorName.GOOGLE_SHEETS,
-    <EditSheetsExporter
-      exporterConfig={exporter as GoogleSheetsConfig}
-      handleSave={handleSave}
-    />,
+    <EditSheetsExporter exporterConfig={exporter as GoogleSheetsConfig} handleSave={handleSave} />,
   );
   return <>{exporterTypeToEditComponent.get(exporter.companyId)}</>;
 }

@@ -83,19 +83,11 @@ function ReportProblemModal({ show, onClose }: ReportProblemModalProps) {
       return;
     }
 
-    const url = createGithubIssueLink(
-      form.title ?? '',
-      form.details ?? '',
-      form.attachedLogs ? (lastLines ?? '') : '',
-    );
+    const url = createGithubIssueLink(form.title ?? '', form.details ?? '', form.attachedLogs ? (lastLines ?? '') : '');
     openExternal(url);
   };
 
-  const createGithubIssueLink = (
-    title: string,
-    details: string,
-    log: string,
-  ) => {
+  const createGithubIssueLink = (title: string, details: string, log: string) => {
     const formattedDetails = details
       ? `
 ## Details
@@ -121,9 +113,7 @@ ${details}`
         `;
 
     return `${
-      `${appInfoStore.appInfo?.repository}/issues/new?` +
-      `title=${encodeURIComponent(title)}` +
-      '&body='
+      `${appInfoStore.appInfo?.repository}/issues/new?` + `title=${encodeURIComponent(title)}` + '&body='
     }${encodeURIComponent(formattedDetails + formattedLog + sysInfo)}`;
   };
 
@@ -179,12 +169,7 @@ ${details}`
         <Modal.Body>
           <Form>
             <Row className="mb-3">
-              <Form.Group
-                as={Col}
-                md="6"
-                className="position-relative"
-                controlId="title"
-              >
+              <Form.Group as={Col} md="6" className="position-relative" controlId="title">
                 <Form.Label>כותרת</Form.Label>
                 <Form.Control
                   type="text"
@@ -195,18 +180,11 @@ ${details}`
                   onChange={(e) => setField('title', e.target.value)}
                   autoFocus
                 />
-                <Form.Control.Feedback type="invalid">
-                  {errors.title}
-                </Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">{errors.title}</Form.Control.Feedback>
                 <Form.Text muted>נא לתאר את הבאג במשפט אחד</Form.Text>
               </Form.Group>
 
-              <Form.Group
-                as={Col}
-                md="6"
-                className="position-relative"
-                controlId="email"
-              >
+              <Form.Group as={Col} md="6" className="position-relative" controlId="email">
                 <Form.Label>דוא&quot;ל</Form.Label>
                 <Form.Control
                   type="text"
@@ -215,13 +193,8 @@ ${details}`
                   aria-describedby="email"
                   onChange={(e) => setField('email', e.target.value)}
                 />
-                <Form.Control.Feedback type="invalid">
-                  {errors.email}
-                </Form.Control.Feedback>
-                <Form.Text muted>
-                  אנחנו זקוקים לכתובת המייל שלך על מנת ליצור איתך קשר במידה
-                  ונשלח דוח
-                </Form.Text>
+                <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
+                <Form.Text muted>אנחנו זקוקים לכתובת המייל שלך על מנת ליצור איתך קשר במידה ונשלח דוח</Form.Text>
               </Form.Group>
             </Row>
             <Form.Control
@@ -256,31 +229,17 @@ ${details}`
               <Button variant="light" onClick={onClose}>
                 סגור
               </Button>
-              <Button
-                variant="dark"
-                name="open-github"
-                type="submit"
-                onClick={openGithub}
-              >
+              <Button variant="dark" name="open-github" type="submit" onClick={openGithub}>
                 פתיחת תקלה ב-Github{' '}
               </Button>
-              <Button
-                variant="dark"
-                name="send-report"
-                type="submit"
-                onClick={sendReport}
-              >
+              <Button variant="dark" name="send-report" type="submit" onClick={sendReport}>
                 שליחת דוח
               </Button>
             </Stack>
           </Form>
         </Modal.Body>
       </Modal>
-      <LogsCanvas
-        show={showLogs}
-        handleClose={() => setShowLogs(false)}
-        lastLines={lastLines}
-      />
+      <LogsCanvas show={showLogs} handleClose={() => setShowLogs(false)} lastLines={lastLines} />
     </>
   );
 }
