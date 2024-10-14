@@ -62,49 +62,11 @@ const createAccountObject = (
 };
 
 const saveConfigIntoFile = (config?: Config) => {
-  if (!config) {
+  if (!config || Object.keys(config).length === 0) {
     console.warn(`Can't save config into file. Config is ${config}`);
     return;
   }
   updateConfig(toJS(config));
-};
-
-const DEFAULT_CONFIG: Config = {
-  scraping: {
-    timeout: 60000,
-    numDaysBack: 40,
-    showBrowser: false,
-    accountsToScrape: [],
-  },
-  outputVendors: {
-    csv: {
-      active: true,
-      options: {
-        filePath: 'transaction.csv',
-      },
-    },
-    json: {
-      active: false,
-      options: {
-        filePath: 'transaction.json',
-      },
-    },
-    ynab: {
-      active: false,
-      options: {
-        accessToken: 'YNAB_ACCESS_TOKEN_GOES_HERE',
-        budgetId: '',
-        accountNumbersToYnabAccountIds: {},
-      },
-    },
-    googleSheets: {
-      active: false,
-      options: {
-        credentials: {},
-        spreadsheetId: '',
-      },
-    },
-  },
 };
 
 export class ConfigStore {
@@ -118,7 +80,7 @@ export class ConfigStore {
     AccountScrapingData
   >;
   constructor() {
-    this.config = DEFAULT_CONFIG;
+    this.config = {} as Config;
     this.accountScrapingData = new Map();
     makeAutoObservable(this);
 

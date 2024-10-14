@@ -2,10 +2,10 @@ import { type Config } from '../commonTypes';
 
 const DEFAULT_CONFIG: Config = {
   scraping: {
-    timeout: 60000,
     numDaysBack: 40,
     showBrowser: false,
     accountsToScrape: [],
+    timeout: 60000,
   },
   outputVendors: {
     csv: {
