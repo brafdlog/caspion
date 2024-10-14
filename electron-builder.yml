@@ -2,6 +2,8 @@ directories:
   output: dist
   buildResources: buildResources
 
+artifactName: '${productName}.${ext}'
+
 files:
   - packages/**/dist/**
 

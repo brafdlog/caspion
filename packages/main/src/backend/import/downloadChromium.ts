@@ -1,10 +1,13 @@
-import { Browser, install } from '@puppeteer/browsers';
+import { Browser, detectBrowserPlatform, install, resolveBuildId } from '@puppeteer/browsers';
+import os from 'os';
 import logger from '/@/logging/logger';
 
 type PuppeteerProgressCallback = (downloadBytes: number, totalBytes: number) => void;
 type PercentCallback = (percent: number) => void;
 
+let isCached = true;
 const getIntegerPercent = (callback: PercentCallback): PuppeteerProgressCallback => {
+  isCached = false;
   let prevPercent = -1;
 
   return (downloadBytes: number, totalBytes: number) => {
@@ -16,8 +19,6 @@ const getIntegerPercent = (callback: PercentCallback): PuppeteerProgressCallback
   };
 };
 
-const revision = '1364960'; // getPuppeteerConfig().chromiumRevision; see https://github.com/puppeteer/puppeteer/issues/8203#issuecomment-1535088987
-
 let downloadProm: ReturnType<typeof downloadChromium> | null = null;
 
 export default async function downloadChromium(installPath: string, onProgress?: PercentCallback): Promise<string> {
@@ -25,14 +26,27 @@ export default async function downloadChromium(installPath: string, onProgress?:
 
   const progressCallback = onProgress && getIntegerPercent(onProgress);
 
+  const platform = detectBrowserPlatform();
+  if (!platform) {
+    throw new Error(`Cannot download a binary for the provided platform: ${os.platform()} (${os.arch()})`);
+  }
+  const buildId = await resolveBuildId(Browser.CHROMIUM, platform, 'latest');
+
+  logger.log(`Browser: ${Browser.CHROMIUM}, Platform: ${platform}, Tag: stable, BuildId: ${buildId}`);
+
   downloadProm = install({
     cacheDir: installPath,
     browser: Browser.CHROMIUM,
-    buildId: revision,
+    buildId,
     downloadProgressCallback: progressCallback,
   }).then(({ executablePath }) => {
     downloadProm = null;
-    logger.log('Chromium downloaded to', executablePath);
+    if (!isCached) {
+      logger.log('Chromium downloaded to', executablePath);
+    } else {
+      logger.log('Chromium cached at', executablePath);
+    }
+    isCached = true;
     return executablePath;
   });
 

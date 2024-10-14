@@ -74,6 +74,7 @@ export async function showSaveDialog() {
 }
 
 export async function quitAndInstall() {
+  console.log('preload invoking quitAndInstall');
   return electron.ipcRenderer.invoke('quitAndInstall');
 }
 

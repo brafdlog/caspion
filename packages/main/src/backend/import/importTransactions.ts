@@ -36,13 +36,13 @@ export async function scrapeFinancialAccountsAndFetchTransactions(
 ) {
   let chromiumPath: string;
 
-  console.log('Scraping financial accounts and fetching transactions');
+  logger.log('Scraping financial accounts and fetching transactions');
 
   if (scrapingConfig.chromiumPath) {
-    console.log('Using provided chromium path', scrapingConfig.chromiumPath);
+    logger.log('Using provided chromium path', scrapingConfig.chromiumPath);
     chromiumPath = scrapingConfig.chromiumPath;
   } else {
-    console.log('Downloading chromium');
+    logger.log('Downloading chromium');
     chromiumPath = await getChrome(userDataPath, (percent) => emitChromeDownload(eventPublisher, percent));
   }
 
