@@ -73,10 +73,7 @@ export class ConfigStore {
   chromeDownloadPercent = 0;
 
   // TODO: move this to a separate store
-  accountScrapingData: Map<
-    CompanyTypes | OutputVendorName,
-    AccountScrapingData
-  >;
+  accountScrapingData: Map<CompanyTypes | OutputVendorName, AccountScrapingData>;
   constructor() {
     this.config = {} as Config;
     this.accountScrapingData = new Map();
