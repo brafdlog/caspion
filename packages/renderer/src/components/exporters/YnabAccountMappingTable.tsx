@@ -6,16 +6,13 @@ import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import cellEditFactory, { Type } from 'react-bootstrap-table2-editor';
 import { type YnabAccountDataType, type YnabConfig } from '../../types';
 
-type AccountNumberToYnabAccountIdMappingObject =
-  YnabConfig['options']['accountNumbersToYnabAccountIds'];
+type AccountNumberToYnabAccountIdMappingObject = YnabConfig['options']['accountNumbersToYnabAccountIds'];
 
 interface YnabAccountMappingTableProps {
   accountNumberToYnabIdMapping: AccountNumberToYnabAccountIdMappingObject;
   ynabAccountData?: YnabAccountDataType;
   budgetId: string;
-  onUpdate: (
-    accountNumberToYnabIdMapping: AccountNumberToYnabAccountIdMappingObject,
-  ) => void;
+  onUpdate: (accountNumberToYnabIdMapping: AccountNumberToYnabAccountIdMappingObject) => void;
 }
 
 type AccountMappingArray = {
@@ -30,10 +27,9 @@ const YnabAccountMappingTable = ({
   ynabAccountData,
   budgetId,
 }: YnabAccountMappingTableProps) => {
-  const [accountMappingArray, setAccountMappingArray] =
-    useState<AccountMappingArray>(
-      accountMappingObjectToArray(accountNumberToYnabIdMapping),
-    );
+  const [accountMappingArray, setAccountMappingArray] = useState<AccountMappingArray>(
+    accountMappingObjectToArray(accountNumberToYnabIdMapping),
+  );
 
   const columns = [
     {
@@ -55,10 +51,7 @@ const YnabAccountMappingTable = ({
         type: Type.SELECT,
         getOptions: () => {
           return ynabAccountData?.ynabAccountData?.accounts
-            .filter(
-              (ynabAccount) =>
-                ynabAccount.active && ynabAccount.budgetId === budgetId,
-            )
+            .filter((ynabAccount) => ynabAccount.active && ynabAccount.budgetId === budgetId)
             .map((ynabAccount) => {
               return {
                 label: ynabAccount.name,
@@ -94,12 +87,7 @@ const YnabAccountMappingTable = ({
 
   return (
     <>
-      <BootstrapTable
-        keyField="index"
-        data={accountMappingArray}
-        columns={columns}
-        cellEdit={cellEdit}
-      />
+      <BootstrapTable keyField="index" data={accountMappingArray} columns={columns} cellEdit={cellEdit} />
       <Button variant="info" onClick={addAccountMapping}>
         +
       </Button>
@@ -110,15 +98,13 @@ const YnabAccountMappingTable = ({
 function accountMappingObjectToArray(
   accountNumbersToYnabAccountIds: AccountNumberToYnabAccountIdMappingObject,
 ): AccountMappingArray {
-  return Object.keys(accountNumbersToYnabAccountIds).map(
-    (accountNumber, index) => {
-      return {
-        index,
-        accountNumber,
-        ynabAccountId: accountNumbersToYnabAccountIds[accountNumber],
-      };
-    },
-  );
+  return Object.keys(accountNumbersToYnabAccountIds).map((accountNumber, index) => {
+    return {
+      index,
+      accountNumber,
+      ynabAccountId: accountNumbersToYnabAccountIds[accountNumber],
+    };
+  });
 }
 
 function accountMappingArrayToObject(accountMappingArray: AccountMappingArray) {

@@ -1,8 +1,4 @@
-import type {
-  LogFunctions,
-  LogLevel,
-  MainErrorHandlerOptions,
-} from 'electron-log';
+import type { LogFunctions, LogLevel, MainErrorHandlerOptions } from 'electron-log';
 import log from 'electron-log/renderer';
 
 const logger = log.scope('renderer');

@@ -14,8 +14,5 @@ const releaseRules = {
 
 export default {
   branches: ['master'],
-  plugins: [
-    ['@semantic-release/commit-analyzer', releaseRules],
-    '@semantic-release/github',
-  ],
+  plugins: [['@semantic-release/commit-analyzer', releaseRules], '@semantic-release/github'],
 };

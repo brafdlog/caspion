@@ -19,42 +19,41 @@ const icons = {
   ...exporterIcons,
 };
 
-const accountIdToDisplayName: Record<CompanyTypes | OutputVendorName, string> =
-  {
-    [CompanyTypes.MAX]: 'Max',
-    [CompanyTypes.AMEX]: 'אמריקן אקספרס',
-    [CompanyTypes.BEINLEUMI]: 'הבינלאומי',
-    [CompanyTypes.HAPOALIM_BE_ONLINE]: 'הפועלים בי אונליין',
-    [CompanyTypes.ISRACARD]: 'ישראכרט',
-    [CompanyTypes.LEUMI_CARD]: 'לאומי קארד',
-    [CompanyTypes.OTSAR_HAHAYAL]: 'אוצר החייל',
-    [CompanyTypes.UNION]: 'איגוד',
-    [CompanyTypes.LEUMI]: 'לאומי',
-    [CompanyTypes.MIZRAHI]: 'מזרחי',
-    [CompanyTypes.HAPOALIM]: 'הפועלים',
-    [CompanyTypes.VISACAL]: 'ויזה כאל',
-    [CompanyTypes.DISCOUNT]: 'דיסקונט',
-    [CompanyTypes.YAHAV]: 'יהב',
-    [CompanyTypes.BEYAHAD_BISHVILHA]: 'ביחד בשבילך',
-    [CompanyTypes.MASSAD]: 'מסד',
-    [CompanyTypes.BEHATSDAA]: 'בהצדעה',
-    [CompanyTypes.MERCANTILE]: 'מרכנתיל',
-    [OutputVendorName.CSV]: 'אקסל',
-    [OutputVendorName.GOOGLE_SHEETS]: 'Google Sheets',
-    [OutputVendorName.YNAB]: 'Ynab',
-    [OutputVendorName.JSON]: 'Json',
-  };
+const accountIdToDisplayName: Record<CompanyTypes | OutputVendorName, string> = {
+  [CompanyTypes.MAX]: 'Max',
+  [CompanyTypes.AMEX]: 'אמריקן אקספרס',
+  [CompanyTypes.BEINLEUMI]: 'הבינלאומי',
+  [CompanyTypes.HAPOALIM_BE_ONLINE]: 'הפועלים בי אונליין',
+  [CompanyTypes.ISRACARD]: 'ישראכרט',
+  [CompanyTypes.LEUMI_CARD]: 'לאומי קארד',
+  [CompanyTypes.OTSAR_HAHAYAL]: 'אוצר החייל',
+  [CompanyTypes.UNION]: 'איגוד',
+  [CompanyTypes.LEUMI]: 'לאומי',
+  [CompanyTypes.MIZRAHI]: 'מזרחי',
+  [CompanyTypes.HAPOALIM]: 'הפועלים',
+  [CompanyTypes.VISACAL]: 'ויזה כאל',
+  [CompanyTypes.DISCOUNT]: 'דיסקונט',
+  [CompanyTypes.YAHAV]: 'יהב',
+  [CompanyTypes.BEYAHAD_BISHVILHA]: 'ביחד בשבילך',
+  [CompanyTypes.MASSAD]: 'מסד',
+  [CompanyTypes.BEHATSDAA]: 'בהצדעה',
+  [CompanyTypes.MERCANTILE]: 'מרכנתיל',
+  [OutputVendorName.CSV]: 'אקסל',
+  [OutputVendorName.GOOGLE_SHEETS]: 'Google Sheets',
+  [OutputVendorName.YNAB]: 'Ynab',
+  [OutputVendorName.JSON]: 'Json',
+};
 
-const accountMetadata: Record<
-  CompanyTypes | OutputVendorName,
-  AccountMetadata
-> = mapValues(accountIdToDisplayName, (displayName, accountId) => {
-  return {
-    companyId: accountId,
-    companyName: displayName,
-    logo: icons[accountId as CompanyTypes | OutputVendorName],
-  };
-});
+const accountMetadata: Record<CompanyTypes | OutputVendorName, AccountMetadata> = mapValues(
+  accountIdToDisplayName,
+  (displayName, accountId) => {
+    return {
+      companyId: accountId,
+      companyName: displayName,
+      logo: icons[accountId as CompanyTypes | OutputVendorName],
+    };
+  },
+);
 
 const CARD_SIX_DIGITS_FIELD = 'card6Digits';
 const USERCODE_FIELD = 'userCode';
@@ -105,27 +104,22 @@ export const LOGIN_FIELD_MIN_LENGTH = {
   [NATIONAL_ID_FIELD]: 9,
 };
 
-export const importers: Account[] = Object.values(CompanyTypes).map(
-  (importerName) => {
-    const { companyId, companyName, logo } = accountMetadata[importerName];
+export const importers: Account[] = Object.values(CompanyTypes).map((importerName) => {
+  const { companyId, companyName, logo } = accountMetadata[importerName];
 
-    const importer: Account = {
-      id: importerName,
-      companyId: companyId as CompanyTypes | OutputVendorName,
-      displayName: companyName,
-      logo,
-      type: AccountType.IMPORTER,
-      active: true,
-      logs: [],
-    };
-    return importer;
-  },
-);
+  const importer: Account = {
+    id: importerName,
+    companyId: companyId as CompanyTypes | OutputVendorName,
+    displayName: companyName,
+    logo,
+    type: AccountType.IMPORTER,
+    active: true,
+    logs: [],
+  };
+  return importer;
+});
 
-export const exporterUIHandlers: Record<
-  OutputVendorName,
-  ExportResultMetadata
-> = {
+export const exporterUIHandlers: Record<OutputVendorName, ExportResultMetadata> = {
   [OutputVendorName.YNAB]: {
     resultType: ExporterResultType.WEBSITE_URL,
     getResultUri(exporter: YnabConfig): string {

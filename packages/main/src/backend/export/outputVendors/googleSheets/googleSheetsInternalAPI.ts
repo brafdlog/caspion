@@ -57,18 +57,12 @@ export const getAllSpreadsheets = async (auth: OAuth2Client) => {
   return response.data.files as Spreadsheet[];
 };
 
-export async function getSheet(
-  spreadsheetId: string,
-  sheetName: string,
-  auth: OAuth2Client,
-) {
+export async function getSheet(spreadsheetId: string, sheetName: string, auth: OAuth2Client) {
   const spreadsheetResponse = await sheets.spreadsheets.get({
     auth,
     spreadsheetId,
   });
-  const sheet = spreadsheetResponse.data.sheets?.find(
-    ({ properties }) => properties?.title === sheetName,
-  );
+  const sheet = spreadsheetResponse.data.sheets?.find(({ properties }) => properties?.title === sheetName);
 
   return sheet;
 }

@@ -5,9 +5,7 @@ import { existsSync, promises as fs } from 'fs';
 import configExample from './defaultConfig';
 import logger from '/@/logging/logger';
 
-export async function getConfig(
-  configPath: string = configFilePath,
-): Promise<Config> {
+export async function getConfig(configPath: string = configFilePath): Promise<Config> {
   const configFromFile = await getConfigFromFile(configPath);
   if (configFromFile) {
     const decrypted = (await decrypt(configFromFile)) as string;
@@ -31,10 +29,7 @@ export async function getConfig(
   return configExample;
 }
 
-export async function updateConfig(
-  configPath: string,
-  configToUpdate: Config,
-): Promise<void> {
+export async function updateConfig(configPath: string, configToUpdate: Config): Promise<void> {
   const stringifiedConfig = JSON.stringify(configToUpdate, null, 2);
   const encryptedConfigStr = await encrypt(stringifiedConfig);
   await fs.writeFile(configPath, encryptedConfigStr);

@@ -1,7 +1,4 @@
-import {
-  BudgetTrackingEventEmitter,
-  type EventPublisher,
-} from '@/backend/eventEmitters/EventEmitter';
+import { BudgetTrackingEventEmitter, type EventPublisher } from '@/backend/eventEmitters/EventEmitter';
 
 interface Logger {
   info: (...params: unknown[]) => void;

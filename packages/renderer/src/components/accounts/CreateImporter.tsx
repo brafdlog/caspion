@@ -11,29 +11,18 @@ interface CreateImporterProps {
   cancel: () => void;
 }
 
-export default function CreateImporter({
-  handleSave,
-  cancel,
-}: CreateImporterProps) {
+export default function CreateImporter({ handleSave, cancel }: CreateImporterProps) {
   const [importerToCreate, setImporterToCreate] = useState<Importer>();
   const handleChooseImporter = (importer: AccountType) =>
     setImporterToCreate({ ...importer, id: uuidv4(), loginFields: {} });
   return (
     <div className={styles.container}>
       {importerToCreate ? (
-        <EditImporter
-          importer={importerToCreate}
-          handleSave={handleSave}
-          handleDelete={cancel}
-        />
+        <EditImporter importer={importerToCreate} handleSave={handleSave} handleDelete={cancel} />
       ) : (
         <div className={styles.accountSelectionWrapper}>
           {importers.map((importer) => (
-            <div
-              key={importer.id}
-              className={styles.accountWrapper}
-              onClick={() => handleChooseImporter(importer)}
-            >
+            <div key={importer.id} className={styles.accountWrapper} onClick={() => handleChooseImporter(importer)}>
               <Account account={importer} />
             </div>
           ))}

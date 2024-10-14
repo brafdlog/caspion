@@ -1,9 +1,5 @@
 import { App } from '@/app-globals';
-import type {
-  LogFunctions,
-  LogLevel,
-  MainErrorHandlerOptions,
-} from 'electron-log';
+import type { LogFunctions, LogLevel, MainErrorHandlerOptions } from 'electron-log';
 import log from 'electron-log/main';
 import fs from 'fs';
 import { EOL } from 'os';
@@ -30,16 +26,12 @@ const onError: MainErrorHandlerOptions['onError'] = ({ error }) => {
 log.errorHandler.startCatching({ onError });
 
 export const getLastLines = (n: number) => {
-  const lines = fs
-    .readFileSync(log.transports.file.getFile().path)
-    .toString()
-    .split(EOL);
+  const lines = fs.readFileSync(log.transports.file.getFile().path).toString().split(EOL);
   const lastLines = lines.slice(lines.length - n);
   return lastLines.join(EOL);
 };
 
-export const getLogsFolder = () =>
-  path.dirname(log.transports.file.getFile().path);
+export const getLogsFolder = () => path.dirname(log.transports.file.getFile().path);
 
 logger.info(`Logs folder: ${getLogsFolder()}`);
 
