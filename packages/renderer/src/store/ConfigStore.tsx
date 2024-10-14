@@ -3,19 +3,19 @@ import { autorun, makeAutoObservable, toJS } from 'mobx';
 import { createContext, useContext } from 'react';
 import accountMetadata, { exporterUIHandlers } from '../accountMetadata';
 import {
-  AccountStatus,
-  AccountType,
-  ExporterResultType,
   type Account,
+  AccountStatus,
   type AccountToScrapeConfig,
+  AccountType,
   type BudgetTrackingEvent,
   type CompanyTypes,
   type Config,
+  type DownloadChromeEvent,
   type Exporter,
+  ExporterResultType,
   type Importer,
   type Log,
   type OutputVendorName,
-  type DownloadChromeEvent,
 } from '../types';
 
 interface AccountScrapingData {
@@ -60,7 +60,7 @@ const createAccountObject = (
 };
 
 const saveConfigIntoFile = (config?: Config) => {
-  if (!config) {
+  if (!config || Object.keys(config).length === 0) {
     console.warn(`Can't save config into file. Config is ${config}`);
     return;
   }
@@ -68,14 +68,14 @@ const saveConfigIntoFile = (config?: Config) => {
 };
 
 export class ConfigStore {
-  config: Config = {} as Config;
+  config: Config;
 
   chromeDownloadPercent = 0;
 
   // TODO: move this to a separate store
   accountScrapingData: Map<CompanyTypes | OutputVendorName, AccountScrapingData>;
-
   constructor() {
+    this.config = {} as Config;
     this.accountScrapingData = new Map();
     makeAutoObservable(this);
 
