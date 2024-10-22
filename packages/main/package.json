@@ -9,20 +9,33 @@
     "build": "vite build",
     "test": "vitest run",
     "lint": "eslint . --ext .ts",
+    "lint:fix": "yarn lint --fix",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@sentry/electron": "^5.6.0",
+    "bottleneck": "^2.19.5",
+    "csv-parse": "^5.5.6",
+    "csv-stringify": "^6.5.1",
     "electron": "30.0.9",
+    "electron-google-oauth2": "^3.1.0",
+    "electron-log": "^5.2.0",
     "electron-updater": "^4.6.5",
-    "keytar": "^7.7.0"
+    "emittery": "^1.0.3",
+    "googleapis": "^144.0.0",
+    "israeli-bank-scrapers-core": "^5.2.0",
+    "keytar": "^7.7.0",
+    "moment": "^2.30.1",
+    "node-machine-id": "^1.1.12",
+    "ynab": "^1.19.0"
   },
   "devDependencies": {
     "@types/node": "20.14.1",
+    "@typescript-eslint/eslint-plugin": "7.12.0",
+    "@typescript-eslint/parser": "^7.12.0",
+    "eslint": "8.57.0",
     "typescript": "5.4.5",
     "vite": "5.2.14",
-    "vitest": "^2.1.1",
-    "eslint": "8.57.0",
-    "@typescript-eslint/eslint-plugin": "7.12.0",
-    "@typescript-eslint/parser": "^7.12.0"
+    "vitest": "^2.1.1"
   }
 }

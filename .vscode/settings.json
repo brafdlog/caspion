@@ -1,0 +1,3 @@
+{
+  "eslint.workingDirectories": ["./packages/main", "./packages/renderer", "./packages/preload"]
+}

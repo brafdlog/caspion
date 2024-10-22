@@ -1,7 +1,19 @@
 import { resolve, sep } from 'path';
 
+const fileNameToPackageName = (filename) =>
+  filename.replace(resolve(process.cwd(), 'packages') + sep, '').split(sep)[0];
+
 export default {
-  '*.{js,mjs,cjs,ts,mts,cts,tsx}': ['eslint --cache --fix', 'prettier --write'],
+  '*.{js,mjs,cjs,ts,mts,cts,tsx}': ({ filenames }) => {
+    const packages = new Set(filenames.map(fileNameToPackageName));
+    if (packages.has('')) {
+      return ['yarn lint:fix --cache', 'yarn format'];
+    }
+    return [...packages].flatMap((p) => [
+      `yarn workspace @caspion/${p} lint:fix --cache`,
+      `yarn workspace @caspion/${p} format`,
+    ]);
+  },
 
   /**
    * Run typechecking if any type-sensitive files or project dependencies was changed
@@ -15,8 +27,6 @@ export default {
     }
 
     // else run type checking for staged packages
-    const fileNameToPackageName = (filename) =>
-      filename.replace(resolve(process.cwd(), 'packages') + sep, '').split(sep)[0];
-    return [...new Set(filenames.map(fileNameToPackageName))].map((p) => `yarn typecheck:${p}`);
+    return [...new Set(filenames.map(fileNameToPackageName))].map((p) => `yarn workspace @caspion/${p} typecheck`);
   },
 };
