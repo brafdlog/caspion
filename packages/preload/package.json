@@ -1,0 +1,24 @@
+{
+  "name": "@caspion/preload",
+  "version": "1.0.0",
+  "main": "dist/index.mjs",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "test": "vitest run",
+    "lint": "eslint . --ext .ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "20.14.1",
+    "typescript": "5.4.5",
+    "vite": "5.2.14",
+    "vitest": "^2.1.1",
+    "eslint": "8.57.0",
+    "@typescript-eslint/eslint-plugin": "7.12.0",
+    "@typescript-eslint/parser": "^7.12.0"
+  }
+}
