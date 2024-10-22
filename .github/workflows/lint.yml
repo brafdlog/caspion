@@ -2,17 +2,6 @@ name: Lint
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - '**.js'
-      - '**.mjs'
-      - '**.cjs'
-      - '**.jsx'
-      - '**.ts'
-      - '**.mts'
-      - '**.cts'
-      - '**.tsx'
-      - '**.vue'
   pull_request:
     paths:
       - '**.js'
