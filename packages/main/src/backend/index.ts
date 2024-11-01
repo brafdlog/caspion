@@ -5,13 +5,10 @@ import moment from 'moment';
 import * as configManager from './configManager/configManager';
 import * as Events from './eventEmitters/EventEmitter';
 import outputVendors from './export/outputVendors';
-import * as bankScraper from './import/bankScraper';
 import logger from '../logging/logger';
 
 export { CompanyTypes } from 'israeli-bank-scrapers-core';
 export { Events, configManager, outputVendors };
-
-export const { inputVendors } = bankScraper;
 
 let intervalId: NodeJS.Timeout | null = null;
 
@@ -50,14 +47,12 @@ export async function scrapeAndUpdateOutputVendors(config: Config, optionalEvent
     eventPublisher,
   );
   try {
-    const executionResult = await createTransactionsInExternalVendors(
+    return await createTransactionsInExternalVendors(
       config.outputVendors,
       companyIdToTransactions,
       startDate,
       eventPublisher,
     );
-
-    return executionResult;
   } catch (e) {
     logger.error('Failed to create transactions in external vendors', e);
     await eventPublisher.emit(
