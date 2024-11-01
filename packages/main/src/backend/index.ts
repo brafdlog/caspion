@@ -13,6 +13,28 @@ export { Events, configManager, outputVendors };
 
 export const { inputVendors } = bankScraper;
 
+let intervalId: NodeJS.Timeout | null = null;
+
+export async function scrapePeriodicallyIfNeeded(config: Config, optionalEventPublisher?: Events.EventPublisher) {
+  const hoursInterval = config.scraping.periodicScrapingIntervalHours;
+  optionalEventPublisher = optionalEventPublisher ?? new Events.BudgetTrackingEventEmitter();
+
+  stopPeriodicScraping();
+
+  if(hoursInterval && hoursInterval > 0) {
+    await optionalEventPublisher.emit(Events.EventNames.LOG, { message: `Setting up periodic scraping every ${hoursInterval} minutes` });
+    intervalId = setInterval(async () => {
+      await scrapeAndUpdateOutputVendors(config, optionalEventPublisher);
+    }, hoursInterval * 1000 * 60 * 60);
+  }
+}
+
+export function stopPeriodicScraping() {
+  if (intervalId) {
+    clearInterval(intervalId);
+  }
+}
+
 export async function scrapeAndUpdateOutputVendors(config: Config, optionalEventPublisher?: Events.EventPublisher) {
   const eventPublisher = optionalEventPublisher ?? new Events.BudgetTrackingEventEmitter();
 

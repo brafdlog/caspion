@@ -224,6 +224,10 @@ export class ConfigStore {
   async setChromiumPath(chromiumPath?: string) {
     this.config.scraping.chromiumPath = chromiumPath;
   }
+
+  setPeriodicScrapingIntervalHours(interval?: number) {
+    this.config.scraping.periodicScrapingIntervalHours = interval;
+  }
 }
 
 export const configStore = new ConfigStore();
