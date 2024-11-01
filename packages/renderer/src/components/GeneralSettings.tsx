@@ -19,7 +19,7 @@ function GeneralSettings() {
 
   const handlePeriodicScrapingIntervalHoursChanged = (interval: string) => {
     configStore.setPeriodicScrapingIntervalHours(Number(interval));
-  }
+  };
 
   return (
     <div className={styles.container}>
