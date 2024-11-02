@@ -33,7 +33,7 @@ const functions: Record<string, Listener> = {
   updateConfig: updateConfigHandler as Listener<void>,
   getYnabAccountData,
   getLogsInfo: getLogsInfoHandler,
-  stopPeriodicScraping: stopPeriodicScraping,
+  stopPeriodicScraping,
   getAppInfo: async () => {
     return {
       sourceCommitShort: import.meta.env.VITE_SOURCE_COMMIT_SHORT,

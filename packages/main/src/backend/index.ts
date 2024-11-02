@@ -18,11 +18,16 @@ export async function scrapePeriodicallyIfNeeded(config: Config, optionalEventPu
 
   stopPeriodicScraping();
 
-  if(hoursInterval && hoursInterval > 0) {
-    await optionalEventPublisher.emit(Events.EventNames.LOG, { message: `Setting up periodic scraping every ${hoursInterval} minutes` });
-    intervalId = setInterval(async () => {
-      await scrapeAndUpdateOutputVendors(config, optionalEventPublisher);
-    }, hoursInterval * 1000 * 60 * 60);
+  if (hoursInterval) {
+    await optionalEventPublisher.emit(Events.EventNames.LOG, {
+      message: `Setting up periodic scraping every ${hoursInterval} hours`,
+    });
+    intervalId = setInterval(
+      async () => {
+        await scrapeAndUpdateOutputVendors(config, optionalEventPublisher);
+      },
+      hoursInterval * 1000 * 60 * 60,
+    );
   }
 }
 
