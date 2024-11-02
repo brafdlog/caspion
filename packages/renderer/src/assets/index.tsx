@@ -21,6 +21,7 @@ import otsarHahayal from './importers/otsarHahayal.jpeg';
 import hapoalim from './importers/poalim.jpeg';
 import visaCal from './importers/visa-cal.jpeg';
 import yahav from './importers/yahavLogo.jpg';
+import oneZero from './importers/oneZero.jpeg';
 
 export const importerIcons = {
   discount,
@@ -41,6 +42,7 @@ export const importerIcons = {
   beyahadBishvilha,
   behatsdaa,
   mercantile,
+  oneZero,
 };
 
 export const exporterIcons = {
