@@ -22,7 +22,6 @@
     "test:preload": "vitest run -r packages/preload --passWithNoTests",
     "test:renderer": "vitest run -r packages/renderer --passWithNoTests",
     "watch": "node scripts/watch.js",
-    "watch:debug": "node scripts/watch.js --inspect-brk",
     "lint": "eslint . --ext js,mjs,cjs,ts,mts,cts,tsx",
     "lint:fix": "yarn lint --fix",
     "typecheck:main": "tsc --noEmit -p packages/main/tsconfig.json",
