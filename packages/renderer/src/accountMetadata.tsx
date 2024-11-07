@@ -38,6 +38,7 @@ const accountIdToDisplayName: Record<CompanyTypes | OutputVendorName, string> = 
   [CompanyTypes.MASSAD]: 'מסד',
   [CompanyTypes.BEHATSDAA]: 'בהצדעה',
   [CompanyTypes.MERCANTILE]: 'מרכנתיל',
+  [CompanyTypes.ONE_ZERO]: 'ONE ZERO',
   [OutputVendorName.CSV]: 'אקסל',
   [OutputVendorName.GOOGLE_SHEETS]: 'Google Sheets',
   [OutputVendorName.YNAB]: 'Ynab',
@@ -62,6 +63,8 @@ const PASSWORD_FIELD = 'password';
 const NUM_FIELD = 'num';
 const ID_FIELD = 'id';
 const NATIONAL_ID_FIELD = 'nationalID';
+const EMAIL_FIELD = 'email';
+const PHONE_FIELD = 'phoneNumber';
 
 export const IMPORTERS_LOGIN_FIELDS = {
   [CompanyTypes.HAPOALIM]: [USERCODE_FIELD, PASSWORD_FIELD],
@@ -82,6 +85,7 @@ export const IMPORTERS_LOGIN_FIELDS = {
   [CompanyTypes.BEYAHAD_BISHVILHA]: [USERNAME_FIELD, PASSWORD_FIELD],
   [CompanyTypes.BEHATSDAA]: [ID_FIELD, PASSWORD_FIELD],
   [CompanyTypes.MERCANTILE]: [ID_FIELD, PASSWORD_FIELD, NUM_FIELD],
+  [CompanyTypes.ONE_ZERO]: [EMAIL_FIELD, PASSWORD_FIELD, PHONE_FIELD],
 };
 
 export const LOGIN_FIELD_DISPLAY_NAMES = {
@@ -92,6 +96,8 @@ export const LOGIN_FIELD_DISPLAY_NAMES = {
   [NUM_FIELD]: 'קוד מזהה',
   [CARD_SIX_DIGITS_FIELD]: '6 ספרות של הכרטיס',
   [NATIONAL_ID_FIELD]: 'תעודת זהות',
+  [EMAIL_FIELD]: 'אימייל',
+  [PHONE_FIELD]: 'טלפון',
 };
 
 export const LOGIN_FIELD_MIN_LENGTH = {
@@ -102,6 +108,8 @@ export const LOGIN_FIELD_MIN_LENGTH = {
   [NUM_FIELD]: 4,
   [CARD_SIX_DIGITS_FIELD]: 6,
   [NATIONAL_ID_FIELD]: 9,
+  [EMAIL_FIELD]: 5,
+  [PHONE_FIELD]: 12,
 };
 
 export const importers: Account[] = Object.values(CompanyTypes).map((importerName) => {
