@@ -13,7 +13,7 @@ export { Events, configManager, outputVendors };
 
 let intervalId: NodeJS.Timeout | null = null;
 
-export async function scrapePeriodicallyIfNeeded(config: Config, optionalEventPublisher?: Events.EventPublisher) {
+export async function setPeriodicScrapingIfNeeded(config: Config, optionalEventPublisher?: Events.EventPublisher) {
   const hoursInterval = config.scraping.periodicScrapingIntervalHours;
   optionalEventPublisher = optionalEventPublisher ?? new Events.BudgetTrackingEventEmitter();
 
@@ -40,9 +40,6 @@ export function stopPeriodicScraping() {
 
 export async function scrapeAndUpdateOutputVendors(config: Config, optionalEventPublisher?: Events.EventPublisher) {
   const eventPublisher = optionalEventPublisher ?? new Events.BudgetTrackingEventEmitter();
-  await eventPublisher.emit(EventNames.LOG, {
-    message: 'Starting to scrape',
-  });
 
   const startDate = moment().subtract(config.scraping.numDaysBack, 'days').startOf('day').toDate();
 

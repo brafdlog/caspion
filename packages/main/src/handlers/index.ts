@@ -1,5 +1,5 @@
 import { App } from '@/app-globals';
-import { scrapeAndUpdateOutputVendors, scrapePeriodicallyIfNeeded, stopPeriodicScraping } from '@/backend';
+import { scrapeAndUpdateOutputVendors, setPeriodicScrapingIfNeeded, stopPeriodicScraping } from '@/backend';
 import { type Credentials } from '@/backend/commonTypes';
 import { getConfig } from '@/backend/configManager/configManager';
 import { BudgetTrackingEventEmitter } from '@/backend/eventEmitters/EventEmitter';
@@ -69,7 +69,7 @@ export const registerHandlers = () => {
     const config = await getConfig();
     const eventSubscriber = new BudgetTrackingEventEmitter();
     scrapeAndUpdateOutputVendors(config, eventSubscriber);
-    scrapePeriodicallyIfNeeded(config, eventSubscriber);
+    setPeriodicScrapingIfNeeded(config, eventSubscriber);
     eventSubscriber.onAny((eventName, eventData) => {
       event.reply('scrapingProgress', JSON.stringify({ eventName, eventData }));
     });
