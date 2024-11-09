@@ -68,11 +68,11 @@ export const registerHandlers = () => {
   ipcMain.on('scrape', async (event: IpcMainEvent) => {
     const config = await getConfig();
     const eventSubscriber = new BudgetTrackingEventEmitter();
-    scrapeAndUpdateOutputVendors(config, eventSubscriber);
-    setPeriodicScrapingIfNeeded(config, eventSubscriber);
     eventSubscriber.onAny((eventName, eventData) => {
       event.reply('scrapingProgress', JSON.stringify({ eventName, eventData }));
     });
+    await setPeriodicScrapingIfNeeded(config, eventSubscriber);
+    await scrapeAndUpdateOutputVendors(config, eventSubscriber);
   });
 
   ipcMain.removeAllListeners('getYnabAccountData');
