@@ -4,6 +4,7 @@ import { scrapeFinancialAccountsAndFetchTransactions } from '@/backend/import/im
 import moment from 'moment';
 import * as configManager from './configManager/configManager';
 import * as Events from './eventEmitters/EventEmitter';
+import { EventNames } from './eventEmitters/EventEmitter';
 import outputVendors from './export/outputVendors';
 import logger from '../logging/logger';
 
@@ -19,7 +20,7 @@ export async function scrapePeriodicallyIfNeeded(config: Config, optionalEventPu
   stopPeriodicScraping();
 
   if (hoursInterval) {
-    await optionalEventPublisher.emit(Events.EventNames.LOG, {
+    await optionalEventPublisher.emit(EventNames.LOG, {
       message: `Setting up periodic scraping every ${hoursInterval} hours`,
     });
     intervalId = setInterval(
@@ -39,12 +40,18 @@ export function stopPeriodicScraping() {
 
 export async function scrapeAndUpdateOutputVendors(config: Config, optionalEventPublisher?: Events.EventPublisher) {
   const eventPublisher = optionalEventPublisher ?? new Events.BudgetTrackingEventEmitter();
+  await eventPublisher.emit(EventNames.LOG, {
+    message: 'Starting to scrape',
+  });
 
   const startDate = moment().subtract(config.scraping.numDaysBack, 'days').startOf('day').toDate();
 
-  await eventPublisher.emit(Events.EventNames.IMPORT_PROCESS_START, {
-    message: `Starting to scrape from ${startDate} to today`,
-  });
+  const nextAutomaticScrapeDate : Date | null = config.scraping.periodicScrapingIntervalHours ? moment().add(config.scraping.periodicScrapingIntervalHours, 'hours').toDate() : null;
+
+  await eventPublisher.emit(EventNames.IMPORT_PROCESS_START, new Events.ImportStartEvent(
+    `Starting to scrape from ${startDate} to today`,
+    nextAutomaticScrapeDate,
+  ));
 
   const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(
     config.scraping,
@@ -61,7 +68,7 @@ export async function scrapeAndUpdateOutputVendors(config: Config, optionalEvent
   } catch (e) {
     logger.error('Failed to create transactions in external vendors', e);
     await eventPublisher.emit(
-      Events.EventNames.GENERAL_ERROR,
+      EventNames.GENERAL_ERROR,
       new Events.BudgetTrackingEvent({
         message: (e as Error).message,
         error: e as Error,

@@ -115,6 +115,15 @@ export class ExporterEndEvent extends ExporterEvent {
   }
 }
 
+export class ImportStartEvent extends BudgetTrackingEvent {
+  nextAutomaticScrapeDate?: Date | null;
+
+  constructor(message: string, nextAutomaticScrapeDate?: Date | null) {
+    super({ message });
+    this.nextAutomaticScrapeDate = nextAutomaticScrapeDate;
+  }
+}
+
 export class DownalodChromeEvent extends BudgetTrackingEvent {
   percent: number;
 
@@ -125,7 +134,7 @@ export class DownalodChromeEvent extends BudgetTrackingEvent {
 }
 
 export interface EventDataMap {
-  [EventNames.IMPORT_PROCESS_START]: BudgetTrackingEvent;
+  [EventNames.IMPORT_PROCESS_START]: ImportStartEvent;
   [EventNames.DOWNLOAD_CHROME]: DownalodChromeEvent;
   [EventNames.IMPORTER_START]: ImporterEvent;
   [EventNames.IMPORTER_PROGRESS]: ImporterEvent;
