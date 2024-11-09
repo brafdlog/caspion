@@ -17,7 +17,7 @@ import {
   type Log,
   type OutputVendorName,
 } from '../types';
-import { ImportStartEvent } from '../../../main/src/backend/eventEmitters/EventEmitter';
+import { type ImportStartEvent } from '../../../main/src/backend/eventEmitters/EventEmitter';
 
 interface AccountScrapingData {
   logs: Log[];
