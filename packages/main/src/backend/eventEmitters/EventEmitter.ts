@@ -1,7 +1,7 @@
 // eslint-disable-next-line max-classes-per-file
-import { type EnrichedTransaction, type OutputVendorName } from '@/backend/commonTypes';
 import Emittery from 'emittery';
 import { type CompanyTypes } from 'israeli-bank-scrapers-core';
+import type { EnrichedTransaction, OutputVendorName } from '../commonTypes';
 
 export enum EventNames {
   IMPORT_PROCESS_START = 'IMPORT_PROCESS_START',
