@@ -1,5 +1,5 @@
 import { App } from '@/app-globals';
-import { scrapeAndUpdateOutputVendors } from '@/backend';
+import { scrapeAndUpdateOutputVendors, setPeriodicScrapingIfNeeded, stopPeriodicScraping } from '@/backend';
 import { type Credentials } from '@/backend/commonTypes';
 import { getConfig } from '@/backend/configManager/configManager';
 import { BudgetTrackingEventEmitter } from '@/backend/eventEmitters/EventEmitter';
@@ -33,6 +33,7 @@ const functions: Record<string, Listener> = {
   updateConfig: updateConfigHandler as Listener<void>,
   getYnabAccountData,
   getLogsInfo: getLogsInfoHandler,
+  stopPeriodicScraping,
   getAppInfo: async () => {
     return {
       sourceCommitShort: import.meta.env.VITE_SOURCE_COMMIT_SHORT,
@@ -67,10 +68,11 @@ export const registerHandlers = () => {
   ipcMain.on('scrape', async (event: IpcMainEvent) => {
     const config = await getConfig();
     const eventSubscriber = new BudgetTrackingEventEmitter();
-    scrapeAndUpdateOutputVendors(config, eventSubscriber);
     eventSubscriber.onAny((eventName, eventData) => {
       event.reply('scrapingProgress', JSON.stringify({ eventName, eventData }));
     });
+    await setPeriodicScrapingIfNeeded(config, eventSubscriber);
+    await scrapeAndUpdateOutputVendors(config, eventSubscriber);
   });
 
   ipcMain.removeAllListeners('getYnabAccountData');

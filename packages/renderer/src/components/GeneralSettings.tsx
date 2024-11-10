@@ -17,6 +17,10 @@ function GeneralSettings() {
     }
   };
 
+  const handlePeriodicScrapingIntervalHoursChanged = (interval: string) => {
+    configStore.setPeriodicScrapingIntervalHours(Number(interval));
+  };
+
   return (
     <div className={styles.container}>
       <Card className={styles.card}>
@@ -59,6 +63,14 @@ function GeneralSettings() {
                 className={styles.input}
                 defaultValue={configStore.config?.scraping.timeout}
                 onBlur={(event) => handleTimeoutChanged(event.target.value)}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>לרוץ אוטומטית כל X שעות</Form.Label>
+              <Form.Control
+                className={styles.input}
+                defaultValue={configStore.config?.scraping.periodicScrapingIntervalHours}
+                onBlur={(event) => handlePeriodicScrapingIntervalHoursChanged(event.target.value)}
               />
             </Form.Group>
           </Form>

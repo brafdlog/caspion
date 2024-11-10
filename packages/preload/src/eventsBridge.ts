@@ -37,8 +37,8 @@ export async function scrape(handleScrapingEvent: HandleScrapingEvent) {
   }
 }
 
-export async function toggleUIVersion() {
-  await electron.ipcRenderer.send('toggleUiVersion');
+export async function stopPeriodicScraping() {
+  return electron.ipcRenderer.invoke('stopPeriodicScraping');
 }
 
 export async function openExternal(url: string) {
