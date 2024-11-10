@@ -43,12 +43,14 @@ export async function scrapeAndUpdateOutputVendors(config: Config, optionalEvent
 
   const startDate = moment().subtract(config.scraping.numDaysBack, 'days').startOf('day').toDate();
 
-  const nextAutomaticScrapeDate : Date | null = config.scraping.periodicScrapingIntervalHours ? moment().add(config.scraping.periodicScrapingIntervalHours, 'hours').toDate() : null;
+  const nextAutomaticScrapeDate: Date | null = config.scraping.periodicScrapingIntervalHours
+    ? moment().add(config.scraping.periodicScrapingIntervalHours, 'hours').toDate()
+    : null;
 
-  await eventPublisher.emit(EventNames.IMPORT_PROCESS_START, new Events.ImportStartEvent(
-    `Starting to scrape from ${startDate} to today`,
-    nextAutomaticScrapeDate,
-  ));
+  await eventPublisher.emit(
+    EventNames.IMPORT_PROCESS_START,
+    new Events.ImportStartEvent(`Starting to scrape from ${startDate} to today`, nextAutomaticScrapeDate),
+  );
 
   const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(
     config.scraping,

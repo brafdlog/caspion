@@ -68,8 +68,12 @@ const Body = () => {
     closeModal();
   };
 
-  const shouldShowNextRunTime = !!(configStore.nextAutomaticScrapeDate && Number(configStore.config.scraping.periodicScrapingIntervalHours));
-  const nextRunTimeString = configStore.nextAutomaticScrapeDate ? new Date(configStore.nextAutomaticScrapeDate).toLocaleTimeString() : null;
+  const shouldShowNextRunTime = !!(
+    configStore.nextAutomaticScrapeDate && Number(configStore.config.scraping.periodicScrapingIntervalHours)
+  );
+  const nextRunTimeString = configStore.nextAutomaticScrapeDate
+    ? new Date(configStore.nextAutomaticScrapeDate).toLocaleTimeString()
+    : null;
 
   return (
     <Container className={styles.root}>
@@ -127,12 +131,8 @@ const Body = () => {
         <Button variant="dark" size="lg" onClick={cleanAndScrape} disabled={configStore.isScraping}>
           הפעל
         </Button>
-        {shouldShowNextRunTime &&
-          <h6>
-            ריצה הבאה: {nextRunTimeString}
-          </h6>
-        }
-      <Image
+        {shouldShowNextRunTime && <h6>ריצה הבאה: {nextRunTimeString}</h6>}
+        <Image
           src={settingsIcon}
           onClick={() => showModal({} as Account, ModalStatus.GENERAL_SETTINGS)}
           className={styles.pointer}
