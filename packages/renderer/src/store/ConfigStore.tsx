@@ -71,6 +71,7 @@ export class ConfigStore {
   config: Config;
 
   chromeDownloadPercent = 0;
+  getOtp: boolean | undefined = undefined;
 
   // TODO: move this to a separate store
   accountScrapingData: Map<CompanyTypes | OutputVendorName, AccountScrapingData>;
@@ -154,6 +155,9 @@ export class ConfigStore {
   handleScrapingEvent(eventName: string, budgetTrackingEvent?: BudgetTrackingEvent) {
     if (eventName === 'DOWNLOAD_CHROME') {
       this.updateChromeDownloadPercent((budgetTrackingEvent as DownloadChromeEvent)?.percent);
+    }
+    if (eventName == 'GET_OTP') {
+      this.getOtp = true;
     }
     if (budgetTrackingEvent) {
       const accountId = budgetTrackingEvent.vendorId;
