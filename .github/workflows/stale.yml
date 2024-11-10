@@ -15,3 +15,5 @@ jobs:
           stale-issue-message: 'Issue has been marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions.'
           stale-pr-message: 'Pull request has been marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions.'
           close-issue-reason: 'not_planned'
+          exempt-issue-labels: 'not-stale'
+          exempt-pr-labels: 'not-stale'
