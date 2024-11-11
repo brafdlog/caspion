@@ -74,14 +74,14 @@ describe('ynab', () => {
       memo: '',
       accountNumber: '',
       hash: '',
-      type: TransactionTypes[TransactionTypes.Normal],
+      type: TransactionTypes.Normal,
       date: '2022-01-01',
       identifier: '',
       processedDate: '',
       originalAmount: 1000,
       originalCurrency: '',
       chargedAmount: 1,
-      status: TransactionStatuses[TransactionStatuses.Completed],
+      status: TransactionStatuses.Completed,
     };
 
     test.each([

@@ -12,6 +12,5 @@
     "baseUrl": ".",
     "esModuleInterop": true
   },
-  "include": ["src/**/*.ts", "../../types/**/*.d.ts"],
-  "exclude": ["**/*.spec.ts", "**/*.test.ts"]
+  "include": ["src/**/*.ts", "tests/**/*", "../../types/**/*.d.ts", ".eslintrc.cjs"]
 }

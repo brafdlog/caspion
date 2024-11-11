@@ -8,7 +8,7 @@ import logger from '/@/logging/logger';
 export async function getConfig(configPath: string = configFilePath): Promise<Config> {
   const configFromFile = await getConfigFromFile(configPath);
   if (configFromFile) {
-    const decrypted = (await decrypt(configFromFile)) as string;
+    const decrypted = (await decrypt(configFromFile))!;
     if (!decrypted) {
       logger.log('No config file found, returning default config');
       return configExample;

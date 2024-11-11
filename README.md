@@ -161,6 +161,32 @@ It means that after you published a new release, from the Github interface, you 
 
 </details>
 
+### Importing and Using Packages
+
+#### JavaScript Example
+
+```javascript
+import { someFunction } from '@caspion/main';
+import { anotherFunction } from '@caspion/preload';
+import { yetAnotherFunction } from '@caspion/renderer';
+
+someFunction();
+anotherFunction();
+yetAnotherFunction();
+```
+
+#### TypeScript Example
+
+```typescript
+import { someFunction } from '@caspion/main';
+import { anotherFunction } from '@caspion/preload';
+import { yetAnotherFunction } from '@caspion/renderer';
+
+someFunction();
+anotherFunction();
+yetAnotherFunction();
+```
+
 #### Disclaimer
 
 Providing your financial account credentials to software is not risk free. We will do our best to protect your credentials, but we take no responsibility for any possible damages. If you want to use this we suggest you ask your financial institution for credentials for a user that has only read access to the relevant account and use those credentials to reduce the potential risk.
