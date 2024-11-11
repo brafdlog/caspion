@@ -92,6 +92,6 @@ export async function createSpreadsheet(spreadsheetId: string, credentials: Cred
   return electron.ipcRenderer.invoke('createSpreadsheet', spreadsheetId, credentials);
 }
 
-export async function sendUserInput(input: string) {
-  await electron.ipcRenderer.send('get-otp-response', input);
+export function sendOTPResponse(input: string) {
+  electron.ipcRenderer.send('get-otp-response', input);
 }

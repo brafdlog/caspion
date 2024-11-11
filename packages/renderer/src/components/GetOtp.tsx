@@ -3,19 +3,18 @@ import styles from './GetOtp.module.css';
 import { Button, FormControl, Modal } from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
 import { useConfigStore } from '/@/store/ConfigStore';
-import { sendUserInput } from '#preload';
-import { ModalStatus } from '/@/types';
+import { sendOTPResponse } from '#preload';
 
 const GetOtp = () => {
   const configStore = useConfigStore();
-  const [modalStatus, setModalStatus] = useState<ModalStatus>(ModalStatus.HIDDEN);
+  const [modalStatus, setModalStatus] = useState<boolean>(false);
   const [inputText, setInputText] = useState('');
 
-  const closeModal = () => setModalStatus(ModalStatus.HIDDEN);
+  const closeModal = () => setModalStatus(false);
 
   useEffect(() => {
     if (configStore.getOtp !== undefined) {
-      setModalStatus(configStore.getOtp ? ModalStatus.OTP : ModalStatus.HIDDEN);
+      setModalStatus(configStore.getOtp);
     }
   }, [configStore.getOtp]);
 
@@ -26,7 +25,7 @@ const GetOtp = () => {
   const sendInput = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    await sendUserInput(inputText);
+    sendOTPResponse(inputText);
     closeModal();
   };
 
@@ -35,7 +34,7 @@ const GetOtp = () => {
   }
 
   return (
-    <Modal show={modalStatus !== ModalStatus.HIDDEN} onHide={closeModal}>
+    <Modal show={modalStatus} onHide={closeModal}>
       <Modal.Header closeButton className={styles.modalHeader}></Modal.Header>
       <Modal.Body>
         <FormControl

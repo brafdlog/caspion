@@ -208,7 +208,6 @@ export enum ModalStatus {
   HIDDEN,
   NEW_SCRAPER,
   GENERAL_SETTINGS,
-  OTP,
 }
 
 export enum ExporterResultType {
