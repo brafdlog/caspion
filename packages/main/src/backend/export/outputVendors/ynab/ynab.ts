@@ -16,6 +16,7 @@ import * as ynab from 'ynab';
 const YNAB_DATE_FORMAT = 'YYYY-MM-DD';
 const NOW = moment();
 const MIN_YNAB_ACCESS_TOKEN_LENGTH = 43;
+const MAX_YNAB_IMPORT_ID_LENGTH = 36;
 
 const categoriesMap = new Map<string, Pick<ynab.Category, 'id' | 'name' | 'category_group_id'>>();
 const transactionsFromYnab = new Map<Date, ynab.TransactionDetail[]>();
@@ -118,7 +119,7 @@ function convertTransactionToYnabFormat(originalTransaction: EnrichedTransaction
     category_id: getYnabCategoryIdFromCategoryName(originalTransaction.category),
     memo: originalTransaction.memo,
     cleared: ynab.SaveTransaction.ClearedEnum.Cleared,
-    import_id: buildImportId(originalTransaction),
+    import_id: buildImportId(originalTransaction), // [date][amount][description]
     // "approved": true,
     // "flag_color": "red",
     // "import_id": buildImportId(originalTransaction.description, amount, date) // 'YNAB:[milliunit_amount]:[iso_date]:[occurrence]'
@@ -126,7 +127,10 @@ function convertTransactionToYnabFormat(originalTransaction: EnrichedTransaction
 }
 
 function buildImportId(transaction: EnrichedTransaction): string {
-  return `${transaction.date.substring(0, 10)}${transaction.chargedAmount}${transaction.description}`.substring(0, 36);
+  return `${transaction.date.substring(0, 10)}${transaction.chargedAmount}${transaction.description}`.substring(
+    0,
+    MAX_YNAB_IMPORT_ID_LENGTH,
+  );
 }
 
 function getYnabAccountIdByAccountNumberFromTransaction(transactionAccountNumber: string): string {
