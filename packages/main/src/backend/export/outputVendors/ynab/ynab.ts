@@ -109,7 +109,6 @@ export function getPayeeName(transaction: EnrichedTransaction, payeeNameMaxLengt
 function convertTransactionToYnabFormat(originalTransaction: EnrichedTransaction): ynab.SaveTransaction {
   const amount = Math.round(originalTransaction.chargedAmount * 1000);
   const date = convertTimestampToYnabDateFormat(originalTransaction);
-
   return {
     account_id: getYnabAccountIdByAccountNumberFromTransaction(originalTransaction.accountNumber),
     date, // "2019-01-17",
@@ -119,10 +118,15 @@ function convertTransactionToYnabFormat(originalTransaction: EnrichedTransaction
     category_id: getYnabCategoryIdFromCategoryName(originalTransaction.category),
     memo: originalTransaction.memo,
     cleared: ynab.SaveTransaction.ClearedEnum.Cleared,
+    import_id: buildImportId(originalTransaction),
     // "approved": true,
     // "flag_color": "red",
     // "import_id": buildImportId(originalTransaction.description, amount, date) // 'YNAB:[milliunit_amount]:[iso_date]:[occurrence]'
   };
+}
+
+function buildImportId(transaction: EnrichedTransaction): string {
+  return `${transaction.date.substring(0, 10)}${transaction.chargedAmount}${transaction.description}`.substring(0, 36);
 }
 
 function getYnabAccountIdByAccountNumberFromTransaction(transactionAccountNumber: string): string {
@@ -196,7 +200,8 @@ export function isSameTransaction(
     Math.abs(transactionToCreate.amount - transactionFromYnab.amount) < 1000 &&
     // In a transfer transaction the payee name changes, but we still consider this the same transaction
     (areStringsEqualIgnoreCaseAndWhitespace(transactionToCreate.payee_name, transactionFromYnab.payee_name) ||
-      isATransferTransaction)
+      isATransferTransaction ||
+      isSameImportId(transactionToCreate, transactionFromYnab))
   );
 }
 
@@ -321,3 +326,10 @@ export const ynabOutputVendor: OutputVendor = {
   init,
   exportTransactions: createTransactions,
 };
+
+function isSameImportId(
+  transactionToCreate: ynab.SaveTransaction,
+  transactionFromYnab: ynab.TransactionDetail,
+): boolean {
+  return !!transactionToCreate.import_id && transactionToCreate.import_id === transactionFromYnab.import_id;
+}
