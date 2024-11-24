@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import styles from './GetOtp.module.css';
 import { Button, FormControl, Modal } from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
 import { useConfigStore } from '/@/store/ConfigStore';
@@ -10,7 +9,10 @@ const GetOtp = () => {
   const [modalStatus, setModalStatus] = useState<boolean>(false);
   const [inputText, setInputText] = useState('');
 
-  const closeModal = () => setModalStatus(false);
+  const closeModal = (inputText: string = '') => {
+    sendOTPResponse(inputText);
+    setModalStatus(false);
+  }
 
   useEffect(() => {
     if (configStore.getOtp !== undefined) {
@@ -25,8 +27,7 @@ const GetOtp = () => {
   const sendInput = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    sendOTPResponse(inputText);
-    closeModal();
+    closeModal(inputText);
   };
 
   if (!configStore.getOtp) {
@@ -35,7 +36,7 @@ const GetOtp = () => {
 
   return (
     <Modal show={modalStatus} onHide={closeModal}>
-      <Modal.Header closeButton className={styles.modalHeader}></Modal.Header>
+      <Modal.Header closeButton></Modal.Header>
       <Modal.Body>
         <FormControl
           type="text"
