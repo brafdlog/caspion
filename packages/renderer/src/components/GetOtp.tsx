@@ -9,10 +9,10 @@ const GetOtp = () => {
   const [modalStatus, setModalStatus] = useState<boolean>(false);
   const [inputText, setInputText] = useState('');
 
-  const closeModal = (inputText: string = '') => {
+  const closeModal = (inputText = '') => {
     sendOTPResponse(inputText);
     setModalStatus(false);
-  }
+  };
 
   useEffect(() => {
     if (configStore.getOtp !== undefined) {
