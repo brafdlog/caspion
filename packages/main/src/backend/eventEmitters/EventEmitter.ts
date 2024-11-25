@@ -11,6 +11,7 @@ export enum EventNames {
   IMPORTER_ERROR = 'IMPORTER_ERROR',
   IMPORTER_END = 'IMPORTER_END',
   IMPORT_PROCESS_END = 'IMPORT_PROCESS_END',
+  GET_OTP = 'GET_OTP',
   EXPORT_PROCESS_START = 'EXPORT_PROCESS_START',
   EXPORTER_START = 'EXPORTER_START',
   EXPORTER_PROGRESS = 'EXPORTER_PROGRESS',
@@ -131,6 +132,7 @@ export interface EventDataMap {
   [EventNames.IMPORTER_PROGRESS]: ImporterEvent;
   [EventNames.IMPORTER_ERROR]: ImporterEvent;
   [EventNames.IMPORTER_END]: ImporterEvent;
+  [EventNames.GET_OTP]: undefined;
   [EventNames.IMPORT_PROCESS_END]: undefined;
   [EventNames.EXPORT_PROCESS_START]: undefined;
   [EventNames.EXPORT_PROCESS_END]: undefined;

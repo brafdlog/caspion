@@ -91,3 +91,7 @@ export async function electronGoogleOAuth2Connector(): Promise<Credentials> {
 export async function createSpreadsheet(spreadsheetId: string, credentials: Credentials): Promise<string> {
   return electron.ipcRenderer.invoke('createSpreadsheet', spreadsheetId, credentials);
 }
+
+export function sendOTPResponse(input: string) {
+  electron.ipcRenderer.invoke('get-otp-response', input);
+}
