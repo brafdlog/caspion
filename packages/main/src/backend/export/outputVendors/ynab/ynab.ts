@@ -197,6 +197,7 @@ export function isSameTransaction(
   transactionFromYnab: ynab.TransactionDetail,
 ) {
   const isATransferTransaction = !!transactionFromYnab.transfer_account_id;
+  const isTransactionsImportIdEqual = isSameImportId(transactionToCreate, transactionFromYnab);
   return (
     transactionToCreate.account_id === transactionFromYnab.account_id &&
     transactionToCreate.date === transactionFromYnab.date &&
@@ -205,7 +206,7 @@ export function isSameTransaction(
     // In a transfer transaction the payee name changes, but we still consider this the same transaction
     (areStringsEqualIgnoreCaseAndWhitespace(transactionToCreate.payee_name, transactionFromYnab.payee_name) ||
       isATransferTransaction ||
-      isSameImportId(transactionToCreate, transactionFromYnab))
+      isTransactionsImportIdEqual)
   );
 }
 
