@@ -25,7 +25,7 @@ describe('ynab', () => {
         transfer_account_id: null,
         transfer_transaction_id: null,
         matched_transaction_id: null,
-        import_id: '2019-06-27-1000000',
+        import_id: '2019-06-27-1000000שיק',
         deleted: false,
         subtransactions: [],
       };
@@ -36,7 +36,7 @@ describe('ynab', () => {
         payee_name: 'גן',
         category_id: '4e0ttc69-b4f6-420b-8d07-986c8225a3d4',
         cleared: ClearedEnum.Cleared,
-        import_id: '2019-06-27-1000000',
+        import_id: '2019-06-27-1000000שיק',
       };
 
       expect(ynab.isSameTransaction(transactionFromFinancialAccount, transferTransactionFromYnab)).toBeTruthy();
