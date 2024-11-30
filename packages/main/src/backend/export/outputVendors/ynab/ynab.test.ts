@@ -6,9 +6,9 @@ import * as ynab from './ynab';
 import ClearedEnum = SaveTransaction.ClearedEnum;
 
 describe('ynab', () => {
-  describe('isSameTransaction(Payee changed)', () => {
+  describe('isSameTransaction', () => {
     test('Two transactions with different payee names should be considered the same if they have the same import id', () => {
-      const transferTransactionFromYnab: TransactionDetail = {
+      const differentPayeeTransactionFromYnab: TransactionDetail = {
         id: '579ae642-d161-4bbe-9d54-ae3322c93cf7',
         date: '2019-06-27',
         amount: -1000000,
@@ -39,10 +39,8 @@ describe('ynab', () => {
         import_id: '2019-06-27-1000000שיק',
       };
 
-      expect(ynab.isSameTransaction(transactionFromFinancialAccount, transferTransactionFromYnab)).toBeTruthy();
+      expect(ynab.isSameTransaction(transactionFromFinancialAccount, differentPayeeTransactionFromYnab)).toBeTruthy();
     });
-  });
-  describe('isSameTransaction', () => {
     test('Two transactions with different payee names should be considered the same if one of them is a transfer transaction', () => {
       const transferTransactionFromYnab: TransactionDetail = {
         id: '579ae642-d161-4bbe-9d54-ae3322c93cf7',
