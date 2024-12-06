@@ -9,7 +9,8 @@ jobs:
     strategy:
         fail-fast: true
         matrix:
-          os: 
+          os:
+            - macos-13
             - macos-latest
             - ubuntu-latest
             - windows-latest
