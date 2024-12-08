@@ -2,7 +2,7 @@ import { openExternal } from '#preload';
 import { useState } from 'react';
 import { Container, Stack } from 'react-bootstrap';
 import NavBar from 'react-bootstrap/Navbar';
-import logo from '../../assets/logoFishOnly.svg';
+import logo from '../../assets/logos/logoFishOnly.svg';
 
 import NavButton from './NavButton';
 import ReportProblemModal from './ReportProblemModal';

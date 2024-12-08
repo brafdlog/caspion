@@ -13,3 +13,8 @@ linux:
 publish:
   - provider: github
     releaseType: release
+
+mac:
+  icon: packages/renderer/src/assets/logos/fishLogo.icns
+win:
+  icon: packages/renderer/src/assets/logos/fishOnlyLogo.ico
