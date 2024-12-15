@@ -1,8 +1,4 @@
-import {
-  captureMessage,
-  init,
-  type ElectronMainOptions,
-} from '@sentry/electron/main';
+import { captureMessage, init, type ElectronMainOptions } from '@sentry/electron/main';
 
 const reporterConfiguration = {
   dsn: import.meta.env.VITE_SENTRY_DSN,

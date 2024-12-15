@@ -30,6 +30,7 @@ export interface Config {
     accountsToScrape: AccountToScrapeConfig[];
     chromiumPath?: string;
     maxConcurrency?: number;
+    periodicScrapingIntervalHours?: number;
   };
 }
 
@@ -40,14 +41,8 @@ export interface AppInfo {
   currentVersion: string;
 }
 
-export type OutputVendorConfigs = Exclude<
-  Config['outputVendors'][OutputVendorName],
-  undefined
->;
-export type OutputVendorConfig<T extends OutputVendorName> = Exclude<
-  Config['outputVendors'][T],
-  undefined
->;
+export type OutputVendorConfigs = Exclude<Config['outputVendors'][OutputVendorName], undefined>;
+export type OutputVendorConfig<T extends OutputVendorName> = Exclude<Config['outputVendors'][T], undefined>;
 
 export interface OutputVendorConfigBase {
   active: boolean;

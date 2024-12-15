@@ -3,29 +3,28 @@ import { autorun, makeAutoObservable, toJS } from 'mobx';
 import { createContext, useContext } from 'react';
 import accountMetadata, { exporterUIHandlers } from '../accountMetadata';
 import {
-  AccountStatus,
-  AccountType,
-  ExporterResultType,
   type Account,
+  AccountStatus,
   type AccountToScrapeConfig,
+  AccountType,
   type BudgetTrackingEvent,
   type CompanyTypes,
   type Config,
+  type DownloadChromeEvent,
   type Exporter,
+  ExporterResultType,
   type Importer,
   type Log,
   type OutputVendorName,
-  type DownloadChromeEvent,
 } from '../types';
+import { type ImportStartEvent } from '../../../main/src/backend/eventEmitters/EventEmitter';
 
 interface AccountScrapingData {
   logs: Log[];
   status: AccountStatus;
 }
 
-const createAccountToScrapeConfigFromImporter = (
-  importerConfig: Importer,
-): AccountToScrapeConfig => ({
+const createAccountToScrapeConfigFromImporter = (importerConfig: Importer): AccountToScrapeConfig => ({
   id: importerConfig.id,
   active: importerConfig.active,
   key: importerConfig.companyId as CompanyTypes,
@@ -62,7 +61,7 @@ const createAccountObject = (
 };
 
 const saveConfigIntoFile = (config?: Config) => {
-  if (!config) {
+  if (!config || Object.keys(config).length === 0) {
     console.warn(`Can't save config into file. Config is ${config}`);
     return;
   }
@@ -70,17 +69,15 @@ const saveConfigIntoFile = (config?: Config) => {
 };
 
 export class ConfigStore {
-  config: Config = {} as Config;
+  config: Config;
 
   chromeDownloadPercent = 0;
+  nextAutomaticScrapeDate?: Date | null;
 
   // TODO: move this to a separate store
-  accountScrapingData: Map<
-    CompanyTypes | OutputVendorName,
-    AccountScrapingData
-  >;
-
+  accountScrapingData: Map<CompanyTypes | OutputVendorName, AccountScrapingData>;
   constructor() {
+    this.config = {} as Config;
     this.accountScrapingData = new Map();
     makeAutoObservable(this);
 
@@ -95,38 +92,28 @@ export class ConfigStore {
 
   get importers(): Importer[] {
     if (!this.config) return [];
-    return this.config.scraping.accountsToScrape.map(
-      ({ id, key, active, loginFields }) => {
-        return {
-          ...createAccountObject(
-            id,
-            key,
-            AccountType.IMPORTER,
-            !!active,
-            this.accountScrapingData.get(key),
-          ),
-          loginFields,
-        };
-      },
-    );
+    return this.config.scraping.accountsToScrape.map(({ id, key, active, loginFields }) => {
+      return {
+        ...createAccountObject(id, key, AccountType.IMPORTER, !!active, this.accountScrapingData.get(key)),
+        loginFields,
+      };
+    });
   }
 
   get exporters(): Exporter[] {
     if (!this.config) return [];
-    return Object.entries(this.config.outputVendors).map(
-      ([exporterKey, exporter]) => {
-        return {
-          ...createAccountObject(
-            exporterKey,
-            exporterKey as OutputVendorName,
-            AccountType.EXPORTER,
-            !!exporter?.active,
-            this.accountScrapingData.get(exporterKey as OutputVendorName),
-          ),
-          options: exporter?.options || {},
-        };
-      },
-    );
+    return Object.entries(this.config.outputVendors).map(([exporterKey, exporter]) => {
+      return {
+        ...createAccountObject(
+          exporterKey,
+          exporterKey as OutputVendorName,
+          AccountType.EXPORTER,
+          !!exporter?.active,
+          this.accountScrapingData.get(exporterKey as OutputVendorName),
+        ),
+        options: exporter?.options || {},
+      };
+    });
   }
 
   get isScraping(): boolean {
@@ -145,6 +132,7 @@ export class ConfigStore {
   clearScrapingStatus() {
     this.accountScrapingData = new Map();
     this.updateChromeDownloadPercent(0);
+    this.nextAutomaticScrapeDate = null;
   }
 
   updateChromeDownloadPercent(percent: number) {
@@ -166,16 +154,14 @@ export class ConfigStore {
     }
   }
 
-  handleScrapingEvent(
-    eventName: string,
-    budgetTrackingEvent?: BudgetTrackingEvent,
-  ) {
-    if (eventName === 'DOWNLOAD_CHROME') {
-      this.updateChromeDownloadPercent(
-        (budgetTrackingEvent as DownloadChromeEvent)?.percent,
-      );
-    }
+  handleScrapingEvent(eventName: string, budgetTrackingEvent?: BudgetTrackingEvent) {
     if (budgetTrackingEvent) {
+      if (eventName === 'DOWNLOAD_CHROME') {
+        this.updateChromeDownloadPercent((budgetTrackingEvent as DownloadChromeEvent)?.percent);
+      }
+      if (eventName === 'IMPORT_PROCESS_START') {
+        this.nextAutomaticScrapeDate = (budgetTrackingEvent as ImportStartEvent).nextAutomaticScrapeDate;
+      }
       const accountId = budgetTrackingEvent.vendorId;
       if (accountId) {
         if (!this.accountScrapingData.has(accountId)) {
@@ -190,8 +176,7 @@ export class ConfigStore {
             message: budgetTrackingEvent.message,
             originalEvent: budgetTrackingEvent,
           });
-          accountScrapingData.status =
-            budgetTrackingEvent.accountStatus ?? AccountStatus.IDLE;
+          accountScrapingData.status = budgetTrackingEvent.accountStatus ?? AccountStatus.IDLE;
         }
       }
     }
@@ -199,40 +184,31 @@ export class ConfigStore {
 
   async addImporter(importerConfig: Importer) {
     if (!accountMetadata[importerConfig.companyId]) {
-      throw new Error(
-        `Company id ${importerConfig.companyId} is not a valid company id`,
-      );
+      throw new Error(`Company id ${importerConfig.companyId} is not a valid company id`);
     }
-    const accountToScrapeConfig: AccountToScrapeConfig =
-      createAccountToScrapeConfigFromImporter(importerConfig);
+    const accountToScrapeConfig: AccountToScrapeConfig = createAccountToScrapeConfigFromImporter(importerConfig);
     this.config.scraping.accountsToScrape.push(accountToScrapeConfig);
   }
 
   async updateImporter(id: string, updatedImporterConfig: Importer) {
-    const importerIndex = this.config.scraping.accountsToScrape.findIndex(
-      (importer) => importer.id === id,
-    );
+    const importerIndex = this.config.scraping.accountsToScrape.findIndex((importer) => importer.id === id);
     if (importerIndex === -1) {
-      throw new Error(
-        `Cant update importer with id ${id}. No importer with that id found`,
-      );
+      throw new Error(`Cant update importer with id ${id}. No importer with that id found`);
     }
     this.config.scraping.accountsToScrape[importerIndex] =
       createAccountToScrapeConfigFromImporter(updatedImporterConfig);
   }
 
   async deleteImporter(id: string) {
-    this.config.scraping.accountsToScrape =
-      this.config.scraping.accountsToScrape.filter(
-        (importer) => importer.id !== id,
-      );
+    this.config.scraping.accountsToScrape = this.config.scraping.accountsToScrape.filter(
+      (importer) => importer.id !== id,
+    );
   }
 
   async updateExporter(updatedExporterConfig: Exporter) {
     // @ts-expect-error the types are not complete here
-    this.config.outputVendors[
-      updatedExporterConfig.companyId as OutputVendorName
-    ] = createOutputVendorConfigFromExporter(updatedExporterConfig);
+    this.config.outputVendors[updatedExporterConfig.companyId as OutputVendorName] =
+      createOutputVendorConfigFromExporter(updatedExporterConfig);
   }
 
   async toggleShowBrowser() {
@@ -254,15 +230,18 @@ export class ConfigStore {
   async setChromiumPath(chromiumPath?: string) {
     this.config.scraping.chromiumPath = chromiumPath;
   }
+
+  setPeriodicScrapingIntervalHours(interval?: number) {
+    this.config.scraping.periodicScrapingIntervalHours = interval;
+    if (!interval || interval <= 0) {
+      this.nextAutomaticScrapeDate = null;
+    }
+  }
 }
 
 export const configStore = new ConfigStore();
 const StoreContext = createContext<ConfigStore>(configStore);
-export const ConfigStoreProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => (
+export const ConfigStoreProvider = ({ children }: { children: React.ReactNode }) => (
   <StoreContext.Provider value={configStore}>{children}</StoreContext.Provider>
 );
 export const useConfigStore = () => useContext(StoreContext);

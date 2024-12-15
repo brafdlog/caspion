@@ -142,6 +142,21 @@ In some cases you may get gibberish when you open the CSV file in Excel. In this
 1. Select your CSV file.
 1. For the "Encoding"/"File Origin", select `Unicode UTF-8 (65001)`.
 
+### How to Report a Problem
+
+כדי לדווח על בעיה, אפשר להשתמש בכפתור ״דיווח על בעיה״. אם נדמה לכם שהכפתור לא עובד, או שנדרשים לעזרה ספציפית, אפשר להיעזר בתיבת הדיווח כדי לראות את הלוגים האחרונים, וגם כדי לראות את מיקום קובץ הלוג שאותו אפשר לבדוק או לשלוח בנפרד.
+
+דרך נוספת היא לפתוח את ״כלי הפיתוח״ ולצלם לנו מסך של ההודעות שכתובות שם ([ולשלוח בדיסקורד](https://discord.gg/XWWg7xvJyS)).
+
+<details>
+<summary>איך לפתוח את כלי הפיתוח</summary>
+
+
+![alt text](./docs/toggle-developer-tools.png)
+
+![alt text](./docs/dev-tools-console.png)
+</details>
+
 ## Release
 
 <details>

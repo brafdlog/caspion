@@ -1,7 +1,4 @@
-import {
-  type CompanyTypes,
-  type ScraperCredentials,
-} from 'israeli-bank-scrapers-core';
+import { type CompanyTypes, type ScraperCredentials } from 'israeli-bank-scrapers-core';
 import { type Transaction } from 'israeli-bank-scrapers-core/lib/transactions';
 import { type Account, type BudgetSummary } from 'ynab';
 import { type EventPublisher } from './eventEmitters/EventEmitter';
@@ -27,6 +24,7 @@ export interface Config {
     chromiumPath?: string;
     maxConcurrency?: number;
     timeout: number;
+    periodicScrapingIntervalHours?: number;
   };
   useReactUI?: boolean;
 }
@@ -38,14 +36,8 @@ export enum OutputVendorName {
   CSV = 'csv',
 }
 
-export type OutputVendorConfigs = Exclude<
-  Config['outputVendors'][OutputVendorName],
-  undefined
->;
-export type OutputVendorConfig<T extends OutputVendorName> = Exclude<
-  Config['outputVendors'][T],
-  undefined
->;
+export type OutputVendorConfigs = Exclude<Config['outputVendors'][OutputVendorName], undefined>;
+export type OutputVendorConfig<T extends OutputVendorName> = Exclude<Config['outputVendors'][T], undefined>;
 
 interface OutputVendorConfigBase {
   active: boolean;

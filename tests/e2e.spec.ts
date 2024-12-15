@@ -1,9 +1,5 @@
 import { type BrowserWindow } from 'electron';
-import {
-  _electron as electron,
-  type ElectronApplication,
-  type JSHandle,
-} from 'playwright';
+import { _electron as electron, type ElectronApplication, type JSHandle } from 'playwright';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 
 let electronApp: ElectronApplication;
@@ -47,18 +43,12 @@ test('Main window state', async () => {
 
   expect(windowState.isCrashed, 'The app has crashed').toBeFalsy();
   expect(windowState.isVisible, 'The main window was not visible').toBeTruthy();
-  expect(
-    windowState.isDevToolsOpened,
-    'The DevTools panel was open',
-  ).toBeFalsy();
+  expect(windowState.isDevToolsOpened, 'The DevTools panel was open').toBeFalsy();
 });
 
 test('Main window web content', async () => {
   const page = await electronApp.firstWindow();
   const element = await page.$('#app', { strict: true });
   expect(element, 'Was unable to find the root element').toBeDefined();
-  expect(
-    (await element.innerHTML()).trim(),
-    'Window content was empty',
-  ).not.equal('');
+  expect((await element.innerHTML()).trim(), 'Window content was empty').not.equal('');
 });

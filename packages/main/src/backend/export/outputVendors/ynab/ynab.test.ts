@@ -1,8 +1,5 @@
 import { type EnrichedTransaction } from '@/backend/commonTypes';
-import {
-  TransactionStatuses,
-  TransactionTypes,
-} from 'israeli-bank-scrapers-core/lib/transactions';
+import { TransactionStatuses, TransactionTypes } from 'israeli-bank-scrapers-core/lib/transactions';
 import { describe, expect, test } from 'vitest';
 import { SaveTransaction, type TransactionDetail } from 'ynab';
 import * as ynab from './ynab';
@@ -10,6 +7,40 @@ import ClearedEnum = SaveTransaction.ClearedEnum;
 
 describe('ynab', () => {
   describe('isSameTransaction', () => {
+    test('Two transactions with different payee names should be considered the same if they have the same import id', () => {
+      const differentPayeeTransactionFromYnab: TransactionDetail = {
+        id: '579ae642-d161-4bbe-9d54-ae3322c93cf7',
+        date: '2019-06-27',
+        amount: -1000000,
+        memo: null,
+        cleared: SaveTransaction.ClearedEnum.Cleared,
+        approved: true,
+        flag_color: null,
+        account_id: 'SOME_ACCOUNT_ID',
+        account_name: 'My great account',
+        payee_id: 'fd7f187c-0633-434f-aaxe-1fevd68492cb',
+        payee_name: 'שיק',
+        category_id: null,
+        category_name: null,
+        transfer_account_id: null,
+        transfer_transaction_id: null,
+        matched_transaction_id: null,
+        import_id: '2019-06-27-1000000שיק',
+        deleted: false,
+        subtransactions: [],
+      };
+      const transactionFromFinancialAccount: SaveTransaction = {
+        account_id: 'SOME_ACCOUNT_ID',
+        date: '2019-06-27',
+        amount: -1000000,
+        payee_name: 'גן',
+        category_id: '4e0ttc69-b4f6-420b-8d07-986c8225a3d4',
+        cleared: ClearedEnum.Cleared,
+        import_id: '2019-06-27-1000000שיק',
+      };
+
+      expect(ynab.isSameTransaction(transactionFromFinancialAccount, differentPayeeTransactionFromYnab)).toBeTruthy();
+    });
     test('Two transactions with different payee names should be considered the same if one of them is a transfer transaction', () => {
       const transferTransactionFromYnab: TransactionDetail = {
         id: '579ae642-d161-4bbe-9d54-ae3322c93cf7',
@@ -41,27 +72,16 @@ describe('ynab', () => {
         cleared: ClearedEnum.Cleared,
       };
 
-      expect(
-        ynab.isSameTransaction(
-          transactionFromFinancialAccount,
-          transferTransactionFromYnab,
-        ),
-      ).toBeTruthy();
+      expect(ynab.isSameTransaction(transactionFromFinancialAccount, transferTransactionFromYnab)).toBeTruthy();
     });
   });
   describe('areStringsEqualIgnoreCaseAndWhitespace', () => {
     test('should consider two strings with different casing as equal', async () => {
-      expect(
-        ynab.areStringsEqualIgnoreCaseAndWhitespace('Gett', 'GETT'),
-      ).toBeTruthy();
+      expect(ynab.areStringsEqualIgnoreCaseAndWhitespace('Gett', 'GETT')).toBeTruthy();
     });
     test('should consider two strings that are the same except for whitespace as equal', async () => {
-      expect(
-        ynab.areStringsEqualIgnoreCaseAndWhitespace('Gett', 'Gett '),
-      ).toBeTruthy();
-      expect(
-        ynab.areStringsEqualIgnoreCaseAndWhitespace('Gett', ' Gett '),
-      ).toBeTruthy();
+      expect(ynab.areStringsEqualIgnoreCaseAndWhitespace('Gett', 'Gett ')).toBeTruthy();
+      expect(ynab.areStringsEqualIgnoreCaseAndWhitespace('Gett', ' Gett ')).toBeTruthy();
       expect(
         ynab.areStringsEqualIgnoreCaseAndWhitespace(
           'PAYPAL *AVIDEUT        4029357733    LU',
@@ -69,10 +89,7 @@ describe('ynab', () => {
         ),
       ).toBeTruthy();
       expect(
-        ynab.areStringsEqualIgnoreCaseAndWhitespace(
-          'ממלכת הצעצועים הרצליה',
-          'ממלכת הצעצועים  הרצליה',
-        ),
+        ynab.areStringsEqualIgnoreCaseAndWhitespace('ממלכת הצעצועים הרצליה', 'ממלכת הצעצועים  הרצליה'),
       ).toBeTruthy();
       expect(
         ynab.areStringsEqualIgnoreCaseAndWhitespace(
@@ -82,9 +99,7 @@ describe('ynab', () => {
       ).toBeTruthy();
     });
     test('should consider two different strings as not equal', async () => {
-      expect(
-        ynab.areStringsEqualIgnoreCaseAndWhitespace('Gett', ' shmett '),
-      ).toBeFalsy();
+      expect(ynab.areStringsEqualIgnoreCaseAndWhitespace('Gett', ' shmett ')).toBeFalsy();
     });
   });
   describe('getPayeeName', () => {
@@ -108,34 +123,22 @@ describe('ynab', () => {
       [' משכורת', 'המבצע: לאומי'],
       ['קצבת ילדים', ''],
       ['בזק-הוראת קבע', 'בזק - חיובי טלפון'],
-    ])(
-      'Verify getPayeeName extracts the correct payeeName',
-      async (description, memo) => {
-        transactionSample.description = description;
-        transactionSample.memo = memo;
-        expect(ynab.getPayeeName(transactionSample)).toBe(
-          transactionSample.description,
-        );
-      },
-    );
+    ])('Verify getPayeeName extracts the correct payeeName', async (description, memo) => {
+      transactionSample.description = description;
+      transactionSample.memo = memo;
+      expect(ynab.getPayeeName(transactionSample)).toBe(transactionSample.description);
+    });
     test.each([
-      [
-        'הוראת קבע',
-        'לטובת: צהרון. עבור: צהרון גנים - ילד 00-000-0000000',
-        'צהרון',
-      ],
+      ['הוראת קבע', 'לטובת: צהרון. עבור: צהרון גנים - ילד 00-000-0000000', 'צהרון'],
       ["העב' לאחר-נייד", 'לטובת: איש כלשהו. עבור: סוף חשבון', 'איש כלשהו'],
       ['העברה לאחר', 'לטובת: פנסיה לדוגמא. עבור: סיבה מסויימת', 'פנסיה לדוגמא'],
       ['העברה מהבנק', 'לטובת: אישה כלשהי. עבור: משכורת אוגוסט', 'אישה כלשהי'],
       // Weird bank accounts names
       ['הוראת קבע', 'לטובת: di. עבור: גן 092-.', 'di'],
-    ])(
-      'Verify hapoalim transfers capture the correct payee name',
-      async (description, memo, expected) => {
-        transactionSample.description = description;
-        transactionSample.memo = memo;
-        expect(ynab.getPayeeName(transactionSample)).toBe(expected);
-      },
-    );
+    ])('Verify hapoalim transfers capture the correct payee name', async (description, memo, expected) => {
+      transactionSample.description = description;
+      transactionSample.memo = memo;
+      expect(ynab.getPayeeName(transactionSample)).toBe(expected);
+    });
   });
 });
