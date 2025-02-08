@@ -1,7 +1,7 @@
 // eslint-disable-next-line max-classes-per-file
-import { type EnrichedTransaction, type OutputVendorName } from '@/backend/commonTypes';
 import Emittery from 'emittery';
 import { type CompanyTypes } from 'israeli-bank-scrapers-core';
+import type { EnrichedTransaction, OutputVendorName } from '../commonTypes';
 
 export enum EventNames {
   IMPORT_PROCESS_START = 'IMPORT_PROCESS_START',
@@ -116,6 +116,15 @@ export class ExporterEndEvent extends ExporterEvent {
   }
 }
 
+export class ImportStartEvent extends BudgetTrackingEvent {
+  nextAutomaticScrapeDate?: Date | null;
+
+  constructor(message: string, nextAutomaticScrapeDate?: Date | null) {
+    super({ message });
+    this.nextAutomaticScrapeDate = nextAutomaticScrapeDate;
+  }
+}
+
 export class DownalodChromeEvent extends BudgetTrackingEvent {
   percent: number;
 
@@ -126,7 +135,7 @@ export class DownalodChromeEvent extends BudgetTrackingEvent {
 }
 
 export interface EventDataMap {
-  [EventNames.IMPORT_PROCESS_START]: BudgetTrackingEvent;
+  [EventNames.IMPORT_PROCESS_START]: ImportStartEvent;
   [EventNames.DOWNLOAD_CHROME]: DownalodChromeEvent;
   [EventNames.IMPORTER_START]: ImporterEvent;
   [EventNames.IMPORTER_PROGRESS]: ImporterEvent;

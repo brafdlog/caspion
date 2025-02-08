@@ -7,6 +7,40 @@ import ClearedEnum = SaveTransaction.ClearedEnum;
 
 describe('ynab', () => {
   describe('isSameTransaction', () => {
+    test('Two transactions with different payee names should be considered the same if they have the same import id', () => {
+      const differentPayeeTransactionFromYnab: TransactionDetail = {
+        id: '579ae642-d161-4bbe-9d54-ae3322c93cf7',
+        date: '2019-06-27',
+        amount: -1000000,
+        memo: null,
+        cleared: SaveTransaction.ClearedEnum.Cleared,
+        approved: true,
+        flag_color: null,
+        account_id: 'SOME_ACCOUNT_ID',
+        account_name: 'My great account',
+        payee_id: 'fd7f187c-0633-434f-aaxe-1fevd68492cb',
+        payee_name: 'שיק',
+        category_id: null,
+        category_name: null,
+        transfer_account_id: null,
+        transfer_transaction_id: null,
+        matched_transaction_id: null,
+        import_id: '2019-06-27-1000000שיק',
+        deleted: false,
+        subtransactions: [],
+      };
+      const transactionFromFinancialAccount: SaveTransaction = {
+        account_id: 'SOME_ACCOUNT_ID',
+        date: '2019-06-27',
+        amount: -1000000,
+        payee_name: 'גן',
+        category_id: '4e0ttc69-b4f6-420b-8d07-986c8225a3d4',
+        cleared: ClearedEnum.Cleared,
+        import_id: '2019-06-27-1000000שיק',
+      };
+
+      expect(ynab.isSameTransaction(transactionFromFinancialAccount, differentPayeeTransactionFromYnab)).toBeTruthy();
+    });
     test('Two transactions with different payee names should be considered the same if one of them is a transfer transaction', () => {
       const transferTransactionFromYnab: TransactionDetail = {
         id: '579ae642-d161-4bbe-9d54-ae3322c93cf7',

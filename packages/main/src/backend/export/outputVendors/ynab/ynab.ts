@@ -16,6 +16,7 @@ import * as ynab from 'ynab';
 const YNAB_DATE_FORMAT = 'YYYY-MM-DD';
 const NOW = moment();
 const MIN_YNAB_ACCESS_TOKEN_LENGTH = 43;
+const MAX_YNAB_IMPORT_ID_LENGTH = 36;
 
 const categoriesMap = new Map<string, Pick<ynab.Category, 'id' | 'name' | 'category_group_id'>>();
 const transactionsFromYnab = new Map<Date, ynab.TransactionDetail[]>();
@@ -109,7 +110,6 @@ export function getPayeeName(transaction: EnrichedTransaction, payeeNameMaxLengt
 function convertTransactionToYnabFormat(originalTransaction: EnrichedTransaction): ynab.SaveTransaction {
   const amount = Math.round(originalTransaction.chargedAmount * 1000);
   const date = convertTimestampToYnabDateFormat(originalTransaction);
-
   return {
     account_id: getYnabAccountIdByAccountNumberFromTransaction(originalTransaction.accountNumber),
     date, // "2019-01-17",
@@ -119,10 +119,18 @@ function convertTransactionToYnabFormat(originalTransaction: EnrichedTransaction
     category_id: getYnabCategoryIdFromCategoryName(originalTransaction.category),
     memo: originalTransaction.memo,
     cleared: ynab.SaveTransaction.ClearedEnum.Cleared,
+    import_id: buildImportId(originalTransaction), // [date][amount][description]
     // "approved": true,
     // "flag_color": "red",
     // "import_id": buildImportId(originalTransaction.description, amount, date) // 'YNAB:[milliunit_amount]:[iso_date]:[occurrence]'
   };
+}
+
+function buildImportId(transaction: EnrichedTransaction): string {
+  return `${transaction.date.substring(0, 10)}${transaction.chargedAmount}${transaction.description}`.substring(
+    0,
+    MAX_YNAB_IMPORT_ID_LENGTH,
+  );
 }
 
 function getYnabAccountIdByAccountNumberFromTransaction(transactionAccountNumber: string): string {
@@ -189,6 +197,7 @@ export function isSameTransaction(
   transactionFromYnab: ynab.TransactionDetail,
 ) {
   const isATransferTransaction = !!transactionFromYnab.transfer_account_id;
+  const isTransactionsImportIdEqual = isSameImportId(transactionToCreate, transactionFromYnab);
   return (
     transactionToCreate.account_id === transactionFromYnab.account_id &&
     transactionToCreate.date === transactionFromYnab.date &&
@@ -196,7 +205,8 @@ export function isSameTransaction(
     Math.abs(transactionToCreate.amount - transactionFromYnab.amount) < 1000 &&
     // In a transfer transaction the payee name changes, but we still consider this the same transaction
     (areStringsEqualIgnoreCaseAndWhitespace(transactionToCreate.payee_name, transactionFromYnab.payee_name) ||
-      isATransferTransaction)
+      isATransferTransaction ||
+      isTransactionsImportIdEqual)
   );
 }
 
@@ -321,3 +331,10 @@ export const ynabOutputVendor: OutputVendor = {
   init,
   exportTransactions: createTransactions,
 };
+
+function isSameImportId(
+  transactionToCreate: ynab.SaveTransaction,
+  transactionFromYnab: ynab.TransactionDetail,
+): boolean {
+  return !!transactionToCreate.import_id && transactionToCreate.import_id === transactionFromYnab.import_id;
+}

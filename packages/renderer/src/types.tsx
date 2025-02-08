@@ -30,6 +30,7 @@ export interface Config {
     accountsToScrape: AccountToScrapeConfig[];
     chromiumPath?: string;
     maxConcurrency?: number;
+    periodicScrapingIntervalHours?: number;
   };
 }
 

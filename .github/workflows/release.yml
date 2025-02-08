@@ -68,9 +68,10 @@ jobs:
       contents: write # Allows this job to create releases
 
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
-        os: 
+        os:
+          - macos-13
           - macos-latest
           - ubuntu-latest
           - windows-latest
@@ -84,7 +85,7 @@ jobs:
         with:
           cache: 'yarn'
           node-version-file: '.node-version'
-      
+
       - name: Install Snapcraft
         uses: samuelmeuli/action-snapcraft@d33c176a9b784876d966f80fb1b461808edc0641
         # Only install Snapcraft  on Ubuntu

@@ -24,6 +24,7 @@ export interface Config {
     chromiumPath?: string;
     maxConcurrency?: number;
     timeout: number;
+    periodicScrapingIntervalHours?: number;
   };
   useReactUI?: boolean;
 }

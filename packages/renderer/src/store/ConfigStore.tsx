@@ -1,6 +1,7 @@
 import { openExternal, openItem, updateConfig } from '#preload';
 import { autorun, makeAutoObservable, toJS } from 'mobx';
 import { createContext, useContext } from 'react';
+import { type ImportStartEvent } from '../../../main/src/backend/eventEmitters/EventEmitter';
 import accountMetadata, { exporterUIHandlers } from '../accountMetadata';
 import {
   type Account,
@@ -71,6 +72,8 @@ export class ConfigStore {
   config: Config;
 
   chromeDownloadPercent = 0;
+  nextAutomaticScrapeDate?: Date | null;
+
   getOtp: boolean | undefined = undefined;
 
   // TODO: move this to a separate store
@@ -131,6 +134,7 @@ export class ConfigStore {
   clearScrapingStatus() {
     this.accountScrapingData = new Map();
     this.updateChromeDownloadPercent(0);
+    this.nextAutomaticScrapeDate = null;
   }
 
   updateChromeDownloadPercent(percent: number) {
@@ -153,13 +157,16 @@ export class ConfigStore {
   }
 
   handleScrapingEvent(eventName: string, budgetTrackingEvent?: BudgetTrackingEvent) {
-    if (eventName === 'DOWNLOAD_CHROME') {
-      this.updateChromeDownloadPercent((budgetTrackingEvent as DownloadChromeEvent)?.percent);
-    }
     if (eventName == 'GET_OTP') {
       this.getOtp = true;
     }
     if (budgetTrackingEvent) {
+      if (eventName === 'DOWNLOAD_CHROME') {
+        this.updateChromeDownloadPercent((budgetTrackingEvent as DownloadChromeEvent)?.percent);
+      }
+      if (eventName === 'IMPORT_PROCESS_START') {
+        this.nextAutomaticScrapeDate = (budgetTrackingEvent as ImportStartEvent).nextAutomaticScrapeDate;
+      }
       const accountId = budgetTrackingEvent.vendorId;
       if (accountId) {
         if (!this.accountScrapingData.has(accountId)) {
@@ -227,6 +234,13 @@ export class ConfigStore {
 
   async setChromiumPath(chromiumPath?: string) {
     this.config.scraping.chromiumPath = chromiumPath;
+  }
+
+  setPeriodicScrapingIntervalHours(interval?: number) {
+    this.config.scraping.periodicScrapingIntervalHours = interval;
+    if (!interval || interval <= 0) {
+      this.nextAutomaticScrapeDate = null;
+    }
   }
 }
 
