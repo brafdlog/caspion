@@ -100,6 +100,15 @@ export type ExportTransactionsFunction = (
   eventPublisher: EventPublisher,
 ) => Promise<ExportTransactionsResult>;
 
+export interface ExportTransactionsForAccountParams extends ExportTransactionsParams {
+  accountNumber: string;
+}
+
+export type ExportTransactionsForAccountFunction = (
+  exportTransactionsParams: ExportTransactionsForAccountParams,
+  eventPublisher: EventPublisher,
+) => Promise<ExportTransactionsResult>;
+
 export interface OutputVendor {
   name: OutputVendorName;
   init?: (outputVendorsConfig: Config['outputVendors']) => Promise<void>;

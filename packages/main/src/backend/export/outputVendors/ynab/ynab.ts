@@ -2,6 +2,7 @@ import {
   OutputVendorName,
   type Config,
   type EnrichedTransaction,
+  type ExportTransactionsForAccountFunction,
   type ExportTransactionsFunction,
   type OutputVendor,
   type YnabAccountDetails,
@@ -37,14 +38,50 @@ async function initFromToken(accessToken?: string) {
   }
 }
 
-const createTransactions: ExportTransactionsFunction = async ({ transactionsToCreate, startDate }, eventPublisher) => {
-  if (!ynabConfig) {
-    throw new Error('Must call init before using ynab functions');
-  }
+const createTransactions: ExportTransactionsFunction = async (
+  { transactionsToCreate, startDate, outputVendorsConfig },
+  eventPublisher,
+) => {
   if (!categoriesMap.size) {
     await initCategories();
   }
-  const transactionsFromFinancialAccount = transactionsToCreate.map(convertTransactionToYnabFormat);
+  const accountNumbers = _.uniq(transactionsToCreate.map((t) => t.accountNumber));
+  const promises = accountNumbers.map((accountNumber) =>
+    createTransactionsForAccount(
+      {
+        accountNumber,
+        transactionsToCreate,
+        startDate,
+        outputVendorsConfig,
+      },
+      eventPublisher,
+    ),
+  );
+  const results = await Promise.all(promises);
+  const exportedTransactionsNums = results.map((v) => v.exportedTransactionsNum);
+  return {
+    exportedTransactionsNum: _.sum(exportedTransactionsNums),
+  };
+};
+
+const createTransactionsForAccount: ExportTransactionsForAccountFunction = async (
+  { accountNumber, transactionsToCreate: allTransactions, startDate },
+  eventPublisher,
+) => {
+  if (!ynabConfig) {
+    throw new Error('Must call init before using ynab functions');
+  }
+  try {
+    getYnabAccountIdByAccountNumberFromTransaction(accountNumber);
+  } catch (e) {
+    await emitProgressEvent(eventPublisher, allTransactions, `Account ${accountNumber} is unmapped. Skipping.`);
+    return {
+      exportedTransactionsNum: 0,
+    };
+  }
+  const transactionsFromFinancialAccount = allTransactions
+    .filter((v) => v.accountNumber === accountNumber)
+    .map(convertTransactionToYnabFormat);
   let transactionsThatDontExistInYnab = await filterOnlyTransactionsThatDontExistInYnabAlready(
     startDate,
     transactionsFromFinancialAccount,
@@ -54,11 +91,7 @@ const createTransactions: ExportTransactionsFunction = async ({ transactionsToCr
     moment(transaction.date, YNAB_DATE_FORMAT).isBefore(NOW),
   );
   if (!transactionsThatDontExistInYnab.length) {
-    await emitProgressEvent(
-      eventPublisher,
-      transactionsToCreate,
-      'All transactions already exist in ynab. Doing nothing.',
-    );
+    await emitProgressEvent(eventPublisher, allTransactions, 'All transactions already exist in ynab. Doing nothing.');
     return {
       exportedTransactionsNum: 0,
     };
@@ -66,7 +99,7 @@ const createTransactions: ExportTransactionsFunction = async ({ transactionsToCr
 
   await emitProgressEvent(
     eventPublisher,
-    transactionsToCreate,
+    allTransactions,
     `Creating ${transactionsThatDontExistInYnab.length} transactions in ynab`,
   );
   try {
@@ -83,7 +116,7 @@ const createTransactions: ExportTransactionsFunction = async ({ transactionsToCr
         message: (e as Error).message,
         error: e as Error,
         exporterName: ynabOutputVendor.name,
-        allTransactions: transactionsToCreate,
+        allTransactions: allTransactions,
       }),
     );
     console.error('Failed to create transactions in ynab', e);
