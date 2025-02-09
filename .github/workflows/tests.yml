@@ -24,6 +24,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+      - name: Setup Ubuntu Binary Installation # TODO: Remove when https://github.com/electron/electron/issues/42510 is fixed
+        if: ${{ runner.os == 'Linux' }}
+        run: |
+          if grep -q "Ubuntu 24" /etc/os-release; then
+            sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+          fi
+        shell: bash
       - uses: actions/setup-node@v4
         with:
           cache: 'yarn'
