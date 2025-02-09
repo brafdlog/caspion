@@ -1,5 +1,4 @@
 import { join } from 'node:path';
-import { preload } from 'unplugin-auto-expose';
 import { chrome } from '../../.electron-vendors.cache.json';
 
 const PACKAGE_ROOT = __dirname;
@@ -34,8 +33,10 @@ const config = {
     emptyOutDir: true,
     reportCompressedSize: false,
   },
-
-  plugins: [preload.vite()],
+  resolve: {
+    // Use native module resolution for preload scripts
+    conditions: ['node', 'import'],
+  },
 };
 
 export default config;
