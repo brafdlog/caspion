@@ -19,7 +19,9 @@ const NOW = moment();
 const MIN_YNAB_ACCESS_TOKEN_LENGTH = 43;
 const MAX_YNAB_IMPORT_ID_LENGTH = 36;
 
-const categoriesMap = new Map<string, Pick<ynab.Category, 'id' | 'name' | 'category_group_id'>>();
+type YnabCategory = Pick<ynab.Category, 'id' | 'name' | 'category_group_id'>;
+
+const budgetCategoriesMap = new Map<string, Map<string, YnabCategory>>();
 const transactionsFromYnab = new Map<Date, ynab.TransactionDetail[]>();
 
 let ynabConfig: YnabConfig | undefined;
@@ -42,7 +44,7 @@ const createTransactions: ExportTransactionsFunction = async (
   { transactionsToCreate, startDate, outputVendorsConfig },
   eventPublisher,
 ) => {
-  if (!categoriesMap.size) {
+  if (!budgetCategoriesMap.size) {
     await initCategories();
   }
   const accountNumbers = _.uniq(transactionsToCreate.map((t) => t.accountNumber));
@@ -182,7 +184,8 @@ function getYnabCategoryIdFromCategoryName(categoryName?: string) {
   if (!categoryName) {
     return null;
   }
-  const categoryToReturn = categoriesMap.get(categoryName);
+  // TODO: pass budgetId
+  const categoryToReturn = budgetCategoriesMap.values().next().value?.get(categoryName);
   if (!categoryToReturn) {
     return null;
   }
@@ -190,17 +193,22 @@ function getYnabCategoryIdFromCategoryName(categoryName?: string) {
 }
 
 export async function initCategories() {
-  const categories = await ynabAPI!.categories.getCategories(ynabConfig!.options.budgetId);
-  categories.data.category_groups.forEach((categoryGroup) => {
-    categoryGroup.categories
-      .map((category) => ({
-        id: category.id,
-        name: category.name,
-        category_group_id: category.category_group_id,
-      }))
-      .forEach((category) => {
-        categoriesMap.set(category.name, category);
-      });
+  const budgetIds = Object.values(ynabConfig!.options.accountNumbersToYnabAccountIds).map((v) => v.ynabBudgetId);
+  budgetIds.forEach(async (budgetId) => {
+    const categories = await ynabAPI!.categories.getCategories(budgetId);
+    const categoriesMap = new Map<string, YnabCategory>();
+    categories.data.category_groups.forEach((categoryGroup) => {
+      categoryGroup.categories
+        .map((category) => ({
+          id: category.id,
+          name: category.name,
+          category_group_id: category.category_group_id,
+        }))
+        .forEach((category) => {
+          categoriesMap.set(category.name, category);
+        });
+    });
+    budgetCategoriesMap.set(budgetId, categoriesMap);
   });
 }
 
