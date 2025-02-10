@@ -45,6 +45,21 @@ const YnabAccountMappingTable = ({
       },
     },
     {
+      dataField: 'ynabBudgetId',
+      text: 'Ynab budget id',
+      editor: {
+        type: Type.SELECT,
+        getOptions: () => {
+          return ynabAccountData?.ynabAccountData?.budgets.map((ynabBudget) => {
+            return {
+              label: ynabBudget.name,
+              value: ynabBudget.id,
+            };
+          });
+        },
+      },
+    },
+    {
       dataField: 'ynabAccountId',
       text: 'Ynab account id',
       editor: {
