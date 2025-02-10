@@ -75,6 +75,7 @@ const createTransactionsForAccount: ExportTransactionsForAccountFunction = async
   }
   try {
     getYnabAccountIdByAccountNumberFromTransaction(accountNumber);
+    getYnabBudgetIdByAccountNumberFromTransaction(accountNumber);
   } catch (e) {
     await emitProgressEvent(eventPublisher, allTransactions, `Account ${accountNumber} is unmapped. Skipping.`);
     return {
@@ -174,6 +175,14 @@ function getYnabAccountIdByAccountNumberFromTransaction(transactionAccountNumber
     throw new Error(`Unhandled account number ${transactionAccountNumber}`);
   }
   return ynabAccountId.ynabAccountId;
+}
+
+function getYnabBudgetIdByAccountNumberFromTransaction(transactionAccountNumber: string): string {
+  const ynabAccount = ynabConfig!.options.accountNumbersToYnabAccountIds[transactionAccountNumber];
+  if (!ynabAccount) {
+    throw new Error(`Unhandled account number ${transactionAccountNumber}`);
+  }
+  return ynabAccount.ynabBudgetId;
 }
 
 function convertTimestampToYnabDateFormat(originalTransaction: EnrichedTransaction): string {
