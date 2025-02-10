@@ -147,13 +147,14 @@ export function getPayeeName(transaction: EnrichedTransaction, payeeNameMaxLengt
 function convertTransactionToYnabFormat(originalTransaction: EnrichedTransaction): ynab.SaveTransaction {
   const amount = Math.round(originalTransaction.chargedAmount * 1000);
   const date = convertTimestampToYnabDateFormat(originalTransaction);
+  const budgetId = getYnabBudgetIdByAccountNumberFromTransaction(originalTransaction.accountNumber);
   return {
     account_id: getYnabAccountIdByAccountNumberFromTransaction(originalTransaction.accountNumber),
     date, // "2019-01-17",
     amount,
     // "payee_id": "string",
     payee_name: getPayeeName(originalTransaction, ynabConfig!.options.maxPayeeNameLength),
-    category_id: getYnabCategoryIdFromCategoryName(originalTransaction.category),
+    category_id: getYnabCategoryIdFromCategoryName(budgetId, originalTransaction.category),
     memo: originalTransaction.memo,
     cleared: ynab.SaveTransaction.ClearedEnum.Cleared,
     import_id: buildImportId(originalTransaction), // [date][amount][description]
@@ -190,12 +191,11 @@ function convertTimestampToYnabDateFormat(originalTransaction: EnrichedTransacti
   return moment(originalTransaction.date).format(YNAB_DATE_FORMAT); // 2018-12-29T22:00:00.000Z -> 2018-12-29
 }
 
-function getYnabCategoryIdFromCategoryName(categoryName?: string) {
+function getYnabCategoryIdFromCategoryName(budgetId: string, categoryName?: string) {
   if (!categoryName) {
     return null;
   }
-  // TODO: pass budgetId
-  const categoryToReturn = budgetCategoriesMap.values().next().value?.get(categoryName);
+  const categoryToReturn = budgetCategoriesMap.get(budgetId)?.get(categoryName);
   if (!categoryToReturn) {
     return null;
   }
