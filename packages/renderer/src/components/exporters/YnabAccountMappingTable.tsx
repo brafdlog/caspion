@@ -15,12 +15,14 @@ interface YnabAccountMappingTableProps {
   onUpdate: (accountNumberToYnabIdMapping: AccountNumberToYnabAccountIdMappingObject) => void;
 }
 
-type AccountMappingArray = {
+interface AccountMapping {
   accountNumber: string;
   ynabBudgetId: string;
   ynabAccountId: string;
   index?: number;
-}[];
+}
+
+type AccountMappingArray = AccountMapping[];
 
 const YnabAccountMappingTable = ({
   accountNumberToYnabIdMapping,
@@ -65,7 +67,9 @@ const YnabAccountMappingTable = ({
       text: 'Ynab account id',
       editor: {
         type: Type.SELECT,
-        getOptions: () => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        getOptions: (_: any, { row }: { row: AccountMapping }) => {
+          const budgetId = (row as AccountMapping).ynabBudgetId;
           return ynabAccountData?.ynabAccountData?.accounts
             .filter((ynabAccount) => ynabAccount.active && ynabAccount.budgetId === budgetId)
             .map((ynabAccount) => {
@@ -95,7 +99,7 @@ const YnabAccountMappingTable = ({
       ...accountMappingArray,
       {
         accountNumber: '12345678',
-        ynabBudgetId: '##########',
+        ynabBudgetId: budgetId,
         ynabAccountId: '##########',
         index: accountMappingArray.length,
       },
