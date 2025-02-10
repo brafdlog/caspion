@@ -73,9 +73,10 @@ const createTransactionsForAccount: ExportTransactionsForAccountFunction = async
   if (!ynabConfig) {
     throw new Error('Must call init before using ynab functions');
   }
+  let budgetId: string;
   try {
     getYnabAccountIdByAccountNumberFromTransaction(accountNumber);
-    getYnabBudgetIdByAccountNumberFromTransaction(accountNumber);
+    budgetId = getYnabBudgetIdByAccountNumberFromTransaction(accountNumber);
   } catch (e) {
     await emitProgressEvent(eventPublisher, allTransactions, `Account ${accountNumber} is unmapped. Skipping.`);
     return {
@@ -106,7 +107,7 @@ const createTransactionsForAccount: ExportTransactionsForAccountFunction = async
     `Creating ${transactionsThatDontExistInYnab.length} transactions in ynab`,
   );
   try {
-    await ynabAPI!.transactions.createTransactions(ynabConfig.options.budgetId, {
+    await ynabAPI!.transactions.createTransactions(budgetId, {
       transactions: transactionsThatDontExistInYnab,
     });
     return {
