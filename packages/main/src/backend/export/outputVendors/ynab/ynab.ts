@@ -171,7 +171,7 @@ function getYnabAccountIdByAccountNumberFromTransaction(transactionAccountNumber
   if (!ynabAccountId) {
     throw new Error(`Unhandled account number ${transactionAccountNumber}`);
   }
-  return ynabAccountId;
+  return ynabAccountId.ynabAccountId;
 }
 
 function convertTimestampToYnabDateFormat(originalTransaction: EnrichedTransaction): string {

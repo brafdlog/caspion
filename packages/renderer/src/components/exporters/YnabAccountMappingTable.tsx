@@ -17,6 +17,7 @@ interface YnabAccountMappingTableProps {
 
 type AccountMappingArray = {
   accountNumber: string;
+  ynabBudgetId: string;
   ynabAccountId: string;
   index?: number;
 }[];
@@ -94,6 +95,7 @@ const YnabAccountMappingTable = ({
       ...accountMappingArray,
       {
         accountNumber: '12345678',
+        ynabBudgetId: '##########',
         ynabAccountId: '##########',
         index: accountMappingArray.length,
       },
@@ -117,15 +119,16 @@ function accountMappingObjectToArray(
     return {
       index,
       accountNumber,
-      ynabAccountId: accountNumbersToYnabAccountIds[accountNumber],
+      ynabBudgetId: accountNumbersToYnabAccountIds[accountNumber].ynabBudgetId,
+      ynabAccountId: accountNumbersToYnabAccountIds[accountNumber].ynabAccountId,
     };
   });
 }
 
 function accountMappingArrayToObject(accountMappingArray: AccountMappingArray) {
   const mappingObject: AccountNumberToYnabAccountIdMappingObject = {};
-  accountMappingArray.forEach(({ accountNumber, ynabAccountId }) => {
-    mappingObject[accountNumber] = ynabAccountId;
+  accountMappingArray.forEach(({ accountNumber, ynabBudgetId, ynabAccountId }) => {
+    mappingObject[accountNumber] = { ynabBudgetId, ynabAccountId };
   });
   return mappingObject;
 }

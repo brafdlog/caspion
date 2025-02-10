@@ -65,7 +65,7 @@ export interface GoogleSheetsConfig extends OutputVendorConfigBase {
 export interface YnabConfig extends OutputVendorConfigBase {
   options: {
     accessToken: string;
-    accountNumbersToYnabAccountIds: Record<string, string>;
+    accountNumbersToYnabAccountIds: Record<string, { ynabBudgetId: string; ynabAccountId: string }>;
     budgetId: string;
     maxPayeeNameLength?: number;
   };
