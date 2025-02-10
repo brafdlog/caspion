@@ -287,7 +287,7 @@ export async function getYnabAccountDetails(
   let categories: YnabAccountDetails['categories'];
   if (doesBudgetIdExistInYnab(budgetIdToCheck)) {
     console.log('Getting ynab categories');
-    categories = await getYnabCategories();
+    categories = await getYnabCategories(budgetIdToCheck);
   } else {
     // eslint-disable-next-line
     console.warn(`Budget id ${budgetIdToCheck} doesn't exist in ynab`);
@@ -354,8 +354,8 @@ async function getBudgetsAndAccountsData() {
   };
 }
 
-async function getYnabCategories() {
-  const categoriesResponse = await ynabAPI!.categories.getCategories(ynabConfig!.options.budgetId);
+async function getYnabCategories(budgetId: string) {
+  const categoriesResponse = await ynabAPI!.categories.getCategories(budgetId);
   const categories = _.flatMap(categoriesResponse.data.category_groups, (categoryGroup) => categoryGroup.categories);
   const categoryNames = categories.map((category) => category.name);
   return categoryNames;
