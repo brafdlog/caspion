@@ -87,6 +87,7 @@ const createTransactionsForAccount: ExportTransactionsForAccountFunction = async
     .filter((v) => v.accountNumber === accountNumber)
     .map(convertTransactionToYnabFormat);
   let transactionsThatDontExistInYnab = await filterOnlyTransactionsThatDontExistInYnabAlready(
+    budgetId,
     startDate,
     transactionsFromFinancialAccount,
   );
@@ -128,11 +129,8 @@ const createTransactionsForAccount: ExportTransactionsForAccountFunction = async
   }
 };
 
-function getTransactions(startDate: Date): Promise<ynab.TransactionsResponse> {
-  return ynabAPI!.transactions.getTransactions(
-    ynabConfig!.options.budgetId,
-    moment(startDate).format(YNAB_DATE_FORMAT),
-  );
+function getTransactions(budgetId: string, startDate: Date): Promise<ynab.TransactionsResponse> {
+  return ynabAPI!.transactions.getTransactions(budgetId, moment(startDate).format(YNAB_DATE_FORMAT));
 }
 
 export function getPayeeName(transaction: EnrichedTransaction, payeeNameMaxLength = 50) {
@@ -223,6 +221,7 @@ export async function initCategories() {
 }
 
 async function filterOnlyTransactionsThatDontExistInYnabAlready(
+  budgetId: string,
   startDate: Date,
   transactionsFromFinancialAccounts: ynab.SaveTransaction[],
 ) {
@@ -230,7 +229,7 @@ async function filterOnlyTransactionsThatDontExistInYnabAlready(
   if (transactionsFromYnab.has(startDate)) {
     transactionsInYnabBeforeCreatingTheseTransactions = transactionsFromYnab.get(startDate)!;
   } else {
-    const transactionsFromYnabResponse = await getTransactions(startDate);
+    const transactionsFromYnabResponse = await getTransactions(budgetId, startDate);
     transactionsInYnabBeforeCreatingTheseTransactions = transactionsFromYnabResponse.data.transactions;
     transactionsFromYnab.set(startDate, transactionsInYnabBeforeCreatingTheseTransactions);
   }
