@@ -202,22 +202,24 @@ function getYnabCategoryIdFromCategoryName(budgetId: string, categoryName?: stri
 
 export async function initCategories() {
   const budgetIds = Object.values(ynabConfig!.options.accountNumbersToYnabAccountIds).map((v) => v.ynabBudgetId);
-  budgetIds.forEach(async (budgetId) => {
-    const categories = await ynabAPI!.categories.getCategories(budgetId);
-    const categoriesMap = new Map<string, YnabCategory>();
-    categories.data.category_groups.forEach((categoryGroup) => {
-      categoryGroup.categories
-        .map((category) => ({
-          id: category.id,
-          name: category.name,
-          category_group_id: category.category_group_id,
-        }))
-        .forEach((category) => {
-          categoriesMap.set(category.name, category);
-        });
-    });
-    budgetCategoriesMap.set(budgetId, categoriesMap);
-  });
+  await Promise.all(
+    budgetIds.map(async (budgetId) => {
+      const categories = await ynabAPI!.categories.getCategories(budgetId);
+      const categoriesMap = new Map<string, YnabCategory>();
+      categories.data.category_groups.forEach((categoryGroup) => {
+        categoryGroup.categories
+          .map((category) => ({
+            id: category.id,
+            name: category.name,
+            category_group_id: category.category_group_id,
+          }))
+          .forEach((category) => {
+            categoriesMap.set(category.name, category);
+          });
+      });
+      budgetCategoriesMap.set(budgetId, categoriesMap);
+    }),
+  );
 }
 
 async function filterOnlyTransactionsThatDontExistInYnabAlready(
