@@ -98,7 +98,8 @@
     "react-dom": "^18.3.1",
     "svelte": "^4.2.19",
     "web-vitals": "^4.2.3",
-    "ynab": "^1.19.0"
+    "ynab": "^1.19.0",
+    "zod": "^3.24.2"
   },
   "resolutions": {
     "underscore": "1.12.1",
