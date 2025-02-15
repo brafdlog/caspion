@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { type Config } from '../../commonTypes';
 import { isOriginalConfig } from './versions/original';
-import { v1ConfigSchema } from './versions/v1';
+import { migrateOriginalToV1, v1ConfigSchema } from './versions/v1';
 
 const latestConfigSchema = v1ConfigSchema;
 
@@ -13,7 +13,7 @@ export function migrateConfig(config: unknown): Config {
   let currentConfig = config;
   // original config does not have version key and must be handled separately
   if (isOriginalConfig(config)) {
-    return config as Config;
+    currentConfig = migrateOriginalToV1(config);
   }
   let currentVersion = getConfigVersion(currentConfig);
 

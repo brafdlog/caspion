@@ -11,6 +11,7 @@ export type {
   Spreadsheet,
 } from './export/outputVendors/googleSheets/googleSheetsInternalAPI';
 export interface Config {
+  version: number;
   outputVendors: {
     [OutputVendorName.GOOGLE_SHEETS]?: GoogleSheetsConfig;
     [OutputVendorName.YNAB]?: YnabConfig;

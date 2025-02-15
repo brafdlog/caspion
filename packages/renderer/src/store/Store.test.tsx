@@ -99,6 +99,7 @@ describe('Store', () => {
 });
 
 export const dummyConfig: Config = {
+  version: 1,
   scraping: {
     numDaysBack: 40,
     showBrowser: false,

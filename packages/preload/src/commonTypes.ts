@@ -15,6 +15,7 @@ export enum OutputVendorName {
 }
 
 export interface Config {
+  version: number;
   outputVendors: {
     [OutputVendorName.GOOGLE_SHEETS]?: GoogleSheetsConfig;
     [OutputVendorName.YNAB]?: YnabConfig;
