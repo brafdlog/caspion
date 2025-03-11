@@ -1,17 +1,15 @@
 import { type Config } from '../../commonTypes';
-import { migrateOriginalToV1 } from './versions/v1';
+import { migrateV0ToV1 } from './versions/v1';
 
 // migrations[n] should be a function that converts version n to version n+1
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const migrations: Record<number, (config: any) => any> = {};
+const migrations: Record<number, (config: any) => any> = {
+  0: migrateV0ToV1,
+};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function migrateConfig(config: any): Config {
   let currentConfig = config;
-  // original config does not have version key and must be handled separately
-  if (config.version === undefined) {
-    currentConfig = migrateOriginalToV1(config);
-  }
   let currentVersion = getConfigVersion(currentConfig);
 
   while (migrations[currentVersion]) {
@@ -24,5 +22,7 @@ export function migrateConfig(config: any): Config {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getConfigVersion(config: any): keyof typeof migrations {
-  return config.version;
+  // Prior to v1, the config didn't have a version field.
+  // In that case, we treat it as v0.
+  return config.version ?? 0;
 }
