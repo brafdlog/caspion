@@ -1,18 +1,15 @@
-import { z } from 'zod';
 import { type Config } from '../../commonTypes';
-import { isOriginalConfig } from './versions/original';
-import { migrateOriginalToV1, v1ConfigSchema } from './versions/v1';
-
-const latestConfigSchema = v1ConfigSchema;
+import { migrateOriginalToV1 } from './versions/v1';
 
 // migrations[n] should be a function that converts version n to version n+1
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const migrations: Record<number, (config: any) => any> = {};
 
-export function migrateConfig(config: unknown): Config {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function migrateConfig(config: any): Config {
   let currentConfig = config;
   // original config does not have version key and must be handled separately
-  if (isOriginalConfig(config)) {
+  if (config.version === undefined) {
     currentConfig = migrateOriginalToV1(config);
   }
   let currentVersion = getConfigVersion(currentConfig);
@@ -22,10 +19,10 @@ export function migrateConfig(config: unknown): Config {
     currentVersion = getConfigVersion(currentConfig);
   }
 
-  return latestConfigSchema.parse(currentConfig) as Config;
+  return currentConfig as Config;
 }
 
-function getConfigVersion(config: unknown): keyof typeof migrations {
-  const versionSchema = z.object({ version: z.number().int().positive() });
-  return versionSchema.parse(config).version;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function getConfigVersion(config: any): keyof typeof migrations {
+  return config.version;
 }

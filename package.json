@@ -98,11 +98,11 @@
     "react-dom": "^18.3.1",
     "svelte": "^4.2.19",
     "web-vitals": "^4.2.3",
-    "ynab": "^1.19.0",
-    "zod": "^3.24.2"
+    "ynab": "^1.19.0"
   },
   "resolutions": {
     "underscore": "1.12.1",
     "ws": "8.17.1"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

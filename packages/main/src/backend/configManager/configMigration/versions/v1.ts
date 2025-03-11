@@ -1,9 +1,5 @@
-import { z } from 'zod';
-import { originalConfigSchema } from './original';
-
-export const v1ConfigSchema = originalConfigSchema.extend({ version: z.literal(1) });
-
-export function migrateOriginalToV1(v1Config: z.infer<typeof originalConfigSchema>): z.infer<typeof v1ConfigSchema> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function migrateOriginalToV1(v1Config: any): any {
   return {
     ...v1Config,
     version: 1,
