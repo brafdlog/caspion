@@ -1,6 +1,7 @@
 import { type Config } from '../commonTypes';
 
 const DEFAULT_CONFIG: Config = {
+  version: 1,
   scraping: {
     numDaysBack: 40,
     showBrowser: false,
