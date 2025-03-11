@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { type Config } from '../../commonTypes';
+import { type Config } from '@/backend/commonTypes';
 import { migrateV0ToV1 } from './versions/v1';
 
 // migrations[n] should be a function that converts version n to version n+1
