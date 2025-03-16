@@ -65,7 +65,7 @@ export interface GoogleSheetsConfig extends OutputVendorConfigBase {
 export interface YnabConfig extends OutputVendorConfigBase {
   options: {
     accessToken: string;
-    accountNumbersToYnabAccountIds: Record<string, string>;
+    accountNumbersToYnabAccountIds: Record<string, { ynabBudgetId: string; ynabAccountId: string }>;
     budgetId: string;
     maxPayeeNameLength?: number;
   };
@@ -97,6 +97,15 @@ export interface ExportTransactionsResult {
 
 export type ExportTransactionsFunction = (
   exportTransactionsParams: ExportTransactionsParams,
+  eventPublisher: EventPublisher,
+) => Promise<ExportTransactionsResult>;
+
+export interface ExportTransactionsForAccountParams extends ExportTransactionsParams {
+  accountNumber: string;
+}
+
+export type ExportTransactionsForAccountFunction = (
+  exportTransactionsParams: ExportTransactionsForAccountParams,
   eventPublisher: EventPublisher,
 ) => Promise<ExportTransactionsResult>;
 
