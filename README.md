@@ -76,7 +76,7 @@ For M1 macs, if you get an error while scraping due to not being able to downloa
 ### Start from Source
 
 - Run `yarn` to install the dependencies
-- Run `yarn serve` to start the app
+- Run `yarn watch` to start the app
 - Set up additional exporters (Optional)
   - If you want to set up YNAB or Google Sheets, see instructions below
 - Run by clicking on the `Run` button in the app
