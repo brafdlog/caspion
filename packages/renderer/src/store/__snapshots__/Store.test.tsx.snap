@@ -45,10 +45,22 @@ exports[`Store > Properties and getters > exporters 1`] = `
     "options": {
       "accessToken": "################-######-####-###",
       "accountNumbersToYnabAccountIds": {
-        "1111": "xcvxcvxcvsd",
-        "3333": "xvxcdv",
-        "5555": "asdvasdvsdvs",
-        "555555555": "vsdvsdvserverv",
+        "1111": {
+          "ynabAccountId": "xcvxcvxcvsd",
+          "ynabBudgetId": "advasdvasd-asdvasdva-sdvasdvasdv-asdvasdvf",
+        },
+        "3333": {
+          "ynabAccountId": "xvxcdv",
+          "ynabBudgetId": "advasdvasd-asdvasdva-sdvasdvasdv-asdvasdvf",
+        },
+        "5555": {
+          "ynabAccountId": "asdvasdvsdvs",
+          "ynabBudgetId": "advasdvasd-asdvasdva-sdvasdvasdv-asdvasdvf",
+        },
+        "555555555": {
+          "ynabAccountId": "vsdvsdvserverv",
+          "ynabBudgetId": "advasdvasd-asdvasdva-sdvasdvasdv-asdvasdvf",
+        },
       },
       "budgetId": "advasdvasd-asdvasdva-sdvasdvasdv-asdvasdvf",
     },
