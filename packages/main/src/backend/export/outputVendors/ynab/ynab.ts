@@ -44,7 +44,11 @@ const createTransactions: ExportTransactionsFunction = async ({ transactionsToCr
   if (!categoriesMap.size) {
     await initCategories();
   }
-  const transactionsFromFinancialAccount = transactionsToCreate.map(convertTransactionToYnabFormat);
+  const { mappedTransactions } = await removeTransactionsForAccountsWithNoYnabMapping(
+    transactionsToCreate,
+    eventPublisher,
+  );
+  const transactionsFromFinancialAccount = mappedTransactions.map(convertTransactionToYnabFormat);
   let transactionsThatDontExistInYnab = await filterOnlyTransactionsThatDontExistInYnabAlready(
     startDate,
     transactionsFromFinancialAccount,
@@ -91,6 +95,30 @@ const createTransactions: ExportTransactionsFunction = async ({ transactionsToCr
   }
 };
 
+async function removeTransactionsForAccountsWithNoYnabMapping(
+  transactions: EnrichedTransaction[],
+  eventPublisher: EventPublisher,
+): Promise<{ mappedTransactions: EnrichedTransaction[] }> {
+  const skippedAccountNumbers = new Set<string>();
+  const mappedTransactions = transactions.filter((transaction) => {
+    const isMapped = isAccountMapped(transaction.accountNumber);
+    if (!isMapped) {
+      skippedAccountNumbers.add(transaction.accountNumber);
+    }
+    return isMapped;
+  });
+
+  if (skippedAccountNumbers.size > 0) {
+    await emitProgressEvent(
+      eventPublisher,
+      transactions,
+      `Skipping transactions from unmapped accounts: ${Array.from(skippedAccountNumbers).join(', ')}`,
+    );
+  }
+
+  return { mappedTransactions };
+}
+
 function getTransactions(startDate: Date): Promise<ynab.TransactionsResponse> {
   return ynabAPI!.transactions.getTransactions(
     ynabConfig!.options.budgetId,
@@ -110,8 +138,14 @@ export function getPayeeName(transaction: EnrichedTransaction, payeeNameMaxLengt
 function convertTransactionToYnabFormat(originalTransaction: EnrichedTransaction): ynab.SaveTransaction {
   const amount = Math.round(originalTransaction.chargedAmount * 1000);
   const date = convertTimestampToYnabDateFormat(originalTransaction);
+  const ynabAccountId = getYnabAccountIdByAccountNumberFromTransaction(originalTransaction.accountNumber);
+  if (!ynabAccountId) {
+    throw new Error(
+      `Cannot create YNAB transaction: Account ID not found for account number ${originalTransaction.accountNumber}`,
+    );
+  }
   return {
-    account_id: getYnabAccountIdByAccountNumberFromTransaction(originalTransaction.accountNumber),
+    account_id: ynabAccountId,
     date, // "2019-01-17",
     amount,
     // "payee_id": "string",
@@ -133,12 +167,12 @@ function buildImportId(transaction: EnrichedTransaction): string {
   );
 }
 
-function getYnabAccountIdByAccountNumberFromTransaction(transactionAccountNumber: string): string {
-  const ynabAccountId = ynabConfig!.options.accountNumbersToYnabAccountIds[transactionAccountNumber];
-  if (!ynabAccountId) {
-    throw new Error(`Unhandled account number ${transactionAccountNumber}`);
-  }
-  return ynabAccountId;
+function getYnabAccountIdByAccountNumberFromTransaction(transactionAccountNumber: string): string | null {
+  return ynabConfig!.options.accountNumbersToYnabAccountIds[transactionAccountNumber] || null;
+}
+
+function isAccountMapped(accountNumber: string): boolean {
+  return !!ynabConfig!.options.accountNumbersToYnabAccountIds[accountNumber];
 }
 
 function convertTimestampToYnabDateFormat(originalTransaction: EnrichedTransaction): string {
