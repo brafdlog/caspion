@@ -2,6 +2,7 @@ import {
   OutputVendorName,
   type Config,
   type EnrichedTransaction,
+  type ExportTransactionsForAccountFunction,
   type ExportTransactionsFunction,
   type OutputVendor,
   type YnabAccountDetails,
@@ -18,7 +19,9 @@ const NOW = moment();
 const MIN_YNAB_ACCESS_TOKEN_LENGTH = 43;
 const MAX_YNAB_IMPORT_ID_LENGTH = 36;
 
-const categoriesMap = new Map<string, Pick<ynab.Category, 'id' | 'name' | 'category_group_id'>>();
+type YnabCategory = Pick<ynab.Category, 'id' | 'name' | 'category_group_id'>;
+
+const budgetCategoriesMap = new Map<string, Map<string, YnabCategory>>();
 const transactionsFromYnab = new Map<Date, ynab.TransactionDetail[]>();
 
 let ynabConfig: YnabConfig | undefined;
@@ -37,15 +40,54 @@ async function initFromToken(accessToken?: string) {
   }
 }
 
-const createTransactions: ExportTransactionsFunction = async ({ transactionsToCreate, startDate }, eventPublisher) => {
+const createTransactions: ExportTransactionsFunction = async (
+  { transactionsToCreate, startDate, outputVendorsConfig },
+  eventPublisher,
+) => {
+  if (!budgetCategoriesMap.size) {
+    await initCategories();
+  }
+  const accountNumbers = _.uniq(transactionsToCreate.map((t) => t.accountNumber));
+  const promises = accountNumbers.map((accountNumber) =>
+    createTransactionsForAccount(
+      {
+        accountNumber,
+        transactionsToCreate,
+        startDate,
+        outputVendorsConfig,
+      },
+      eventPublisher,
+    ),
+  );
+  const results = await Promise.all(promises);
+  const exportedTransactionsNums = results.map((v) => v.exportedTransactionsNum);
+  return {
+    exportedTransactionsNum: _.sum(exportedTransactionsNums),
+  };
+};
+
+const createTransactionsForAccount: ExportTransactionsForAccountFunction = async (
+  { accountNumber, transactionsToCreate: allTransactions, startDate },
+  eventPublisher,
+) => {
   if (!ynabConfig) {
     throw new Error('Must call init before using ynab functions');
   }
-  if (!categoriesMap.size) {
-    await initCategories();
+  let budgetId: string;
+  try {
+    getYnabAccountIdByAccountNumberFromTransaction(accountNumber);
+    budgetId = getYnabBudgetIdByAccountNumberFromTransaction(accountNumber);
+  } catch (e) {
+    await emitProgressEvent(eventPublisher, allTransactions, `Account ${accountNumber} is unmapped. Skipping.`);
+    return {
+      exportedTransactionsNum: 0,
+    };
   }
-  const transactionsFromFinancialAccount = transactionsToCreate.map(convertTransactionToYnabFormat);
+  const transactionsFromFinancialAccount = allTransactions
+    .filter((v) => v.accountNumber === accountNumber)
+    .map(convertTransactionToYnabFormat);
   let transactionsThatDontExistInYnab = await filterOnlyTransactionsThatDontExistInYnabAlready(
+    budgetId,
     startDate,
     transactionsFromFinancialAccount,
   );
@@ -54,11 +96,7 @@ const createTransactions: ExportTransactionsFunction = async ({ transactionsToCr
     moment(transaction.date, YNAB_DATE_FORMAT).isBefore(NOW),
   );
   if (!transactionsThatDontExistInYnab.length) {
-    await emitProgressEvent(
-      eventPublisher,
-      transactionsToCreate,
-      'All transactions already exist in ynab. Doing nothing.',
-    );
+    await emitProgressEvent(eventPublisher, allTransactions, 'All transactions already exist in ynab. Doing nothing.');
     return {
       exportedTransactionsNum: 0,
     };
@@ -66,11 +104,11 @@ const createTransactions: ExportTransactionsFunction = async ({ transactionsToCr
 
   await emitProgressEvent(
     eventPublisher,
-    transactionsToCreate,
+    allTransactions,
     `Creating ${transactionsThatDontExistInYnab.length} transactions in ynab`,
   );
   try {
-    await ynabAPI!.transactions.createTransactions(ynabConfig.options.budgetId, {
+    await ynabAPI!.transactions.createTransactions(budgetId, {
       transactions: transactionsThatDontExistInYnab,
     });
     return {
@@ -83,7 +121,7 @@ const createTransactions: ExportTransactionsFunction = async ({ transactionsToCr
         message: (e as Error).message,
         error: e as Error,
         exporterName: ynabOutputVendor.name,
-        allTransactions: transactionsToCreate,
+        allTransactions: allTransactions,
       }),
     );
     console.error('Failed to create transactions in ynab', e);
@@ -91,11 +129,8 @@ const createTransactions: ExportTransactionsFunction = async ({ transactionsToCr
   }
 };
 
-function getTransactions(startDate: Date): Promise<ynab.TransactionsResponse> {
-  return ynabAPI!.transactions.getTransactions(
-    ynabConfig!.options.budgetId,
-    moment(startDate).format(YNAB_DATE_FORMAT),
-  );
+function getTransactions(budgetId: string, startDate: Date): Promise<ynab.TransactionsResponse> {
+  return ynabAPI!.transactions.getTransactions(budgetId, moment(startDate).format(YNAB_DATE_FORMAT));
 }
 
 export function getPayeeName(transaction: EnrichedTransaction, payeeNameMaxLength = 50) {
@@ -110,13 +145,14 @@ export function getPayeeName(transaction: EnrichedTransaction, payeeNameMaxLengt
 function convertTransactionToYnabFormat(originalTransaction: EnrichedTransaction): ynab.SaveTransaction {
   const amount = Math.round(originalTransaction.chargedAmount * 1000);
   const date = convertTimestampToYnabDateFormat(originalTransaction);
+  const budgetId = getYnabBudgetIdByAccountNumberFromTransaction(originalTransaction.accountNumber);
   return {
     account_id: getYnabAccountIdByAccountNumberFromTransaction(originalTransaction.accountNumber),
     date, // "2019-01-17",
     amount,
     // "payee_id": "string",
     payee_name: getPayeeName(originalTransaction, ynabConfig!.options.maxPayeeNameLength),
-    category_id: getYnabCategoryIdFromCategoryName(originalTransaction.category),
+    category_id: getYnabCategoryIdFromCategoryName(budgetId, originalTransaction.category),
     memo: originalTransaction.memo,
     cleared: ynab.SaveTransaction.ClearedEnum.Cleared,
     import_id: buildImportId(originalTransaction), // [date][amount][description]
@@ -138,18 +174,26 @@ function getYnabAccountIdByAccountNumberFromTransaction(transactionAccountNumber
   if (!ynabAccountId) {
     throw new Error(`Unhandled account number ${transactionAccountNumber}`);
   }
-  return ynabAccountId;
+  return ynabAccountId.ynabAccountId;
+}
+
+function getYnabBudgetIdByAccountNumberFromTransaction(transactionAccountNumber: string): string {
+  const ynabAccount = ynabConfig!.options.accountNumbersToYnabAccountIds[transactionAccountNumber];
+  if (!ynabAccount) {
+    throw new Error(`Unhandled account number ${transactionAccountNumber}`);
+  }
+  return ynabAccount.ynabBudgetId;
 }
 
 function convertTimestampToYnabDateFormat(originalTransaction: EnrichedTransaction): string {
   return moment(originalTransaction.date).format(YNAB_DATE_FORMAT); // 2018-12-29T22:00:00.000Z -> 2018-12-29
 }
 
-function getYnabCategoryIdFromCategoryName(categoryName?: string) {
+function getYnabCategoryIdFromCategoryName(budgetId: string, categoryName?: string) {
   if (!categoryName) {
     return null;
   }
-  const categoryToReturn = categoriesMap.get(categoryName);
+  const categoryToReturn = budgetCategoriesMap.get(budgetId)?.get(categoryName);
   if (!categoryToReturn) {
     return null;
   }
@@ -157,21 +201,29 @@ function getYnabCategoryIdFromCategoryName(categoryName?: string) {
 }
 
 export async function initCategories() {
-  const categories = await ynabAPI!.categories.getCategories(ynabConfig!.options.budgetId);
-  categories.data.category_groups.forEach((categoryGroup) => {
-    categoryGroup.categories
-      .map((category) => ({
-        id: category.id,
-        name: category.name,
-        category_group_id: category.category_group_id,
-      }))
-      .forEach((category) => {
-        categoriesMap.set(category.name, category);
+  const budgetIds = Object.values(ynabConfig!.options.accountNumbersToYnabAccountIds).map((v) => v.ynabBudgetId);
+  await Promise.all(
+    budgetIds.map(async (budgetId) => {
+      const categories = await ynabAPI!.categories.getCategories(budgetId);
+      const categoriesMap = new Map<string, YnabCategory>();
+      categories.data.category_groups.forEach((categoryGroup) => {
+        categoryGroup.categories
+          .map((category) => ({
+            id: category.id,
+            name: category.name,
+            category_group_id: category.category_group_id,
+          }))
+          .forEach((category) => {
+            categoriesMap.set(category.name, category);
+          });
       });
-  });
+      budgetCategoriesMap.set(budgetId, categoriesMap);
+    }),
+  );
 }
 
 async function filterOnlyTransactionsThatDontExistInYnabAlready(
+  budgetId: string,
   startDate: Date,
   transactionsFromFinancialAccounts: ynab.SaveTransaction[],
 ) {
@@ -179,7 +231,7 @@ async function filterOnlyTransactionsThatDontExistInYnabAlready(
   if (transactionsFromYnab.has(startDate)) {
     transactionsInYnabBeforeCreatingTheseTransactions = transactionsFromYnab.get(startDate)!;
   } else {
-    const transactionsFromYnabResponse = await getTransactions(startDate);
+    const transactionsFromYnabResponse = await getTransactions(budgetId, startDate);
     transactionsInYnabBeforeCreatingTheseTransactions = transactionsFromYnabResponse.data.transactions;
     transactionsFromYnab.set(startDate, transactionsInYnabBeforeCreatingTheseTransactions);
   }
@@ -237,7 +289,7 @@ export async function getYnabAccountDetails(
   let categories: YnabAccountDetails['categories'];
   if (doesBudgetIdExistInYnab(budgetIdToCheck)) {
     console.log('Getting ynab categories');
-    categories = await getYnabCategories();
+    categories = await getYnabCategories(budgetIdToCheck);
   } else {
     // eslint-disable-next-line
     console.warn(`Budget id ${budgetIdToCheck} doesn't exist in ynab`);
@@ -304,8 +356,8 @@ async function getBudgetsAndAccountsData() {
   };
 }
 
-async function getYnabCategories() {
-  const categoriesResponse = await ynabAPI!.categories.getCategories(ynabConfig!.options.budgetId);
+async function getYnabCategories(budgetId: string) {
+  const categoriesResponse = await ynabAPI!.categories.getCategories(budgetId);
   const categories = _.flatMap(categoriesResponse.data.category_groups, (categoryGroup) => categoryGroup.categories);
   const categoryNames = categories.map((category) => category.name);
   return categoryNames;

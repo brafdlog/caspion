@@ -15,11 +15,14 @@ interface YnabAccountMappingTableProps {
   onUpdate: (accountNumberToYnabIdMapping: AccountNumberToYnabAccountIdMappingObject) => void;
 }
 
-type AccountMappingArray = {
+interface AccountMapping {
   accountNumber: string;
+  ynabBudgetId: string;
   ynabAccountId: string;
   index?: number;
-}[];
+}
+
+type AccountMappingArray = AccountMapping[];
 
 const YnabAccountMappingTable = ({
   accountNumberToYnabIdMapping,
@@ -45,11 +48,28 @@ const YnabAccountMappingTable = ({
       },
     },
     {
+      dataField: 'ynabBudgetId',
+      text: 'Ynab budget id',
+      editor: {
+        type: Type.SELECT,
+        getOptions: () => {
+          return ynabAccountData?.ynabAccountData?.budgets.map((ynabBudget) => {
+            return {
+              label: ynabBudget.name,
+              value: ynabBudget.id,
+            };
+          });
+        },
+      },
+    },
+    {
       dataField: 'ynabAccountId',
       text: 'Ynab account id',
       editor: {
         type: Type.SELECT,
-        getOptions: () => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        getOptions: (_: any, { row }: { row: AccountMapping }) => {
+          const budgetId = (row as AccountMapping).ynabBudgetId;
           return ynabAccountData?.ynabAccountData?.accounts
             .filter((ynabAccount) => ynabAccount.active && ynabAccount.budgetId === budgetId)
             .map((ynabAccount) => {
@@ -79,6 +99,7 @@ const YnabAccountMappingTable = ({
       ...accountMappingArray,
       {
         accountNumber: '12345678',
+        ynabBudgetId: budgetId,
         ynabAccountId: '##########',
         index: accountMappingArray.length,
       },
@@ -102,15 +123,16 @@ function accountMappingObjectToArray(
     return {
       index,
       accountNumber,
-      ynabAccountId: accountNumbersToYnabAccountIds[accountNumber],
+      ynabBudgetId: accountNumbersToYnabAccountIds[accountNumber].ynabBudgetId,
+      ynabAccountId: accountNumbersToYnabAccountIds[accountNumber].ynabAccountId,
     };
   });
 }
 
 function accountMappingArrayToObject(accountMappingArray: AccountMappingArray) {
   const mappingObject: AccountNumberToYnabAccountIdMappingObject = {};
-  accountMappingArray.forEach(({ accountNumber, ynabAccountId }) => {
-    mappingObject[accountNumber] = ynabAccountId;
+  accountMappingArray.forEach(({ accountNumber, ynabBudgetId, ynabAccountId }) => {
+    mappingObject[accountNumber] = { ynabBudgetId, ynabAccountId };
   });
   return mappingObject;
 }
