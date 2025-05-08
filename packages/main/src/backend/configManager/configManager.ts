@@ -2,6 +2,7 @@ import { configFilePath } from '@/app-globals';
 import { type Config } from '@/backend/commonTypes';
 import { decrypt, encrypt } from '@/backend/configManager/encryption/crypto';
 import { existsSync, promises as fs } from 'fs';
+import { migrateConfig } from './configMigration/configMigrator';
 import configExample from './defaultConfig';
 import logger from '/@/logging/logger';
 
@@ -19,7 +20,7 @@ export async function getConfig(configPath: string = configFilePath): Promise<Co
         logger.log('Empty config file found, returning default config');
         return configExample;
       }
-      return config;
+      return migrateConfig(config);
     } catch (e) {
       logger.error('Failed to parse config file, returning default config', e);
     }
