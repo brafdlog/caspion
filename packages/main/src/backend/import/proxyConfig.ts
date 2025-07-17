@@ -10,15 +10,9 @@ let currentProxyAgent: ProxyAgent | null = null;
 
 /**
  * Gets the proxy configuration from environment variables
- * Returns the proxy URL if found, undefined if no proxy or if disabled by NO_PROXY
+ * Returns the proxy URL if found, and the NO_PROXY setting for bypass rules
  */
-export function getProxyConfiguration(): { proxyUrl?: string; isDisabled: boolean } {
-  // Check if NO_PROXY or no_proxy is set to disable proxy
-  const noProxy = process.env.NO_PROXY ?? process.env.no_proxy;
-  if (noProxy) {
-    return { isDisabled: true };
-  }
-
+export function getProxyConfiguration(): { proxyUrl?: string; noProxy?: string } {
   // Check common proxy environment variables
   const proxyUrl =
     process.env.HTTPS_PROXY ??
@@ -28,20 +22,17 @@ export function getProxyConfiguration(): { proxyUrl?: string; isDisabled: boolea
     process.env.ALL_PROXY ??
     process.env.all_proxy;
 
-  return { proxyUrl, isDisabled: false };
+  // Get NO_PROXY setting for bypass rules
+  const noProxy = process.env.NO_PROXY ?? process.env.no_proxy;
+
+  return { proxyUrl, noProxy };
 }
 
 /**
  * Checks if proxy needs to be configured based on environment variables
  */
 function isProxyNeedConfiguration(): boolean {
-  const { proxyUrl, isDisabled } = getProxyConfiguration();
-
-  if (isDisabled) {
-    logger.log('Proxy disabled by NO_PROXY environment variable');
-    return false;
-  }
-
+  const { proxyUrl } = getProxyConfiguration();
   return !!proxyUrl;
 }
 
@@ -54,7 +45,7 @@ export function initProxyIfNeeded(): void {
     return;
   }
 
-  const { proxyUrl } = getProxyConfiguration();
+  const { proxyUrl, noProxy } = getProxyConfiguration();
 
   if (!proxyUrl) {
     return;
@@ -65,12 +56,12 @@ export function initProxyIfNeeded(): void {
     originalHttpAgent = http.globalAgent;
     originalHttpsAgent = https.globalAgent;
 
-    // Create and set proxy agent
+    // Create proxy agent - it will automatically use NO_PROXY from environment
     currentProxyAgent = new ProxyAgent();
     http.globalAgent = currentProxyAgent;
     https.globalAgent = currentProxyAgent;
 
-    logger.log(`Using proxy from environment variable: ${proxyUrl}`);
+    logger.log(`Using proxy: ${proxyUrl}${noProxy ? ` with NO_PROXY: ${noProxy}` : ''}`);
   } catch (error) {
     logger.warn('Failed to initialize proxy agent:', error);
   }
@@ -100,17 +91,21 @@ export function tearDownProxy(): void {
  * Returns array of arguments to pass to browser for proxy configuration
  */
 export function getProxyArgs(): string[] {
-  const { proxyUrl, isDisabled } = getProxyConfiguration();
+  const { proxyUrl, noProxy } = getProxyConfiguration();
 
-  if (isDisabled) {
-    logger.log('Proxy disabled for scraping by NO_PROXY environment variable');
+  if (!proxyUrl) {
     return [];
   }
 
-  if (proxyUrl) {
+  const args = [`--proxy-server=${proxyUrl}`];
+
+  if (noProxy) {
+    // Add NO_PROXY bypass rules for Chromium
+    args.push(`--proxy-bypass-list=${noProxy}`);
+    logger.log(`Using proxy for scraping: ${proxyUrl} with bypass list: ${noProxy}`);
+  } else {
     logger.log(`Using proxy for scraping: ${proxyUrl}`);
-    return [`--proxy-server=${proxyUrl}`];
   }
 
-  return [];
+  return args;
 }
