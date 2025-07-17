@@ -1,6 +1,6 @@
 import { type AccountToScrapeConfig } from '@/backend/commonTypes';
 import { createScraper, type ScraperOptions } from 'israeli-bank-scrapers-core';
-import logger from '/@/logging/logger';
+import { getProxyArgs } from './proxyConfig';
 
 interface ScrapeParameters {
   companyId: AccountToScrapeConfig['key'];
@@ -11,33 +11,6 @@ interface ScrapeParameters {
 }
 
 type EmitProgressEventFunction = (eventCompanyId: string, message: string) => Promise<void>;
-
-/**
- * Creates Chromium proxy arguments based on system proxy configuration
- * Checks environment variables for proxy configuration
- */
-function getProxyArgs(): string[] {
-  const proxyUrl =
-    process.env.HTTPS_PROXY ??
-    process.env.https_proxy ??
-    process.env.HTTP_PROXY ??
-    process.env.http_proxy ??
-    process.env.ALL_PROXY ??
-    process.env.all_proxy;
-
-  if (proxyUrl) {
-    logger.log(`Using proxy for scraping: ${proxyUrl}`);
-    return [`--proxy-server=${proxyUrl}`];
-  }
-
-  // Check if NO_PROXY or no_proxy is set to disable proxy
-  const noProxy = process.env.NO_PROXY ?? process.env.no_proxy;
-  if (noProxy) {
-    logger.log('Proxy disabled for scraping by NO_PROXY environment variable');
-  }
-
-  return [];
-}
 
 export async function scrape(
   { companyId, credentials, startDate, timeout, showBrowser = false }: ScrapeParameters,
