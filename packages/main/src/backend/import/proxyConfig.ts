@@ -3,7 +3,6 @@ import https from 'https';
 import { ProxyAgent } from 'proxy-agent';
 import logger from '/@/logging/logger';
 
-// Store original global agents
 let originalHttpAgent: typeof http.globalAgent | null = null;
 let originalHttpsAgent: typeof https.globalAgent | null = null;
 let currentProxyAgent: ProxyAgent | null = null;
@@ -13,7 +12,6 @@ let currentProxyAgent: ProxyAgent | null = null;
  * Returns the proxy URL if found, and the NO_PROXY setting for bypass rules
  */
 export function getProxyConfiguration(): { proxyUrl?: string; noProxy?: string } {
-  // Check common proxy environment variables
   const proxyUrl =
     process.env.HTTPS_PROXY ??
     process.env.https_proxy ??
@@ -22,7 +20,6 @@ export function getProxyConfiguration(): { proxyUrl?: string; noProxy?: string }
     process.env.ALL_PROXY ??
     process.env.all_proxy;
 
-  // Get NO_PROXY setting for bypass rules
   const noProxy = process.env.NO_PROXY ?? process.env.no_proxy;
 
   return { proxyUrl, noProxy };
@@ -52,11 +49,9 @@ export function initProxyIfNeeded(): void {
   }
 
   try {
-    // Store original global agents before modifying them
     originalHttpAgent = http.globalAgent;
     originalHttpsAgent = https.globalAgent;
 
-    // Create proxy agent - it will automatically use NO_PROXY from environment
     currentProxyAgent = new ProxyAgent();
     http.globalAgent = currentProxyAgent;
     https.globalAgent = currentProxyAgent;
@@ -73,11 +68,9 @@ export function initProxyIfNeeded(): void {
  */
 export function tearDownProxy(): void {
   if (currentProxyAgent && originalHttpAgent && originalHttpsAgent) {
-    // Restore original global agents
     http.globalAgent = originalHttpAgent;
     https.globalAgent = originalHttpsAgent;
 
-    // Reset stored references
     originalHttpAgent = null;
     originalHttpsAgent = null;
     currentProxyAgent = null;
@@ -100,7 +93,6 @@ export function getProxyArgs(): string[] {
   const args = [`--proxy-server=${proxyUrl}`];
 
   if (noProxy) {
-    // Add NO_PROXY bypass rules for Chromium
     args.push(`--proxy-bypass-list=${noProxy}`);
     logger.log(`Using proxy for scraping: ${proxyUrl} with bypass list: ${noProxy}`);
   } else {
