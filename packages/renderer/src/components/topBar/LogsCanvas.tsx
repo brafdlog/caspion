@@ -15,7 +15,11 @@ export default function LogsCanvas({ show, handleClose, lastLines }: LogsCanvasP
       <Offcanvas.Header closeButton>
         <Offcanvas.Title>לוגים:</Offcanvas.Title>
       </Offcanvas.Header>
-      <Offcanvas.Body dir="ltr">{splitted?.map((line, index) => <div key={index}>{line}</div>)}</Offcanvas.Body>
+      <Offcanvas.Body dir="ltr">
+        {splitted?.map((line, index) => (
+          <div key={index}>{line}</div>
+        ))}
+      </Offcanvas.Body>
     </Offcanvas>
   );
 }
