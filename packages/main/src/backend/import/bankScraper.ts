@@ -1,5 +1,6 @@
 import { type AccountToScrapeConfig } from '@/backend/commonTypes';
 import { createScraper, type ScraperOptions } from 'israeli-bank-scrapers-core';
+import { getProxyArgs } from './proxyConfig';
 
 interface ScrapeParameters {
   companyId: AccountToScrapeConfig['key'];
@@ -16,6 +17,8 @@ export async function scrape(
   emitProgressEvent: EmitProgressEventFunction,
   chromePath: string,
 ) {
+  const proxyArgs = getProxyArgs();
+
   const options: ScraperOptions = {
     companyId, // mandatory; one of 'hapoalim', 'discount', 'otsarHahayal', 'leumiCard', 'isracard', 'amex'
     startDate, // the date to fetch transactions from (can't be before the minimum allowed time difference for the scraper)
@@ -24,6 +27,7 @@ export async function scrape(
     verbose: false, // include more debug info about in the output
     executablePath: chromePath,
     defaultTimeout: timeout,
+    args: proxyArgs, // Add proxy configuration to browser args
   };
   const scraper = createScraper(options);
   scraper.onProgress((eventCompanyId: string, payload: { type: string }) => {
