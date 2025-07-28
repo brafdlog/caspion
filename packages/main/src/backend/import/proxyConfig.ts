@@ -28,7 +28,7 @@ export function getProxyConfiguration(): { proxyUrl?: string; noProxy?: string }
 /**
  * Checks if proxy needs to be configured based on environment variables
  */
-function isProxyNeedConfiguration(): boolean {
+function isProxyNeeded(): boolean {
   const { proxyUrl } = getProxyConfiguration();
   return !!proxyUrl;
 }
@@ -38,7 +38,7 @@ function isProxyNeedConfiguration(): boolean {
  * Sets up global HTTP/HTTPS agents with proxy configuration
  */
 export function initProxyIfNeeded(): void {
-  if (!isProxyNeedConfiguration()) {
+  if (!isProxyNeeded()) {
     return;
   }
 
