@@ -4257,10 +4257,10 @@ isexe@^2.0.0:
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==
 
-israeli-bank-scrapers-core@6.2.2:
-  version "6.2.2"
-  resolved "https://registry.yarnpkg.com/israeli-bank-scrapers-core/-/israeli-bank-scrapers-core-6.2.2.tgz#ef2e7783db4fed3d11fcc8398ca491bf7108e724"
-  integrity sha512-rJkgpg4bXxMRffjZspUKBrMo36aTX/39sqveiYsKrR+lV99KFVT+mhRELn4PKbhjQTu7PHVJ28sIo4s2D9kfyA==
+israeli-bank-scrapers-core@6.2.3:
+  version "6.2.3"
+  resolved "https://registry.yarnpkg.com/israeli-bank-scrapers-core/-/israeli-bank-scrapers-core-6.2.3.tgz#973b9e54ff491bdbdcf550f4b61bae4e317f4371"
+  integrity sha512-50f4JxoUi3SNOszgu/IK5LdcTJ1WUU6Jb3UA743eK90T7aNsIycbCKxDQOMDHrbKH7crXu9RfS7YqY35Akuocg==
   dependencies:
     build-url "^2.0.0"
     core-js "^3.1.4"
