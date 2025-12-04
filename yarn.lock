@@ -4247,10 +4247,10 @@ isexe@^2.0.0:
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==
 
-israeli-bank-scrapers-core@6.3.2:
-  version "6.3.2"
-  resolved "https://registry.yarnpkg.com/israeli-bank-scrapers-core/-/israeli-bank-scrapers-core-6.3.2.tgz#96a3c4c40ea0627a142bf725257295b78b3a1310"
-  integrity sha512-64hsBT/yAOFrZFjSycIB5Te2VczZYUM8pCPv1bIh+eGeJyaRUZY2G7jGyVWG4w9abfIkc8FgS1mbCP2ZTS+6RQ==
+israeli-bank-scrapers-core@6.3.7:
+  version "6.3.7"
+  resolved "https://registry.yarnpkg.com/israeli-bank-scrapers-core/-/israeli-bank-scrapers-core-6.3.7.tgz#9cea9a5e786440a40655622d4dd29db905f3f8b1"
+  integrity sha512-9jP0rWOwhU9SIqJkF/8DdQ/IVaX5ejIdIJSkcnEFd/460vkNdpGEbPoyxIbaDT6tVGxRvF2PZgX8JQWf87Y5ag==
   dependencies:
     core-js "^3.1.4"
     debug "^4.3.2"
@@ -4259,6 +4259,7 @@ israeli-bank-scrapers-core@6.3.2:
     moment-timezone "^0.5.37"
     node-fetch "^2.2.0"
     puppeteer-core "22.15.0"
+    utility-types "^3.11.0"
     uuid "^9.0.1"
 
 jackspeak@^3.1.2:
@@ -6399,6 +6400,11 @@ util-deprecate@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
   integrity sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==
+
+utility-types@^3.11.0:
+  version "3.11.0"
+  resolved "https://registry.yarnpkg.com/utility-types/-/utility-types-3.11.0.tgz#607c40edb4f258915e901ea7995607fdf319424c"
+  integrity sha512-6Z7Ma2aVEWisaL6TvBCy7P8rm2LQoPv6dJ7ecIaIixHcwfbJ0x7mWdbcwlIM5IGQxPZSFYeqRCqlOOeKoJYMkw==
 
 uuid@^8.3.2:
   version "8.3.2"
