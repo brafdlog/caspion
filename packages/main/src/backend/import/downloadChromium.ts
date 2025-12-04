@@ -35,7 +35,6 @@ export default async function downloadChromium(installPath: string, onProgress?:
 
   logger.log(`Browser: ${Browser.CHROMIUM}, Platform: ${platform}, Tag: stable, BuildId: ${buildId}`);
 
-  // Initialize proxy if needed
   initProxyIfNeeded();
 
   const installOptions = {
@@ -57,7 +56,6 @@ export default async function downloadChromium(installPath: string, onProgress?:
       return executablePath;
     })
     .finally(() => {
-      // Restore original global agents
       tearDownProxy();
     });
 

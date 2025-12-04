@@ -31,6 +31,42 @@ We are in transition to a new UI. Some features don't yet exist in the new UI an
 
 Download the latest version from [Releases](https://github.com/brafdlog/caspion/releases) page, or build it from source, with the instructions below. (Mac users, you may follow these [instructions](https://github.com/brafdlog/caspion/issues/276#issuecomment-1282111297)).
 
+### Proxy Support
+
+If you're behind a corporate proxy or need to use a proxy server, Caspion supports standard proxy environment variables:
+
+- **`HTTPS_PROXY`** or **`https_proxy`**: Proxy URL for HTTPS requests (e.g., `http://proxy.example.com:8080`)
+- **`HTTP_PROXY`** or **`http_proxy`**: Proxy URL for HTTP requests (e.g., `http://proxy.example.com:8080`)
+- **`ALL_PROXY`** or **`all_proxy`**: Fallback proxy URL for all requests
+- **`NO_PROXY`** or **`no_proxy`**: Comma-separated list of hostnames/domains that should bypass the proxy (e.g., `localhost,127.0.0.1,.local`)
+
+**Example usage:**
+
+```bash
+# On Linux/Mac
+export HTTPS_PROXY=http://proxy.example.com:8080
+export NO_PROXY=localhost,127.0.0.1
+./caspion
+
+# On Windows (Command Prompt)
+set HTTPS_PROXY=http://proxy.example.com:8080
+set NO_PROXY=localhost,127.0.0.1
+caspion.exe
+
+# On Windows (PowerShell)
+$env:HTTPS_PROXY="http://proxy.example.com:8080"
+$env:NO_PROXY="localhost,127.0.0.1"
+.\caspion.exe
+```
+
+The proxy settings will be automatically applied to:
+
+- Chromium browser downloads
+- Bank scraping operations
+- All network requests made by the application
+
+**Note:** `NO_PROXY` specifies which hosts should **bypass** the proxy, not disable it entirely. This is useful for accessing local resources or specific domains directly.
+
 ### Initial setup
 
 The first time you run the app, you will need to set up the accounts you want to fetch data from (importers).

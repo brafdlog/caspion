@@ -44,10 +44,6 @@ export function initProxyIfNeeded(): void {
 
   const { proxyUrl, noProxy } = getProxyConfiguration();
 
-  if (!proxyUrl) {
-    return;
-  }
-
   try {
     originalHttpAgent = http.globalAgent;
     originalHttpsAgent = https.globalAgent;
@@ -59,6 +55,7 @@ export function initProxyIfNeeded(): void {
     logger.log(`Using proxy: ${proxyUrl}${noProxy ? ` with NO_PROXY: ${noProxy}` : ''}`);
   } catch (error) {
     logger.warn('Failed to initialize proxy agent:', error);
+    throw error;
   }
 }
 
@@ -86,7 +83,7 @@ export function tearDownProxy(): void {
 export function getProxyArgs(): string[] {
   const { proxyUrl, noProxy } = getProxyConfiguration();
 
-  if (!proxyUrl) {
+  if (!isProxyNeeded()) {
     return [];
   }
 
