@@ -15,10 +15,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: .node-version
 
@@ -48,6 +48,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: 'deps/israeli-bank-scrapers-core'
           base: 'master'
+          assignees: 'baruchiro'
           delete-branch: true # Delete the branch after the pull request is closed
           commit-message: 'Deps: Upgrade israeli-bank-scrapers to ${{ steps.get_new_version.outputs.new_version }}'
           title: 'Deps: Upgrade israeli-bank-scrapers to ${{ steps.get_new_version.outputs.new_version }}'
