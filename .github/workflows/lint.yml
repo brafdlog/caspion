@@ -61,5 +61,6 @@ jobs:
           cache: 'yarn'
           node-version-file: '.node-version'
 
-      - run: yarn add prettier
+      # Install prettier using the version from package.json
+      - run: yarn add "prettier@$(cat ./package.json | jq -r '.devDependencies["prettier"]')"
       - run: yarn format:check
