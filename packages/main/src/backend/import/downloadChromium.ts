@@ -1,6 +1,7 @@
 import { Browser, detectBrowserPlatform, install, resolveBuildId } from '@puppeteer/browsers';
 import os from 'os';
 import logger from '/@/logging/logger';
+import { initProxyIfNeeded, tearDownProxy } from './proxyConfig';
 
 type PuppeteerProgressCallback = (downloadBytes: number, totalBytes: number) => void;
 type PercentCallback = (percent: number) => void;
@@ -34,21 +35,29 @@ export default async function downloadChromium(installPath: string, onProgress?:
 
   logger.log(`Browser: ${Browser.CHROMIUM}, Platform: ${platform}, Tag: stable, BuildId: ${buildId}`);
 
-  downloadProm = install({
+  initProxyIfNeeded();
+
+  const installOptions = {
     cacheDir: installPath,
     browser: Browser.CHROMIUM,
     buildId,
     downloadProgressCallback: progressCallback,
-  }).then(({ executablePath }) => {
-    downloadProm = null;
-    if (!isCached) {
-      logger.log('Chromium downloaded to', executablePath);
-    } else {
-      logger.log('Chromium cached at', executablePath);
-    }
-    isCached = true;
-    return executablePath;
-  });
+  };
+
+  downloadProm = install(installOptions)
+    .then(({ executablePath }) => {
+      downloadProm = null;
+      if (!isCached) {
+        logger.log('Chromium downloaded to', executablePath);
+      } else {
+        logger.log('Chromium cached at', executablePath);
+      }
+      isCached = true;
+      return executablePath;
+    })
+    .finally(() => {
+      tearDownProxy();
+    });
 
   return downloadProm!;
 }
