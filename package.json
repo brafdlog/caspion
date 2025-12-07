@@ -46,6 +46,7 @@
     "@types/react-bootstrap-table-next": "^4.0.26",
     "@types/react-dom": "^18.3.0",
     "@types/uuid": "^10.0.0",
+    "@types/winreg": "^1.2.36",
     "@typescript-eslint/eslint-plugin": "7.12.0",
     "@typescript-eslint/parser": "^7.12.0",
     "@vitejs/plugin-react": "^4.3.1",
@@ -98,7 +99,9 @@
     "react-bootstrap-typeahead": "^6.3.2",
     "react-dom": "^18.3.1",
     "svelte": "^4.2.19",
+    "undici": "^7.16.0",
     "web-vitals": "^4.2.3",
+    "winreg": "^1.2.5",
     "ynab": "^1.19.0"
   },
   "resolutions": {

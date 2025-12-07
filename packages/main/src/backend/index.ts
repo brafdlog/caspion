@@ -1,6 +1,7 @@
 import { type Config } from '@/backend/commonTypes';
 import { createTransactionsInExternalVendors } from '@/backend/export/exportTransactions';
 import { scrapeFinancialAccountsAndFetchTransactions } from '@/backend/import/importTransactions';
+import { initProxyIfNeeded, tearDownProxy } from '@/backend/proxyConfig';
 import moment from 'moment';
 import * as configManager from './configManager/configManager';
 import * as Events from './eventEmitters/EventEmitter';
@@ -63,34 +64,45 @@ export async function scrapeAndUpdateOutputVendors(config: Config, optionalEvent
     new Events.ImportStartEvent(`Starting to scrape from ${startDate} to today`, nextAutomaticScrapeDate),
   );
 
-  const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(
-    config.scraping,
-    startDate,
-    eventPublisher,
-    opLog,
+  // Initialize proxy at the start - ensures proxy is available for
+  // downloading chromium, scraping, and export (YNAB API calls)
+  await initProxyIfNeeded();
+
+  try {
+    const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(
+      config.scraping,
+      startDate,
+      eventPublisher,
+      opLog,
   );
 
+  
   // Create export logger that shares context with scrape
   const exportLog = createOperationLogger('export');
 
   try {
-    return await createTransactionsInExternalVendors(
-      config.outputVendors,
-      companyIdToTransactions,
-      startDate,
-      eventPublisher,
-      exportLog,
+      return await createTransactionsInExternalVendors(
+        config.outputVendors,
+        companyIdToTransactions,
+        startDate,
+        eventPublisher,
+        exportLog,
     );
-  } catch (e) {
-    const error = e as Error;
+    } catch (e) {
+      const error = e as Error;
     exportLog.error('FAILED', error);
-    await eventPublisher.emit(
-      EventNames.GENERAL_ERROR,
-      new Events.BudgetTrackingEvent({
-        message: error.message,
-        error: error,
-      }),
-    );
-    throw e;
+      await eventPublisher.emit(
+        EventNames.GENERAL_ERROR,
+        new Events.BudgetTrackingEvent({
+          message: error.message,
+          error: error,
+        }),
+      );
+      throw e;
+    }
+  } finally {
+    // Tear down proxy after scraping and export complete
+    // This also clears cache so next run starts fresh
+    tearDownProxy();
   }
 }
