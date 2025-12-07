@@ -2,7 +2,6 @@ import { Browser, detectBrowserPlatform, getInstalledBrowsers, install, resolveB
 import { existsSync } from 'fs';
 import os from 'os';
 import logger from '/@/logging/logger';
-import { initProxyIfNeeded, tearDownProxy } from './proxyConfig';
 
 type PuppeteerProgressCallback = (downloadBytes: number, totalBytes: number) => void;
 type PercentCallback = (percent: number) => void;
@@ -22,8 +21,6 @@ const getIntegerPercent = (callback: PercentCallback): PuppeteerProgressCallback
 let downloadProm: ReturnType<typeof downloadChromium> | null = null;
 
 export default async function downloadChromium(installPath: string, onProgress?: PercentCallback): Promise<string> {
-  if (downloadProm) return downloadProm;
-
   const platform = detectBrowserPlatform();
   if (!platform) {
     throw new Error(`Cannot download a binary for the provided platform: ${os.platform()} (${os.arch()})`);
@@ -43,29 +40,32 @@ export default async function downloadChromium(installPath: string, onProgress?:
   // No cached version found, proceed with download
   logger.log('No cached Chromium found, downloading...');
 
-  const progressCallback = onProgress && getIntegerPercent(onProgress);
-  const buildId = await resolveBuildId(Browser.CHROMIUM, platform, 'latest');
+  if (downloadProm) return downloadProm;
 
-  logger.log(`Browser: ${Browser.CHROMIUM}, Platform: ${platform}, Tag: latest, BuildId: ${buildId}`);
+  downloadProm = (async () => {
+    try {
+      const progressCallback = onProgress && getIntegerPercent(onProgress);
+      const buildId = await resolveBuildId(Browser.CHROMIUM, platform, 'latest');
 
-  initProxyIfNeeded();
+      logger.log(`Browser: ${Browser.CHROMIUM}, Platform: ${platform}, Tag: latest, BuildId: ${buildId}`);
 
-  const installOptions = {
-    cacheDir: installPath,
-    browser: Browser.CHROMIUM,
-    buildId,
-    downloadProgressCallback: progressCallback,
-  };
+      const installOptions = {
+        cacheDir: installPath,
+        browser: Browser.CHROMIUM,
+        buildId,
+        downloadProgressCallback: progressCallback,
+      };
 
-  downloadProm = install(installOptions)
-    .then(({ executablePath }) => {
+      const { executablePath } = await install(installOptions);
+
       downloadProm = null;
       logger.log('Chromium downloaded to', executablePath);
       return executablePath;
-    })
-    .finally(() => {
-      tearDownProxy();
-    });
+    } catch (error) {
+      downloadProm = null; // Reset promise so next attempt will retry
+      throw error;
+    }
+  })();
 
-  return downloadProm!;
+  return downloadProm;
 }
