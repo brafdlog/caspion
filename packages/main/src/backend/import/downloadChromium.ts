@@ -1,4 +1,5 @@
 import { Browser, detectBrowserPlatform, getInstalledBrowsers, install, resolveBuildId } from '@puppeteer/browsers';
+import { existsSync } from 'fs';
 import os from 'os';
 import logger from '/@/logging/logger';
 import { initProxyIfNeeded, tearDownProxy } from './proxyConfig';
@@ -30,7 +31,9 @@ export default async function downloadChromium(installPath: string, onProgress?:
 
   // Check for existing cached Chromium first
   const installedBrowsers = await getInstalledBrowsers({ cacheDir: installPath });
-  const existingChromium = installedBrowsers.find((b) => b.browser === Browser.CHROMIUM && b.platform === platform);
+  const existingChromium = installedBrowsers.find(
+    (b) => b.browser === Browser.CHROMIUM && b.platform === platform && existsSync(b.executablePath),
+  );
 
   if (existingChromium) {
     logger.log('Using cached Chromium at', existingChromium.executablePath);
