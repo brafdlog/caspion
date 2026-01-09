@@ -29,7 +29,7 @@ function configureMobxLinting() {
     enforceActions: 'always',
     computedRequiresReaction: true,
     reactionRequiresObservable: true,
-    observableRequiresReaction: true,
+    observableRequiresReaction: false, // Disabled - too noisy for deep nested objects
     disableErrorBoundaries: true,
   });
 }
