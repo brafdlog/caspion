@@ -50,7 +50,7 @@
     "@typescript-eslint/parser": "^7.12.0",
     "@vitejs/plugin-react": "^4.3.1",
     "cross-env": "7.0.3",
-    "electron": "30.0.9",
+    "electron": "35.7.5",
     "electron-builder": "24.13.3",
     "eslint": "8.57.0",
     "eslint-config-prettier": "^9.1.0",
