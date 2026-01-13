@@ -21,6 +21,8 @@ const getIntegerPercent = (callback: PercentCallback): PuppeteerProgressCallback
 let downloadProm: ReturnType<typeof downloadChromium> | null = null;
 
 export default async function downloadChromium(installPath: string, onProgress?: PercentCallback): Promise<string> {
+  if (downloadProm) return downloadProm;
+
   const platform = detectBrowserPlatform();
   if (!platform) {
     throw new Error(`Cannot download a binary for the provided platform: ${os.platform()} (${os.arch()})`);
@@ -40,32 +42,21 @@ export default async function downloadChromium(installPath: string, onProgress?:
   // No cached version found, proceed with download
   logger.log('No cached Chromium found, downloading...');
 
-  if (downloadProm) return downloadProm;
+  const progressCallback = onProgress && getIntegerPercent(onProgress);
+  const buildId = await resolveBuildId(Browser.CHROMIUM, platform, 'latest');
 
-  downloadProm = (async () => {
-    try {
-      const progressCallback = onProgress && getIntegerPercent(onProgress);
-      const buildId = await resolveBuildId(Browser.CHROMIUM, platform, 'latest');
+  logger.log(`Browser: ${Browser.CHROMIUM}, Platform: ${platform}, Tag: latest, BuildId: ${buildId}`);
 
-      logger.log(`Browser: ${Browser.CHROMIUM}, Platform: ${platform}, Tag: latest, BuildId: ${buildId}`);
+  downloadProm = install({
+    cacheDir: installPath,
+    browser: Browser.CHROMIUM,
+    buildId,
+    downloadProgressCallback: progressCallback,
+  }).then(({ executablePath }) => {
+    downloadProm = null;
+    logger.log('Chromium downloaded to', executablePath);
+    return executablePath;
+  });
 
-      const installOptions = {
-        cacheDir: installPath,
-        browser: Browser.CHROMIUM,
-        buildId,
-        downloadProgressCallback: progressCallback,
-      };
-
-      const { executablePath } = await install(installOptions);
-
-      downloadProm = null;
-      logger.log('Chromium downloaded to', executablePath);
-      return executablePath;
-    } catch (error) {
-      downloadProm = null; // Reset promise so next attempt will retry
-      throw error;
-    }
-  })();
-
-  return downloadProm;
+  return downloadProm!;
 }
