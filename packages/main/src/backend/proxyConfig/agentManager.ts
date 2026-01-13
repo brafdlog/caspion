@@ -15,9 +15,6 @@ interface ProxyState {
 
 let proxyState: ProxyState | null = null;
 
-/**
- * Initializes global proxy agents for HTTP/HTTPS and fetch()
- */
 export function initializeProxyAgents(proxyUrl: string): void {
   if (proxyState?.proxyUrl === proxyUrl) {
     logger.log(`Proxy already initialized with ${proxyUrl}`);
@@ -49,9 +46,6 @@ export function initializeProxyAgents(proxyUrl: string): void {
   setGlobalDispatcher(undiciProxyAgent);
 }
 
-/**
- * Restores original global agents and clears proxy configuration
- */
 export function tearDownProxyAgents(): void {
   if (!proxyState) {
     return;
@@ -74,9 +68,6 @@ export function tearDownProxyAgents(): void {
   proxyState = null;
 }
 
-/**
- * Gets current proxy URL if configured
- */
 export function getCurrentProxyUrl(): string | null {
   return proxyState?.proxyUrl ?? null;
 }

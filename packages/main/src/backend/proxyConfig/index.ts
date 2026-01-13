@@ -3,16 +3,10 @@ import { fetchPacFile, extractProxyFromPac, invalidatePacCache } from './pacFile
 import { getWindowsProxySettings } from './windowsRegistry';
 import { initializeProxyAgents, tearDownProxyAgents, getCurrentProxyUrl } from './agentManager';
 
-/**
- * Normalizes proxy URL to ensure it has a protocol
- */
 function normalizeProxyUrl(url: string): string {
   return url.startsWith('http') ? url : `http://${url}`;
 }
 
-/**
- * Attempts to extract proxy from PAC file
- */
 async function getProxyFromPacFile(pacUrl: string): Promise<string | undefined> {
   try {
     const pacContent = await fetchPacFile(pacUrl);
@@ -28,9 +22,6 @@ async function getProxyFromPacFile(pacUrl: string): Promise<string | undefined> 
   return undefined;
 }
 
-/**
- * Determines proxy configuration from environment variables or Windows Registry
- */
 async function getProxyConfiguration(): Promise<string | undefined> {
   // Check environment variables first
   const envProxyUrl = process.env.HTTP_PROXY ?? process.env.HTTPS_PROXY;
@@ -58,9 +49,6 @@ async function getProxyConfiguration(): Promise<string | undefined> {
   return undefined;
 }
 
-/**
- * Initializes proxy configuration if available and not already set
- */
 export async function initProxyIfNeeded(): Promise<void> {
   const proxyUrl = await getProxyConfiguration();
   if (proxyUrl) {
@@ -70,17 +58,11 @@ export async function initProxyIfNeeded(): Promise<void> {
   }
 }
 
-/**
- * Tears down proxy configuration and clears cache for fresh start next time
- */
 export function tearDownProxy(): void {
   tearDownProxyAgents();
   invalidatePacCache();
 }
 
-/**
- * Gets proxy arguments for Chromium
- */
 export function getProxyArgs(): string[] {
   const proxyUrl = getCurrentProxyUrl();
   if (proxyUrl) {
