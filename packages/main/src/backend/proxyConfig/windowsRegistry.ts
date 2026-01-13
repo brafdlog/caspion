@@ -6,10 +6,6 @@ export interface WindowsProxySettings {
   autoConfigUrl?: string;
 }
 
-/**
- * Reads proxy settings from Windows Registry
- * Checks HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings
- */
 const REGISTRY_PATH = '\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings';
 const REGISTRY_KEYS = {
   PROXY_SERVER: 'ProxyServer',

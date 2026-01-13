@@ -14,9 +14,6 @@ interface CachedPacFile {
 
 let cachedPacContent: CachedPacFile | null = null;
 
-/**
- * Fetches PAC file content from URL with caching
- */
 export async function fetchPacFile(pacUrl: string, bustCache = false): Promise<string> {
   // Return cached content if valid
   if (!bustCache && cachedPacContent?.url === pacUrl) {
@@ -59,10 +56,6 @@ export async function fetchPacFile(pacUrl: string, bustCache = false): Promise<s
   });
 }
 
-/**
- * Extracts proxy server from PAC file content
- * Looks for PROXY directives in the PAC file
- */
 export function extractProxyFromPac(pacContent: string): string | undefined {
   // Look for return statements with PROXY directives
   // Common patterns: "PROXY proxy.example.com:8080" or "PROXY host:port; DIRECT"
@@ -73,9 +66,6 @@ export function extractProxyFromPac(pacContent: string): string | undefined {
   return undefined;
 }
 
-/**
- * Invalidates cached PAC file content, forcing re-fetch on next call
- */
 export function invalidatePacCache(): void {
   cachedPacContent = null;
 }
