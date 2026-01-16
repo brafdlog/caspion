@@ -49,6 +49,11 @@ export async function openItem(filePath: string) {
   await electron.shell.openPath(filePath);
 }
 
+export async function openLogsFolder() {
+  const logsInfo = await electron.ipcRenderer.invoke('getLogsInfo', 1);
+  await electron.shell.openPath(logsInfo.logsFolder);
+}
+
 export async function getLogsInfo(numOfLastLines: number) {
   return electron.ipcRenderer.invoke('getLogsInfo', numOfLastLines);
 }
