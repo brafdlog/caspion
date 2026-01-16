@@ -1,4 +1,4 @@
-import { openLogsFolder } from '#preload';
+import { openItem } from '#preload';
 import { useEffect, useRef, useState } from 'react';
 import { Button, Form, InputGroup, Stack } from 'react-bootstrap';
 import Offcanvas from 'react-bootstrap/Offcanvas';
@@ -34,7 +34,9 @@ export default function LogsCanvas({ show, handleClose, lastLines, logsFolder }:
   };
 
   const handleOpenLogsFolder = () => {
-    openLogsFolder();
+    if (logsFolder) {
+      openItem(logsFolder);
+    }
   };
 
   // Highlight matching text in filtered mode
