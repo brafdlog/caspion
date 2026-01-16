@@ -23,7 +23,7 @@ import {
 } from '../eventEmitters/EventEmitter';
 import { calculateTransactionHash } from '../transactions/transactions';
 import getChrome from './downloadChromium';
-import logger from '/@/logging/logger';
+import { createOperationLogger, type OperationLogger } from '/@/logging/operationLogger';
 
 type ScrapingConfig = Config['scraping'];
 
@@ -33,49 +33,84 @@ export async function scrapeFinancialAccountsAndFetchTransactions(
   scrapingConfig: ScrapingConfig,
   startDate: Date,
   eventPublisher: EventPublisher,
+  opLog?: OperationLogger,
 ) {
+  // Create operation logger if not provided (for standalone calls)
+  const log = opLog ?? createOperationLogger('scrape');
   let chromiumPath: string;
 
-  logger.log('Scraping financial accounts and fetching transactions');
+  const activeAccounts = scrapingConfig.accountsToScrape.filter((a) => a.active !== false);
+  log.info('START', {
+    importersCount: activeAccounts.length,
+    importers: activeAccounts.map((a) => a.key).join(','),
+    startDate: moment(startDate).format('YYYY-MM-DD'),
+    numDaysBack: moment().diff(moment(startDate), 'days'),
+    showBrowser: scrapingConfig.showBrowser,
+    timeout: scrapingConfig.timeout,
+    maxConcurrency: scrapingConfig.maxConcurrency ?? 1,
+  });
 
   if (scrapingConfig.chromiumPath) {
-    logger.log('Using provided chromium path', scrapingConfig.chromiumPath);
+    log.info('CHROME_PATH_PROVIDED', { path: scrapingConfig.chromiumPath });
     chromiumPath = scrapingConfig.chromiumPath;
   } else {
-    logger.log('Downloading chromium');
-    chromiumPath = await getChrome(userDataPath, (percent) => emitChromeDownload(eventPublisher, percent));
+    log.info('CHROME_DOWNLOAD_START');
+    chromiumPath = await getChrome(userDataPath, (percent) => {
+      if (percent % 25 === 0) {
+        log.info('CHROME_DOWNLOAD_PROGRESS', { percent });
+      }
+      emitChromeDownload(eventPublisher, percent);
+    });
+    log.info('CHROME_DOWNLOAD_COMPLETE', { path: chromiumPath });
   }
 
   const limiter = new Bottleneck({
     maxConcurrent: scrapingConfig.maxConcurrency,
   });
-  const scrapePromises = scrapingConfig.accountsToScrape
-    .filter((accountToScrape) => accountToScrape.active !== false)
-    .map(async (accountToScrape) => ({
-      id: accountToScrape.id,
-      transactions: await limiter.schedule(() =>
-        fetchTransactions(
-          accountToScrape,
-          startDate,
-          scrapingConfig.showBrowser,
-          eventPublisher,
-          chromiumPath,
-          scrapingConfig.timeout,
-        ),
+  const scrapePromises = activeAccounts.map(async (accountToScrape) => ({
+    id: accountToScrape.id,
+    transactions: await limiter.schedule(() =>
+      fetchTransactions(
+        accountToScrape,
+        startDate,
+        scrapingConfig.showBrowser,
+        eventPublisher,
+        chromiumPath,
+        scrapingConfig.timeout,
+        log,
       ),
-    }));
+    ),
+  }));
 
   const promiseResults = await Promise.allSettled(scrapePromises);
+
+  let successCount = 0;
+  let failedCount = 0;
+  let totalTransactions = 0;
+
   const companyIdToTransactions = promiseResults.reduce(
     (idToTrxAcc, scrapeRes) => {
       if (scrapeRes.status === 'fulfilled') {
         const { id, transactions } = scrapeRes.value;
         idToTrxAcc[id] = transactions;
+        successCount++;
+        totalTransactions += transactions.length;
+      } else {
+        failedCount++;
       }
       return idToTrxAcc;
     },
     {} as Record<string, EnrichedTransaction[]>,
   );
+
+  // Log summary
+  const result = failedCount === 0 ? 'success' : successCount === 0 ? 'failed' : 'partial';
+  log.summary(result, {
+    importersAttempted: activeAccounts.length,
+    importersSucceeded: successCount,
+    importersFailed: failedCount,
+    totalTransactions,
+  });
 
   return companyIdToTransactions;
 }
@@ -124,11 +159,19 @@ async function fetchTransactions(
   eventPublisher: EventPublisher,
   chromePath: string,
   timeout: number,
+  opLog: OperationLogger,
 ) {
+  const importerStartTime = Date.now();
+  opLog.info('IMPORTER_START', {
+    importer: account.key,
+    hasCredentials: !!account.loginFields && Object.keys(account.loginFields).length > 0,
+  });
+
   try {
     await eventPublisher.emit(EventNames.IMPORTER_START, buildImporterEvent(account, { message: 'Importer start' }));
 
     const emitImporterProgressEvent = async (eventCompanyId: string, message: string) => {
+      opLog.info('IMPORTER_PROGRESS', { importer: account.key, phase: message });
       await eventPublisher.emit(EventNames.IMPORTER_PROGRESS, buildImporterEvent(account, { message }));
     };
     const companyId = account.key;
@@ -144,10 +187,32 @@ async function fetchTransactions(
       chromePath,
     );
     if (!scrapeResult.success) {
+      const errorType = scrapeResult.errorType || 'UNKNOWN';
+      opLog.error('IMPORTER_SCRAPE_FAILED', new Error(`${errorType}: ${scrapeResult.errorMessage}`), {
+        importer: account.key,
+        errorType,
+      });
       throw new Error(`${scrapeResult.errorType}: ${scrapeResult.errorMessage}`);
     }
 
     const transactions = await postProcessTransactions(account, scrapeResult);
+
+    // Calculate transaction date range for logging
+    const txDates = transactions.map((t) => moment(t.date));
+    const oldestTx = txDates.length > 0 ? moment.min(txDates).format('YYYY-MM-DD') : 'N/A';
+    const newestTx = txDates.length > 0 ? moment.max(txDates).format('YYYY-MM-DD') : 'N/A';
+
+    // Count unique accounts (sanitized - just count, not actual numbers)
+    const uniqueAccountsCount = _.uniq(transactions.map((t) => t.accountNumber)).length;
+
+    opLog.info('IMPORTER_SUCCESS', {
+      importer: account.key,
+      transactionsFound: transactions.length,
+      accountsCount: uniqueAccountsCount,
+      dateRange: `${oldestTx} to ${newestTx}`,
+      duration: `${Date.now() - importerStartTime}ms`,
+    });
+
     await eventPublisher.emit(
       EventNames.IMPORTER_END,
       buildImporterEvent(account, {
@@ -158,15 +223,20 @@ async function fetchTransactions(
 
     return transactions;
   } catch (e) {
+    const error = e as Error;
+    opLog.error('IMPORTER_FAILED', error, {
+      importer: account.key,
+      duration: `${Date.now() - importerStartTime}ms`,
+    });
+
     await eventPublisher.emit(
       EventNames.IMPORTER_ERROR,
       buildImporterEvent(account, {
-        message: (e as Error).message,
-        error: e as Error,
+        message: error.message,
+        error: error,
         status: AccountStatus.ERROR,
       }),
     );
-    logger.error('Failed to fetch transactions', e);
     throw e;
   }
 }
