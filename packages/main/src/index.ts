@@ -4,6 +4,7 @@ import { platform } from 'node:process';
 import { registerHandlers } from './handlers';
 import './security-restrictions';
 import { restoreOrCreateWindow } from '/@/mainWindow';
+import { logAppEvent } from './logging/operationLogger';
 
 /**
  * Prevent electron from running multiple instances.
@@ -25,6 +26,7 @@ app.disableHardwareAcceleration();
  */
 app.on('window-all-closed', () => {
   if (platform !== 'darwin') {
+    logAppEvent('APP_QUIT', { reason: 'all_windows_closed' });
     app.quit();
   }
 });
@@ -39,8 +41,19 @@ app.on('activate', restoreOrCreateWindow);
  */
 app
   .whenReady()
-  .then(restoreOrCreateWindow)
-  .catch((e) => console.error('Failed create window:', e));
+  .then(() => {
+    logAppEvent('APP_READY', {
+      version: app.getVersion(),
+      platform,
+      nodeVersion: process.versions.node,
+      electronVersion: process.versions.electron,
+    });
+    return restoreOrCreateWindow();
+  })
+  .catch((e) => {
+    logAppEvent('APP_STARTUP_ERROR', { errorMessage: (e as Error).message });
+    console.error('Failed create window:', e);
+  });
 
 /**
  * Install Vue.js or any other extension in development mode only.
@@ -76,8 +89,19 @@ app
 if (import.meta.env.PROD) {
   app
     .whenReady()
-    .then(() => updater.autoUpdater.checkForUpdatesAndNotify())
-    .catch((e) => console.error('Failed check and install updates:', e));
+    .then(async () => {
+      logAppEvent('UPDATE_CHECK_START');
+      const result = await updater.autoUpdater.checkForUpdatesAndNotify();
+      if (result) {
+        logAppEvent('UPDATE_AVAILABLE', { version: result.updateInfo.version });
+      } else {
+        logAppEvent('UPDATE_CHECK_COMPLETE', { status: 'up_to_date' });
+      }
+    })
+    .catch((e) => {
+      logAppEvent('UPDATE_CHECK_ERROR', { errorMessage: (e as Error).message });
+      console.error('Failed check and install updates:', e);
+    });
 }
 
 registerHandlers();

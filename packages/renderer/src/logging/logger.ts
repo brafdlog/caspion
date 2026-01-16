@@ -6,8 +6,7 @@ const logger = log.scope('renderer');
 export type Logger = LogFunctions;
 export type Levels = LogLevel;
 
-logger.info('Welcome to Caspion log');
-logger.info('Version: <need implementation>');
+logger.info('Welcome to Caspion log (renderer)');
 
 const onError: MainErrorHandlerOptions['onError'] = ({ error }) => {
   logger.error(error.message || error);
