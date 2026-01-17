@@ -1,4 +1,4 @@
-import { openItem } from '#preload';
+import { copyToClipboard, openItem } from '#preload';
 import { useEffect, useRef, useState } from 'react';
 import { Button, Form, InputGroup, Stack } from 'react-bootstrap';
 import Offcanvas from 'react-bootstrap/Offcanvas';
@@ -26,9 +26,9 @@ export default function LogsCanvas({ show, handleClose, lastLines, logsFolder }:
     }
   }, [show, lastLines]);
 
-  const copyToClipboard = async () => {
+  const handleCopyToClipboard = () => {
     const textToCopy = filter ? filteredLines.join('\n') : lastLines;
-    await navigator.clipboard.writeText(textToCopy ?? '');
+    copyToClipboard(textToCopy ?? '');
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -81,7 +81,7 @@ export default function LogsCanvas({ show, handleClose, lastLines, logsFolder }:
             )}
           </InputGroup>
           <div className="ms-auto d-flex gap-2">
-            <Button variant="outline-primary" size="sm" onClick={copyToClipboard}>
+            <Button variant="outline-primary" size="sm" onClick={handleCopyToClipboard}>
               {copied ? '✓ הועתק!' : '📋 העתק לוגים'}
             </Button>
             <Button variant="outline-secondary" size="sm" onClick={handleOpenLogsFolder}>
