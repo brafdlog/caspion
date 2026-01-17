@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { type Logger } from './logger';
+import { sanitizeLogDetails, sanitizeLogMessage } from './sanitizer';
 
 // Lazy-load logger to avoid issues in test environments
 let loggerInstance: Logger | null = null;
@@ -51,7 +52,9 @@ export function createOperationLogger(type: OperationType): OperationLogger {
   };
 
   const formatDetails = (details: Record<string, unknown> = {}): string => {
-    const pairs = Object.entries(details)
+    // Sanitize all details before logging
+    const sanitized = sanitizeLogDetails(details);
+    const pairs = Object.entries(sanitized)
       .filter(([, value]) => value !== undefined && value !== null)
       .map(([key, value]) => {
         if (typeof value === 'object') {
@@ -75,7 +78,8 @@ export function createOperationLogger(type: OperationType): OperationLogger {
     if (lines.length > maxLines + 1) {
       truncated.push(`    ... ${lines.length - maxLines - 1} more lines`);
     }
-    return truncated.join('\n');
+    // Sanitize the stack trace to remove file paths with usernames
+    return sanitizeLogMessage(truncated.join('\n'));
   };
 
   const formatMessage = (phase: string, details: Record<string, unknown> = {}): string => {
@@ -121,10 +125,13 @@ export function createOperationLogger(type: OperationType): OperationLogger {
 /**
  * Log an app-level event (startup, config changes, etc.)
  * These don't need operation IDs since they're standalone events.
+ * All details are automatically sanitized to remove sensitive information.
  */
 export function logAppEvent(event: string, details: Record<string, unknown> = {}) {
   const formatDetails = (d: Record<string, unknown>): string => {
-    const pairs = Object.entries(d)
+    // Sanitize all details before logging
+    const sanitized = sanitizeLogDetails(d);
+    const pairs = Object.entries(sanitized)
       .filter(([, value]) => value !== undefined && value !== null)
       .map(([key, value]) => {
         if (typeof value === 'object') {
@@ -138,9 +145,5 @@ export function logAppEvent(event: string, details: Record<string, unknown> = {}
   getLogger().info(`[app] ${event}${formatDetails(details)}`);
 }
 
-// Note: When sanitization is implemented, add these to the sanitization list:
-// - YNAB account mapping (accountNumbersToYnabAccountIds)
-// - Account numbers
-// - Transaction amounts
-// - Transaction memos
-// - Credentials
+// Re-export sanitization helpers for use in application code
+export { describeCredentials, maskAccountNumber, maskAccountNumbers } from './sanitizer';
