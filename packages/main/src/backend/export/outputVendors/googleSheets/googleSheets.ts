@@ -10,6 +10,7 @@ import { type Auth } from 'googleapis';
 import moment from 'moment/moment';
 import { createClient } from './googleAuth';
 import * as googleSheets from './googleSheetsInternalAPI';
+import { logAppEvent } from '/@/logging/operationLogger';
 
 const GOOGLE_SHEETS_DATE_FORMAT = 'YYYY-MM-DD';
 const DEFAULT_SHEET_NAME = '_caspion';
@@ -33,21 +34,42 @@ const createTransactionsInGoogleSheets: ExportTransactionsFunction = async (
   { transactionsToCreate: transactions, outputVendorsConfig },
   eventPublisher,
 ) => {
+  const startTime = Date.now();
   const { spreadsheetId, credentials } = outputVendorsConfig.googleSheets!.options;
-  if (!credentials) throw new Error("You must set the 'credentials'");
+
+  logAppEvent('GOOGLE_SHEETS_EXPORT_START', {
+    hasSpreadsheetId: !!spreadsheetId,
+    hasCredentials: !!credentials,
+    transactionsCount: transactions.length,
+  });
+
+  if (!credentials) {
+    logAppEvent('GOOGLE_SHEETS_ERROR', { error: 'No credentials provided' });
+    throw new Error("You must set the 'credentials'");
+  }
+
   const oAuthClient = createClient(credentials);
 
+  logAppEvent('GOOGLE_SHEETS_CHECKING_SHEET');
   const sheet = await googleSheets.getSheet(spreadsheetId, DEFAULT_SHEET_NAME, oAuthClient);
   if (!sheet) {
+    logAppEvent('GOOGLE_SHEETS_ERROR', { error: `Sheet ${DEFAULT_SHEET_NAME} not found` });
     throw new Error(`There is no sheet called ${DEFAULT_SHEET_NAME} in the spreadsheet`);
   }
 
+  logAppEvent('GOOGLE_SHEETS_FETCHING_EXISTING_HASHES');
   const hashesAlreadyExistingInGoogleSheets = await googleSheets.getExistingHashes(
     spreadsheetId,
     DEFAULT_SHEET_NAME,
     oAuthClient,
   );
   const transactionsToCreate = filterExistedHashes(transactions, hashesAlreadyExistingInGoogleSheets);
+
+  logAppEvent('GOOGLE_SHEETS_DUPLICATE_CHECK_COMPLETE', {
+    totalTransactions: transactions.length,
+    alreadyExist: transactions.length - transactionsToCreate.length,
+    toCreate: transactionsToCreate.length,
+  });
 
   if (transactionsToCreate.length === 0) {
     await emitProgressEvent(eventPublisher, transactions, 'All transactions already exist in google sheets');
@@ -78,12 +100,18 @@ const createTransactionsInGoogleSheets: ExportTransactionsFunction = async (
     transaction.status,
   ]);
 
+  logAppEvent('GOOGLE_SHEETS_APPENDING_DATA', { rowCount: transactionsInSheetsFormat.length });
   await googleSheets.appendToSpreadsheet(
     spreadsheetId,
     `${DEFAULT_SHEET_NAME}!A:A`,
     transactionsInSheetsFormat,
     oAuthClient,
   );
+
+  logAppEvent('GOOGLE_SHEETS_SUCCESS', {
+    createdCount: transactionsToCreate.length,
+    duration: `${Date.now() - startTime}ms`,
+  });
   return {
     exportedTransactionsNum: transactionsToCreate.length,
   };

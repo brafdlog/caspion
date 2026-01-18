@@ -1,4 +1,4 @@
-import { getLogsInfo, openExternal, sentryUserReportProblem } from '#preload';
+import { getLogsInfo, openExternal, openItem, sentryUserReportProblem } from '#preload';
 // TODO: you can't use os on renderer.
 import os from 'os';
 import { useEffect, useState } from 'react';
@@ -8,7 +8,7 @@ import { getZIndexes } from '../../utils/zIndexesManager';
 import LogsCanvas from './LogsCanvas';
 import { useAppInfoStore } from '../../store';
 
-const NUM_OF_LAST_LINES = 10;
+const NUM_OF_LAST_LINES = 500;
 
 interface ReportProblemForm {
   title?: string;
@@ -129,7 +129,7 @@ ${details}`
     sentryUserReportProblem({
       title: form.title,
       body: form.details,
-      logs: form.attachedLogs ?? '',
+      logs: form.attachedLogs ? lastLines : '',
       email: form.email,
     });
   };
@@ -205,10 +205,10 @@ ${details}`
               value={form.details}
               onChange={(e) => setField('details', e.target.value)}
             />
-            <Form.Group className="mb-4" as={Col} md="2">
+            <Form.Group className="mb-3" as={Col} md="6">
               <Form.Check
                 type="checkbox"
-                label="צירוף קבצי לוג"
+                label="צירוף לוגים לדוח"
                 checked={form.attachedLogs === true}
                 onChange={(e) =>
                   setForm((prevForm) => ({
@@ -217,14 +217,16 @@ ${details}`
                   }))
                 }
               />
-              (
-              <Button variant="link" onClick={seeLogs}>
-                צפיה בלוגים
-              </Button>
-              )
+              <div className="mt-2 d-flex gap-2">
+                <Button variant="outline-primary" size="sm" onClick={seeLogs}>
+                  👁️ צפיה בלוגים
+                </Button>
+                <Button variant="outline-secondary" size="sm" onClick={() => logsFolder && openItem(logsFolder)}>
+                  📂 פתח תיקייה
+                </Button>
+              </div>
             </Form.Group>
 
-            <div className="mb-4">אפשר למצוא את הלוגים פה: {logsFolder}</div>
             <Stack direction="horizontal" gap={3}>
               <Button variant="light" onClick={onClose}>
                 סגור
@@ -239,7 +241,12 @@ ${details}`
           </Form>
         </Modal.Body>
       </Modal>
-      <LogsCanvas show={showLogs} handleClose={() => setShowLogs(false)} lastLines={lastLines} />
+      <LogsCanvas
+        show={showLogs}
+        handleClose={() => setShowLogs(false)}
+        lastLines={lastLines}
+        logsFolder={logsFolder}
+      />
     </>
   );
 }
