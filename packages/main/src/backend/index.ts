@@ -1,6 +1,7 @@
 import { type Config } from '@/backend/commonTypes';
 import { createTransactionsInExternalVendors } from '@/backend/export/exportTransactions';
 import { scrapeFinancialAccountsAndFetchTransactions } from '@/backend/import/importTransactions';
+import { initProxyIfNeeded, tearDownProxy } from '@/backend/proxyConfig';
 import moment from 'moment';
 import * as configManager from './configManager/configManager';
 import * as Events from './eventEmitters/EventEmitter';
@@ -52,27 +53,38 @@ export async function scrapeAndUpdateOutputVendors(config: Config, optionalEvent
     new Events.ImportStartEvent(`Starting to scrape from ${startDate} to today`, nextAutomaticScrapeDate),
   );
 
-  const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(
-    config.scraping,
-    startDate,
-    eventPublisher,
-  );
+  // Initialize proxy at the start - ensures proxy is available for
+  // downloading chromium, scraping, and export (YNAB API calls)
+  await initProxyIfNeeded();
+
   try {
-    return await createTransactionsInExternalVendors(
-      config.outputVendors,
-      companyIdToTransactions,
+    const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(
+      config.scraping,
       startDate,
       eventPublisher,
     );
-  } catch (e) {
-    logger.error('Failed to create transactions in external vendors', e);
-    await eventPublisher.emit(
-      EventNames.GENERAL_ERROR,
-      new Events.BudgetTrackingEvent({
-        message: (e as Error).message,
-        error: e as Error,
-      }),
-    );
-    throw e;
+
+    try {
+      return await createTransactionsInExternalVendors(
+        config.outputVendors,
+        companyIdToTransactions,
+        startDate,
+        eventPublisher,
+      );
+    } catch (e) {
+      logger.error('Failed to create transactions in external vendors', e);
+      await eventPublisher.emit(
+        EventNames.GENERAL_ERROR,
+        new Events.BudgetTrackingEvent({
+          message: (e as Error).message,
+          error: e as Error,
+        }),
+      );
+      throw e;
+    }
+  } finally {
+    // Tear down proxy after scraping and export complete
+    // This also clears cache so next run starts fresh
+    tearDownProxy();
   }
 }
