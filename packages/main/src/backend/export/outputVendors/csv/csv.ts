@@ -9,7 +9,7 @@ import { parse } from 'csv-parse/sync';
 import { stringify } from 'csv-stringify/sync';
 import { promises as fs } from 'fs';
 import { type TransactionInstallments } from 'israeli-bank-scrapers-core/lib/transactions';
-import logger from '/@/logging/logger';
+import { logAppEvent } from '/@/logging/operationLogger';
 
 export function parseTransactions(csvText: string) {
   return parse(csvText, {
@@ -84,13 +84,28 @@ export const serializeTransactions = (transactions: EnrichedTransaction[]) => {
 };
 
 const exportTransactions: ExportTransactionsFunction = async ({ transactionsToCreate, outputVendorsConfig }) => {
+  const startTime = Date.now();
   const { filePath } = outputVendorsConfig.csv!.options;
+
+  logAppEvent('CSV_EXPORT_READING_FILE', { filePath });
   const savedTransactions = await parseTransactionsFile(filePath);
+
   const mergedTransactions = mergeTransactions(savedTransactions, transactionsToCreate);
   const sorted = sortByDate(mergedTransactions);
+  const newTransactionsCount = mergedTransactions.length - savedTransactions.length;
+
+  logAppEvent('CSV_EXPORT_WRITING', {
+    filePath,
+    existingCount: savedTransactions.length,
+    newCount: newTransactionsCount,
+    totalCount: mergedTransactions.length,
+    duration: `${Date.now() - startTime}ms`,
+  });
+
   await writeCsvFile(filePath, serializeTransactions(sorted));
+
   return {
-    exportedTransactionsNum: mergedTransactions.length - savedTransactions.length,
+    exportedTransactionsNum: newTransactionsCount,
   };
 };
 
@@ -100,9 +115,13 @@ const parseTransactionsFile = async (filename: string) => {
     return parseTransactions(content);
   } catch (e: unknown) {
     if ((e as NodeJS.ErrnoException).code === 'ENOENT') {
+      logAppEvent('CSV_FILE_NOT_FOUND', { filePath: filename, action: 'creating_new' });
       return [] as EnrichedTransaction[];
     }
-    logger.error('Failed to parse CSV file', e);
+    logAppEvent('CSV_PARSE_ERROR', {
+      filePath: filename,
+      errorMessage: (e as Error).message,
+    });
     throw e;
   }
 };

@@ -4,11 +4,25 @@ import log from 'electron-log/main';
 import fs from 'fs';
 import { EOL } from 'os';
 import path from 'path';
+import { sanitizeLogMessage } from './sanitizer';
 
 log.initialize();
 
 // This will transport the logs to the renderer process (DevTools) in production too
 log.transports.ipc.level = log.transports.file.level;
+
+// Add a hook to sanitize all log messages before they're written
+// This catches any direct logger calls that bypass operationLogger
+log.hooks.push((message) => {
+  // Sanitize each part of the message data
+  message.data = message.data.map((item) => {
+    if (typeof item === 'string') {
+      return sanitizeLogMessage(item);
+    }
+    return item;
+  });
+  return message;
+});
 
 Object.assign(console, log.functions);
 const logger = log.scope('main');

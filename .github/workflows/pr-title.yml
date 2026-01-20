@@ -12,12 +12,12 @@ jobs:
         name: Validate PR Title
         continue-on-error: false
         with:
-          regex: '\w+:( [\w\.,]+)+( \(\w+ #\d+\))?' # Regex the title should match. "Level: message (optional #123)"
-          allowed_prefixes: 'Breaking,Build,Chore,Fix,New,Update,Upgrade,Deps' # title should start with the given prefix
+          regex: '\w+(\(\w+\))?:( [\w\.,]+)+( \(\w+ #\d+\))?' # Regex: "Prefix: message" or "Prefix(scope): message (optional #123)"
+          allowed_prefixes: 'Breaking,Build,Chore,Fix,New,Update,Upgrade,Deps,feat,fix,chore,docs,refactor,test,ci' # title should start with the given prefix
           # disallowed_prefixes: 'feat/,hotfix' # title should not start with the given prefix
-          prefix_case_sensitive: true # title prefix are case insensitive
+          prefix_case_sensitive: false # title prefix are case insensitive
           # min_length: 5 # Min length of the title
-          max_length: 50 # Max length of the title
+          max_length: 80 # Max length of the title
           github_token: ${{ secrets.GITHUB_TOKEN }} # Default: ${{ github.token }}
       - uses: mshick/add-pr-comment@07f690343c25a94e24a8acb70d03c86b701ae322
         name: Comment on PR
@@ -28,13 +28,17 @@ jobs:
           message: |
             Please fix the title of this PR.
 
+            Format: `Prefix: description` (max 80 chars)
+
+            Allowed prefixes: `Breaking`, `Build`, `Chore`, `Fix`, `New`, `Update`, `Upgrade`, `Deps`, `feat`, `fix`, `chore`, `docs`, `refactor`, `test`, `ci`
+
             Examples:
 
             ```
-            Breaking: I broke something
-            Fix: fix (fixes #1234)
-            Update: some packages updates (refs #123)
-            New: Added a new feature
+            Fix: resolve login issue
+            New: add account toggle feature (fixes #123)
+            feat: improve logging infrastructure
+            feat(logging): add sanitization
             ```
 
             See more in `release.config.js`.

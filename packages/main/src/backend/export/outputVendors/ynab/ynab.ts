@@ -12,6 +12,7 @@ import { EventNames, ExporterEvent, type EventPublisher } from '@/backend/eventE
 import _ from 'lodash';
 import moment from 'moment/moment';
 import * as ynab from 'ynab';
+import { logAppEvent } from '/@/logging/operationLogger';
 
 const YNAB_DATE_FORMAT = 'YYYY-MM-DD';
 const NOW = moment();
@@ -26,6 +27,12 @@ let ynabAPI: ynab.API | undefined;
 
 export async function init(outputVendorsConfig: Config['outputVendors']) {
   ynabConfig = outputVendorsConfig.ynab;
+  logAppEvent('YNAB_INIT', {
+    hasBudgetId: !!ynabConfig?.options.budgetId,
+    hasAccessToken: !!outputVendorsConfig[OutputVendorName.YNAB]?.options.accessToken,
+    // NOTE: accountNumbersToYnabAccountIds contains sensitive data - will need sanitization
+    accountMappingsCount: Object.keys(ynabConfig?.options.accountNumbersToYnabAccountIds ?? {}).length,
+  });
   initFromToken(outputVendorsConfig[OutputVendorName.YNAB]?.options.accessToken);
 }
 
@@ -33,6 +40,7 @@ async function initFromToken(accessToken?: string) {
   if (accessToken) {
     ynabAPI = new ynab.API(accessToken);
   } else {
+    logAppEvent('YNAB_ERROR', { error: 'No access token provided' });
     throw new Error('Tried to set falsy access token');
   }
 }
@@ -41,18 +49,42 @@ const createTransactions: ExportTransactionsFunction = async ({ transactionsToCr
   if (!ynabConfig) {
     throw new Error('Must call init before using ynab functions');
   }
+
+  logAppEvent('YNAB_EXPORT_START', {
+    transactionsCount: transactionsToCreate.length,
+    startDate: moment(startDate).format('YYYY-MM-DD'),
+  });
+
   if (!categoriesMap.size) {
+    logAppEvent('YNAB_LOADING_CATEGORIES');
     await initCategories();
+    logAppEvent('YNAB_CATEGORIES_LOADED', { count: categoriesMap.size });
   }
+
   const transactionsFromFinancialAccount = transactionsToCreate.map(convertTransactionToYnabFormat);
+
+  logAppEvent('YNAB_FETCHING_EXISTING_TRANSACTIONS');
   let transactionsThatDontExistInYnab = await filterOnlyTransactionsThatDontExistInYnabAlready(
     startDate,
     transactionsFromFinancialAccount,
   );
+
   // Filter out transactions that are in the future
+  const futureTransactionsCount = transactionsThatDontExistInYnab.filter((transaction) =>
+    moment(transaction.date, YNAB_DATE_FORMAT).isAfter(NOW),
+  ).length;
+
   transactionsThatDontExistInYnab = transactionsThatDontExistInYnab.filter((transaction) =>
     moment(transaction.date, YNAB_DATE_FORMAT).isBefore(NOW),
   );
+
+  logAppEvent('YNAB_DUPLICATE_CHECK_COMPLETE', {
+    totalTransactions: transactionsToCreate.length,
+    alreadyExist: transactionsToCreate.length - transactionsThatDontExistInYnab.length - futureTransactionsCount,
+    futureTransactions: futureTransactionsCount,
+    toCreate: transactionsThatDontExistInYnab.length,
+  });
+
   if (!transactionsThatDontExistInYnab.length) {
     await emitProgressEvent(
       eventPublisher,
@@ -69,24 +101,31 @@ const createTransactions: ExportTransactionsFunction = async ({ transactionsToCr
     transactionsToCreate,
     `Creating ${transactionsThatDontExistInYnab.length} transactions in ynab`,
   );
+
   try {
+    logAppEvent('YNAB_API_CREATE_TRANSACTIONS', { count: transactionsThatDontExistInYnab.length });
     await ynabAPI!.transactions.createTransactions(ynabConfig.options.budgetId, {
       transactions: transactionsThatDontExistInYnab,
     });
+    logAppEvent('YNAB_API_SUCCESS', { createdCount: transactionsThatDontExistInYnab.length });
     return {
       exportedTransactionsNum: transactionsThatDontExistInYnab.length,
     };
   } catch (e) {
+    const error = e as Error;
+    logAppEvent('YNAB_API_ERROR', {
+      errorName: error.name,
+      errorMessage: error.message,
+    });
     await eventPublisher.emit(
       EventNames.EXPORTER_ERROR,
       new ExporterEvent({
-        message: (e as Error).message,
-        error: e as Error,
+        message: error.message,
+        error: error,
         exporterName: ynabOutputVendor.name,
         allTransactions: transactionsToCreate,
       }),
     );
-    console.error('Failed to create transactions in ynab', e);
     throw e;
   }
 };

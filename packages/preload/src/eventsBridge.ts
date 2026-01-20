@@ -78,6 +78,10 @@ export async function quitAndInstall() {
   return electron.ipcRenderer.invoke('quitAndInstall');
 }
 
+export function copyToClipboard(text: string) {
+  electron.clipboard.writeText(text);
+}
+
 // Google Sheets
 export async function validateToken(credentials: Credentials): Promise<boolean> {
   return electron.ipcRenderer.invoke('validateToken', credentials);
