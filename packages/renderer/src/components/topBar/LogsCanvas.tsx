@@ -17,7 +17,11 @@ export default function LogsCanvas({ show, handleClose, lastLines, logsFolder }:
   const logsEndRef = useRef<HTMLDivElement>(null);
 
   const lines = lastLines?.split('\n') ?? [];
-  const filteredLines = filter ? lines.filter((line) => line.toLowerCase().includes(filter.toLowerCase())) : lines;
+  // Store original line numbers with filtered lines to display correct line numbers
+  const indexedLines = lines.map((line, index) => ({ line, originalIndex: index }));
+  const filteredIndexedLines = filter
+    ? indexedLines.filter(({ line }) => line.toLowerCase().includes(filter.toLowerCase()))
+    : indexedLines;
 
   // Scroll to bottom when logs change or panel opens
   useEffect(() => {
@@ -27,7 +31,7 @@ export default function LogsCanvas({ show, handleClose, lastLines, logsFolder }:
   }, [show, lastLines]);
 
   const handleCopyToClipboard = () => {
-    const textToCopy = filter ? filteredLines.join('\n') : lastLines;
+    const textToCopy = filter ? filteredIndexedLines.map(({ line }) => line).join('\n') : lastLines;
     copyToClipboard(textToCopy ?? '');
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -39,10 +43,13 @@ export default function LogsCanvas({ show, handleClose, lastLines, logsFolder }:
     }
   };
 
+  // Escape special regex characters to prevent errors when filter contains characters like [ ] ( ) etc.
+  const escapeRegExp = (str: string) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
   // Highlight matching text in filtered mode
   const highlightMatch = (line: string) => {
     if (!filter) return line;
-    const regex = new RegExp(`(${filter})`, 'gi');
+    const regex = new RegExp(`(${escapeRegExp(filter)})`, 'gi');
     const parts = line.split(regex);
     return parts.map((part, i) =>
       regex.test(part) ? (
@@ -102,12 +109,12 @@ export default function LogsCanvas({ show, handleClose, lastLines, logsFolder }:
             overflowY: 'auto',
           }}
         >
-          {filteredLines.length === 0 && filter && (
+          {filteredIndexedLines.length === 0 && filter && (
             <div style={{ color: '#888', textAlign: 'center', padding: '20px' }}>לא נמצאו תוצאות עבור "{filter}"</div>
           )}
-          {filteredLines.map((line, index) => (
+          {filteredIndexedLines.map(({ line, originalIndex }) => (
             <div
-              key={index}
+              key={originalIndex}
               style={{
                 display: 'flex',
                 borderBottom: '1px solid #333',
@@ -125,7 +132,7 @@ export default function LogsCanvas({ show, handleClose, lastLines, logsFolder }:
                   marginRight: '12px',
                 }}
               >
-                {lines.indexOf(line) + 1}
+                {originalIndex + 1}
               </span>
               <span style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>{highlightMatch(line)}</span>
             </div>
