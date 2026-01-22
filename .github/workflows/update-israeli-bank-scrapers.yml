@@ -53,6 +53,13 @@ jobs:
           commit-message: 'Deps: Upgrade israeli-bank-scrapers to ${{ steps.get_new_version.outputs.new_version }}'
           title: 'Deps: Upgrade israeli-bank-scrapers to ${{ steps.get_new_version.outputs.new_version }}'
           body: |
-            Upgrade israeli-bank-scrapers-core library to ${{ steps.get_new_version.outputs.new_version }}
-            Changes:
-            - [Diff Link](${{ steps.diff_link.outputs.diff_link }})
+            ## Dependency Update: israeli-bank-scrapers-core
+            
+            ### Version Information
+            - **Current version:** `${{ steps.get_old_version.outputs.old_version }}`
+            - **New version:** `${{ steps.get_new_version.outputs.new_version }}`
+            
+            ### Changes
+            - [View diff between versions](${{ steps.diff_link.outputs.diff_link }})
+            
+            This PR was automatically created by the dependency update workflow.
