@@ -84,7 +84,7 @@
     "googleapis": "^139.0.0",
     "israeli-bank-scrapers-core": "^6.6.1",
     "keytar": "^7.9.0",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "mobx": "^6.12.4",
     "mobx-react-lite": "^4.0.7",
     "moment": "^2.30.1",
