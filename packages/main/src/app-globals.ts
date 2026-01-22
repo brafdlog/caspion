@@ -14,6 +14,13 @@ export const userDataPath = App.getPath('userData');
 export const configFilePath = path.resolve(userDataPath, 'config.encrypt');
 
 // Default export file paths in the user's Documents directory
-export const documentsPath = App.getPath('documents');
+// Falls back to userData if documents path is not available
+let documentsPath: string;
+try {
+  documentsPath = App.getPath('documents');
+} catch {
+  documentsPath = userDataPath;
+}
+export { documentsPath };
 export const defaultCsvPath = path.resolve(documentsPath, 'transaction.csv');
 export const defaultJsonPath = path.resolve(documentsPath, 'transaction.json');
