@@ -4,7 +4,12 @@ import { getWindowsProxySettings } from './windowsRegistry';
 import { initializeProxyAgents, tearDownProxyAgents, getCurrentProxyUrl } from './agentManager';
 
 function normalizeProxyUrl(url: string): string {
-  return url.startsWith('http') ? url : `http://${url}`;
+  // If the URL already has a scheme (e.g., http, https, socks4, socks5), return it as-is.
+  // Otherwise, assume an HTTP proxy and prepend "http://".
+  if (/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(url)) {
+    return url;
+  }
+  return `http://${url}`;
 }
 
 async function getProxyConfiguration(): Promise<string | undefined> {
