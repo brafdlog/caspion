@@ -71,6 +71,7 @@
   "dependencies": {
     "@puppeteer/browsers": "^2.2.3",
     "@sentry/electron": "^5.0.0",
+    "@tootallnate/quickjs-emscripten": "^0.23.0",
     "analytics-node": "^6.2.0",
     "bootstrap": "^5.3.3",
     "bottleneck": "^2.19.5",
@@ -90,6 +91,7 @@
     "mobx-react-lite": "^4.0.7",
     "moment": "^2.30.1",
     "node-machine-id": "^1.1.12",
+    "pac-resolver": "^7.0.1",
     "proxy-agent": "^6.5.0",
     "puppeteer-core": "^22.10.0",
     "react": "^18.3.1",

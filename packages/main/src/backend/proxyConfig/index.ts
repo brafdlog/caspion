@@ -1,25 +1,10 @@
 import logger from '/@/logging/logger';
-import { fetchPacFile, extractProxyFromPac, invalidatePacCache } from './pacFile';
+import { getProxyFromPacUrl, invalidatePacCache } from './pacFile';
 import { getWindowsProxySettings } from './windowsRegistry';
 import { initializeProxyAgents, tearDownProxyAgents, getCurrentProxyUrl } from './agentManager';
 
 function normalizeProxyUrl(url: string): string {
   return url.startsWith('http') ? url : `http://${url}`;
-}
-
-async function getProxyFromPacFile(pacUrl: string): Promise<string | undefined> {
-  try {
-    const pacContent = await fetchPacFile(pacUrl);
-    const extractedProxy = extractProxyFromPac(pacContent);
-    if (extractedProxy) {
-      logger.log(`Extracted proxy from PAC file: ${extractedProxy}`);
-      return extractedProxy;
-    }
-    logger.log('No proxy found in PAC file');
-  } catch (error) {
-    logger.log(`Failed to fetch or parse PAC file: ${error}`);
-  }
-  return undefined;
 }
 
 async function getProxyConfiguration(): Promise<string | undefined> {
@@ -43,7 +28,8 @@ async function getProxyConfiguration(): Promise<string | undefined> {
   // PAC file
   if (autoConfigUrl) {
     logger.log(`Found PAC file URL in registry: ${autoConfigUrl}`);
-    return getProxyFromPacFile(autoConfigUrl);
+    // Query PAC with Chromium download URL as representative for all external access
+    return getProxyFromPacUrl(autoConfigUrl, 'https://storage.googleapis.com');
   }
 
   return undefined;
