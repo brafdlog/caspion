@@ -64,33 +64,32 @@ export async function scrapeAndUpdateOutputVendors(config: Config, optionalEvent
     new Events.ImportStartEvent(`Starting to scrape from ${startDate} to today`, nextAutomaticScrapeDate),
   );
 
-  // Initialize proxy at the start - ensures proxy is available for
-  // downloading chromium, scraping, and export (YNAB API calls)
-  await initProxyIfNeeded();
-
   try {
+    // Initialize proxy at the start - ensures proxy is available for
+    // downloading chromium, scraping, and export (YNAB API calls)
+    await initProxyIfNeeded();
+
     const companyIdToTransactions = await scrapeFinancialAccountsAndFetchTransactions(
       config.scraping,
       startDate,
       eventPublisher,
       opLog,
-  );
+    );
 
-  
-  // Create export logger that shares context with scrape
-  const exportLog = createOperationLogger('export');
+    // Create export logger that shares context with scrape
+    const exportLog = createOperationLogger('export');
 
-  try {
+    try {
       return await createTransactionsInExternalVendors(
         config.outputVendors,
         companyIdToTransactions,
         startDate,
         eventPublisher,
         exportLog,
-    );
+      );
     } catch (e) {
       const error = e as Error;
-    exportLog.error('FAILED', error);
+      exportLog.error('FAILED', error);
       await eventPublisher.emit(
         EventNames.GENERAL_ERROR,
         new Events.BudgetTrackingEvent({
