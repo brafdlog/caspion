@@ -8,6 +8,7 @@ import logger from '/@/logging/logger';
 
 interface ProxyState {
   proxyUrl: string;
+  pacUrl?: string; // Original PAC URL if proxy was resolved from PAC
   originalHttpAgent: HttpAgent;
   originalHttpsAgent: HttpsAgent;
   proxyAgent: ProxyAgent;
@@ -19,7 +20,7 @@ let proxyState: ProxyState | null = null;
 let isInitializing = false;
 let isTearingDown = false;
 
-export function initializeProxyAgents(proxyUrl: string): void {
+export function initializeProxyAgents(proxyUrl: string, pacUrl?: string): void {
   if (isInitializing) {
     logger.log('Proxy initialization already in progress, ignoring concurrent call');
     return;
@@ -57,6 +58,7 @@ export function initializeProxyAgents(proxyUrl: string): void {
 
     proxyState = {
       proxyUrl,
+      pacUrl,
       originalHttpAgent: http.globalAgent,
       originalHttpsAgent: https.globalAgent,
       proxyAgent,
@@ -120,4 +122,8 @@ export function tearDownProxyAgents(): void {
 
 export function getCurrentProxyUrl(): string | null {
   return proxyState?.proxyUrl ?? null;
+}
+
+export function getCurrentPacUrl(): string | undefined {
+  return proxyState?.pacUrl;
 }

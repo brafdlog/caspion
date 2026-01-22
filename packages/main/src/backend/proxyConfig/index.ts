@@ -1,7 +1,7 @@
 import logger from '/@/logging/logger';
 import { getProxyFromPacUrl, invalidatePacCache } from './pacFile';
 import { getWindowsProxySettings } from './windowsRegistry';
-import { initializeProxyAgents, tearDownProxyAgents, getCurrentProxyUrl } from './agentManager';
+import { initializeProxyAgents, tearDownProxyAgents, getCurrentProxyUrl, getCurrentPacUrl } from './agentManager';
 
 function normalizeProxyUrl(url: string): string {
   // If the URL already has a scheme (e.g., http, https, socks4, socks5), return it as-is.
@@ -12,12 +12,19 @@ function normalizeProxyUrl(url: string): string {
   return `http://${url}`;
 }
 
-async function getProxyConfiguration(): Promise<string | undefined> {
+interface ProxyConfig {
+  proxyUrl?: string;
+  pacUrl?: string;
+}
+
+async function getProxyConfiguration(): Promise<ProxyConfig> {
   // Check environment variables first
-  const envProxyUrl = process.env.HTTP_PROXY ?? process.env.HTTPS_PROXY;
+  const envProxyUrl =
+    process.env.HTTP_PROXY ?? process.env.HTTPS_PROXY ?? process.env.http_proxy ?? process.env.https_proxy;
+
   if (envProxyUrl) {
     logger.log(`Using proxy from environment: ${envProxyUrl}`);
-    return envProxyUrl;
+    return { proxyUrl: envProxyUrl };
   }
 
   // Check Windows Registry
@@ -27,23 +34,24 @@ async function getProxyConfiguration(): Promise<string | undefined> {
   if (proxyServer) {
     const normalizedUrl = normalizeProxyUrl(proxyServer);
     logger.log(`Using proxy from Windows Registry: ${normalizedUrl}`);
-    return normalizedUrl;
+    return { proxyUrl: normalizedUrl };
   }
 
   // PAC file
   if (autoConfigUrl) {
     logger.log(`Found PAC file URL in registry: ${autoConfigUrl}`);
     // Query PAC with Chromium download URL as representative for all external access
-    return getProxyFromPacUrl(autoConfigUrl, 'https://storage.googleapis.com');
+    const proxyUrl = await getProxyFromPacUrl(autoConfigUrl, 'https://storage.googleapis.com');
+    return { proxyUrl, pacUrl: autoConfigUrl };
   }
 
-  return undefined;
+  return {};
 }
 
 export async function initProxyIfNeeded(): Promise<void> {
-  const proxyUrl = await getProxyConfiguration();
-  if (proxyUrl) {
-    initializeProxyAgents(proxyUrl);
+  const config = await getProxyConfiguration();
+  if (config.proxyUrl) {
+    initializeProxyAgents(config.proxyUrl, config.pacUrl);
   } else {
     logger.log('No proxy configuration found');
   }
@@ -56,9 +64,21 @@ export function tearDownProxy(): void {
 
 export function getProxyArgs(): string[] {
   const proxyUrl = getCurrentProxyUrl();
-  if (proxyUrl) {
+  const pacUrl = getCurrentPacUrl();
+  const args: string[] = [];
+
+  if (pacUrl) {
+    args.push(`--proxy-pac-url=${pacUrl}`);
+  } else if (proxyUrl) {
     const urlObj = new URL(proxyUrl);
-    return [`--proxy-server=${urlObj.host}`];
+    args.push(`--proxy-server=${urlObj.host}`);
   }
-  return [];
+
+  // Add bypass list from NO_PROXY env var if explicitly set
+  const noProxy = process.env.NO_PROXY ?? process.env.no_proxy;
+  if (noProxy) {
+    args.push(`--proxy-bypass-list=${noProxy}`);
+  }
+
+  return args;
 }
