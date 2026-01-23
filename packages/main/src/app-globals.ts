@@ -12,3 +12,14 @@ if (import.meta.env.MODE !== 'production') {
 
 export const userDataPath = App.getPath('userData');
 export const configFilePath = path.resolve(userDataPath, 'config.encrypt');
+
+function getDocumentsPath(): string {
+  try {
+    return App.getPath('documents');
+  } catch {
+    return userDataPath;
+  }
+}
+
+export const defaultCsvPath = path.resolve(getDocumentsPath(), 'transaction.csv');
+export const defaultJsonPath = path.resolve(getDocumentsPath(), 'transaction.json');

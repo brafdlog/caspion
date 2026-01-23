@@ -1,3 +1,4 @@
+import { defaultCsvPath, defaultJsonPath } from '@/app-globals';
 import { type Config } from '../commonTypes';
 
 const DEFAULT_CONFIG: Config = {
@@ -11,13 +12,13 @@ const DEFAULT_CONFIG: Config = {
     csv: {
       active: true,
       options: {
-        filePath: 'transaction.csv',
+        filePath: defaultCsvPath,
       },
     },
     json: {
       active: false,
       options: {
-        filePath: 'transaction.json',
+        filePath: defaultJsonPath,
       },
     },
     ynab: {
