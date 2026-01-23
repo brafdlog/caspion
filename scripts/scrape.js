@@ -1,22 +1,32 @@
 import { execSync } from 'child_process';
-import { statSync, existsSync } from 'fs';
+import { statSync, existsSync, readdirSync } from 'fs';
 import { resolve } from 'path';
 
 const projectRoot = resolve(import.meta.dirname, '..');
 
+function findSourceFiles(dir) {
+  const files = [];
+  const entries = readdirSync(dir, { withFileTypes: true });
+
+  for (const entry of entries) {
+    const fullPath = resolve(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...findSourceFiles(fullPath));
+    } else if (entry.isFile() && (entry.name.endsWith('.ts') || entry.name.endsWith('.tsx'))) {
+      files.push(fullPath);
+    }
+  }
+
+  return files;
+}
+
 function getLatestSourceModificationTime(sourceDir) {
   try {
-    const sourceFiles = execSync(`find ${sourceDir} -name "*.ts" -o -name "*.tsx"`, {
-      encoding: 'utf-8',
-      cwd: projectRoot,
-    })
-      .trim()
-      .split('\n')
-      .filter(Boolean);
+    const sourceFiles = findSourceFiles(resolve(projectRoot, sourceDir));
 
     let latestTime = 0;
     for (const file of sourceFiles) {
-      const stat = statSync(resolve(projectRoot, file));
+      const stat = statSync(file);
       if (stat.mtimeMs > latestTime) latestTime = stat.mtimeMs;
     }
     return latestTime;

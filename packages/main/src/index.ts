@@ -74,6 +74,7 @@ app
         app.quit();
       } catch (error) {
         logAppEvent('CLI_SCRAPE_FAILED', { errorMessage: (error as Error).message });
+        console.error('CLI scrape failed:', error);
         app.exit(1);
       }
       return;
