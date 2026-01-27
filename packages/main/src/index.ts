@@ -9,7 +9,6 @@ import { scrapeAndUpdateOutputVendors } from './backend';
 import { getConfig } from './backend/configManager/configManager';
 import { BudgetTrackingEventEmitter } from './backend/eventEmitters/EventEmitter';
 
-// Check for CLI mode
 const isCliScrape = process.argv.includes('--scrape');
 
 /**
@@ -61,7 +60,6 @@ app
     });
 
     if (isCliScrape) {
-      // CLI mode: run scraping and exit
       logAppEvent('CLI_SCRAPE_START');
       try {
         const config = await getConfig();
