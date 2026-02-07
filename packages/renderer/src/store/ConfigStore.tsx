@@ -111,6 +111,7 @@ export class ConfigStore {
           !!exporter?.active,
           this.accountScrapingData.get(exporterKey as OutputVendorName),
         ),
+        companyId: exporterKey as OutputVendorName,
         options: exporter?.options || {},
       };
     });
