@@ -65,7 +65,7 @@ export async function scrapeFinancialAccountsAndFetchTransactions(
   }
 
   const limiter = new Bottleneck({
-    maxConcurrent: scrapingConfig.maxConcurrency,
+    maxConcurrent: scrapingConfig.maxConcurrency || null,
   });
   const scrapePromises = activeAccounts.map(async (accountToScrape) => ({
     id: accountToScrape.id,
@@ -97,6 +97,10 @@ export async function scrapeFinancialAccountsAndFetchTransactions(
         totalTransactions += transactions.length;
       } else {
         failedCount++;
+        log.error(
+          'IMPORTER_REJECTED',
+          scrapeRes.reason instanceof Error ? scrapeRes.reason : new Error(String(scrapeRes.reason)),
+        );
       }
       return idToTrxAcc;
     },
