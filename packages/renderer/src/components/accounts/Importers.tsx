@@ -28,6 +28,7 @@ function Importers({ accounts, isScraping, showModal, handleNewAccountClicked }:
           <Account
             key={account.id}
             account={account}
+            onToggleActive={!isScraping ? () => configStore.toggleImporterActive(account.id) : undefined}
             actionButtons={getActionButtons(showModal, account, isScraping, () => {
               configStore.openResults(account.companyId as OutputVendorName);
             })}

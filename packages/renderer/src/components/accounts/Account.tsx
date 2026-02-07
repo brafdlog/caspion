@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import Badge from 'react-bootstrap/Badge';
+import Form from 'react-bootstrap/Form';
 import piggyBank from '../../assets/piggy-bank.svg';
 import { type Account as AccountType, type ExporterEndEvent } from '../../types';
 import styles from './Account.module.css';
@@ -14,9 +15,10 @@ export interface ActionButton {
 interface AccountProps {
   account: AccountType;
   actionButtons?: ActionButton[];
+  onToggleActive?: () => void;
 }
 
-export default function Account({ account, actionButtons }: AccountProps) {
+export default function Account({ account, actionButtons, onToggleActive }: AccountProps) {
   const containerStyles = useMemo(() => {
     const s = [styles.container];
     if (!account.active) s.push(styles.notActive);
@@ -48,6 +50,15 @@ export default function Account({ account, actionButtons }: AccountProps) {
           title={tooltipText}
         />
       ))}
+      {onToggleActive && (
+        <Form.Check
+          className={styles.activeToggle}
+          type="switch"
+          checked={account.active}
+          onChange={onToggleActive}
+          title={account.active ? 'פעיל' : 'לא פעיל'}
+        />
+      )}
       <StatusIndicator status={account.status} />
       {badgeNumberLog?.originalEvent && (
         <Badge className={styles.newTxnsIndicator} bg={'success'}>

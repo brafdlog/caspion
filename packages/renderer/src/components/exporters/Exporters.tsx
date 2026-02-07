@@ -1,4 +1,5 @@
-import { type Account as AccountType, type ModalStatus } from '../../types';
+import { useConfigStore } from '../../store/ConfigStore';
+import { type Account as AccountType, type ModalStatus, type OutputVendorName } from '../../types';
 import Account from '../accounts/Account';
 import { getActionButtons } from '../accounts/Importers';
 
@@ -9,12 +10,16 @@ interface ExporterProps {
 }
 
 function Exporters({ exporters, isScraping, showModal }: ExporterProps) {
+  const configStore = useConfigStore();
   return (
     <>
       {exporters.map((exporter) => (
         <Account
           key={exporter.id}
           account={exporter}
+          onToggleActive={
+            !isScraping ? () => configStore.toggleExporterActive(exporter.companyId as OutputVendorName) : undefined
+          }
           actionButtons={getActionButtons(showModal, exporter, isScraping)}
         />
       ))}
