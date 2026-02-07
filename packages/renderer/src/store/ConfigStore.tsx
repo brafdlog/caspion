@@ -211,6 +211,20 @@ export class ConfigStore {
       createOutputVendorConfigFromExporter(updatedExporterConfig);
   }
 
+  toggleImporterActive(id: string) {
+    const account = this.config.scraping.accountsToScrape.find((a) => a.id === id);
+    if (account) {
+      account.active = !account.active;
+    }
+  }
+
+  toggleExporterActive(exporterName: OutputVendorName) {
+    const exporter = this.config.outputVendors[exporterName];
+    if (exporter) {
+      exporter.active = !exporter.active;
+    }
+  }
+
   async toggleShowBrowser() {
     this.config.scraping.showBrowser = !this.config.scraping.showBrowser;
   }
