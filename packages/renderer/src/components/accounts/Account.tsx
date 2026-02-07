@@ -57,6 +57,7 @@ export default function Account({ account, actionButtons, onToggleActive }: Acco
           checked={account.active}
           onChange={onToggleActive}
           title={account.active ? 'פעיל' : 'לא פעיל'}
+          aria-label={account.active ? 'פעיל' : 'לא פעיל'}
         />
       )}
       <StatusIndicator status={account.status} />
