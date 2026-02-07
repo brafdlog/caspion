@@ -16,6 +16,7 @@
     "build:preload": "cd ./packages/preload && vite build",
     "build:renderer": "cd ./packages/renderer && vite build",
     "compile": "cross-env MODE=production yarn build && electron-builder build --config electron-builder.yml --dir",
+    "scrape": "node scripts/scrape.js",
     "test": "yarn test:main && yarn test:preload && yarn test:renderer && yarn test:e2e",
     "test:e2e": "yarn build && vitest run",
     "test:main": "vitest run -r packages/main --passWithNoTests",

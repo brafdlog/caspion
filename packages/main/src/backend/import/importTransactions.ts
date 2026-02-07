@@ -27,6 +27,7 @@ import { createOperationLogger, type OperationLogger } from '/@/logging/operatio
 
 type ScrapingConfig = Config['scraping'];
 
+const DEFAULT_MAX_CONCURRENCY = 3;
 const TRANSACTION_STATUS_COMPLETED = 'completed';
 
 export async function scrapeFinancialAccountsAndFetchTransactions(
@@ -47,7 +48,7 @@ export async function scrapeFinancialAccountsAndFetchTransactions(
     numDaysBack: moment().diff(moment(startDate), 'days'),
     showBrowser: scrapingConfig.showBrowser,
     timeout: scrapingConfig.timeout,
-    maxConcurrency: scrapingConfig.maxConcurrency ?? 1,
+    maxConcurrency: scrapingConfig.maxConcurrency ?? DEFAULT_MAX_CONCURRENCY,
   });
 
   if (scrapingConfig.chromiumPath) {
@@ -65,7 +66,7 @@ export async function scrapeFinancialAccountsAndFetchTransactions(
   }
 
   const limiter = new Bottleneck({
-    maxConcurrent: scrapingConfig.maxConcurrency,
+    maxConcurrent: scrapingConfig.maxConcurrency || DEFAULT_MAX_CONCURRENCY,
   });
   const scrapePromises = activeAccounts.map(async (accountToScrape) => ({
     id: accountToScrape.id,
