@@ -16,9 +16,10 @@ interface AccountProps {
   account: AccountType;
   actionButtons?: ActionButton[];
   onToggleActive?: () => void;
+  disabled?: boolean;
 }
 
-export default function Account({ account, actionButtons, onToggleActive }: AccountProps) {
+export default function Account({ account, actionButtons, onToggleActive, disabled }: AccountProps) {
   const containerStyles = useMemo(() => {
     const s = [styles.container];
     if (!account.active) s.push(styles.notActive);
@@ -56,6 +57,7 @@ export default function Account({ account, actionButtons, onToggleActive }: Acco
           type="switch"
           checked={account.active}
           onChange={onToggleActive}
+          disabled={disabled}
           title={account.active ? 'פעיל' : 'לא פעיל'}
           aria-label={account.active ? 'פעיל' : 'לא פעיל'}
         />

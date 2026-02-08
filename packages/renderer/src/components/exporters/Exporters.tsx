@@ -17,7 +17,8 @@ function Exporters({ exporters, isScraping, showModal }: ExporterProps) {
         <Account
           key={exporter.id}
           account={exporter}
-          onToggleActive={!isScraping ? () => configStore.toggleExporterActive(exporter.companyId) : undefined}
+          onToggleActive={() => configStore.toggleExporterActive(exporter.companyId)}
+          disabled={isScraping}
           actionButtons={getActionButtons(showModal, exporter, isScraping)}
         />
       ))}
