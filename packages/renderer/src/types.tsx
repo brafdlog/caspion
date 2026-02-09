@@ -192,6 +192,7 @@ export interface Importer extends Account {
 }
 
 export interface Exporter extends Account {
+  companyId: OutputVendorName;
   options: object;
 }
 

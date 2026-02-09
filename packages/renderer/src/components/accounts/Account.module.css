@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   height: 40px;
-  width: 200px;
+  width: 260px;
   padding: 4px 12px;
   border: 1px solid #ddcfcf;
   box-sizing: border-box;
@@ -12,6 +12,16 @@
 
 .pointer {
   cursor: pointer;
+}
+
+.activeToggle {
+  margin-left: 5px;
+  display: none;
+  cursor: pointer;
+}
+
+.container:hover .activeToggle {
+  display: block;
 }
 
 .nameWrapper {
