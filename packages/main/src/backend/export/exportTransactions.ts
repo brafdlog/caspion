@@ -106,15 +106,9 @@ export async function createTransactionsInExternalVendors(
           ...baseEvent,
         }),
       );
-      // Intentionally do not re-throw: each exporter's outcome is already
-      // recorded via counters + events. Re-throwing would reject this promise
-      // and, combined with Promise.all's fail-fast behavior, orphan other
-      // still-running exporters and skip the summary/EXPORT_PROCESS_END emit.
     }
   });
 
-  // Use allSettled so a thrown error from an exporter (e.g. something outside
-  // the try/catch above) cannot abort the other exporters or skip the summary.
   await Promise.allSettled(exportPromises);
 
   const result = failedCount === 0 ? 'success' : successCount === 0 ? 'failed' : 'partial';
