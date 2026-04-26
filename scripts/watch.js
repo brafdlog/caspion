@@ -45,8 +45,12 @@ function setupMainPackageWatcher({ resolvedUrls }) {
           }
 
           /** Spawn new electron process */
+          // Strip ELECTRON_RUN_AS_NODE — VSCode terminals inherit it and it forces Node-only mode.
+          const childEnv = { ...process.env };
+          delete childEnv.ELECTRON_RUN_AS_NODE;
           electronApp = spawn(String(electronPath), ['--inspect', '.'], {
             stdio: 'inherit',
+            env: childEnv,
           });
 
           /** Stops the watch script when the application has been quit */
