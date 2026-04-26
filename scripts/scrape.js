@@ -67,4 +67,7 @@ if (mainNeedsRebuild || preloadNeedsRebuild) {
 }
 
 console.log('Starting scrape...');
-execSync('electron . --scrape', { stdio: 'inherit', cwd: projectRoot });
+// Strip ELECTRON_RUN_AS_NODE — VSCode terminals inherit it and it forces Node-only mode.
+const childEnv = { ...process.env };
+delete childEnv.ELECTRON_RUN_AS_NODE;
+execSync('electron . --scrape', { stdio: 'inherit', cwd: projectRoot, env: childEnv });
