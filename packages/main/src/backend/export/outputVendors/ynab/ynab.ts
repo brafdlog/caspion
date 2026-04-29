@@ -224,9 +224,9 @@ async function filterOnlyTransactionsThatDontExistInYnabAlready(
   }
   const transactionsThatDontExistInYnab = transactionsFromFinancialAccounts.filter(
     (transactionToCheck) =>
-      !transactionsInYnabBeforeCreatingTheseTransactions.find((existingTransaction) =>
-        isSameTransaction(transactionToCheck, existingTransaction),
-      ),
+      !transactionsInYnabBeforeCreatingTheseTransactions
+        .filter((t) => !t.deleted)
+        .find((existingTransaction) => isSameTransaction(transactionToCheck, existingTransaction)),
   );
   return transactionsThatDontExistInYnab;
 }
