@@ -61,7 +61,6 @@ jobs:
       MODE: production
       VITE_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
       VITE_GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-      VITE_SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
       VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
 
     permissions:
