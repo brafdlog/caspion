@@ -111,6 +111,7 @@ export class ConfigStore {
           !!exporter?.active,
           this.accountScrapingData.get(exporterKey as OutputVendorName),
         ),
+        companyId: exporterKey as OutputVendorName,
         options: exporter?.options || {},
       };
     });
@@ -209,6 +210,20 @@ export class ConfigStore {
     // @ts-expect-error the types are not complete here
     this.config.outputVendors[updatedExporterConfig.companyId as OutputVendorName] =
       createOutputVendorConfigFromExporter(updatedExporterConfig);
+  }
+
+  toggleImporterActive(id: string) {
+    const account = this.config.scraping.accountsToScrape.find((a) => a.id === id);
+    if (account) {
+      account.active = !account.active;
+    }
+  }
+
+  toggleExporterActive(exporterName: OutputVendorName) {
+    const exporter = this.config.outputVendors[exporterName];
+    if (exporter) {
+      exporter.active = !exporter.active;
+    }
   }
 
   async toggleShowBrowser() {

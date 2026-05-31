@@ -31,6 +31,44 @@ We are in transition to a new UI. Some features don't yet exist in the new UI an
 
 Download the latest version from [Releases](https://github.com/brafdlog/caspion/releases) page, or build it from source, with the instructions below. (Mac users, you may follow these [instructions](https://github.com/brafdlog/caspion/issues/276#issuecomment-1282111297)).
 
+### CLI Mode (Headless Scraping)
+
+You can run Caspion from the command line without opening the UI. This is useful for setting up automated scraping via cron jobs.
+
+**Prerequisites:** First configure your accounts and exporters using the normal UI. The CLI mode uses the same configuration.
+
+**From a built/installed app:**
+
+```bash
+# macOS
+/Applications/caspion.app/Contents/MacOS/caspion --scrape
+
+# Linux
+/path/to/caspion --scrape
+
+# Windows
+"C:\Program Files\caspion\caspion.exe" --scrape
+```
+
+**From source (development):**
+
+```bash
+yarn scrape
+```
+
+**Example cron job (scrape daily at 6 AM):**
+
+```bash
+0 6 * * * /Applications/caspion.app/Contents/MacOS/caspion --scrape >> /var/log/caspion.log 2>&1
+```
+
+The CLI mode will:
+- Load your existing configuration (accounts, exporters, settings)
+- Run all active scrapers
+- Export transactions to your configured destinations
+- Print progress to stdout
+- Exit with code 0 on success, 1 on failure
+
 ### Proxy Support
 
 If you're behind a corporate proxy or need to use a proxy server, Caspion supports standard proxy environment variables:

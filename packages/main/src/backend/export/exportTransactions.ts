@@ -106,11 +106,10 @@ export async function createTransactionsInExternalVendors(
           ...baseEvent,
         }),
       );
-      throw e;
     }
   });
 
-  await Promise.all(exportPromises);
+  await Promise.allSettled(exportPromises);
 
   const result = failedCount === 0 ? 'success' : successCount === 0 ? 'failed' : 'partial';
   log.summary(result, {
