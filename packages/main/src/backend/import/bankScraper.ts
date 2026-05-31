@@ -1,6 +1,6 @@
 import { type AccountToScrapeConfig } from '@/backend/commonTypes';
 import { createScraper, type ScraperOptions } from 'israeli-bank-scrapers-core';
-import { getProxyArgs } from './proxyConfig';
+import { getProxyArgs } from '@/backend/proxyConfig';
 
 interface ScrapeParameters {
   companyId: AccountToScrapeConfig['key'];
