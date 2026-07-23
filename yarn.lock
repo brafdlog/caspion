@@ -4296,10 +4296,10 @@ isexe@^2.0.0:
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==
 
-israeli-bank-scrapers-core@^6.8.0:
-  version "6.8.0"
-  resolved "https://registry.yarnpkg.com/israeli-bank-scrapers-core/-/israeli-bank-scrapers-core-6.8.0.tgz#1418cf518c3fa4e907c824f9afd0fb62bb81ba7c"
-  integrity sha512-/AxUK5i4FORR/IkeVPNIEqG03nnNGpQ6suoFobyxaeKVqUQbYQcRjf7CPwrEYBJa8RDCDocrq+xV0JNr+jsueQ==
+israeli-bank-scrapers-core@^6.9.0:
+  version "6.9.0"
+  resolved "https://registry.yarnpkg.com/israeli-bank-scrapers-core/-/israeli-bank-scrapers-core-6.9.0.tgz#791908f3c775f3a7cb8e51f7a575ae5c3596e32e"
+  integrity sha512-Tmrnhu54A2HN2jmYeYOSIWgaxfK8TUky7Yn/FZiILRcnp1dUjs/Llv2eS6V/UG42amggR5Abs03hoBtpaR0yqA==
   dependencies:
     debug "^4.3.2"
     moment "^2.22.2"
