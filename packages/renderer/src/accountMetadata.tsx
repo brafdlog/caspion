@@ -38,6 +38,7 @@ const accountIdToDisplayName: Record<CompanyTypes | OutputVendorName, string> = 
   [CompanyTypes.MASSAD]: 'מסד',
   [CompanyTypes.BEHATSDAA]: 'בהצדעה',
   [CompanyTypes.MERCANTILE]: 'מרכנתיל',
+  [CompanyTypes.PAGI]: 'פאג"י',
   [OutputVendorName.CSV]: 'אקסל',
   [OutputVendorName.GOOGLE_SHEETS]: 'Google Sheets',
   [OutputVendorName.YNAB]: 'Ynab',
@@ -82,6 +83,7 @@ export const IMPORTERS_LOGIN_FIELDS = {
   [CompanyTypes.BEYAHAD_BISHVILHA]: [USERNAME_FIELD, PASSWORD_FIELD],
   [CompanyTypes.BEHATSDAA]: [ID_FIELD, PASSWORD_FIELD],
   [CompanyTypes.MERCANTILE]: [ID_FIELD, PASSWORD_FIELD, NUM_FIELD],
+  [CompanyTypes.PAGI]: [USERNAME_FIELD, PASSWORD_FIELD],
 };
 
 export const LOGIN_FIELD_DISPLAY_NAMES = {
