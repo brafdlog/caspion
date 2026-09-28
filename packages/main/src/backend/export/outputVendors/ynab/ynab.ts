@@ -61,7 +61,9 @@ const createTransactions: ExportTransactionsFunction = async ({ transactionsToCr
     logAppEvent('YNAB_CATEGORIES_LOADED', { count: categoriesMap.size });
   }
 
-  const transactionsFromFinancialAccount = transactionsToCreate.map(convertTransactionToYnabFormat);
+  const transactionsFromFinancialAccount = makeImportIdsUnique(
+    transactionsToCreate.map(convertTransactionToYnabFormat),
+  );
 
   logAppEvent('YNAB_FETCHING_EXISTING_TRANSACTIONS');
   let transactionsThatDontExistInYnab = await filterOnlyTransactionsThatDontExistInYnabAlready(
@@ -222,13 +224,63 @@ async function filterOnlyTransactionsThatDontExistInYnabAlready(
     transactionsInYnabBeforeCreatingTheseTransactions = transactionsFromYnabResponse.data.transactions;
     transactionsFromYnab.set(startDate, transactionsInYnabBeforeCreatingTheseTransactions);
   }
-  const transactionsThatDontExistInYnab = transactionsFromFinancialAccounts.filter(
-    (transactionToCheck) =>
-      !transactionsInYnabBeforeCreatingTheseTransactions
-        .filter((t) => !t.deleted)
-        .find((existingTransaction) => isSameTransaction(transactionToCheck, existingTransaction)),
+  return findTransactionsMissingFromYnab(
+    transactionsFromFinancialAccounts,
+    transactionsInYnabBeforeCreatingTheseTransactions,
   );
-  return transactionsThatDontExistInYnab;
+}
+
+/**
+ * Matches bank transactions to YNAB transactions one-to-one, so two identical bank transactions
+ * (same account, date, amount and payee) need two YNAB transactions to count as existing.
+ * Matching goes from strictest to loosest (same import id, then same payee, then any match such as
+ * a transfer), so a loose match can't use up a YNAB transaction that another one matches exactly.
+ */
+export function findTransactionsMissingFromYnab(
+  transactionsFromFinancialAccounts: ynab.SaveTransaction[],
+  transactionsFromYnab: ynab.TransactionDetail[],
+): ynab.SaveTransaction[] {
+  const unclaimed = transactionsFromYnab.filter((t) => !t.deleted);
+  const claimsMatch = (transaction: ynab.SaveTransaction, isMatch: MatchRule) => {
+    const index = unclaimed.findIndex((existing) => isMatch(transaction, existing));
+    if (index === -1) return false;
+    unclaimed.splice(index, 1);
+    return true;
+  };
+
+  const matchRulesFromStrictestToLoosest: MatchRule[] = [
+    (transaction, existing) => isSameImportId(transaction, existing) && isSameTransaction(transaction, existing),
+    (transaction, existing) =>
+      isSameTransaction(transaction, existing) &&
+      areStringsEqualIgnoreCaseAndWhitespace(transaction.payee_name, existing.payee_name),
+    isSameTransaction,
+  ];
+  const missing = matchRulesFromStrictestToLoosest.reduce(
+    (unmatched, isMatch) => unmatched.filter((transaction) => !claimsMatch(transaction, isMatch)),
+    transactionsFromFinancialAccounts,
+  );
+  return missing;
+}
+
+type MatchRule = (transaction: ynab.SaveTransaction, existing: ynab.TransactionDetail) => boolean;
+
+/**
+ * YNAB drops a transaction whose import id already exists in the account. Import ids are cut to
+ * 36 characters, so distinct same-day transactions can collide. The first keeps its id (so existing
+ * YNAB transactions still match); later ones get an occurrence suffix (":2", ":3", ...).
+ */
+export function makeImportIdsUnique(transactions: ynab.SaveTransaction[]): ynab.SaveTransaction[] {
+  const occurrences = new Map<string, number>();
+  return transactions.map((transaction) => {
+    if (!transaction.import_id) return transaction;
+    const key = `${transaction.account_id}|${transaction.import_id}`;
+    const occurrence = (occurrences.get(key) ?? 0) + 1;
+    occurrences.set(key, occurrence);
+    if (occurrence === 1) return transaction;
+    const suffix = `:${occurrence}`;
+    const importId = transaction.import_id.substring(0, MAX_YNAB_IMPORT_ID_LENGTH - suffix.length).trimEnd() + suffix;
+    return { ...transaction, import_id: importId };
+  });
 }
 
 export function isSameTransaction(
