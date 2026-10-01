@@ -89,7 +89,7 @@
     "lodash": "^4.18.1",
     "mobx": "^6.12.4",
     "mobx-react-lite": "^4.0.7",
-    "moment": "^2.30.1",
+    "moment": "^2.31.0",
     "node-machine-id": "^1.1.12",
     "pac-resolver": "^7.0.1",
     "proxy-agent": "^6.5.0",
