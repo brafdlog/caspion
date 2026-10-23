@@ -61,9 +61,7 @@ const createTransactions: ExportTransactionsFunction = async ({ transactionsToCr
     logAppEvent('YNAB_CATEGORIES_LOADED', { count: categoriesMap.size });
   }
 
-  const transactionsFromFinancialAccount = makeImportIdsUnique(
-    transactionsToCreate.map(convertTransactionToYnabFormat),
-  );
+  const transactionsFromFinancialAccount = convertTransactionsToYnabFormat(transactionsToCreate);
 
   logAppEvent('YNAB_FETCHING_EXISTING_TRANSACTIONS');
   let transactionsThatDontExistInYnab = await filterOnlyTransactionsThatDontExistInYnabAlready(
@@ -146,6 +144,15 @@ export function getPayeeName(transaction: EnrichedTransaction, payeeNameMaxLengt
     return transaction.memo.slice(7, transaction.memo.indexOf('עבור') - 2);
   }
   return transaction.description.substring(0, payeeNameMaxLength);
+}
+
+/**
+ * Sorted by hash before numbering repeated import ids, so the same transaction gets the same import id on every run
+ * whatever order the scraper returned it in. Hashes of identical transactions differ by their identifier.
+ */
+export function convertTransactionsToYnabFormat(transactions: EnrichedTransaction[]): ynab.SaveTransaction[] {
+  const inStableOrder = [...transactions].sort((a, b) => (a.hash < b.hash ? -1 : a.hash > b.hash ? 1 : 0));
+  return makeImportIdsUnique(inStableOrder.map(convertTransactionToYnabFormat));
 }
 
 function convertTransactionToYnabFormat(originalTransaction: EnrichedTransaction): ynab.SaveTransaction {

@@ -1,6 +1,13 @@
 import { type EnrichedTransaction } from '@/backend/commonTypes';
+import {
+  ACCOUNT_NUMBER,
+  booking,
+  otherCharge,
+  scrape,
+  secondBooking,
+} from '@/backend/transactions/identicalTransactionsFixture';
 import { TransactionStatuses, TransactionTypes } from 'israeli-bank-scrapers-core/lib/transactions';
-import { describe, expect, test } from 'vitest';
+import { beforeAll, describe, expect, test } from 'vitest';
 import { SaveTransaction, type TransactionDetail } from 'ynab';
 import * as ynab from './ynab';
 import ClearedEnum = SaveTransaction.ClearedEnum;
@@ -248,6 +255,58 @@ describe('ynab', () => {
       const [, second] = ynab.makeImportIdsUnique([firstDeposit, otherAccount]);
 
       expect(second.import_id).toBe(firstDeposit.import_id);
+    });
+  });
+
+  describe('identical same-day transactions from a scrape', () => {
+    beforeAll(() =>
+      ynab.init({
+        ynab: {
+          active: true,
+          options: {
+            accessToken: 'SOME_ACCESS_TOKEN',
+            budgetId: 'SOME_BUDGET_ID',
+            accountNumbersToYnabAccountIds: { [ACCOUNT_NUMBER]: 'SOME_ACCOUNT_ID' },
+          },
+        },
+      } as never),
+    );
+
+    test('should get distinct import ids', () => {
+      const importIds = ynab.convertTransactionsToYnabFormat(scrape(booking, secondBooking)).map((t) => t.import_id);
+
+      expect(new Set(importIds).size).toBe(2);
+    });
+
+    test('should get the same import ids whatever order the scraper returned them in', () => {
+      const inOrder = ynab.convertTransactionsToYnabFormat(scrape(booking, secondBooking, otherCharge));
+      const reversed = ynab.convertTransactionsToYnabFormat(scrape(otherCharge, secondBooking, booking));
+
+      expect(reversed).toEqual(inOrder);
+    });
+
+    test('should all be created, once', () => {
+      const firstRun = ynab.convertTransactionsToYnabFormat(scrape(booking, secondBooking));
+      const inYnab = firstRun.map((saved, i) => ynabTransaction(saved, `ynab-${i}`));
+
+      const secondRun = ynab.convertTransactionsToYnabFormat(scrape(secondBooking, booking));
+
+      expect(ynab.findTransactionsMissingFromYnab(firstRun, [])).toHaveLength(2);
+      expect(ynab.findTransactionsMissingFromYnab(secondRun, inYnab)).toEqual([]);
+    });
+
+    test('after upgrading, only the one YNAB was missing should be created', () => {
+      // Before this fix both bookings got the same import id, so YNAB kept only one of them
+      const [firstBooking] = ynab.convertTransactionsToYnabFormat(scrape(booking));
+      const inYnab = [ynabTransaction(firstBooking, 'ynab-1')];
+
+      const missing = ynab.findTransactionsMissingFromYnab(
+        ynab.convertTransactionsToYnabFormat(scrape(booking, secondBooking)),
+        inYnab,
+      );
+
+      expect(missing).toHaveLength(1);
+      expect(missing[0].import_id).not.toBe(firstBooking.import_id);
     });
   });
 });

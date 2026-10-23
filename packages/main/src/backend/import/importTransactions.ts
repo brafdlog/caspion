@@ -21,7 +21,7 @@ import {
   ImporterEvent,
   type EventPublisher,
 } from '../eventEmitters/EventEmitter';
-import { calculateTransactionHash } from '../transactions/transactions';
+import { calculateTransactionHash, makeHashesUnique } from '../transactions/transactions';
 import getChrome from './downloadChromium';
 import { createOperationLogger, type OperationLogger } from '/@/logging/operationLogger';
 
@@ -256,6 +256,7 @@ async function postProcessTransactions(
 
     // Filter out pending transactions
     transactions = transactions.filter((transaction) => transaction.status === TRANSACTION_STATUS_COMPLETED);
+    transactions = makeHashesUnique(transactions);
     transactions.sort(transactionsDateComparator);
     return transactions;
   }
