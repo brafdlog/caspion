@@ -1,6 +1,13 @@
 import { type EnrichedTransaction } from '@/backend/commonTypes';
+import {
+  ACCOUNT_NUMBER,
+  booking,
+  otherCharge,
+  scrape,
+  secondBooking,
+} from '@/backend/transactions/identicalTransactionsFixture';
 import { TransactionStatuses, TransactionTypes } from 'israeli-bank-scrapers-core/lib/transactions';
-import { describe, expect, test } from 'vitest';
+import { beforeAll, describe, expect, test } from 'vitest';
 import { SaveTransaction, type TransactionDetail } from 'ynab';
 import * as ynab from './ynab';
 import ClearedEnum = SaveTransaction.ClearedEnum;
@@ -139,6 +146,167 @@ describe('ynab', () => {
       transactionSample.description = description;
       transactionSample.memo = memo;
       expect(ynab.getPayeeName(transactionSample)).toBe(expected);
+    });
+  });
+
+  // Two real, distinct deposits on the same day whose descriptions only differ after the
+  // import id / payee name truncation points.
+  const firstDeposit: SaveTransaction = {
+    account_id: 'SOME_ACCOUNT_ID',
+    date: '2026-09-23',
+    amount: 10000000,
+    payee_name: 'העברה מישראל ישראלי וע חשבון 12-345-0000-00012345',
+    cleared: ClearedEnum.Cleared,
+    import_id: '2026-09-2210000העברה מישראל ישראלי ו',
+  };
+  const secondDeposit: SaveTransaction = { ...firstDeposit };
+
+  function ynabTransaction(saved: SaveTransaction, id: string): TransactionDetail {
+    return {
+      id,
+      date: saved.date!,
+      amount: saved.amount!,
+      memo: null,
+      cleared: ClearedEnum.Cleared,
+      approved: true,
+      flag_color: null,
+      account_id: saved.account_id!,
+      account_name: 'My great account',
+      payee_id: 'SOME_PAYEE_ID',
+      payee_name: saved.payee_name!,
+      category_id: null,
+      category_name: null,
+      transfer_account_id: null,
+      transfer_transaction_id: null,
+      matched_transaction_id: null,
+      import_id: saved.import_id!,
+      deleted: false,
+      subtransactions: [],
+    };
+  }
+
+  describe('findTransactionsMissingFromYnab', () => {
+    test('two identical bank transactions with only one in YNAB should report the second as missing', () => {
+      const existing = [ynabTransaction(firstDeposit, 'ynab-1')];
+
+      const missing = ynab.findTransactionsMissingFromYnab([firstDeposit, secondDeposit], existing);
+
+      expect(missing).toEqual([secondDeposit]);
+    });
+
+    test('two identical bank transactions that are both in YNAB should report nothing missing', () => {
+      const existing = [ynabTransaction(firstDeposit, 'ynab-1'), ynabTransaction(secondDeposit, 'ynab-2')];
+
+      expect(ynab.findTransactionsMissingFromYnab([firstDeposit, secondDeposit], existing)).toEqual([]);
+    });
+
+    test('a transaction matched by import id should not be used up by a transaction matched only by payee', () => {
+      const renamedInYnab = { ...ynabTransaction(firstDeposit, 'ynab-1'), payee_name: 'Renamed payee' };
+      const plainInYnab = ynabTransaction({ ...firstDeposit, import_id: 'OTHER_IMPORT_ID' }, 'ynab-2');
+      const sameDayOtherImportId = { ...firstDeposit, import_id: 'OTHER_IMPORT_ID' };
+
+      const missing = ynab.findTransactionsMissingFromYnab(
+        [sameDayOtherImportId, firstDeposit],
+        [renamedInYnab, plainInYnab],
+      );
+
+      expect(missing).toEqual([]);
+    });
+
+    test('a transfer should not be used up by a transaction that has an exact payee match', () => {
+      const toStore = { ...firstDeposit, payee_name: 'Store', import_id: 'STORE_IMPORT_ID' };
+      const toCafe = { ...firstDeposit, payee_name: 'Cafe', import_id: 'CAFE_IMPORT_ID' };
+      const transferInYnab = {
+        ...ynabTransaction({ ...firstDeposit, import_id: undefined }, 'ynab-1'),
+        payee_name: 'Transfer : Savings',
+        transfer_account_id: 'SAVINGS_ACCOUNT_ID',
+      };
+      const storeInYnab = ynabTransaction({ ...toStore, import_id: undefined }, 'ynab-2');
+
+      const missing = ynab.findTransactionsMissingFromYnab([toStore, toCafe], [transferInYnab, storeInYnab]);
+
+      expect(missing).toEqual([]);
+    });
+
+    test('deleted YNAB transactions should not count as existing', () => {
+      const deleted = { ...ynabTransaction(firstDeposit, 'ynab-1'), deleted: true };
+
+      expect(ynab.findTransactionsMissingFromYnab([firstDeposit], [deleted])).toEqual([firstDeposit]);
+    });
+  });
+
+  describe('makeImportIdsUnique', () => {
+    test('the second transaction with the same import id should get an occurrence suffix', () => {
+      const [first, second] = ynab.makeImportIdsUnique([firstDeposit, secondDeposit]);
+
+      expect(first.import_id).toBe(firstDeposit.import_id);
+      expect(second.import_id).toBe('2026-09-2210000העברה מישראל ישראלי:2');
+    });
+
+    test('suffixed import ids should stay within the YNAB length limit', () => {
+      const [, second] = ynab.makeImportIdsUnique([firstDeposit, secondDeposit]);
+
+      expect(second.import_id!.length).toBeLessThanOrEqual(36);
+    });
+
+    test('the same import id in different accounts should not get a suffix', () => {
+      const otherAccount = { ...secondDeposit, account_id: 'OTHER_ACCOUNT_ID' };
+
+      const [, second] = ynab.makeImportIdsUnique([firstDeposit, otherAccount]);
+
+      expect(second.import_id).toBe(firstDeposit.import_id);
+    });
+  });
+
+  describe('identical same-day transactions from a scrape', () => {
+    beforeAll(() =>
+      ynab.init({
+        ynab: {
+          active: true,
+          options: {
+            accessToken: 'SOME_ACCESS_TOKEN',
+            budgetId: 'SOME_BUDGET_ID',
+            accountNumbersToYnabAccountIds: { [ACCOUNT_NUMBER]: 'SOME_ACCOUNT_ID' },
+          },
+        },
+      } as never),
+    );
+
+    test('should get distinct import ids', () => {
+      const importIds = ynab.convertTransactionsToYnabFormat(scrape(booking, secondBooking)).map((t) => t.import_id);
+
+      expect(new Set(importIds).size).toBe(2);
+    });
+
+    test('should get the same import ids whatever order the scraper returned them in', () => {
+      const inOrder = ynab.convertTransactionsToYnabFormat(scrape(booking, secondBooking, otherCharge));
+      const reversed = ynab.convertTransactionsToYnabFormat(scrape(otherCharge, secondBooking, booking));
+
+      expect(reversed).toEqual(inOrder);
+    });
+
+    test('should all be created, once', () => {
+      const firstRun = ynab.convertTransactionsToYnabFormat(scrape(booking, secondBooking));
+      const inYnab = firstRun.map((saved, i) => ynabTransaction(saved, `ynab-${i}`));
+
+      const secondRun = ynab.convertTransactionsToYnabFormat(scrape(secondBooking, booking));
+
+      expect(ynab.findTransactionsMissingFromYnab(firstRun, [])).toHaveLength(2);
+      expect(ynab.findTransactionsMissingFromYnab(secondRun, inYnab)).toEqual([]);
+    });
+
+    test('after upgrading, only the one YNAB was missing should be created', () => {
+      // Before this fix both bookings got the same import id, so YNAB kept only one of them
+      const [firstBooking] = ynab.convertTransactionsToYnabFormat(scrape(booking));
+      const inYnab = [ynabTransaction(firstBooking, 'ynab-1')];
+
+      const missing = ynab.findTransactionsMissingFromYnab(
+        ynab.convertTransactionsToYnabFormat(scrape(booking, secondBooking)),
+        inYnab,
+      );
+
+      expect(missing).toHaveLength(1);
+      expect(missing[0].import_id).not.toBe(firstBooking.import_id);
     });
   });
 });
