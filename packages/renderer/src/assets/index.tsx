@@ -18,6 +18,7 @@ import max from './importers/max.jpg';
 import mercantile from './importers/mercantile.png';
 import mizrahi from './importers/mizrahi.png';
 import otsarHahayal from './importers/otsarHahayal.jpeg';
+import pagi from './importers/pagi.png';
 import hapoalim from './importers/poalim.jpeg';
 import visaCal from './importers/visa-cal.jpeg';
 import yahav from './importers/yahavLogo.jpg';
@@ -41,6 +42,7 @@ export const importerIcons = {
   beyahadBishvilha,
   behatsdaa,
   mercantile,
+  pagi,
 };
 
 export const exporterIcons = {
