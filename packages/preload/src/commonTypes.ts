@@ -28,6 +28,7 @@ export interface Config {
     accountsToScrape: AccountToScrapeConfig[];
     chromiumPath?: string;
     maxConcurrency?: number;
+    sameProviderDelaySeconds?: number;
   };
 }
 
@@ -231,6 +232,7 @@ export interface Config {
     chromiumPath?: string;
     maxConcurrency?: number;
     timeout: number;
+    sameProviderDelaySeconds?: number;
   };
   useReactUI?: boolean;
 }

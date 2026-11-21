@@ -242,6 +242,10 @@ export class ConfigStore {
     this.config.scraping.maxConcurrency = maxConcurrency;
   }
 
+  async setSameProviderDelaySeconds(sameProviderDelaySeconds?: number) {
+    this.config.scraping.sameProviderDelaySeconds = sameProviderDelaySeconds;
+  }
+
   async setChromiumPath(chromiumPath?: string) {
     this.config.scraping.chromiumPath = chromiumPath;
   }
