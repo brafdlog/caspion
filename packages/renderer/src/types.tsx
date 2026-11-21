@@ -123,6 +123,8 @@ export class BudgetTrackingEvent {
 
   vendorId?: CompanyTypes | OutputVendorName;
 
+  accountId?: string;
+
   accountStatus?: AccountStatus;
 
   error?: Error;
@@ -132,12 +134,14 @@ export class BudgetTrackingEvent {
   constructor({
     message,
     vendorId,
+    accountId,
     error,
     accountType,
     accountStatus = AccountStatus.IN_PROGRESS,
   }: BudgetTrackingEvent) {
     this.message = message;
     this.vendorId = vendorId;
+    this.accountId = accountId;
     this.error = error;
     this.accountType = accountType;
     this.accountStatus = accountStatus;

@@ -39,6 +39,8 @@ export class BudgetTrackingEvent {
 
   vendorId?: CompanyTypes | OutputVendorName;
 
+  accountId?: string;
+
   accountStatus?: AccountStatus;
 
   error?: Error;
@@ -48,12 +50,14 @@ export class BudgetTrackingEvent {
   constructor({
     message,
     vendorId,
+    accountId,
     error,
     accountType,
     accountStatus = AccountStatus.IN_PROGRESS,
   }: BudgetTrackingEvent) {
     this.message = message;
     this.vendorId = vendorId;
+    this.accountId = accountId;
     this.error = error;
     this.accountType = accountType;
     this.accountStatus = accountStatus;
@@ -63,15 +67,17 @@ export class BudgetTrackingEvent {
 export interface ImporterEventParams {
   message: BudgetTrackingEvent['message'];
   importerKey: CompanyTypes;
+  accountId?: string;
   error?: BudgetTrackingEvent['error'];
   status?: BudgetTrackingEvent['accountStatus'];
 }
 
 export class ImporterEvent extends BudgetTrackingEvent {
-  constructor({ message, importerKey, error, status }: ImporterEventParams) {
+  constructor({ message, importerKey, accountId, error, status }: ImporterEventParams) {
     super({
       message,
       vendorId: importerKey,
+      accountId,
       error,
       accountType: AccountType.IMPORTER,
       accountStatus: status,

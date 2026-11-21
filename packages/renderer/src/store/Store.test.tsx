@@ -1,12 +1,23 @@
 import { type ConfigStore, configStore } from './ConfigStore';
-import { AccountType, CompanyTypes, type Config, type Credentials, type Exporter, type Importer } from '../types';
+import {
+  AccountStatus,
+  AccountType,
+  BudgetTrackingEvent,
+  CompanyTypes,
+  OutputVendorName,
+  type Config,
+  type Credentials,
+  type Exporter,
+  type Importer,
+} from '../types';
 import { beforeEach, describe, test, expect } from 'vitest';
 
 describe('Store', () => {
   let store: ConfigStore;
   beforeEach(() => {
     store = configStore;
-    store.config = dummyConfig;
+    store.clearScrapingStatus();
+    store.config = structuredClone(dummyConfig);
   });
   describe('Properties and getters', () => {
     test('basic', () => {
@@ -93,6 +104,70 @@ describe('Store', () => {
         };
         store.updateExporter(updatedExporter);
         expect(store.exporters[0]).toMatchObject(updatedExporter);
+      });
+    });
+
+    describe('scraping events', () => {
+      test('tracks status and logs separately for multiple importers of the same company', () => {
+        store.config.scraping.accountsToScrape = [
+          {
+            active: true,
+            key: CompanyTypes.ISRACARD,
+            name: 'Isracard 1',
+            loginFields: { id: '111111111', card6Digits: '111111', password: 'pass1' },
+            id: 'isracard-account-1',
+          },
+          {
+            active: false,
+            key: CompanyTypes.ISRACARD,
+            name: 'Isracard 2',
+            loginFields: { id: '222222222', card6Digits: '222222', password: 'pass2' },
+            id: 'isracard-account-2',
+          },
+        ];
+
+        store.handleScrapingEvent(
+          'IMPORTER_START',
+          new BudgetTrackingEvent({
+            message: 'Importer start',
+            vendorId: CompanyTypes.ISRACARD,
+            accountId: 'isracard-account-1',
+            accountStatus: AccountStatus.IN_PROGRESS,
+          }),
+        );
+        store.handleScrapingEvent(
+          'IMPORTER_END',
+          new BudgetTrackingEvent({
+            message: 'Importer end',
+            vendorId: CompanyTypes.ISRACARD,
+            accountId: 'isracard-account-1',
+            accountStatus: AccountStatus.DONE,
+          }),
+        );
+
+        const first = store.importers.find((i) => i.id === 'isracard-account-1');
+        const second = store.importers.find((i) => i.id === 'isracard-account-2');
+
+        expect(first?.status).toBe(AccountStatus.DONE);
+        expect(first?.logs.map((l) => l.message)).toEqual(['Importer start', 'Importer end']);
+
+        expect(second?.status).toBe(AccountStatus.IDLE);
+        expect(second?.logs).toEqual([]);
+      });
+
+      test('routes exporter events by vendorId when accountId is omitted', () => {
+        store.handleScrapingEvent(
+          'EXPORTER_END',
+          new BudgetTrackingEvent({
+            message: 'Finished',
+            vendorId: OutputVendorName.CSV,
+            accountStatus: AccountStatus.DONE,
+          }),
+        );
+
+        const csvExporter = store.exporters.find((e) => e.companyId === OutputVendorName.CSV);
+        expect(csvExporter?.status).toBe(AccountStatus.DONE);
+        expect(csvExporter?.logs).toHaveLength(1);
       });
     });
   });

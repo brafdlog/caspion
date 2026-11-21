@@ -41,6 +41,10 @@ const Body = () => {
     setModalStatus(status);
   };
 
+  const liveCurrentAccount = currentAccount
+    ? ([...configStore.importers, ...configStore.exporters].find((a) => a.id === currentAccount.id) ?? currentAccount)
+    : undefined;
+
   const wideModal = shouldShowWideModal(modalStatus, currentAccount);
 
   const newScraperClicked = () => {
@@ -108,7 +112,7 @@ const Body = () => {
         >
           <Modal.Header closeButton className={styles.modalHeader}></Modal.Header>
           <Modal.Body>
-            {modalStatus === ModalStatus.LOGS && currentAccount && <AccountLogs logs={currentAccount.logs} />}
+            {modalStatus === ModalStatus.LOGS && liveCurrentAccount && <AccountLogs logs={liveCurrentAccount.logs} />}
             {modalStatus === ModalStatus.IMPORTER_SETTINGS && currentAccount && (
               <EditImporter
                 handleSave={updateImporter}
