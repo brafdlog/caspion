@@ -1,4 +1,4 @@
-import { openExternal, openItem, updateConfig } from '#preload';
+import { openExternal, openItem, stopPeriodicScraping, updateConfig } from '#preload';
 import { autorun, makeAutoObservable, toJS } from 'mobx';
 import { createContext, useContext } from 'react';
 import accountMetadata, { exporterUIHandlers } from '../accountMetadata';
@@ -161,6 +161,7 @@ export class ConfigStore {
         this.updateChromeDownloadPercent((budgetTrackingEvent as DownloadChromeEvent)?.percent);
       }
       if (eventName === 'IMPORT_PROCESS_START') {
+        this.accountScrapingData = new Map();
         this.nextAutomaticScrapeDate = (budgetTrackingEvent as ImportStartEvent).nextAutomaticScrapeDate;
       }
       const accountId = budgetTrackingEvent.vendorId;
@@ -247,9 +248,11 @@ export class ConfigStore {
   }
 
   setPeriodicScrapingIntervalHours(interval?: number) {
-    this.config.scraping.periodicScrapingIntervalHours = interval;
-    if (!interval || interval <= 0) {
+    const validInterval = interval && !Number.isNaN(interval) && interval > 0 ? interval : undefined;
+    this.config.scraping.periodicScrapingIntervalHours = validInterval;
+    if (!validInterval) {
       this.nextAutomaticScrapeDate = null;
+      stopPeriodicScraping?.();
     }
   }
 }
