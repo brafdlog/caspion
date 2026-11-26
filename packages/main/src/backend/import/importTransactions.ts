@@ -123,6 +123,7 @@ function buildImporterEvent(
   return new ImporterEvent({
     message: additionalParams.message,
     importerKey: accountConfig.key,
+    accountId: accountConfig.id,
     error: additionalParams.error,
     status: additionalParams.status,
   });

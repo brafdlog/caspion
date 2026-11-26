@@ -120,6 +120,8 @@ export interface BudgetTrackingEvent {
 
   vendorId?: CompanyTypes | OutputVendorName;
 
+  accountId?: string;
+
   accountStatus?: AccountStatus;
 
   error?: Error;

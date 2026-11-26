@@ -75,7 +75,7 @@ export class ConfigStore {
   nextAutomaticScrapeDate?: Date | null;
 
   // TODO: move this to a separate store
-  accountScrapingData: Map<CompanyTypes | OutputVendorName, AccountScrapingData>;
+  accountScrapingData: Map<string, AccountScrapingData>;
   constructor() {
     this.config = {} as Config;
     this.accountScrapingData = new Map();
@@ -94,7 +94,7 @@ export class ConfigStore {
     if (!this.config) return [];
     return this.config.scraping.accountsToScrape.map(({ id, key, active, loginFields }) => {
       return {
-        ...createAccountObject(id, key, AccountType.IMPORTER, !!active, this.accountScrapingData.get(key)),
+        ...createAccountObject(id, key, AccountType.IMPORTER, !!active, this.accountScrapingData.get(id)),
         loginFields,
       };
     });
@@ -163,7 +163,7 @@ export class ConfigStore {
       if (eventName === 'IMPORT_PROCESS_START') {
         this.nextAutomaticScrapeDate = (budgetTrackingEvent as ImportStartEvent).nextAutomaticScrapeDate;
       }
-      const accountId = budgetTrackingEvent.vendorId;
+      const accountId = budgetTrackingEvent.accountId ?? budgetTrackingEvent.vendorId;
       if (accountId) {
         if (!this.accountScrapingData.has(accountId)) {
           this.accountScrapingData.set(accountId, {
