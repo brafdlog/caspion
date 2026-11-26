@@ -9,6 +9,7 @@ import {
 import { getConfig } from '@/backend/configManager/configManager';
 import * as bankScraper from '@/backend/import/bankScraper';
 import Bottleneck from 'bottleneck';
+import { CompanyTypes } from 'israeli-bank-scrapers-core';
 import { type Transaction } from 'israeli-bank-scrapers-core/lib/transactions';
 import _ from 'lodash';
 import moment from 'moment';
@@ -28,7 +29,25 @@ import { createOperationLogger, type OperationLogger } from '/@/logging/operatio
 type ScrapingConfig = Config['scraping'];
 
 const DEFAULT_MAX_CONCURRENCY = 3;
+export const DEFAULT_SAME_PROVIDER_DELAY_SECONDS = 15;
 const TRANSACTION_STATUS_COMPLETED = 'completed';
+
+/**
+ * Companies that share the same backend / anti-bot rate limiter and therefore
+ * must not be scraped concurrently or back-to-back.
+ */
+const SHARED_PROVIDER_GROUPS: Partial<Record<CompanyTypes, string>> = {
+  [CompanyTypes.isracard]: 'isracard',
+  [CompanyTypes.amex]: 'isracard',
+};
+
+export function getProviderGroup(companyId: CompanyTypes): string {
+  return SHARED_PROVIDER_GROUPS[companyId] ?? companyId;
+}
+
+function wait(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 export async function scrapeFinancialAccountsAndFetchTransactions(
   scrapingConfig: ScrapingConfig,
@@ -41,6 +60,12 @@ export async function scrapeFinancialAccountsAndFetchTransactions(
   let chromiumPath: string;
 
   const activeAccounts = scrapingConfig.accountsToScrape.filter((a) => a.active !== false);
+  const sameProviderDelaySeconds =
+    scrapingConfig.sameProviderDelaySeconds !== undefined && !Number.isNaN(scrapingConfig.sameProviderDelaySeconds)
+      ? Math.max(0, scrapingConfig.sameProviderDelaySeconds)
+      : DEFAULT_SAME_PROVIDER_DELAY_SECONDS;
+  const sameProviderDelayMs = sameProviderDelaySeconds * 1000;
+
   log.info('START', {
     importersCount: activeAccounts.length,
     importers: activeAccounts.map((a) => a.key).join(','),
@@ -49,6 +74,7 @@ export async function scrapeFinancialAccountsAndFetchTransactions(
     showBrowser: scrapingConfig.showBrowser,
     timeout: scrapingConfig.timeout,
     maxConcurrency: scrapingConfig.maxConcurrency ?? DEFAULT_MAX_CONCURRENCY,
+    sameProviderDelaySeconds,
   });
 
   if (scrapingConfig.chromiumPath) {
@@ -68,41 +94,64 @@ export async function scrapeFinancialAccountsAndFetchTransactions(
   const limiter = new Bottleneck({
     maxConcurrent: scrapingConfig.maxConcurrency || DEFAULT_MAX_CONCURRENCY,
   });
-  const scrapePromises = activeAccounts.map(async (accountToScrape) => ({
-    id: accountToScrape.id,
-    transactions: await limiter.schedule(() =>
-      fetchTransactions(
-        accountToScrape,
-        startDate,
-        scrapingConfig.showBrowser,
-        eventPublisher,
-        chromiumPath,
-        scrapingConfig.timeout,
-        log,
-      ),
-    ),
-  }));
 
-  const promiseResults = await Promise.allSettled(scrapePromises);
+  // Group accounts by provider backend so accounts hitting the same provider
+  // (e.g. multiple Isracard accounts, or Isracard + Amex) run sequentially
+  // with a cooldown delay between them, while different providers still run in parallel.
+  const accountsByProvider = new Map<string, AccountToScrapeConfig[]>();
+  for (const account of activeAccounts) {
+    const group = getProviderGroup(account.key);
+    const list = accountsByProvider.get(group) ?? [];
+    list.push(account);
+    accountsByProvider.set(group, list);
+  }
 
+  const companyIdToTransactions: Record<string, EnrichedTransaction[]> = {};
   let successCount = 0;
   let failedCount = 0;
   let totalTransactions = 0;
 
-  const companyIdToTransactions = promiseResults.reduce(
-    (idToTrxAcc, scrapeRes) => {
-      if (scrapeRes.status === 'fulfilled') {
-        const { id, transactions } = scrapeRes.value;
-        idToTrxAcc[id] = transactions;
+  const groupPromises = Array.from(accountsByProvider.entries()).map(async ([providerGroup, accounts]) => {
+    for (let i = 0; i < accounts.length; i++) {
+      const accountToScrape = accounts[i];
+
+      if (i > 0 && sameProviderDelayMs > 0) {
+        log.info('IMPORTER_COOLDOWN', {
+          importer: accountToScrape.key,
+          providerGroup,
+          delaySeconds: sameProviderDelaySeconds,
+        });
+        await eventPublisher.emit(
+          EventNames.IMPORTER_PROGRESS,
+          buildImporterEvent(accountToScrape, {
+            message: `Waiting ${sameProviderDelaySeconds}s before scraping (same provider cooldown)`,
+          }),
+        );
+        await wait(sameProviderDelayMs);
+      }
+
+      try {
+        const transactions = await limiter.schedule(() =>
+          fetchTransactions(
+            accountToScrape,
+            startDate,
+            scrapingConfig.showBrowser,
+            eventPublisher,
+            chromiumPath,
+            scrapingConfig.timeout,
+            log,
+          ),
+        );
+        companyIdToTransactions[accountToScrape.id] = transactions;
         successCount++;
         totalTransactions += transactions.length;
-      } else {
+      } catch {
         failedCount++;
       }
-      return idToTrxAcc;
-    },
-    {} as Record<string, EnrichedTransaction[]>,
-  );
+    }
+  });
+
+  await Promise.all(groupPromises);
 
   // Log summary
   const result = failedCount === 0 ? 'success' : successCount === 0 ? 'failed' : 'partial';

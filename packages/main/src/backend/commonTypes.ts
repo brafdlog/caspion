@@ -25,6 +25,7 @@ export interface Config {
     maxConcurrency?: number;
     timeout: number;
     periodicScrapingIntervalHours?: number;
+    sameProviderDelaySeconds?: number;
   };
   useReactUI?: boolean;
 }

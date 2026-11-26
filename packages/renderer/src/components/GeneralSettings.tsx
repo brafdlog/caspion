@@ -21,6 +21,18 @@ function GeneralSettings() {
     configStore.setPeriodicScrapingIntervalHours(Number(interval));
   };
 
+  const handleSameProviderDelaySecondsChanged = (delay: string) => {
+    const trimmed = delay.trim();
+    if (trimmed === '') {
+      configStore.setSameProviderDelaySeconds(undefined);
+      return;
+    }
+    const numberDelay = Number(trimmed);
+    if (!Number.isNaN(numberDelay) && numberDelay >= 0) {
+      configStore.setSameProviderDelaySeconds(numberDelay);
+    }
+  };
+
   return (
     <div className={styles.container}>
       <Card className={styles.card}>
@@ -47,6 +59,15 @@ function GeneralSettings() {
                 className={styles.input}
                 defaultValue={configStore.config?.scraping.maxConcurrency}
                 onBlur={(event) => configStore.setMaxConcurrency(Number(event.target.value))}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>השהייה בין חשבונות מאותו ספק (שניות)</Form.Label>
+              <Form.Control
+                className={styles.input}
+                placeholder="15"
+                defaultValue={configStore.config?.scraping.sameProviderDelaySeconds}
+                onBlur={(event) => handleSameProviderDelaySecondsChanged(event.target.value)}
               />
             </Form.Group>
             <Form.Group>

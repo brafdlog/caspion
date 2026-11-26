@@ -31,6 +31,7 @@ export interface Config {
     chromiumPath?: string;
     maxConcurrency?: number;
     periodicScrapingIntervalHours?: number;
+    sameProviderDelaySeconds?: number;
   };
 }
 
